@@ -1,0 +1,23 @@
+{
+  "pins" : [
+    {
+      "identity" : "timecodekit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/orchetect/TimecodeKit",
+      "state" : {
+        "revision" : "6f65472a671fef760ca8fb2e9ca7cc25bc220aad",
+        "version" : "1.6.10"
+      }
+    },
+    {
+      "identity" : "wrappinghstack",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/dkk/WrappingHStack",
+      "state" : {
+        "revision" : "f31b8fdc57759c5aa5fc98c70746db5556e73300",
+        "version" : "2.2.10"
+      }
+    }
+  ],
+  "version" : 2
+}
