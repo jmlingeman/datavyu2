@@ -16,19 +16,26 @@ struct ControllerView: View {
     let player = AVPlayer(url: Bundle.main.url(forResource: "IMG_1234", withExtension: "MOV")!)
     
     func play() {
-        self.player.play()
+        player.play()
     }
     
     func stop() {
-        self.player.pause()
+        player.pause()
     }
     
     func nextFrame() {
-        self.player.currentItem!.step(byCount: 1)
+        player.currentItem!.step(byCount: 1)
     }
     
     func prevFrame() {
-        self.player.currentItem!.step(byCount: -1)
+        player.currentItem!.step(byCount: -1)
+    }
+    
+    func addCell() {
+        let columnModel = ColumnModel(columnName: "test4444")
+        columnModel.addCell(cell: CellModel())
+        columnModel.addCell(cell: CellModel())
+        sheetModel.addColumn(column: columnModel)
     }
     
     var body: some View {
@@ -47,6 +54,7 @@ struct ControllerView: View {
                 GridRow {
                     Button("Next", action: nextFrame).keyboardShortcut("w", modifiers: [])
                     Button("Prev", action: prevFrame).keyboardShortcut("q", modifiers: [])
+                    Button("Add Col", action: addCell).keyboardShortcut("c", modifiers: [])
                 }
             }
             Sheet(sheetDataModel: sheetModel)
