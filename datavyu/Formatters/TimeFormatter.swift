@@ -25,9 +25,9 @@ public extension Timecode.TextFormatter {
 
     override func string(for obj: Any?) -> String? {
         if let tc = obj as? Timecode {
-            tc.stringValue
+            return tc.stringValue
         } else {
-            ""
+            return ""
         }
     }
 }
