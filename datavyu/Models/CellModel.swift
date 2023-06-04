@@ -30,6 +30,14 @@ class CellModel: ObservableObject, Identifiable, Equatable, Hashable {
     @Published var comment: String = ""
     @Published var arguments: [Argument] = [Argument(name: "test1", value: "a"), Argument(name: "test2", value: "b")]
     
+    func setOnset(onset: Double) {
+        self.onset = try! onset.toTimecode(at: ._29_97)
+    }
+    
+    func setOffset(offset: Double) {
+        self.offset = try! offset.toTimecode(at: ._29_97)
+    }
+    
     func formatTimestamp(timestamp: Int) -> String {
         let hours = floor(Double(timestamp / 1000 / 3600))
         let minutes = floor(Double(timestamp / 1000 % 3600 / 60))

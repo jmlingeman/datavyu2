@@ -42,7 +42,9 @@ struct ControllerView: View {
     }
     
     func addCell() {
-        columnInFocus?.addCell(cell: CellModel())
+        let cell = CellModel()
+        cell.setOnset(onset: videoModel.currentTime)
+        columnInFocus?.addCell(cell: cell)
     }
     
     var body: some View {

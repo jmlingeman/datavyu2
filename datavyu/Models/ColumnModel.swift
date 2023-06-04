@@ -27,9 +27,8 @@ class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable {
         self.cells = Array<CellModel>()
     }
     
-    func addCell(cell: CellModel) -> ColumnModel {
+    func addCell(cell: CellModel) -> Void {
         cell.ordinal = self.cells.count + 1
         self.cells.append(cell)
-        return self
     }
 }
