@@ -10,7 +10,7 @@ import Foundation
 class Argument: ObservableObject, Identifiable {
     @Published var value: String = ""
     let name: String
-    
+
     init(name: String, value: String) {
         self.name = name
         self.value = value

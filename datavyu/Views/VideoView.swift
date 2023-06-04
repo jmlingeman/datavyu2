@@ -5,21 +5,19 @@
 //  Created by Jesse Lingeman on 6/2/23.
 //
 
-import SwiftUI
 import AVKit
 import CoreImage
 import CoreImage.CIFilterBuiltins
-
+import SwiftUI
 
 struct VideoView: View {
-    
     let player: AVPlayer
     @ObservedObject var videoModel: VideoModel
-    
+
     var body: some View {
-        VStack{
+        VStack {
             VideoPlayer(player: player)
-                .onAppear{
+                .onAppear {
                     player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.01, preferredTimescale: 600), queue: nil) { time in
                         // update videoPos with the new video time (as a percentage)
                         $videoModel.currentTime.wrappedValue = time.seconds

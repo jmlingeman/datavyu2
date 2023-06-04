@@ -6,23 +6,19 @@
 //
 
 import SwiftUI
-import WrappingHStack
 import TimecodeKit
+import WrappingHStack
 
 struct ContentView: View {
-    
     var body: some View {
         HStack {
             ControllerView()
         }
-        
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
-  static var previews: some View {
-    ContentView()
-  }
+    static var previews: some View {
+        ContentView()
+    }
 }
-
-

@@ -10,17 +10,17 @@ import Foundation
 class SheetModel: ObservableObject, Identifiable {
     @Published var sheetName: String
     @Published var columns: [ColumnModel]
-    
+
     init(sheetName: String) {
         self.sheetName = sheetName
-        self.columns = Array<ColumnModel>()
-        self.setup()
+        columns = [ColumnModel]()
+        setup()
     }
-    
-    func addColumn(column: ColumnModel) -> Void {
-        self.columns.append(column)
+
+    func addColumn(column: ColumnModel) {
+        columns.append(column)
     }
-    
+
     func setup() {
         let column = ColumnModel(columnName: "Test1")
         let column2 = ColumnModel(columnName: "Test2")

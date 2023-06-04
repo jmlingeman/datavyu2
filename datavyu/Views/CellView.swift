@@ -6,21 +6,21 @@
 //
 
 import SwiftUI
-import WrappingHStack
 import TimecodeKit
+import WrappingHStack
 
 struct Cell: View {
     @ObservedObject var cellDataModel: CellModel
     var isEditing: FocusState<Bool>.Binding
-    
+
     let tcFormatter =
-    Timecode.TextFormatter(frameRate: ._29_97,
-                           limit: ._24hours,
-                           stringFormat: [.showSubFrames],
-                           subFramesBase: ._80SubFrames,
-                           showsValidation: true,     // enable invalid component highlighting
-                           validationAttributes: nil) // if nil, defaults to red foreground color
-    
+        Timecode.TextFormatter(frameRate: ._29_97,
+                               limit: ._24hours,
+                               stringFormat: [.showSubFrames],
+                               subFramesBase: ._80SubFrames,
+                               showsValidation: true, // enable invalid component highlighting
+                               validationAttributes: nil) // if nil, defaults to red foreground color
+
     var body: some View {
         VStack {
             HStack {
@@ -38,7 +38,7 @@ struct Cell: View {
                         .fixedSize(horizontal: true, vertical: false)
                         .frame(minWidth: 50, idealWidth: 100)
                     Text(item.name)
-                }.padding().border(Color.black, width:1)
+                }.padding().border(Color.black, width: 1)
             }
         }.textFieldStyle(.plain)
             .padding()

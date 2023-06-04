@@ -10,25 +10,25 @@ import Foundation
 class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable {
     @Published var columnName: String
     @Published var cells: [CellModel]
-    
+
     static func == (lhs: ColumnModel, rhs: ColumnModel) -> Bool {
-        if(lhs.columnName == rhs.columnName) {
+        if lhs.columnName == rhs.columnName {
             return true
         }
         return false
     }
-    
+
     func hash(into hasher: inout Hasher) {
         hasher.combine(columnName)
     }
-    
+
     init(columnName: String) {
         self.columnName = columnName
-        self.cells = Array<CellModel>()
+        cells = [CellModel]()
     }
-    
-    func addCell(cell: CellModel) -> Void {
-        cell.ordinal = self.cells.count + 1
-        self.cells.append(cell)
+
+    func addCell(cell: CellModel) {
+        cell.ordinal = cells.count + 1
+        cells.append(cell)
     }
 }

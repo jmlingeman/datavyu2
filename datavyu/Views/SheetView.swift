@@ -7,18 +7,18 @@
 
 import Foundation
 import SwiftUI
-import WrappingHStack
 import TimecodeKit
+import WrappingHStack
 
 struct Sheet: View {
     @ObservedObject var sheetDataModel: SheetModel
     @FocusState private var focusedColumn: Bool
     @FocusState var columnInFocus: ColumnModel?
-        
+
     var body: some View {
         ScrollView {
             HStack(alignment: .top) {
-                ForEach(self.sheetDataModel.columns) { column in
+                ForEach(sheetDataModel.columns) { column in
                     Column(columnDataModel: column)
                         .focused($columnInFocus, equals: column)
                 }

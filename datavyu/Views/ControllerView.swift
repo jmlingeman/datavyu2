@@ -5,48 +5,47 @@
 //  Created by Jesse Lingeman on 6/3/23.
 //
 
-import SwiftUI
-import CoreMedia
 import AVKit
+import CoreMedia
+import SwiftUI
 
 struct ControllerView: View {
-    
     @StateObject var videoModel = VideoModel(videoFilePath: "IMG_1234")
     @StateObject var sheetModel = SheetModel(sheetName: "IMG_1234")
-    
+
     @FocusState private var columnInFocus: ColumnModel?
-    
+
     let player = AVPlayer(url: Bundle.main.url(forResource: "IMG_1234", withExtension: "MOV")!)
-    
+
     func play() {
         player.play()
     }
-    
+
     func stop() {
         player.pause()
     }
-    
+
     func nextFrame() {
         player.currentItem!.step(byCount: 1)
     }
-    
+
     func prevFrame() {
         player.currentItem!.step(byCount: -1)
     }
-    
+
     func addCol() {
         let columnModel = ColumnModel(columnName: "test4444")
         columnModel.addCell(cell: CellModel())
         columnModel.addCell(cell: CellModel())
         sheetModel.addColumn(column: columnModel)
     }
-    
+
     func addCell() {
         let cell = CellModel()
         cell.setOnset(onset: videoModel.currentTime)
         columnInFocus?.addCell(cell: cell)
     }
-    
+
     var body: some View {
         HStack {
             Grid {
@@ -73,8 +72,6 @@ struct ControllerView: View {
 }
 
 struct ControllerView_Previews: PreviewProvider {
-
-    
     static var previews: some View {
         ControllerView()
     }

@@ -8,11 +8,11 @@
 import Foundation
 import TimecodeKit
 
-extension Timecode.TextFormatter {
-    override public func getObjectValue(
+public extension Timecode.TextFormatter {
+    override func getObjectValue(
         _ obj: AutoreleasingUnsafeMutablePointer<AnyObject?>?,
         for string: String,
-        errorDescription error: AutoreleasingUnsafeMutablePointer<NSString?>?
+        errorDescription _: AutoreleasingUnsafeMutablePointer<NSString?>?
     ) -> Bool {
         do {
             print(string)
@@ -22,12 +22,12 @@ extension Timecode.TextFormatter {
         }
         return true
     }
-    
-    override public func string(for obj: Any?) -> String? {
+
+    override func string(for obj: Any?) -> String? {
         if let tc = obj as? Timecode {
-            return tc.stringValue
+            tc.stringValue
         } else {
-            return ""
+            ""
         }
     }
 }
