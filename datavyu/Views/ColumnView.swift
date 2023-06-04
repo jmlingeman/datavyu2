@@ -31,9 +31,9 @@ struct Column: View, Hashable {
     
     var body: some View {
         VStack {
-            Text(self.columnDataModel.columnName)
+            Text(self.columnDataModel.columnName).background(isFocused ? Color.blue : Color.gray)
             ForEach(self.columnDataModel.cells) { cell in
-                Cell(cellDataModel: cell)
+                Cell(cellDataModel: cell, isEditing: $isFocused)
             }
         }
     }

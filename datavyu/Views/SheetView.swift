@@ -13,13 +13,14 @@ import TimecodeKit
 struct Sheet: View {
     @ObservedObject var sheetDataModel: SheetModel
     @FocusState private var focusedColumn: Bool
-    
+    @FocusState var columnInFocus: ColumnModel?
+        
     var body: some View {
         ScrollView {
-            HStack {
+            HStack(alignment: .top) {
                 ForEach(self.sheetDataModel.columns) { column in
                     Column(columnDataModel: column)
-                        .focused($focusedColumn)
+                        .focused($columnInFocus, equals: column)
                 }
             }
         }

@@ -13,6 +13,9 @@ struct ControllerView: View {
     
     @StateObject var videoModel = VideoModel(videoFilePath: "IMG_1234")
     @StateObject var sheetModel = SheetModel(sheetName: "IMG_1234")
+    
+    @FocusState private var columnInFocus: ColumnModel?
+    
     let player = AVPlayer(url: Bundle.main.url(forResource: "IMG_1234", withExtension: "MOV")!)
     
     func play() {
@@ -31,11 +34,15 @@ struct ControllerView: View {
         player.currentItem!.step(byCount: -1)
     }
     
-    func addCell() {
+    func addCol() {
         let columnModel = ColumnModel(columnName: "test4444")
         columnModel.addCell(cell: CellModel())
         columnModel.addCell(cell: CellModel())
         sheetModel.addColumn(column: columnModel)
+    }
+    
+    func addCell() {
+        columnInFocus?.addCell(cell: CellModel())
     }
     
     var body: some View {
@@ -54,10 +61,11 @@ struct ControllerView: View {
                 GridRow {
                     Button("Next", action: nextFrame).keyboardShortcut("w", modifiers: [])
                     Button("Prev", action: prevFrame).keyboardShortcut("q", modifiers: [])
-                    Button("Add Col", action: addCell).keyboardShortcut("c", modifiers: [])
+                    Button("Add Col", action: addCol).keyboardShortcut("c", modifiers: [])
+                    Button("Add Cell", action: addCell).keyboardShortcut("c", modifiers: [])
                 }
             }
-            Sheet(sheetDataModel: sheetModel)
+            Sheet(sheetDataModel: sheetModel, columnInFocus: _columnInFocus)
         }
     }
 }

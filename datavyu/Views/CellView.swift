@@ -11,6 +11,8 @@ import TimecodeKit
 
 struct Cell: View {
     @ObservedObject var cellDataModel: CellModel
+    var isEditing: FocusState<Bool>.Binding
+    
     let tcFormatter =
     Timecode.TextFormatter(frameRate: ._29_97,
                            limit: ._24hours,
@@ -18,10 +20,6 @@ struct Cell: View {
                            subFramesBase: ._80SubFrames,
                            showsValidation: true,     // enable invalid component highlighting
                            validationAttributes: nil) // if nil, defaults to red foreground color
-    
-    init(cellDataModel: CellModel) {
-        self.cellDataModel = cellDataModel
-    }
     
     var body: some View {
         VStack {
@@ -45,5 +43,6 @@ struct Cell: View {
         }.textFieldStyle(.plain)
             .padding()
             .border(Color.black, width: 4)
+            .focused(isEditing)
     }
 }
