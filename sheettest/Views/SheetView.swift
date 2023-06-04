@@ -14,11 +14,6 @@ struct Sheet: View {
     @ObservedObject var sheetDataModel: SheetModel
     @FocusState private var focusedColumn: Bool
     
-    init() {
-        print("sheetinit")
-        self.sheetDataModel = SheetModel(sheetName: "TestSheet")
-    }
-    
     var body: some View {
         ScrollView {
             HStack {
@@ -33,6 +28,7 @@ struct Sheet: View {
 
 struct Sheet_Previews: PreviewProvider {
     static var previews: some View {
-        Sheet()
+        let sheetDataModel = SheetModel(sheetName: "TestSheet")
+        Sheet(sheetDataModel: sheetDataModel)
     }
 }

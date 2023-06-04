@@ -12,6 +12,7 @@ import AVKit
 struct ControllerView: View {
     
     @StateObject var videoModel = VideoModel(videoFilePath: "IMG_1234")
+    @StateObject var sheetModel = SheetModel(sheetName: "IMG_1234")
     let player = AVPlayer(url: Bundle.main.url(forResource: "IMG_1234", withExtension: "MOV")!)
     
     func play() {
@@ -48,7 +49,7 @@ struct ControllerView: View {
                     Button("Prev", action: prevFrame).keyboardShortcut("q", modifiers: [])
                 }
             }
-            Sheet()
+            Sheet(sheetDataModel: sheetModel)
         }
     }
 }
