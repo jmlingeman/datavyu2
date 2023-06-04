@@ -38,3 +38,11 @@ struct Column: View, Hashable {
         }
     }
 }
+
+struct Column_Previews: PreviewProvider {
+    static var previews: some View {
+        let cell = CellModel()
+        let columnModel = ColumnModel(columnName: "Test Column").addCell(cell: cell)
+        Column(columnDataModel: columnModel)
+    }
+}

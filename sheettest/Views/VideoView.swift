@@ -10,50 +10,29 @@ import AVKit
 import CoreImage
 import CoreImage.CIFilterBuiltins
 
+
 struct VideoView: View {
-    @State private var currentFilter = 0
-    var filters : [CIFilter?] = [nil, CIFilter.sepiaTone(), CIFilter.pixellate(), CIFilter.comicEffect()]
-    let player = AVPlayer(url: Bundle.main.url(forResource: "IMG_1234", withExtension: "MOV")!)
+    
+    let player: AVPlayer
+    @ObservedObject var videoModel: VideoModel
     
     var body: some View {
-        
         VStack{
-            
             VideoPlayer(player: player)
                 .onAppear{
-                    player.currentItem!.videoComposition = AVVideoComposition(asset: player.currentItem!.asset,  applyingCIFiltersWithHandler: { request in
-                        
-                        if let filter = self.filters[currentFilter]{
-                            
-                            let source = request.sourceImage.clampedToExtent()
-                            filter.setValue(source, forKey: kCIInputImageKey)
-                            
-                            if filter.inputKeys.contains(kCIInputScaleKey){
-                                filter.setValue(30, forKey: kCIInputScaleKey)
-                            }
-                            
-                            let output = filter.outputImage!.cropped(to: request.sourceImage.extent)
-                            request.finish(with: output, context: nil)
-                        }
-                        else{
-                            request.finish(with: request.sourceImage, context: nil)
-                        }
-                    })
+                    player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.01, preferredTimescale: 600), queue: nil) { time in
+                        // update videoPos with the new video time (as a percentage)
+                        $videoModel.currentTime.wrappedValue = time.seconds
+                    }
                 }
-            
-            Picker(selection: $currentFilter, label: Text("Select Filter")) {
-                ForEach(0..<filters.count) { index in
-                    Text(self.filters[index]?.name ?? "None").tag(index)
-                }
-            }.pickerStyle(SegmentedPickerStyle())
-            
-            Text("Value: \(self.filters[currentFilter]?.name ?? "None")")
         }
     }
 }
 
 struct VideoView_Previews: PreviewProvider {
     static var previews: some View {
-        VideoView()
+        let player = AVPlayer(url: Bundle.main.url(forResource: "IMG_1234", withExtension: "MOV")!)
+        let vm = VideoModel(videoFilePath: "IMG_1234")
+        VideoView(player: player, videoModel: vm)
     }
 }

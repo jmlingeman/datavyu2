@@ -10,12 +10,10 @@ import WrappingHStack
 import TimecodeKit
 
 struct ContentView: View {
+    
     var body: some View {
         HStack {
-            VideoView()
-            ScrollView {
-                Sheet()
-            }
+            ControllerView()
         }
         
     }

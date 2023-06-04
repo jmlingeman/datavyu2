@@ -30,3 +30,9 @@ struct Sheet: View {
         }
     }
 }
+
+struct Sheet_Previews: PreviewProvider {
+    static var previews: some View {
+        Sheet()
+    }
+}
