@@ -31,7 +31,9 @@ struct Column: View, Hashable {
     
     var body: some View {
         VStack {
-            Text(self.columnDataModel.columnName).background(isFocused ? Color.blue : Color.gray)
+                Text(columnDataModel.columnName)
+                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                .background(isFocused ? Color.blue : Color.black)
             ForEach(self.columnDataModel.cells) { cell in
                 Cell(cellDataModel: cell, isEditing: $isFocused)
             }
@@ -40,9 +42,9 @@ struct Column: View, Hashable {
 }
 
 struct Column_Previews: PreviewProvider {
+    
     static var previews: some View {
-        let cell = CellModel()
-        let columnModel = ColumnModel(columnName: "Test Column").addCell(cell: cell)
+        let columnModel = ColumnModel(columnName: "Test Column");
         Column(columnDataModel: columnModel)
     }
 }

@@ -32,6 +32,7 @@
 		881A39FD2A2ABBB900B4782D /* IMG_1234.MOV in Resources */ = {isa = PBXBuildFile; fileRef = 881A39FC2A2ABBB900B4782D /* IMG_1234.MOV */; };
 		881A3A002A2BE73B00B4782D /* ControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39FF2A2BE73B00B4782D /* ControllerView.swift */; };
 		881A3A022A2C0B6500B4782D /* VideoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A3A012A2C0B6500B4782D /* VideoModel.swift */; };
+		8837C56D2A2D29AF00F29182 /* EditableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8837C56C2A2D29AF00F29182 /* EditableLabel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +79,7 @@
 		881A39FC2A2ABBB900B4782D /* IMG_1234.MOV */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = IMG_1234.MOV; sourceTree = "<group>"; };
 		881A39FF2A2BE73B00B4782D /* ControllerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerView.swift; sourceTree = "<group>"; };
 		881A3A012A2C0B6500B4782D /* VideoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoModel.swift; sourceTree = "<group>"; };
+		8837C56C2A2D29AF00F29182 /* EditableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +133,7 @@
 		881A39A72A242D4600B4782D /* datavyu */ = {
 			isa = PBXGroup;
 			children = (
+				885CC2AC2A2D3E9A00AA5304 /* Extensions */,
 				881A39FE2A2BE15700B4782D /* IO */,
 				881A39EA2A2A887100B4782D /* Models */,
 				881A39E92A2A886400B4782D /* Views */,
@@ -184,6 +187,7 @@
 		881A39E92A2A886400B4782D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				8837C56B2A2D299B00F29182 /* Components */,
 				881A39EE2A2A88AB00B4782D /* CellView.swift */,
 				881A39F82A2A9D6200B4782D /* ColumnView.swift */,
 				881A39F62A2A9D5900B4782D /* SheetView.swift */,
@@ -210,6 +214,21 @@
 			children = (
 			);
 			path = IO;
+			sourceTree = "<group>";
+		};
+		8837C56B2A2D299B00F29182 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				8837C56C2A2D29AF00F29182 /* EditableLabel.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		885CC2AC2A2D3E9A00AA5304 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -352,6 +371,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8837C56D2A2D29AF00F29182 /* EditableLabel.swift in Sources */,
 				881A39DB2A254A5200B4782D /* FlexibleView.swift in Sources */,
 				881A39E82A2A883200B4782D /* TimeFormatter.swift in Sources */,
 				881A39EC2A2A888100B4782D /* CellModel.swift in Sources */,
