@@ -20,15 +20,15 @@ struct Sheet: View {
     var body: some View {
         GeometryReader { gr in
             ScrollViewReader { proxy in
+                Text("").id("top") // Anchor for 2d scrollview
                 ScrollView([.horizontal, .vertical], showsIndicators: true) {
                     HStack(alignment: .top) {
                         ForEach(sheetDataModel.columns) { column in
                             Column(columnDataModel: column)
                                 .focused($columnInFocus, equals: column)
                         }
-                        Spacer()
-                    }.id("top")
-                        .frame(minHeight: gr.size.height)
+                    }
+                    .frame(minHeight: gr.size.height)
                 }.onAppear {
                     proxy.scrollTo("top")
                 }
