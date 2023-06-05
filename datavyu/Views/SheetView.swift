@@ -14,16 +14,27 @@ struct Sheet: View {
     @ObservedObject var sheetDataModel: SheetModel
     @FocusState private var focusedColumn: Bool
     @FocusState var columnInFocus: ColumnModel?
+    @State private var offset : CGPoint = .zero
+    
 
     var body: some View {
-        ScrollView {
-            HStack(alignment: .top) {
-                ForEach(sheetDataModel.columns) { column in
-                    Column(columnDataModel: column)
-                        .focused($columnInFocus, equals: column)
+        GeometryReader { gr in
+            ScrollViewReader { proxy in
+                ScrollView([.horizontal, .vertical], showsIndicators: true) {
+                    HStack(alignment: .top) {
+                        ForEach(sheetDataModel.columns) { column in
+                            Column(columnDataModel: column)
+                                .focused($columnInFocus, equals: column)
+                        }
+                        Spacer()
+                    }.id("top")
+                        .frame(minHeight: gr.size.height)
+                }.onAppear {
+                    proxy.scrollTo("top")
                 }
             }
         }
+    
     }
 }
 
