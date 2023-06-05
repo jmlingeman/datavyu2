@@ -20,9 +20,11 @@ struct Sheet: View {
     var body: some View {
         GeometryReader { gr in
             ScrollViewReader { proxy in
+                // TODO: Have this proxy scroll us to new columns and cells
+                
                 Text("").id("top") // Anchor for 2d scrollview
                 ScrollView([.horizontal, .vertical], showsIndicators: true) {
-                    HStack(alignment: .top) {
+                    LazyHStack(alignment: .top) {
                         ForEach(sheetDataModel.columns) { column in
                             Column(columnDataModel: column)
                                 .focused($columnInFocus, equals: column)

@@ -33,6 +33,7 @@
 		881A3A002A2BE73B00B4782D /* ControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39FF2A2BE73B00B4782D /* ControllerView.swift */; };
 		881A3A022A2C0B6500B4782D /* VideoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A3A012A2C0B6500B4782D /* VideoModel.swift */; };
 		8837C56D2A2D29AF00F29182 /* EditableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8837C56C2A2D29AF00F29182 /* EditableLabel.swift */; };
+		8878A60E2A2D698900A2658C /* CodeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A60D2A2D698900A2658C /* CodeEditorView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,6 +81,7 @@
 		881A39FF2A2BE73B00B4782D /* ControllerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerView.swift; sourceTree = "<group>"; };
 		881A3A012A2C0B6500B4782D /* VideoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoModel.swift; sourceTree = "<group>"; };
 		8837C56C2A2D29AF00F29182 /* EditableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableLabel.swift; sourceTree = "<group>"; };
+		8878A60D2A2D698900A2658C /* CodeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,6 +195,7 @@
 				881A39F62A2A9D5900B4782D /* SheetView.swift */,
 				881A39FA2A2AB66900B4782D /* VideoView.swift */,
 				881A39FF2A2BE73B00B4782D /* ControllerView.swift */,
+				8878A60D2A2D698900A2658C /* CodeEditorView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -379,6 +382,7 @@
 				881A39DD2A254AE500B4782D /* _FlexibleView.swift in Sources */,
 				881A39F92A2A9D6200B4782D /* ColumnView.swift in Sources */,
 				881A39AB2A242D4600B4782D /* ContentView.swift in Sources */,
+				8878A60E2A2D698900A2658C /* CodeEditorView.swift in Sources */,
 				881A39EF2A2A88AB00B4782D /* CellView.swift in Sources */,
 				881A39F52A2A917E00B4782D /* ArgumentModel.swift in Sources */,
 				881A39FB2A2AB66900B4782D /* VideoView.swift in Sources */,
