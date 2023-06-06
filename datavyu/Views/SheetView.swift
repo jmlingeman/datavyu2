@@ -46,3 +46,30 @@ struct Sheet_Previews: PreviewProvider {
         Sheet(sheetDataModel: sheetDataModel)
     }
 }
+
+func placeSubviews(
+    in bounds: CGRect,
+    proposal: ProposedViewSize,
+    subviews: Subviews,
+    cache: inout Void
+) {
+    guard !subviews.isEmpty else { return }
+    
+    
+    let maxSize = maxSize(subviews: subviews)
+    let spacing = spacing(subviews: subviews)
+    
+    
+    let placementProposal = ProposedViewSize(width: maxSize.width, height: maxSize.height)
+    var nextX = bounds.minX + maxSize.width / 2
+    
+    
+    for index in subviews.indices {
+        subviews[index].place(
+            at: CGPoint(x: nextX, y: bounds.midY),
+            anchor: .center,
+            proposal: placementProposal)
+        nextX += maxSize.width + spacing[index]
+    }
+}
+
