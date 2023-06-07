@@ -34,6 +34,10 @@
 		881A3A022A2C0B6500B4782D /* VideoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A3A012A2C0B6500B4782D /* VideoModel.swift */; };
 		8837C56D2A2D29AF00F29182 /* EditableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8837C56C2A2D29AF00F29182 /* EditableLabel.swift */; };
 		8878A60E2A2D698900A2658C /* CodeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A60D2A2D698900A2658C /* CodeEditorView.swift */; };
+		8878A6102A2FBC8700A2658C /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A60F2A2FBC8700A2658C /* Config.swift */; };
+		8878A6132A3026E100A2658C /* RubyScriptEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6122A3026E100A2658C /* RubyScriptEngine.swift */; };
+		8878A6152A30275900A2658C /* RScriptEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6142A30275900A2658C /* RScriptEngine.swift */; };
+		8878A6172A30279700A2658C /* PythonScriptEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6162A30279700A2658C /* PythonScriptEngine.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +86,10 @@
 		881A3A012A2C0B6500B4782D /* VideoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoModel.swift; sourceTree = "<group>"; };
 		8837C56C2A2D29AF00F29182 /* EditableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableLabel.swift; sourceTree = "<group>"; };
 		8878A60D2A2D698900A2658C /* CodeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorView.swift; sourceTree = "<group>"; };
+		8878A60F2A2FBC8700A2658C /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		8878A6122A3026E100A2658C /* RubyScriptEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RubyScriptEngine.swift; sourceTree = "<group>"; };
+		8878A6142A30275900A2658C /* RScriptEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RScriptEngine.swift; sourceTree = "<group>"; };
+		8878A6162A30279700A2658C /* PythonScriptEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PythonScriptEngine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +143,7 @@
 		881A39A72A242D4600B4782D /* datavyu */ = {
 			isa = PBXGroup;
 			children = (
+				8878A6112A3026CB00A2658C /* Scripting */,
 				885CC2AC2A2D3E9A00AA5304 /* Extensions */,
 				881A39FE2A2BE15700B4782D /* IO */,
 				881A39EA2A2A887100B4782D /* Models */,
@@ -149,6 +158,7 @@
 				881A39FC2A2ABBB900B4782D /* IMG_1234.MOV */,
 				881A39B12A242D4700B4782D /* datavyu.entitlements */,
 				881A39AE2A242D4700B4782D /* Preview Content */,
+				8878A60F2A2FBC8700A2658C /* Config.swift */,
 			);
 			path = datavyu;
 			sourceTree = "<group>";
@@ -232,6 +242,16 @@
 			children = (
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		8878A6112A3026CB00A2658C /* Scripting */ = {
+			isa = PBXGroup;
+			children = (
+				8878A6122A3026E100A2658C /* RubyScriptEngine.swift */,
+				8878A6142A30275900A2658C /* RScriptEngine.swift */,
+				8878A6162A30279700A2658C /* PythonScriptEngine.swift */,
+			);
+			path = Scripting;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -375,9 +395,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				8837C56D2A2D29AF00F29182 /* EditableLabel.swift in Sources */,
+				8878A6152A30275900A2658C /* RScriptEngine.swift in Sources */,
 				881A39DB2A254A5200B4782D /* FlexibleView.swift in Sources */,
 				881A39E82A2A883200B4782D /* TimeFormatter.swift in Sources */,
+				8878A6172A30279700A2658C /* PythonScriptEngine.swift in Sources */,
 				881A39EC2A2A888100B4782D /* CellModel.swift in Sources */,
+				8878A6102A2FBC8700A2658C /* Config.swift in Sources */,
 				881A3A022A2C0B6500B4782D /* VideoModel.swift in Sources */,
 				881A39DD2A254AE500B4782D /* _FlexibleView.swift in Sources */,
 				881A39F92A2A9D6200B4782D /* ColumnView.swift in Sources */,
@@ -387,6 +410,7 @@
 				881A39F52A2A917E00B4782D /* ArgumentModel.swift in Sources */,
 				881A39FB2A2AB66900B4782D /* VideoView.swift in Sources */,
 				881A39A92A242D4600B4782D /* sheettestApp.swift in Sources */,
+				8878A6132A3026E100A2658C /* RubyScriptEngine.swift in Sources */,
 				881A39F12A2A8D6200B4782D /* SheetModel.swift in Sources */,
 				881A39D92A254A5200B4782D /* SizeReader.swift in Sources */,
 				881A39F72A2A9D5900B4782D /* SheetView.swift in Sources */,
