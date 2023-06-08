@@ -43,7 +43,6 @@ struct Column: View, Hashable {
 
 struct Column_Previews: PreviewProvider {
     static var previews: some View {
-        let columnModel = ColumnModel(columnName: "Test Column")
-        Column(columnDataModel: columnModel)
+        Column(columnDataModel: ColumnModel(columnName: "Test Column"))
     }
 }

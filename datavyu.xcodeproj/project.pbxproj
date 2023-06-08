@@ -38,6 +38,7 @@
 		8878A6132A3026E100A2658C /* RubyScriptEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6122A3026E100A2658C /* RubyScriptEngine.swift */; };
 		8878A6152A30275900A2658C /* RScriptEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6142A30275900A2658C /* RScriptEngine.swift */; };
 		8878A6172A30279700A2658C /* PythonScriptEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6162A30279700A2658C /* PythonScriptEngine.swift */; };
+		8878A61A2A3027F500A2658C /* DatavyuAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6192A3027F500A2658C /* DatavyuAPI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +91,7 @@
 		8878A6122A3026E100A2658C /* RubyScriptEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RubyScriptEngine.swift; sourceTree = "<group>"; };
 		8878A6142A30275900A2658C /* RScriptEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RScriptEngine.swift; sourceTree = "<group>"; };
 		8878A6162A30279700A2658C /* PythonScriptEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PythonScriptEngine.swift; sourceTree = "<group>"; };
+		8878A6192A3027F500A2658C /* DatavyuAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatavyuAPI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -250,6 +252,7 @@
 				8878A6122A3026E100A2658C /* RubyScriptEngine.swift */,
 				8878A6142A30275900A2658C /* RScriptEngine.swift */,
 				8878A6162A30279700A2658C /* PythonScriptEngine.swift */,
+				8878A6192A3027F500A2658C /* DatavyuAPI.swift */,
 			);
 			path = Scripting;
 			sourceTree = "<group>";
@@ -401,6 +404,7 @@
 				8878A6172A30279700A2658C /* PythonScriptEngine.swift in Sources */,
 				881A39EC2A2A888100B4782D /* CellModel.swift in Sources */,
 				8878A6102A2FBC8700A2658C /* Config.swift in Sources */,
+				8878A61A2A3027F500A2658C /* DatavyuAPI.swift in Sources */,
 				881A3A022A2C0B6500B4782D /* VideoModel.swift in Sources */,
 				881A39DD2A254AE500B4782D /* _FlexibleView.swift in Sources */,
 				881A39F92A2A9D6200B4782D /* ColumnView.swift in Sources */,
