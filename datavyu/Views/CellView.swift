@@ -41,8 +41,11 @@ struct Cell: View {
                 }.padding().border(Color.black, width: 1)
             }
         }.textFieldStyle(.plain)
-            .padding()
             .border(Color.black, width: 4)
             .focused(isEditing)
+            .offset(y: cellDataModel.onsetPosition)
+            .frame(height: cellDataModel.offsetPosition)
+            .padding()
+
     }
 }
