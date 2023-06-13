@@ -22,8 +22,8 @@ class CellModel: ObservableObject, Identifiable, Equatable, Hashable {
         hasher.combine(id)
     }
 
-    @Published var onset: Timecode = try! Timecode(Timecode.Components(h: 00, m: 00, s: 00, f: 00), at: ._29_97)
-    @Published var offset: Timecode = try! Timecode(Timecode.Components(h: 00, m: 00, s: 00, f: 00), at: ._29_97)
+    @Published var onset: Int = 0
+    @Published var offset: Int = 0
     @Published var ordinal: Int = 0
     @Published var comment: String = ""
     @Published var arguments: [Argument] = [Argument(name: "test1", value: "a"), Argument(name: "test2", value: "b")]
@@ -31,11 +31,11 @@ class CellModel: ObservableObject, Identifiable, Equatable, Hashable {
     @Published var offsetPosition: Double = 0
 
     func setOnset(onset: Double) {
-        self.onset = try! onset.toTimecode(at: ._29_97)
+        self.onset = Int(onset * 1000)
     }
 
     func setOffset(offset: Double) {
-        self.offset = try! offset.toTimecode(at: ._29_97)
+        self.offset = Int(offset * 1000)
     }
 
     func formatTimestamp(timestamp: Int) -> String {
