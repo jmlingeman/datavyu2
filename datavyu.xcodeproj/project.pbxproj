@@ -20,7 +20,7 @@
 		881A39DD2A254AE500B4782D /* _FlexibleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39DC2A254AE500B4782D /* _FlexibleView.swift */; };
 		881A39E32A26B3AB00B4782D /* TimecodeKit in Frameworks */ = {isa = PBXBuildFile; productRef = 881A39E22A26B3AB00B4782D /* TimecodeKit */; };
 		881A39E52A26B3AB00B4782D /* TimecodeKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 881A39E42A26B3AB00B4782D /* TimecodeKitUI */; };
-		881A39E82A2A883200B4782D /* TimeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39E72A2A883200B4782D /* TimeFormatter.swift */; };
+		881A39E82A2A883200B4782D /* TimeCodeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39E72A2A883200B4782D /* TimeCodeFormatter.swift */; };
 		881A39EC2A2A888100B4782D /* CellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39EB2A2A888100B4782D /* CellModel.swift */; };
 		881A39EF2A2A88AB00B4782D /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39EE2A2A88AB00B4782D /* CellView.swift */; };
 		881A39F12A2A8D6200B4782D /* SheetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39F02A2A8D6200B4782D /* SheetModel.swift */; };
@@ -39,6 +39,7 @@
 		8878A6152A30275900A2658C /* RScriptEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6142A30275900A2658C /* RScriptEngine.swift */; };
 		8878A6172A30279700A2658C /* PythonScriptEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6162A30279700A2658C /* PythonScriptEngine.swift */; };
 		8878A61A2A3027F500A2658C /* DatavyuAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6192A3027F500A2658C /* DatavyuAPI.swift */; };
+		8878A61C2A352A5200A2658C /* MillisTimeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A61B2A352A5200A2658C /* MillisTimeFormatter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,7 +74,7 @@
 		881A39D62A254A5100B4782D /* SizeReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SizeReader.swift; sourceTree = "<group>"; };
 		881A39D82A254A5200B4782D /* FlexibleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlexibleView.swift; sourceTree = "<group>"; };
 		881A39DC2A254AE500B4782D /* _FlexibleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _FlexibleView.swift; sourceTree = "<group>"; };
-		881A39E72A2A883200B4782D /* TimeFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeFormatter.swift; sourceTree = "<group>"; };
+		881A39E72A2A883200B4782D /* TimeCodeFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeCodeFormatter.swift; sourceTree = "<group>"; };
 		881A39EB2A2A888100B4782D /* CellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellModel.swift; sourceTree = "<group>"; };
 		881A39EE2A2A88AB00B4782D /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
 		881A39F02A2A8D6200B4782D /* SheetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetModel.swift; sourceTree = "<group>"; };
@@ -92,6 +93,7 @@
 		8878A6142A30275900A2658C /* RScriptEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RScriptEngine.swift; sourceTree = "<group>"; };
 		8878A6162A30279700A2658C /* PythonScriptEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PythonScriptEngine.swift; sourceTree = "<group>"; };
 		8878A6192A3027F500A2658C /* DatavyuAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatavyuAPI.swift; sourceTree = "<group>"; };
+		8878A61B2A352A5200A2658C /* MillisTimeFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MillisTimeFormatter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,7 +195,8 @@
 		881A39E62A2A880E00B4782D /* Formatters */ = {
 			isa = PBXGroup;
 			children = (
-				881A39E72A2A883200B4782D /* TimeFormatter.swift */,
+				881A39E72A2A883200B4782D /* TimeCodeFormatter.swift */,
+				8878A61B2A352A5200A2658C /* MillisTimeFormatter.swift */,
 			);
 			path = Formatters;
 			sourceTree = "<group>";
@@ -400,12 +403,13 @@
 				8837C56D2A2D29AF00F29182 /* EditableLabel.swift in Sources */,
 				8878A6152A30275900A2658C /* RScriptEngine.swift in Sources */,
 				881A39DB2A254A5200B4782D /* FlexibleView.swift in Sources */,
-				881A39E82A2A883200B4782D /* TimeFormatter.swift in Sources */,
+				881A39E82A2A883200B4782D /* TimeCodeFormatter.swift in Sources */,
 				8878A6172A30279700A2658C /* PythonScriptEngine.swift in Sources */,
 				881A39EC2A2A888100B4782D /* CellModel.swift in Sources */,
 				8878A6102A2FBC8700A2658C /* Config.swift in Sources */,
 				8878A61A2A3027F500A2658C /* DatavyuAPI.swift in Sources */,
 				881A3A022A2C0B6500B4782D /* VideoModel.swift in Sources */,
+				8878A61C2A352A5200A2658C /* MillisTimeFormatter.swift in Sources */,
 				881A39DD2A254AE500B4782D /* _FlexibleView.swift in Sources */,
 				881A39F92A2A9D6200B4782D /* ColumnView.swift in Sources */,
 				881A39AB2A242D4600B4782D /* ContentView.swift in Sources */,

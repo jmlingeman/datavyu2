@@ -23,16 +23,18 @@ struct Sheet: View {
                 // TODO: Have this proxy scroll us to new columns and cells
                 
                 Text("").id("top") // Anchor for 2d scrollview
-                ScrollView([.horizontal, .vertical], showsIndicators: true) {
-                    LazyHStack(alignment: .top) {
-                        ForEach(sheetDataModel.columns) { column in
-                            Column(columnDataModel: column)
-                                .focused($columnInFocus, equals: column)
+                GeometryReader { sheetGr in
+                    ScrollView([.horizontal, .vertical], showsIndicators: true) {
+                        LazyHStack(alignment: .top) {
+                            ForEach(sheetDataModel.columns) { column in
+                                Column(columnDataModel: column, geometryReader: sheetGr)
+                                    .focused($columnInFocus, equals: column)
+                            }
                         }
+                        .frame(minHeight: gr.size.height)
+                    }.onAppear {
+                        proxy.scrollTo("top")
                     }
-                    .frame(minHeight: gr.size.height)
-                }.onAppear {
-                    proxy.scrollTo("top")
                 }
             }
         }
@@ -54,13 +56,15 @@ struct SheetWeakTemporal: View {
                 
                 Text("").id("top") // Anchor for 2d scrollview
                 ScrollView([.horizontal, .vertical], showsIndicators: true) {
-                    LazyHStack(alignment: .top) {
-                        ForEach(sheetDataModel.columns) { column in
-                            Column(columnDataModel: column)
-                                .focused($columnInFocus, equals: column)
+                    GeometryReader { sheetGr in
+                        LazyHStack(alignment: .top) {
+                            ForEach(sheetDataModel.columns) { column in
+                                Column(columnDataModel: column, geometryReader: sheetGr)
+                                    .focused($columnInFocus, equals: column)
+                            }
                         }
+                        .frame(minHeight: gr.size.height)
                     }
-                    .frame(minHeight: gr.size.height)
                 }.onAppear {
                     proxy.scrollTo("top")
                 }
@@ -84,13 +88,15 @@ func layoutWeakTemporal(sheetDataModel: SheetModel) {
     
     let minOnset = cells.min(by: { (a, b) -> Bool in
         return a.onset < b.onset
-    })
+    })?.onset ?? 0
     let maxOnset = cells.max(by: { (a, b) -> Bool in
         return a.onset < b.onset
-    })
+    })?.onset ?? 0
     let maxOffset = cells.max(by: { (a, b) -> Bool in
         return a.offset < b.offset
-    })
+    })?.offset ?? 0
+    
+    let totalDuration = max(maxOnset, maxOffset) - minOnset
     
     cells.sort { x, y in
         if(x.onset < y.onset) {
@@ -116,14 +122,14 @@ func layoutWeakTemporal(sheetDataModel: SheetModel) {
     
     // First cell starts at position 0
     
-    var currentPosition = 0
-    var prevOnsetPosition = 0
-    var prevOffsetPosition = 0
+    var currentPosition = 0.0
+    var prevOnsetPosition = 0.0
+    var prevOffsetPosition = 0.0
     
     
     for cell in cells {
-        cell.onsetPosition = currentPosition
-        cell.offsetPosition = currentPosition + 1
+        cell.onsetPosition = Double((cell.onset - minOnset)) / Double(totalDuration)
+        cell.offsetPosition = Double((cell.offset - minOnset)) / Double(totalDuration)
         currentPosition += 1
     }
     

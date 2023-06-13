@@ -10,6 +10,7 @@ import TimecodeKit
 
 struct Column: View, Hashable {
     @ObservedObject var columnDataModel: ColumnModel
+    var geometryReader: GeometryProxy
     @FocusState private var isFocused: Bool
 
     static func == (lhs: Column, rhs: Column) -> Bool {
@@ -23,8 +24,9 @@ struct Column: View, Hashable {
         hasher.combine(columnDataModel.columnName)
     }
 
-    init(columnDataModel: ColumnModel) {
+    init(columnDataModel: ColumnModel, geometryReader: GeometryProxy) {
         self.columnDataModel = columnDataModel
+        self.geometryReader = geometryReader
     }
 
     var body: some View {
@@ -34,7 +36,7 @@ struct Column: View, Hashable {
                 .background(isFocused ? Color.blue : Color.black)
                 .frame(height: 30)
             ForEach(columnDataModel.cells) { cell in
-                Cell(cellDataModel: cell, isEditing: $isFocused)
+                Cell(cellDataModel: cell, isEditing: $isFocused, geometryReader: geometryReader)
             }
             Spacer()
         }
@@ -43,6 +45,8 @@ struct Column: View, Hashable {
 
 struct Column_Previews: PreviewProvider {
     static var previews: some View {
-        Column(columnDataModel: ColumnModel(columnName: "Test Column"))
+        GeometryReader { gr in
+            Column(columnDataModel: ColumnModel(columnName: "Test Column"), geometryReader: gr)
+        }
     }
 }

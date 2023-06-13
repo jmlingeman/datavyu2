@@ -12,14 +12,8 @@ import WrappingHStack
 struct Cell: View {
     @ObservedObject var cellDataModel: CellModel
     var isEditing: FocusState<Bool>.Binding
-
-    let tcFormatter =
-        Timecode.TextFormatter(frameRate: ._29_97,
-                               limit: ._24hours,
-                               stringFormat: [.showSubFrames],
-                               subFramesBase: ._80SubFrames,
-                               showsValidation: true, // enable invalid component highlighting
-                               validationAttributes: nil) // if nil, defaults to red foreground color
+    var geometryReader: GeometryProxy
+    let tcFormatter = MillisTimeFormatter()
 
     var body: some View {
         VStack {
