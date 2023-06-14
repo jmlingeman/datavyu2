@@ -40,6 +40,7 @@
 		8878A6172A30279700A2658C /* PythonScriptEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6162A30279700A2658C /* PythonScriptEngine.swift */; };
 		8878A61A2A3027F500A2658C /* DatavyuAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6192A3027F500A2658C /* DatavyuAPI.swift */; };
 		8878A61C2A352A5200A2658C /* MillisTimeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A61B2A352A5200A2658C /* MillisTimeFormatter.swift */; };
+		8878A61F2A38D99100A2658C /* WeakTemporalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A61E2A38D99100A2658C /* WeakTemporalLayout.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,6 +95,7 @@
 		8878A6162A30279700A2658C /* PythonScriptEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PythonScriptEngine.swift; sourceTree = "<group>"; };
 		8878A6192A3027F500A2658C /* DatavyuAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatavyuAPI.swift; sourceTree = "<group>"; };
 		8878A61B2A352A5200A2658C /* MillisTimeFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MillisTimeFormatter.swift; sourceTree = "<group>"; };
+		8878A61E2A38D99100A2658C /* WeakTemporalLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakTemporalLayout.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,6 +206,7 @@
 		881A39E92A2A886400B4782D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				8878A61D2A38D97500A2658C /* Layouts */,
 				8837C56B2A2D299B00F29182 /* Components */,
 				881A39EE2A2A88AB00B4782D /* CellView.swift */,
 				881A39F82A2A9D6200B4782D /* ColumnView.swift */,
@@ -258,6 +261,14 @@
 				8878A6192A3027F500A2658C /* DatavyuAPI.swift */,
 			);
 			path = Scripting;
+			sourceTree = "<group>";
+		};
+		8878A61D2A38D97500A2658C /* Layouts */ = {
+			isa = PBXGroup;
+			children = (
+				8878A61E2A38D99100A2658C /* WeakTemporalLayout.swift */,
+			);
+			path = Layouts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -416,6 +427,7 @@
 				8878A60E2A2D698900A2658C /* CodeEditorView.swift in Sources */,
 				881A39EF2A2A88AB00B4782D /* CellView.swift in Sources */,
 				881A39F52A2A917E00B4782D /* ArgumentModel.swift in Sources */,
+				8878A61F2A38D99100A2658C /* WeakTemporalLayout.swift in Sources */,
 				881A39FB2A2AB66900B4782D /* VideoView.swift in Sources */,
 				881A39A92A242D4600B4782D /* sheettestApp.swift in Sources */,
 				8878A6132A3026E100A2658C /* RubyScriptEngine.swift in Sources */,

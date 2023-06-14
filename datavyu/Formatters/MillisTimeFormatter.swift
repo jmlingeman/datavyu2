@@ -43,7 +43,14 @@ class MillisTimeFormatter: Formatter {
         let hours = Int(clock[0]) ?? 0
         let minutes = Int(clock[1]) ?? 0
         let seconds = Int(clock[2]) ?? 0
-        let milliseconds = Int(clock[3]) ?? 0
+        
+        // Fix if user erases entire field
+        var milliseconds = 0
+        if clock.count == 4 {
+            milliseconds = Int(clock[3]) ?? 0
+        } else {
+            milliseconds = 0
+        }
         
         let timeInMillis = (hours * 1000 * 60 * 60) + (minutes * 1000 * 60) + (seconds * 1000) + milliseconds
         print(timeInMillis)

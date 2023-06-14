@@ -15,6 +15,8 @@ struct Sheet: View {
     @FocusState private var focusedColumn: Bool
     @FocusState var columnInFocus: ColumnModel?
     @State private var offset : CGPoint = .zero
+    @FocusState private var isFocused: Bool
+
     
 
     var body: some View {
@@ -25,10 +27,12 @@ struct Sheet: View {
                 Text("").id("top") // Anchor for 2d scrollview
                 GeometryReader { sheetGr in
                     ScrollView([.horizontal, .vertical], showsIndicators: true) {
-                        LazyHStack(alignment: .top) {
-                            ForEach(sheetDataModel.columns) { column in
-                                Column(columnDataModel: column, geometryReader: sheetGr)
-                                    .focused($columnInFocus, equals: column)
+                        WeakTemporalLayout {
+                            ForEach(Array(sheetDataModel.columns.enumerated()), id: \.offset) { idx, column in
+                                ForEach(column.cells) { cell in
+                                    Cell(cellDataModel: cell, isEditing: $isFocused, geometryReader: sheetGr).setColumnIdx(idx)
+                                }
+                                
                             }
                         }
                         .frame(minHeight: gr.size.height)
@@ -47,6 +51,7 @@ struct SheetWeakTemporal: View {
     @FocusState private var focusedColumn: Bool
     @FocusState var columnInFocus: ColumnModel?
     @State private var offset : CGPoint = .zero
+    
     
     
     var body: some View {

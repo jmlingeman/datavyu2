@@ -37,9 +37,11 @@ struct Cell: View {
         }.textFieldStyle(.plain)
             .border(Color.black, width: 4)
             .focused(isEditing)
-            .offset(y: cellDataModel.onsetPosition)
-            .frame(height: cellDataModel.offsetPosition)
-            .padding()
+//            .offset(y: cellDataModel.onsetPosition)
+//            .frame(height: cellDataModel.offsetPosition)
+//            .padding()
+            .setOnset($cellDataModel.onset)
+            .setOffset($cellDataModel.offset)
 
     }
 }
