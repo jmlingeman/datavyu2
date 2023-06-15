@@ -35,15 +35,17 @@ struct ControllerView: View {
 
     func addCol() {
         let columnModel = ColumnModel(columnName: "test4444")
-        columnModel.addCell(cell: CellModel())
-        columnModel.addCell(cell: CellModel())
+        let _ = columnModel.addCell()
+        let _ = columnModel.addCell()
         sheetModel.addColumn(column: columnModel)
     }
 
     func addCell() {
-        let cell = CellModel()
-        cell.setOnset(onset: videoModel.currentTime)
-        columnInFocus?.addCell(cell: cell)
+        let cell = columnInFocus?.addCell()
+        if cell != nil {
+            cell?.setOnset(onset: videoModel.currentTime)
+        }
+        sheetModel.updates += 1 // Force sheetmodel updates of nested objects
     }
 
     var body: some View {

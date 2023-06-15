@@ -10,6 +10,7 @@ import Foundation
 class SheetModel: ObservableObject, Identifiable {
     @Published var sheetName: String
     @Published var columns: [ColumnModel]
+    @Published var updates: Int = 0
 
     init(sheetName: String) {
         self.sheetName = sheetName
@@ -20,13 +21,13 @@ class SheetModel: ObservableObject, Identifiable {
     func addColumn(column: ColumnModel) {
         columns.append(column)
     }
-
+    
     func setup() {
         let column = ColumnModel(columnName: "Test1")
         let column2 = ColumnModel(columnName: "Test2")
         addColumn(column: column)
         addColumn(column: column2)
-        column.addCell(cell: CellModel())
-        column2.addCell(cell: CellModel())
+        let _ = column.addCell()
+        let _ = column2.addCell()
     }
 }

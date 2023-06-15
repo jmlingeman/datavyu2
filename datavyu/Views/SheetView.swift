@@ -16,6 +16,9 @@ struct Sheet: View {
     @FocusState var columnInFocus: ColumnModel?
     @State private var offset : CGPoint = .zero
     @FocusState private var isFocused: Bool
+//    @ObservedObject var columnWidths:
+    
+    let config = Config()
 
     
 
@@ -26,11 +29,20 @@ struct Sheet: View {
                 
                 Text("").id("top") // Anchor for 2d scrollview
                 GeometryReader { sheetGr in
+                    
                     ScrollView([.horizontal, .vertical], showsIndicators: true) {
-                        WeakTemporalLayout {
+                        WeakTemporalLayout(sheetModel: $sheetDataModel) {
                             ForEach(Array(sheetDataModel.columns.enumerated()), id: \.offset) { idx, column in
+                                Text(column.columnName)
+                                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                                    .focused($columnInFocus, equals: column)
+//                                    .background($columnInFocus == column)
+                                    .background(columnInFocus == column ? Color.blue : Color.black)
+                                    .frame(width: Double(config.defaultCellWidth), height: 30)
+                                    .setColumnIdx(idx)
+                                    .setObjectType("title")
                                 ForEach(column.cells) { cell in
-                                    Cell(cellDataModel: cell, isEditing: $isFocused, geometryReader: sheetGr).setColumnIdx(idx)
+                                    Cell(cellDataModel: cell, isEditing: $isFocused, geometryReader: sheetGr, columnInFocus:  $columnInFocus).setColumnIdx(idx).setObjectType("cell")
                                 }
                                 
                             }
@@ -41,110 +53,12 @@ struct Sheet: View {
                     }
                 }
             }
+            
         }
     
     }
 }
 
-struct SheetWeakTemporal: View {
-    @ObservedObject var sheetDataModel: SheetModel
-    @FocusState private var focusedColumn: Bool
-    @FocusState var columnInFocus: ColumnModel?
-    @State private var offset : CGPoint = .zero
-    
-    
-    
-    var body: some View {
-        GeometryReader { gr in
-            ScrollViewReader { proxy in
-                // TODO: Have this proxy scroll us to new columns and cells
-                
-                Text("").id("top") // Anchor for 2d scrollview
-                ScrollView([.horizontal, .vertical], showsIndicators: true) {
-                    GeometryReader { sheetGr in
-                        LazyHStack(alignment: .top) {
-                            ForEach(sheetDataModel.columns) { column in
-                                Column(columnDataModel: column, geometryReader: sheetGr)
-                                    .focused($columnInFocus, equals: column)
-                            }
-                        }
-                        .frame(minHeight: gr.size.height)
-                    }
-                }.onAppear {
-                    proxy.scrollTo("top")
-                }
-            }
-        }
-        
-    }
-}
-
-func layoutWeakTemporal(sheetDataModel: SheetModel) {
-    var cellLookup = [ColumnModel : [CellModel]]()
-    var cells: [CellModel] = []
-    let config = Config()
-    
-    for column in sheetDataModel.columns {
-        for cell in column.cells {
-            cells.append(cell)
-            cellLookup[column, default: []].append(cell)
-        }
-    }
-    
-    let minOnset = cells.min(by: { (a, b) -> Bool in
-        return a.onset < b.onset
-    })?.onset ?? 0
-    let maxOnset = cells.max(by: { (a, b) -> Bool in
-        return a.onset < b.onset
-    })?.onset ?? 0
-    let maxOffset = cells.max(by: { (a, b) -> Bool in
-        return a.offset < b.offset
-    })?.offset ?? 0
-    
-    let totalDuration = max(maxOnset, maxOffset) - minOnset
-    
-    cells.sort { x, y in
-        if(x.onset < y.onset) {
-            return true
-        } else if (x.onset > y.onset) {
-            return false
-        } else {
-            if(x.offset < y.offset) {
-                return true
-            } else if (x.offset > y.offset) {
-                return false
-            } else {
-                return true
-            }
-        }
-    }
-    
-    /*
-     Go through each cell, mark its relative position based on onset
-     and its relative position for offset. We'll use these relative
-     numbers to figure out the actual positioning during layout.
-     */
-    
-    // First cell starts at position 0
-    
-    var currentPosition = 0.0
-    var prevOnsetPosition = 0.0
-    var prevOffsetPosition = 0.0
-    
-    
-    for cell in cells {
-        cell.onsetPosition = Double((cell.onset - minOnset)) / Double(totalDuration)
-        cell.offsetPosition = Double((cell.offset - minOnset)) / Double(totalDuration)
-        currentPosition += 1
-    }
-    
-    /*
-     Another possibility is to go through each cell and mark
-     its dependent cells
-     */
-    
-    
-}
 
 struct Sheet_Previews: PreviewProvider {
     static var previews: some View {

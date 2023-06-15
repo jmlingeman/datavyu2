@@ -7,12 +7,13 @@
 
 import Foundation
 
-class Config {
+struct Config {
     let name = "Datavyu"
     let version = "0.0.1"
     
     let minCellHeight = 100
     let minCellWidth = 100
+    let defaultCellWidth = 300
     
     /* Default Keybindings */
     let playKey = "w"

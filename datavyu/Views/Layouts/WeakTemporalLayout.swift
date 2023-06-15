@@ -9,6 +9,7 @@ import SwiftUI
 import Foundation
 
 struct WeakTemporalLayout: Layout {
+    var sheetModel: ObservedObject<SheetModel>.Wrapper
     var spacing: CGFloat? = nil
     
     struct CacheData {
@@ -25,7 +26,7 @@ struct WeakTemporalLayout: Layout {
                       height: cache.maxHeight)
     }
     
-    func getSubviewMap(key: any LayoutValueKey.Type, subviews: Subviews) -> [Int: [LayoutSubview]] {
+    func getSubviewMap(key: any LayoutValueKey.Type, subviews: [LayoutSubview]) -> [Int: [LayoutSubview]] {
         var subviewMap: [Int: [LayoutSubview]] = [:]
         for subview in subviews {
             let onset = subview.onset
@@ -50,27 +51,64 @@ struct WeakTemporalLayout: Layout {
          - If a cell's offset is at that location, extend that subview's frame
          
          */
-        var pt = CGPoint(x: bounds.minX, y: bounds.minY)
+//        var pt = CGPoint(x: bounds.minX, y: bounds.minY)
+        
         
         let gapSize = 30.0
         let columnSize = 300.0
-        var currentY = 0.0
-        var maxHeight = 0.0
+        let headerSize = 50.0
+        var currentOnsetY = headerSize
+        var currentOffsetY = headerSize
         
-        let onsetMap = getSubviewMap(key: OnsetKey.self, subviews: subviews)
+        let titleSubviews = subviews.filter({subview in
+            subview[ObjectType.self] == "title"
+        }).sorted(by: {a, b in
+            a[ColumnKey.self] < b[ColumnKey.self]
+        })
+        
+        let cellSubviews = subviews.filter({subview in
+            subview[ObjectType.self] == "cell"
+        })
+        
+        let onsetMap = getSubviewMap(key: OnsetKey.self, subviews: cellSubviews)
+        let offsetMap = getSubviewMap(key: OffsetKey.self, subviews: cellSubviews)
+        let columnMap = getSubviewMap(key: ColumnKey.self, subviews: cellSubviews)
         let sortedOnsets = onsetMap.keys.sorted()
         
+        for titleView in titleSubviews {
+            let pt = CGPoint(x: columnSize * Double(titleView[ColumnKey.self]), y: 0)
+            titleView.place(at: pt, proposal: .unspecified)
+        }
+        
         for onset in sortedOnsets {
-            for subview in onsetMap[onset, default: []] {
-                pt.y = currentY
-                pt.x = Double(subview.columnIdx) * columnSize
-                print(pt)
-                subview.place(at: pt, proposal: .unspecified)
-                maxHeight = max(maxHeight, subview.sizeThatFits(.unspecified).height)
+            let localSubviews = onsetMap[onset, default: []]
+            let sortedOffsets = localSubviews.map({cell in
+                cell.offset
+            }).sorted()
+            var pts: [CGPoint] = []
+            let maxHeight = subviews.map({subview in
+                subview.sizeThatFits(.unspecified).height
+            }).max() ?? 0.0
+            
+            for subview in localSubviews {
+                var pt = CGPoint(x: Double(subview.columnIdx) * columnSize, y: currentOnsetY)
+                pts.append(pt)
                 
             }
-            currentY = currentY + maxHeight
-            maxHeight = 0
+            
+            // Set the position of the offset (may need another full loop
+            
+            for (idx, subview) in localSubviews.sorted(by: {$0.offset < $1.offset}).enumerated() {
+                subview.place(at: pts[idx], proposal:
+                                ProposedViewSize(CGSize(
+                                    width: columnSize,
+                                    height: currentOffsetY - currentOnsetY)
+                                )
+                )
+                currentOffsetY = currentOffsetY + (currentOffsetY - currentOnsetY)
+            }
+
+            currentOnsetY = currentOnsetY + maxHeight
         }
         
         
@@ -124,6 +162,10 @@ struct ColumnKey: LayoutValueKey {
     static var defaultValue: Int = 0
 }
 
+struct ObjectType: LayoutValueKey {
+    static var defaultValue: String = ""
+}
+
 extension LayoutSubview {
     var onset: Int {
         self[OnsetKey.self]
@@ -135,6 +177,10 @@ extension LayoutSubview {
     
     var columnIdx: Int {
         self[ColumnKey.self]
+    }
+    
+    var objectType: String {
+        self[ObjectType.self]
     }
 }
 
@@ -149,5 +195,9 @@ extension View {
     
     func setColumnIdx(_ colIdx: Int) -> some View {
         layoutValue(key: ColumnKey.self, value: colIdx)
+    }
+    
+    func setObjectType(_ objectType: String) -> some View {
+        layoutValue(key: ObjectType.self, value: objectType)
     }
 }

@@ -14,6 +14,7 @@ struct Cell: View {
     var isEditing: FocusState<Bool>.Binding
     var geometryReader: GeometryProxy
     let tcFormatter = MillisTimeFormatter()
+    var columnInFocus: FocusState<ColumnModel?>.Binding
 
     var body: some View {
         VStack {
@@ -36,7 +37,7 @@ struct Cell: View {
             }
         }.textFieldStyle(.plain)
             .border(Color.black, width: 4)
-            .focused(isEditing)
+            .focused(columnInFocus, equals: cellDataModel.column)
 //            .offset(y: cellDataModel.onsetPosition)
 //            .frame(height: cellDataModel.offsetPosition)
 //            .padding()

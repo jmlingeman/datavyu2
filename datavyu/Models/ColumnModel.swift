@@ -27,8 +27,15 @@ class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable {
         cells = [CellModel]()
     }
 
-    func addCell(cell: CellModel) {
+    func addCell(cell: CellModel) -> CellModel {
         cell.ordinal = cells.count + 1
         cells.append(cell)
+        return cell
+    }
+    
+    func addCell() -> CellModel {
+        let cell = CellModel(column: self)
+        cells.append(cell)
+        return cell
     }
 }
