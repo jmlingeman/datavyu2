@@ -15,15 +15,16 @@ struct Cell: View {
     var geometryReader: GeometryProxy
     let tcFormatter = MillisTimeFormatter()
     var columnInFocus: FocusState<ColumnModel?>.Binding
+    let config = Config()
 
     var body: some View {
-        VStack {
+        LazyVStack {
             HStack {
                 Text(String(cellDataModel.ordinal))
                 Spacer()
                 TextField("Onset", value: $cellDataModel.onset, formatter: tcFormatter).frame(minWidth: 100, idealWidth: 100, maxWidth: 100)
                 TextField("Offset", value: $cellDataModel.offset, formatter: tcFormatter).frame(minWidth: 100, idealWidth: 100, maxWidth: 100)
-            }
+            }.padding()
             WrappingHStack(
                 $cellDataModel.arguments
             ) { $item in
@@ -38,11 +39,9 @@ struct Cell: View {
         }.textFieldStyle(.plain)
             .border(Color.black, width: 4)
             .focused(columnInFocus, equals: cellDataModel.column)
-//            .offset(y: cellDataModel.onsetPosition)
-//            .frame(height: cellDataModel.offsetPosition)
-//            .padding()
             .setOnset($cellDataModel.onset)
             .setOffset($cellDataModel.offset)
-
+            .frame(width: CGFloat(config.defaultCellWidth))
+            .fixedSize()
     }
 }

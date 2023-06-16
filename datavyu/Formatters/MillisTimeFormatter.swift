@@ -40,6 +40,13 @@ class MillisTimeFormatter: Formatter {
     
     func timestringToTimestamp(timestring: String) -> Int {
         let clock = timestring.split(separator: ":")
+        var hours = 0
+        var minutes = 0
+        var seconds = 0
+        var milliseconds = 0
+        if clock.count == 1 {
+            milliseconds
+        }
         let hours = Int(clock[0]) ?? 0
         let minutes = Int(clock[1]) ?? 0
         let seconds = Int(clock[2]) ?? 0

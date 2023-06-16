@@ -14,6 +14,7 @@ struct WeakTemporalLayout: Layout {
     
     struct CacheData {
         var maxHeight: CGFloat
+        var maxWidth: CGFloat
         var spaces: [CGFloat]
     }
     
@@ -22,7 +23,7 @@ struct WeakTemporalLayout: Layout {
         let accumulatedWidths = idealViewSizes.reduce(0) { $0 + $1.width }
         let accumulatedSpaces = cache.spaces.reduce(0) { $0 + $1 }
         
-        return CGSize(width: accumulatedSpaces + accumulatedWidths,
+        return CGSize(width: cache.maxWidth,
                       height: cache.maxHeight)
     }
     
@@ -57,8 +58,8 @@ struct WeakTemporalLayout: Layout {
         let gapSize = 30.0
         let columnSize = 300.0
         let headerSize = 50.0
-        var currentOnsetY = headerSize
-        var currentOffsetY = headerSize
+        var currentOnsetY = Array(repeating: headerSize, count: sheetModel.columns.count)
+        var currentOffsetY = Array(repeating: headerSize, count: sheetModel.columns.count)
         
         let titleSubviews = subviews.filter({subview in
             subview[ObjectType.self] == "title"
@@ -86,30 +87,35 @@ struct WeakTemporalLayout: Layout {
                 cell.offset
             }).sorted()
             var pts: [CGPoint] = []
-            let maxHeight = subviews.map({subview in
-                subview.sizeThatFits(.unspecified).height
-            }).max() ?? 0.0
-            
-            for subview in localSubviews {
-                var pt = CGPoint(x: Double(subview.columnIdx) * columnSize, y: currentOnsetY)
-                pts.append(pt)
-                
-            }
-            
-            // Set the position of the offset (may need another full loop
-            
+                        
             for (idx, subview) in localSubviews.sorted(by: {$0.offset < $1.offset}).enumerated() {
+                let pt = CGPoint(x: Double(subview.columnIdx) * columnSize, y: currentOnsetY[subview.columnIdx])
+                pts.append(pt)
+                let cellHeight = subview.sizeThatFits(.unspecified).height
+                print(idx, "sizethatfits", cellHeight, "current onset y", currentOnsetY[subview.columnIdx])
                 subview.place(at: pts[idx], proposal:
                                 ProposedViewSize(CGSize(
                                     width: columnSize,
-                                    height: currentOffsetY - currentOnsetY)
+                                    height: cellHeight
                                 )
+                            )
                 )
-                currentOffsetY = currentOffsetY + (currentOffsetY - currentOnsetY)
+                
+                currentOffsetY[subview.columnIdx] = currentOffsetY[subview.columnIdx] + cellHeight
+                currentOnsetY[subview.columnIdx] = currentOnsetY[subview.columnIdx] + cellHeight
             }
-
-            currentOnsetY = currentOnsetY + maxHeight
+            
+            // Since we're moving to the next onset, mark the new bottoms
+            let maxOnsetY = currentOnsetY.max()!
+            let maxOffsetY = currentOffsetY.max()!
+            for idx in currentOnsetY.indices {
+                currentOnsetY[idx] = maxOnsetY
+                currentOffsetY[idx] = maxOffsetY
+            }
         }
+        cache.maxHeight = currentOffsetY.max() ?? 300
+        cache.maxWidth = Double(sheetModel.columns.count) * columnSize
+
         
         
         
@@ -140,13 +146,13 @@ struct WeakTemporalLayout: Layout {
     }
     
     func makeCache(subviews: Subviews) -> CacheData {
-        return CacheData(maxHeight: computeMaxHeight(subviews: subviews),
+        return CacheData(maxHeight: computeMaxHeight(subviews: subviews), maxWidth: 600,
                          spaces: computeSpaces(subviews: subviews))
     }
     
     func updateCache(_ cache: inout CacheData, subviews: Subviews) {
-        cache.maxHeight = computeMaxHeight(subviews: subviews)
-        cache.spaces = computeSpaces(subviews: subviews)
+//        cache.maxHeight = computeMaxHeight(subviews: subviews)
+//        cache.spaces = computeSpaces(subviews: subviews)
     }
 }
 

@@ -31,23 +31,25 @@ struct Sheet: View {
                 GeometryReader { sheetGr in
                     
                     ScrollView([.horizontal, .vertical], showsIndicators: true) {
-                        WeakTemporalLayout(sheetModel: $sheetDataModel) {
-                            ForEach(Array(sheetDataModel.columns.enumerated()), id: \.offset) { idx, column in
-                                Text(column.columnName)
-                                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-                                    .focused($columnInFocus, equals: column)
-//                                    .background($columnInFocus == column)
-                                    .background(columnInFocus == column ? Color.blue : Color.black)
-                                    .frame(width: Double(config.defaultCellWidth), height: 30)
-                                    .setColumnIdx(idx)
-                                    .setObjectType("title")
-                                ForEach(column.cells) { cell in
-                                    Cell(cellDataModel: cell, isEditing: $isFocused, geometryReader: sheetGr, columnInFocus:  $columnInFocus).setColumnIdx(idx).setObjectType("cell")
+                        LazyVStack {
+                            WeakTemporalLayout(sheetModel: $sheetDataModel) {
+                                ForEach(Array(sheetDataModel.columns.enumerated()), id: \.offset) { idx, column in
+                                    Text(column.columnName)
+                                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                                        .focused($columnInFocus, equals: column)
+                                    //                                    .background($columnInFocus == column)
+                                        .background(columnInFocus == column ? Color.blue : Color.black)
+                                        .frame(width: Double(config.defaultCellWidth), height: 30)
+                                        .setColumnIdx(idx)
+                                        .setObjectType("title")
+                                    ForEach(column.cells) { cell in
+                                        Cell(cellDataModel: cell, isEditing: $isFocused, geometryReader: sheetGr, columnInFocus:  $columnInFocus).setColumnIdx(idx).setObjectType("cell")
+                                    }
+                                    
                                 }
-                                
                             }
                         }
-                        .frame(minHeight: gr.size.height)
+                        .frame(minHeight: sheetGr.size.height)
                     }.onAppear {
                         proxy.scrollTo("top")
                     }
