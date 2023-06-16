@@ -18,7 +18,7 @@
 //            return true
 //        }
 //        return false
-//    }
+////    }
 //
 //    func hash(into hasher: inout Hasher) {
 //        hasher.combine(columnDataModel.columnName)

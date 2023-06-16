@@ -79,7 +79,7 @@ struct WeakTemporalLayout: Layout {
         
         for onset in sortedOnsets {
             let localSubviews = onsetMap[onset, default: []]
-            var prevOffset = 0
+            var prevOffset = localSubviews.map({x in x.offset}).sorted().min() ?? 0
                         
             for (idx, subview) in localSubviews.sorted(by: {$0.offset < $1.offset}).enumerated() {
                 

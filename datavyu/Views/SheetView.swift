@@ -29,7 +29,6 @@ struct Sheet: View {
                 
                 Text("").id("top") // Anchor for 2d scrollview
                 GeometryReader { sheetGr in
-                    
                     ScrollView([.horizontal, .vertical], showsIndicators: true) {
                         LazyVStack {
                             WeakTemporalLayout(sheetModel: $sheetDataModel) {
@@ -42,7 +41,8 @@ struct Sheet: View {
                                         .setColumnIdx(idx)
                                         .setObjectType("title")
                                     ForEach(column.cells) { cell in
-                                        Cell(cellDataModel: cell, isEditing: $isFocused, geometryReader: sheetGr, columnInFocus:  $columnInFocus).setColumnIdx(idx).setObjectType("cell")
+                                        Cell(cellDataModel: cell, isEditing: $isFocused, columnInFocus:  $columnInFocus)
+                                            .setColumnIdx(idx).setObjectType("cell")
                                         
                                     }
                                     

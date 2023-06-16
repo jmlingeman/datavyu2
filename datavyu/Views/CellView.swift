@@ -12,7 +12,6 @@ import WrappingHStack
 struct Cell: View {
     @ObservedObject var cellDataModel: CellModel
     var isEditing: FocusState<Bool>.Binding
-    var geometryReader: GeometryProxy
     let tcFormatter = MillisTimeFormatter()
     var columnInFocus: FocusState<ColumnModel?>.Binding
     let config = Config()
@@ -35,15 +34,16 @@ struct Cell: View {
                         .frame(minWidth: 50, idealWidth: 100)
                     Text(item.name)
                 }.padding().border(Color.black, width: 1)
-            }
+            }.frame(alignment: .topLeading)
         }.textFieldStyle(.plain)
+            .frame(maxHeight: .infinity, alignment: .topLeading)
+
             .border(Color.black, width: 4)
             .focused(columnInFocus, equals: cellDataModel.column)
             .setOnset($cellDataModel.onset)
             .setOffset($cellDataModel.offset)
-            .frame(width: CGFloat(config.defaultCellWidth))
-            .frame(minHeight: .zero, maxHeight: .infinity)
-            .fixedSize(horizontal: true, vertical: false)
+//            .frame(width: CGFloat(xconfig.defaultCellWidth))
+//            .fixedSize(horizontal: true, vertical: false)
             
     }
 }
