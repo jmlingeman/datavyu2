@@ -6,7 +6,7 @@ Datavyu was a piece of software built during a time where Java was in deep trans
 This led to a lot of design decisions that were not very future proof -- the video stack in particular fell apart as 
 video codecs required more CPU power or dedicated hardware to decode, and the interface was half developed in the relic that is Java Swing.
 
-Datavyu is a unique tool deeply in need of improvements, but is on a very design base.
+Datavyu is a unique tool deeply in need of improvements, but no other software exists to fill the gap.
 Re-implementation in a modern framework (SwiftUI, specifically) will help to ensure future generations of researchers will be able to use this tool.
 
 ## Why SwiftUI?
