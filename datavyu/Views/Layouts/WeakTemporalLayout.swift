@@ -19,10 +19,6 @@ struct WeakTemporalLayout: Layout {
     }
     
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout CacheData) -> CGSize {
-        let idealViewSizes = subviews.map { $0.sizeThatFits(.unspecified) }
-        let accumulatedWidths = idealViewSizes.reduce(0) { $0 + $1.width }
-        let accumulatedSpaces = cache.spaces.reduce(0) { $0 + $1 }
-        
         return CGSize(width: cache.maxWidth,
                       height: cache.maxHeight)
     }
@@ -83,22 +79,26 @@ struct WeakTemporalLayout: Layout {
         
         for onset in sortedOnsets {
             let localSubviews = onsetMap[onset, default: []]
-            let sortedOffsets = localSubviews.map({cell in
-                cell.offset
-            }).sorted()
-            var pts: [CGPoint] = []
+            var prevOffset = 0
                         
             for (idx, subview) in localSubviews.sorted(by: {$0.offset < $1.offset}).enumerated() {
+                
+                if subview.offset > prevOffset {
+                    currentOffsetY[subview.columnIdx] += gapSize
+                    prevOffset = subview.offset
+                }
                 let pt = CGPoint(x: Double(subview.columnIdx) * columnSize, y: currentOnsetY[subview.columnIdx])
-                pts.append(pt)
                 let cellHeight = subview.sizeThatFits(.unspecified).height
-                print(idx, "sizethatfits", cellHeight, "current onset y", currentOnsetY[subview.columnIdx])
-                subview.place(at: pts[idx], proposal:
+                let offsetAdjustment = currentOffsetY[subview.columnIdx] - currentOnsetY[subview.columnIdx]
+                print(idx, "sizethatfits", cellHeight, cellHeight + offsetAdjustment, "current onset y", currentOnsetY[subview.columnIdx], offsetAdjustment)
+
+                print(pt)
+                subview.place(at: pt, proposal:
                                 ProposedViewSize(CGSize(
                                     width: columnSize,
-                                    height: cellHeight
+                                    height: cellHeight + offsetAdjustment
+                                    )
                                 )
-                            )
                 )
                 
                 currentOffsetY[subview.columnIdx] = currentOffsetY[subview.columnIdx] + cellHeight

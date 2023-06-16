@@ -45,14 +45,15 @@ class MillisTimeFormatter: Formatter {
         var seconds = 0
         var milliseconds = 0
         if clock.count == 1 {
-            milliseconds
+            milliseconds = Int(timestring) ?? 0
+            return milliseconds
         }
-        let hours = Int(clock[0]) ?? 0
-        let minutes = Int(clock[1]) ?? 0
-        let seconds = Int(clock[2]) ?? 0
+        hours = Int(clock[0]) ?? 0
+        minutes = Int(clock[1]) ?? 0
+        seconds = Int(clock[2]) ?? 0
         
         // Fix if user erases entire field
-        var milliseconds = 0
+        milliseconds = 0
         if clock.count == 4 {
             milliseconds = Int(clock[3]) ?? 0
         } else {
