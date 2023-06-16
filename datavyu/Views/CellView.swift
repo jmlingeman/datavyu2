@@ -37,7 +37,6 @@ struct Cell: View {
             }.frame(alignment: .topLeading)
         }.textFieldStyle(.plain)
             .frame(maxHeight: .infinity, alignment: .topLeading)
-
             .border(Color.black, width: 4)
             .focused(columnInFocus, equals: cellDataModel.column)
             .setOnset($cellDataModel.onset)

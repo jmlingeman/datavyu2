@@ -33,16 +33,16 @@ struct Sheet: View {
                         LazyVStack {
                             WeakTemporalLayout(sheetModel: $sheetDataModel) {
                                 ForEach(Array(sheetDataModel.columns.enumerated()), id: \.offset) { idx, column in
-                                    Text(column.columnName)
-                                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-                                        .focused($columnInFocus, equals: column)
-                                        .background(columnInFocus == column ? Color.blue : Color.black)
-                                        .frame(width: Double(config.defaultCellWidth), height: 30)
-                                        .setColumnIdx(idx)
-                                        .setObjectType("title")
-                                    ForEach(column.cells) { cell in
+//                                    Text(column.columnName)
+//                                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+//                                        .focused($columnInFocus, equals: column)
+//                                        .background(columnInFocus == column ? Color.blue : Color.black)
+//                                        .frame(width: Double(config.defaultCellWidth), height: 30)
+//                                        .setColumnIdx(idx)
+//                                        .setObjectType("title")
+                                    ForEach(Array(column.cells.enumerated()), id: \.offset) { cellIdx, cell in
                                         Cell(cellDataModel: cell, isEditing: $isFocused, columnInFocus:  $columnInFocus)
-                                            .setColumnIdx(idx).setObjectType("cell")
+                                            .setColumnIdx(idx).setObjectType("cell").setCellIdx(cellIdx)
                                         
                                     }
                                     
