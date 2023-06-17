@@ -18,6 +18,10 @@ struct WeakTemporalLayout: Layout {
         var spaces: [CGFloat]
     }
     
+    func closestMatch(values: [Int], inputValue: Int) -> Int? {
+        return (values.reduce(values[0]) { abs($0-inputValue) < abs($1-inputValue) ? $0 : $1 })
+    }
+    
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout CacheData) -> CGSize {
         return CGSize(width: cache.maxWidth,
                       height: cache.maxHeight)
@@ -75,14 +79,17 @@ struct WeakTemporalLayout: Layout {
          Idea: Loop through storing proposed positions
          Loop through again to fix the heights based on placed onsets/offsets
          */
-        var sizes: [Int: CGSize] = [:]
+        var sizes: [String: CGSize] = [:]
+        var pts: [String: CGPoint] = [:]
         
         let onsetMap = getSubviewMap(key: OnsetKey.self, subviews: cellSubviews)
         let offsetMap = getSubviewMap(key: OffsetKey.self, subviews: cellSubviews)
         let columnMap = getSubviewMap(key: ColumnKey.self, subviews: cellSubviews)
         let sortedOnsets = onsetMap.keys.sorted()
+        let sortedOffsets = offsetMap.keys.sorted()
         
-        let positionMap: [Int: Int] = [:]
+        // Map describing the Y offsets for each time
+        var positionMap: [Int: Double] = [:]
         
         for subview in cellSubviews{
             sizes[subview.cellIdx] = CGSize()
@@ -112,18 +119,13 @@ struct WeakTemporalLayout: Layout {
                 let pt = CGPoint(x: Double(subview.columnIdx) * columnSize, y: currentOnsetY[subview.columnIdx])
                 let cellHeight = subview.sizeThatFits(.unspecified).height
                 let offsetAdjustment = currentOffsetY[subview.columnIdx] - currentOnsetY[subview.columnIdx]
-                print(idx, "sizethatfits", cellHeight, cellHeight + offsetAdjustment, "current onset y", currentOnsetY[subview.columnIdx], offsetAdjustment)
+                print(subview.cellIdx, idx, "sizethatfits", cellHeight, cellHeight + offsetAdjustment, "current onset y", currentOnsetY[subview.columnIdx], offsetAdjustment)
 
                 print(pt)
                 
-                subview.place(at: pt, proposal:
-                                ProposedViewSize(CGSize(
-                                    width: columnSize,
-                                    height: cellHeight + offsetAdjustment
-                                    )
-                                )
-                )
-                
+                pts[subview.cellIdx] = pt
+                positionMap[subview.onset] = currentOnsetY[subview.columnIdx]
+                sizes[subview.cellIdx]?.width = columnSize
                 
                 // Update bookkeeping
                 currentOffsetY[subview.columnIdx] = currentOffsetY[subview.columnIdx] + cellHeight
@@ -143,10 +145,40 @@ struct WeakTemporalLayout: Layout {
 //                currentOffsetY[idx] = maxOffsetY
             }
         }
+        
+        
         cache.maxHeight = currentOffsetY.max() ?? 300
         cache.maxWidth = Double(sheetModel.columns.count) * columnSize
 
-        
+        for offset in sortedOffsets {
+            let localSubviews = offsetMap[offset, default: []]
+            
+            for (idx, subview) in localSubviews.sorted(by: {$0.offset < $1.offset}).enumerated() {
+                var pos: Double
+                if positionMap.keys.contains(subview.offset) {
+                    pos = positionMap[subview.offset]!
+                } else {
+                    let closeestPos = closestMatch(values: Array(positionMap.keys), inputValue: subview.offset)!
+                    pos = positionMap[closeestPos]! + gapSize
+                    positionMap[subview.offset] = pos
+                }
+                
+                let pt = pts[subview.cellIdx]!
+                var size = sizes[subview.cellIdx]!
+                
+                let cellHeight: Double
+                if pos - pt.y < 0 {
+                    cellHeight = subview.sizeThatFits(.unspecified).height
+                } else {
+                    cellHeight = pos - pt.y
+                }
+                size.height = cellHeight
+                print(subview.cellIdx, pt, size, cellHeight)
+
+                subview.place(at: pt, proposal: ProposedViewSize(size))
+                
+            }
+        }
         
         
 //        for idx in subviews.indices {
@@ -203,7 +235,7 @@ struct ObjectType: LayoutValueKey {
 }
 
 struct CellIdx: LayoutValueKey {
-    static var defaultValue: Int = 0
+    static var defaultValue: String = ""
 }
 
 extension LayoutSubview {
@@ -223,7 +255,7 @@ extension LayoutSubview {
         self[ObjectType.self]
     }
     
-    var cellIdx: Int {
+    var cellIdx: String {
         self[CellIdx.self]
     }
 }
@@ -245,7 +277,7 @@ extension View {
         layoutValue(key: ObjectType.self, value: objectType)
     }
     
-    func setCellIdx(_ cellIdx: Int) -> some View {
+    func setCellIdx(_ cellIdx: String) -> some View {
         layoutValue(key: CellIdx.self, value: cellIdx)
     }
     

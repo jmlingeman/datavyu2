@@ -51,3 +51,18 @@ Interoperability with Datavyu 1.* will be supported, however.
 When it's done.
 
 More details will be added as development continues.
+
+## Feature Implementation Checklist
+- [x] Video Playback
+- [] Weak Temporal Ordering Layout
+- [] Hidden Columns
+- [] File saving/loading
+- [] Ordinal Layout
+- [] Ruby Scripting
+- [] API
+- [] Code Editor
+- [] Options menu
+- [] Auto update
+- [] App Store Deployment
+- [] Track timeline
+- [] Audio Visualizations

@@ -30,24 +30,23 @@ struct Sheet: View {
                 Text("").id("top") // Anchor for 2d scrollview
                 GeometryReader { sheetGr in
                     ScrollView([.horizontal, .vertical], showsIndicators: true) {
-                        LazyVStack {
                             WeakTemporalLayout(sheetModel: $sheetDataModel) {
                                 ForEach(Array(sheetDataModel.columns.enumerated()), id: \.offset) { idx, column in
-//                                    Text(column.columnName)
-//                                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-//                                        .focused($columnInFocus, equals: column)
-//                                        .background(columnInFocus == column ? Color.blue : Color.black)
-//                                        .frame(width: Double(config.defaultCellWidth), height: 30)
-//                                        .setColumnIdx(idx)
-//                                        .setObjectType("title")
-                                    ForEach(Array(column.cells.enumerated()), id: \.offset) { cellIdx, cell in
+                                    Text(column.columnName)
+                                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                                        .focused($columnInFocus, equals: column)
+                                        .background(columnInFocus == column ? Color.blue : Color.black)
+                                        .frame(width: Double(config.defaultCellWidth), height: 30)
+                                        .setColumnIdx(idx)
+                                        .setObjectType("title")
+                                    ForEach(Array(zip(column.cells.indices, column.cells)), id: \.0) { cellIdx, cell in
                                         Cell(cellDataModel: cell, isEditing: $isFocused, columnInFocus:  $columnInFocus)
-                                            .setColumnIdx(idx).setObjectType("cell").setCellIdx(cellIdx)
+                                            .setColumnIdx(idx).setObjectType("cell").setCellIdx("\(column.columnName)-\(cellIdx)")
                                         
                                     }
                                     
                                 }
-                            }
+                            
                         }
                         .frame(minHeight: sheetGr.size.height)
                     }.onAppear {
