@@ -197,7 +197,9 @@ struct WeakTemporalLayout: Layout {
                 onsetMapLocal[onset] = onsetMapLocal[onset]! + cellHeight
                 
                 // Only do if we're not setting overlap
-                offsetToPos[offset] = max(offsetToPos[offset, default: cellTopY + cellHeight], cellTopY + cellHeight)
+                if curCell.onset < curCell.offset {
+                    offsetToPos[offset] = max(offsetToPos[offset, default: cellTopY + cellHeight], cellTopY + cellHeight)
+                }
                 
                 // Update offset map
 //                if(!curCell.getOverlapBorder()) {
