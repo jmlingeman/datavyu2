@@ -14,7 +14,19 @@ struct TrackView: View {
         GeometryReader { gr in
             ZStack {
                 Rectangle().frame(maxWidth: .infinity).foregroundColor(Color.blue)
-                Rectangle().frame(width: 5).foregroundColor(Color.red).position(x: $videoModel.currentPos.wrappedValue * gr.size.width, y: gr.size.height/2)
+                Rectangle().frame(width: 5).foregroundColor(Color.red)
+                    .position(x: $videoModel.currentPos.wrappedValue * gr.size.width, y: gr.size.height / 2)
+                    .gesture(
+                        DragGesture()
+                            .onChanged { gesture in
+                                let relativePos = max(min(gesture.location.x / gr.size.width, 1), 0)
+                                videoModel.seekPercentage(to: relativePos)
+                            }
+                            .onEnded { gesture in
+                                let relativePos = max(min(gesture.location.x / gr.size.width, 1), 0)
+                                videoModel.seekPercentage(to: relativePos)
+                            }
+                    )
             }
         }
     }

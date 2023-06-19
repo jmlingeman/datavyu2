@@ -16,19 +16,19 @@ struct ControllerView: View {
     @FocusState private var columnInFocus: ColumnModel?
 
     func play() {
-        videoModel.player.play()
+        videoModel.play()
     }
 
     func stop() {
-        videoModel.player.pause()
+        videoModel.stop()
     }
 
     func nextFrame() {
-        videoModel.player.currentItem!.step(byCount: 1)
+        videoModel.nextFrame()
     }
 
     func prevFrame() {
-        videoModel.player.currentItem!.step(byCount: -1)
+        videoModel.prevFrame()
     }
 
     func addCol() {

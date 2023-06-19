@@ -23,7 +23,65 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
         self.videoFilePath = videoFilePath
         currentPos = 0.0
         currentTime = 0.0
-        duration = 0.0
         player = AVPlayer(url: Bundle.main.url(forResource: videoFilePath, withExtension: "MOV")!)
+        duration = player.getCurrentTrackDuration()
+        print(duration)
+    }
+    
+    func play() {
+        player.play()
+    }
+    
+    func stop() {
+        player.pause()
+    }
+    
+    func getDuration() -> Double {
+        if duration > 0 {
+            return duration
+        } else {
+            duration = player.getCurrentTrackDuration()
+            return duration
+        }
+    }
+    
+    func nextFrame() {
+        player.currentItem!.step(byCount: 1)
+        updateTimes()
+    }
+    
+    func prevFrame() {
+        player.currentItem!.step(byCount: -1)
+        updateTimes()
+    }
+    
+    func seek(to: Double) {
+        let time = CMTime(seconds: to, preferredTimescale: 600)
+        player.currentItem!.seek(to: time, completionHandler: nil)
+        updateTimes()
+    }
+    
+    func seekPercentage(to: Double) {
+        let relativeTime = to * getDuration()
+        let time = CMTime(seconds: relativeTime, preferredTimescale: 600)
+        player.currentItem!.seek(to: time, completionHandler: nil)
+        print(to, relativeTime, getDuration(), time)
+        updateTimes()
+    }
+    
+    func updateTimes() {
+        currentTime = player.currentTime().seconds
+        currentPos = currentTime / getDuration()
+    }
+}
+
+extension AVPlayer {
+    func getCurrentTrackDuration () -> Float64 {
+        guard let currentItem = self.currentItem else { return 0.0 }
+        guard currentItem.loadedTimeRanges.count > 0 else { return 0.0 }
+        
+        let timeInSecond = CMTimeGetSeconds((currentItem.loadedTimeRanges[0].timeRangeValue).duration);
+        
+        return timeInSecond >= 0.0 ? timeInSecond : 0.0
     }
 }

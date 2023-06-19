@@ -34,14 +34,3 @@ struct VideoView_Previews: PreviewProvider {
         VideoView(videoModel: vm)
     }
 }
-
-extension AVPlayer {
-    func getCurrentTrackDuration () -> Float64 {
-        guard let currentItem = self.currentItem else { return 0.0 }
-        guard currentItem.loadedTimeRanges.count > 0 else { return 0.0 }
-        
-        let timeInSecond = CMTimeGetSeconds((currentItem.loadedTimeRanges[0].timeRangeValue).duration);
-        
-        return timeInSecond >= 0.0 ? timeInSecond : 0.0
-    }
-}
