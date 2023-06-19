@@ -149,6 +149,7 @@
 		881A39A72A242D4600B4782D /* datavyu */ = {
 			isa = PBXGroup;
 			children = (
+				8878A62A2A3FED2E00A2658C /* Helpers */,
 				8878A6112A3026CB00A2658C /* Scripting */,
 				885CC2AC2A2D3E9A00AA5304 /* Extensions */,
 				881A39FE2A2BE15700B4782D /* IO */,
@@ -162,7 +163,6 @@
 				881A39B12A242D4700B4782D /* datavyu.entitlements */,
 				881A39AE2A242D4700B4782D /* Preview Content */,
 				8878A60F2A2FBC8700A2658C /* Config.swift */,
-				8878A6242A3FE75200A2658C /* VideoHelpers.swift */,
 			);
 			path = datavyu;
 			sourceTree = "<group>";
@@ -269,6 +269,14 @@
 				8878A61E2A38D99100A2658C /* WeakTemporalLayout.swift */,
 			);
 			path = Layouts;
+			sourceTree = "<group>";
+		};
+		8878A62A2A3FED2E00A2658C /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				8878A6242A3FE75200A2658C /* VideoHelpers.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
