@@ -13,7 +13,9 @@ struct Config {
     
     let minCellHeight = 100
     let minCellWidth = 100
-    let defaultCellWidth = 300
+    let defaultCellWidth = 300.0
+    let gapSize = 15.0
+    let headerSize = 50.0
     
     /* Default Keybindings */
     let playKey = "w"

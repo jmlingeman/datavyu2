@@ -44,6 +44,10 @@ class MillisTimeFormatter: Formatter {
         var minutes = 0
         var seconds = 0
         var milliseconds = 0
+        if clock.count == 0 {
+            milliseconds = 0
+            return milliseconds
+        }
         if clock.count == 1 {
             milliseconds = Int(timestring) ?? 0
             return milliseconds

@@ -55,14 +55,11 @@ struct WeakTemporalLayout: Layout {
 //        var pt = CGPoint(x: bounds.minX, y: bounds.minY)
         
         
-        let gapSize = 30.0
-        let columnSize = 300.0
-        let headerSize = 50.0
-        var currentOnsetY = Array(repeating: headerSize, count: sheetModel.columns.count)
-        var currentOffsetY = Array(repeating: headerSize, count: sheetModel.columns.count)
-        var currentOnset = Array(repeating: 0, count: sheetModel.columns.count)
-        var currentOffset = Array(repeating: 0, count: sheetModel.columns.count)
-        
+        let config = Config()
+        let gapSize = config.gapSize
+        let columnSize = config.defaultCellWidth
+        let headerSize = config.headerSize
+
         
         
         let titleSubviews = subviews.filter({subview in
@@ -79,33 +76,35 @@ struct WeakTemporalLayout: Layout {
          Idea: Loop through storing proposed positions
          Loop through again to fix the heights based on placed onsets/offsets
          */
+        
+        // Bookkeeping Hashmaps
         var sizes: [String: CGSize] = [:]
         var pts: [String: CGPoint] = [:]
+        var heightMap: [Int: Double] = [:]
+        var onsetToPos: [Int: Double] = [:]
+        var offsetToPos: [Int: Double] = [:]
+
+        // Assign defaults
         for subview in cellSubviews {
             sizes[subview.cellIdx] = CGSize(width: columnSize, height: 0)
             pts[subview.cellIdx] = CGPoint(x: Int(columnSize) * subview.columnIdx, y: 0)
         }
         var times = Set<Int>()
         
-        let onsetMap = getSubviewMap(key: OnsetKey.self, subviews: cellSubviews)
-        let offsetMap = getSubviewMap(key: OffsetKey.self, subviews: cellSubviews)
-        let columnMap = getSubviewMap(key: ColumnKey.self, subviews: cellSubviews)
-        let sortedOnsets = onsetMap.keys.sorted()
-        let sortedOffsets = offsetMap.keys.sorted()
-        
-        // Map describing the Y offsets for each time
-        var positionMap: [Int: Double] = [:]
-        
-        for subview in cellSubviews{
-            sizes[subview.cellIdx] = CGSize()
-        }
-        
         var columnViews: [Int: [LayoutSubview]] = [:]
         for subview in cellSubviews {
             columnViews[subview.columnIdx, default: []].append(subview)
         }
         for colIdx in columnViews.keys {
-            columnViews[colIdx] = columnViews[colIdx]?.sorted(by: {$0.onset < $1.onset})
+            columnViews[colIdx] = columnViews[colIdx]?.sorted(by: {
+                if $0.onset == $1.onset {
+                    if $0.offset == $1.offset {
+                        return $0.cellIdx < $1.cellIdx
+                    }
+                    return $0.offset < $1.offset
+                }
+                return $0.onset < $1.onset
+            })
         }
         
         for titleView in titleSubviews {
@@ -121,7 +120,8 @@ struct WeakTemporalLayout: Layout {
          Also accumulate all unique times.
          */
         
-        var heightMap: [Int: Double] = [:]
+
+
         for colIdx in columnViews.keys {
             var intermediateMap: [Int: Double] = [:]
             for cell in columnViews[colIdx]! {
@@ -138,9 +138,9 @@ struct WeakTemporalLayout: Layout {
             }
         }
         
-        var pos = 0.0
-        var onsetToPos: [Int: Double] = [:]
-        for time in times {
+        
+        var pos = headerSize
+        for time in Array(times).sorted() {
             onsetToPos[time] = pos
             pos += heightMap[time, default: 0]
             pos += gapSize
@@ -151,12 +151,11 @@ struct WeakTemporalLayout: Layout {
          (starting from onset map's value and ending at the offset's value), update the local copy of
          the onset map to get positions for cells sharing onsets.
          */
-        var offsetToPos: [Int: Double] = [:]
         for colIdx in columnViews.keys {
             var colHeight = 0.0
             var onsetMapLocal: [Int: Double] = onsetToPos
             var prevCell: LayoutSubview?
-            var colCells = columnViews[colIdx]!
+            let colCells = columnViews[colIdx]!
             for (idx, curCell) in colCells.enumerated() {
                 var nextCell: LayoutSubview?
                 if idx+1 < colCells.count {
@@ -226,7 +225,6 @@ struct WeakTemporalLayout: Layout {
             }
         }
         
-        cache.maxHeight = currentOffsetY.max() ?? 300
         cache.maxWidth = Double(sheetModel.columns.count) * columnSize
     }
         

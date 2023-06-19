@@ -36,7 +36,7 @@ struct Sheet: View {
                                         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
                                         .focused($columnInFocus, equals: column)
                                         .background(columnInFocus == column ? Color.blue : Color.black)
-                                        .frame(width: Double(config.defaultCellWidth), height: 30)
+                                        .frame(width: Double(config.defaultCellWidth), height: config.headerSize)
                                         .setColumnIdx(idx)
                                         .setObjectType("title")
                                     ForEach(Array(zip(column.cells.indices, column.cells)), id: \.0) { cellIdx, cell in

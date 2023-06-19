@@ -17,7 +17,7 @@ struct Cell: View {
     let config = Config()
 
     var body: some View {
-        VStack {
+        LazyVStack {
             HStack {
                 Text(String(cellDataModel.ordinal))
                 Spacer()
@@ -41,8 +41,8 @@ struct Cell: View {
             .focused(columnInFocus, equals: cellDataModel.column)
             .setOnset($cellDataModel.onset)
             .setOffset($cellDataModel.offset)
-//            .frame(width: CGFloat(xconfig.defaultCellWidth))
-//            .fixedSize(horizontal: true, vertical: false)
+            .frame(width: CGFloat(config.defaultCellWidth))
+            .fixedSize(horizontal: true, vertical: false)
             
     }
 }
