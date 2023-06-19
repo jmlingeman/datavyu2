@@ -14,7 +14,7 @@ struct TrackView: View {
         GeometryReader { gr in
             ZStack {
                 Rectangle().frame(maxWidth: .infinity).foregroundColor(Color.blue)
-                Rectangle().frame(width: 5, height: .infinity).foregroundColor(Color.red).position(x: $videoModel.currentPos.wrappedValue * gr.size.width, y: gr.size.height/2)
+                Rectangle().frame(width: 5).foregroundColor(Color.red).position(x: $videoModel.currentPos.wrappedValue * gr.size.width, y: gr.size.height/2)
             }
         }
     }

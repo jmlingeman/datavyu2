@@ -15,22 +15,20 @@ struct ControllerView: View {
 
     @FocusState private var columnInFocus: ColumnModel?
 
-    let player = AVPlayer(url: Bundle.main.url(forResource: "IMG_1234", withExtension: "MOV")!)
-
     func play() {
-        player.play()
+        videoModel.player.play()
     }
 
     func stop() {
-        player.pause()
+        videoModel.player.pause()
     }
 
     func nextFrame() {
-        player.currentItem!.step(byCount: 1)
+        videoModel.player.currentItem!.step(byCount: 1)
     }
 
     func prevFrame() {
-        player.currentItem!.step(byCount: -1)
+        videoModel.player.currentItem!.step(byCount: -1)
     }
 
     func addCol() {
@@ -52,7 +50,7 @@ struct ControllerView: View {
         HStack {
             Grid {
                 GridRow {
-                    VideoView(player: player, videoModel: videoModel)
+                    VideoView(videoModel: videoModel)
                 }
                 GridRow {
                     Text("\($videoModel.currentTime.wrappedValue)")
