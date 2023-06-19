@@ -16,6 +16,10 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(videoFilePath)
     }
+    
+    func update(currentTime: Double) {
+        
+    }
 
     init(videoFilePath: String) {
         self.videoFilePath = videoFilePath
