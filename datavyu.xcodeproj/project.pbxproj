@@ -42,6 +42,7 @@
 		8878A61F2A38D99100A2658C /* WeakTemporalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A61E2A38D99100A2658C /* WeakTemporalLayout.swift */; };
 		8878A6212A3FD4A100A2658C /* TracksStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6202A3FD4A100A2658C /* TracksStackView.swift */; };
 		8878A6232A3FD81900A2658C /* TrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6222A3FD81900A2658C /* TrackView.swift */; };
+		8878A6252A3FE75200A2658C /* VideoHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6242A3FE75200A2658C /* VideoHelpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,6 +99,7 @@
 		8878A61E2A38D99100A2658C /* WeakTemporalLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakTemporalLayout.swift; sourceTree = "<group>"; };
 		8878A6202A3FD4A100A2658C /* TracksStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksStackView.swift; sourceTree = "<group>"; };
 		8878A6222A3FD81900A2658C /* TrackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackView.swift; sourceTree = "<group>"; };
+		8878A6242A3FE75200A2658C /* VideoHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoHelpers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +169,7 @@
 				881A39B12A242D4700B4782D /* datavyu.entitlements */,
 				881A39AE2A242D4700B4782D /* Preview Content */,
 				8878A60F2A2FBC8700A2658C /* Config.swift */,
+				8878A6242A3FE75200A2658C /* VideoHelpers.swift */,
 			);
 			path = datavyu;
 			sourceTree = "<group>";
@@ -433,6 +436,7 @@
 				881A39F52A2A917E00B4782D /* ArgumentModel.swift in Sources */,
 				8878A61F2A38D99100A2658C /* WeakTemporalLayout.swift in Sources */,
 				881A39FB2A2AB66900B4782D /* VideoView.swift in Sources */,
+				8878A6252A3FE75200A2658C /* VideoHelpers.swift in Sources */,
 				881A39A92A242D4600B4782D /* sheettestApp.swift in Sources */,
 				8878A6132A3026E100A2658C /* RubyScriptEngine.swift in Sources */,
 				881A39F12A2A8D6200B4782D /* SheetModel.swift in Sources */,

@@ -19,11 +19,11 @@ struct TrackView: View {
                     .gesture(
                         DragGesture()
                             .onChanged { gesture in
-                                let relativePos = max(min(gesture.location.x / gr.size.width, 1), 0)
+                                let relativePos = clamp(x: gesture.location.x / gr.size.width, minVal: 0, maxVal: 1)
                                 videoModel.seekPercentage(to: relativePos)
                             }
                             .onEnded { gesture in
-                                let relativePos = max(min(gesture.location.x / gr.size.width, 1), 0)
+                                let relativePos = clamp(x: gesture.location.x / gr.size.width, minVal: 0, maxVal: 1)
                                 videoModel.seekPercentage(to: relativePos)
                             }
                     )
