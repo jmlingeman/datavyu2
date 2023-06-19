@@ -53,6 +53,9 @@ struct ControllerView: View {
                     VideoView(videoModel: videoModel)
                 }
                 GridRow {
+                    TracksStackView(videoModel: videoModel)
+                }
+                GridRow {
                     Text("\($videoModel.currentTime.wrappedValue)")
                 }
                 GridRow {

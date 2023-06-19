@@ -18,12 +18,10 @@ struct VideoView: View {
             VideoPlayer(player: videoModel.player)
                 .onAppear {
                     videoModel.player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.01, preferredTimescale: 600), queue: nil) { time in
-                        // update videoPos with the new video time (as a percentage)
                         $videoModel.currentTime.wrappedValue = time.seconds
                         $videoModel.currentPos.wrappedValue = time.seconds / videoModel.player.getCurrentTrackDuration()
                     }
                 }
-            TracksStackView(videoModel: videoModel)
         }
     }
 }
