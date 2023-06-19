@@ -18,7 +18,7 @@ class CellModel: ObservableObject, Identifiable, Equatable, Hashable {
     @Published var arguments: [Argument] = [Argument(name: "test1", value: "a"), Argument(name: "test2", value: "b")]
     @Published var onsetPosition: Double = 0
     @Published var offsetPosition: Double = 0
-    
+        
     init(column: ColumnModel) {
         self.column = column
     }

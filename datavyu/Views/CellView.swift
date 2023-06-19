@@ -33,16 +33,18 @@ struct Cell: View {
                         .fixedSize(horizontal: true, vertical: false)
                         .frame(minWidth: 50, idealWidth: 100)
                     Text(item.name)
-                }.padding().border(Color.black, width: 1)
+                }.padding().border(config.cellBorder, width: 1).foregroundColor(config.cellFG)
             }.frame(alignment: .topLeading)
         }.textFieldStyle(.plain)
             .frame(maxHeight: .infinity, alignment: .topLeading)
-            .border(Color.black, width: 4)
+            .border(config.cellBorder, width: 4)
             .focused(columnInFocus, equals: cellDataModel.column)
             .setOnset($cellDataModel.onset)
             .setOffset($cellDataModel.offset)
             .frame(width: CGFloat(config.defaultCellWidth))
             .fixedSize(horizontal: true, vertical: false)
+            .foregroundColor(config.cellFG)
+            .background(config.cellBG)
             
     }
 }

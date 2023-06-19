@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct Config {
     let name = "Datavyu"
@@ -24,4 +25,11 @@ struct Config {
     let newCellBlankTimeKey = "a"
     let newCellAtTimeKey = "s"
     let pointCellKey = "d"
+    
+    /* Colorscheme */
+    let cellBG = Color(red: 55 / 255, green: 74 / 255, blue: 115 / 255)
+    let cellFG = Color.white
+    let cellBorder = Color.black
+    
+    
 }
