@@ -6,13 +6,14 @@
 //
 
 import SwiftUI
-import TimecodeKit
 import WrappingHStack
 
 struct ContentView: View {
+    @StateObject var fileModel = FileModel(sheetModel: SheetModel(sheetName: "IMG_1234"), videoModels: [VideoModel(videoFilePath: "IMG_1234"), VideoModel(videoFilePath: "IMG_1234")])
+    
     var body: some View {
         HStack {
-            ControllerView()
+            ControllerView(fileModel: fileModel)
         }
     }
 }

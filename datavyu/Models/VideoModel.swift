@@ -25,7 +25,6 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
         currentTime = 0.0
         player = AVPlayer(url: Bundle.main.url(forResource: videoFilePath, withExtension: "MOV")!)
         duration = player.getCurrentTrackDuration()
-        print(duration)
     }
     
     func play() {

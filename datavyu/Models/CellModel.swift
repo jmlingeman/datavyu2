@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import TimecodeKit
 
 class CellModel: ObservableObject, Identifiable, Equatable, Hashable {
 

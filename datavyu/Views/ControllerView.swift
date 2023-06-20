@@ -10,53 +10,64 @@ import CoreMedia
 import SwiftUI
 
 struct ControllerView: View {
-    @StateObject var videoModel = VideoModel(videoFilePath: "IMG_1234")
-    @StateObject var sheetModel = SheetModel(sheetName: "IMG_1234")
-
+    @StateObject var fileModel: FileModel
+    
     @FocusState private var columnInFocus: ColumnModel?
 
     func play() {
-        videoModel.play()
+        for videoModel in fileModel.videoModels {
+            videoModel.play()
+        }
     }
 
     func stop() {
-        videoModel.stop()
+        for videoModel in fileModel.videoModels {
+            videoModel.stop()
+        }
     }
 
     func nextFrame() {
-        videoModel.nextFrame()
+        for videoModel in fileModel.videoModels {
+            videoModel.nextFrame()
+        }
     }
 
     func prevFrame() {
-        videoModel.prevFrame()
+        for videoModel in fileModel.videoModels {
+            videoModel.prevFrame()
+        }
     }
 
     func addCol() {
         let columnModel = ColumnModel(columnName: "test4444")
         let _ = columnModel.addCell()
         let _ = columnModel.addCell()
-        sheetModel.addColumn(column: columnModel)
+        fileModel.sheetModel.addColumn(column: columnModel)
     }
 
     func addCell() {
         let cell = columnInFocus?.addCell()
         if cell != nil {
-            cell?.setOnset(onset: videoModel.currentTime)
+            cell?.setOnset(onset: fileModel.primaryVideo()?.currentTime ?? 0)
         }
-        sheetModel.updates += 1 // Force sheetmodel updates of nested objects
+        fileModel.sheetModel.updates += 1 // Force sheetmodel updates of nested objects
     }
 
     var body: some View {
         HStack {
             Grid {
-                GridRow {
-                    VideoView(videoModel: videoModel)
+                ForEach(fileModel.videoModels) { videoModel in
+                    GridRow {
+                        VideoView(videoModel: videoModel)
+                    }
                 }
-                GridRow {
-                    TracksStackView(videoModel: videoModel)
+                ForEach(fileModel.videoModels) { videoModel in
+                    GridRow {
+                        TracksStackView(videoModel: videoModel)
+                    }
                 }
-                GridRow {
-                    Text("\($videoModel.currentTime.wrappedValue)")
+                ForEach(fileModel.videoModels) { videoModel in
+                    ClockView(videoModel: videoModel)
                 }
                 GridRow {
                     Button("Play", action: play).keyboardShortcut("p", modifiers: [])
@@ -69,13 +80,14 @@ struct ControllerView: View {
                     Button("Add Cell", action: addCell).keyboardShortcut("c", modifiers: [])
                 }
             }
-            Sheet(sheetDataModel: sheetModel, columnInFocus: _columnInFocus)
+            Sheet(sheetDataModel: fileModel.sheetModel, columnInFocus: _columnInFocus)
         }
     }
 }
 
 struct ControllerView_Previews: PreviewProvider {
     static var previews: some View {
-        ControllerView()
+        let fileModel = FileModel(sheetModel: SheetModel(sheetName: "IMG_1234"), videoModels: [VideoModel(videoFilePath: "IMG_1234")])
+        ControllerView(fileModel: fileModel)
     }
 }

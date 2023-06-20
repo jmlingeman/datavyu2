@@ -15,9 +15,6 @@
 		881A39C52A242D4700B4782D /* sheettestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39C42A242D4700B4782D /* sheettestUITests.swift */; };
 		881A39C72A242D4700B4782D /* sheettestUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39C62A242D4700B4782D /* sheettestUITestsLaunchTests.swift */; };
 		881A39D52A253A4900B4782D /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = 881A39D42A253A4900B4782D /* WrappingHStack */; };
-		881A39E32A26B3AB00B4782D /* TimecodeKit in Frameworks */ = {isa = PBXBuildFile; productRef = 881A39E22A26B3AB00B4782D /* TimecodeKit */; };
-		881A39E52A26B3AB00B4782D /* TimecodeKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 881A39E42A26B3AB00B4782D /* TimecodeKitUI */; };
-		881A39E82A2A883200B4782D /* TimeCodeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39E72A2A883200B4782D /* TimeCodeFormatter.swift */; };
 		881A39EC2A2A888100B4782D /* CellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39EB2A2A888100B4782D /* CellModel.swift */; };
 		881A39EF2A2A88AB00B4782D /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39EE2A2A88AB00B4782D /* CellView.swift */; };
 		881A39F12A2A8D6200B4782D /* SheetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39F02A2A8D6200B4782D /* SheetModel.swift */; };
@@ -41,6 +38,8 @@
 		8878A6232A3FD81900A2658C /* TrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6222A3FD81900A2658C /* TrackView.swift */; };
 		8878A6252A3FE75200A2658C /* VideoHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6242A3FE75200A2658C /* VideoHelpers.swift */; };
 		8878A6272A3FE93700A2658C /* FileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6262A3FE93700A2658C /* FileController.swift */; };
+		8878A6362A411F9B00A2658C /* FileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6352A411F9B00A2658C /* FileModel.swift */; };
+		8878A6382A41305E00A2658C /* ClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6372A41305E00A2658C /* ClockView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,7 +71,6 @@
 		881A39C02A242D4700B4782D /* datavyuUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = datavyuUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		881A39C42A242D4700B4782D /* sheettestUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sheettestUITests.swift; sourceTree = "<group>"; };
 		881A39C62A242D4700B4782D /* sheettestUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sheettestUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		881A39E72A2A883200B4782D /* TimeCodeFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeCodeFormatter.swift; sourceTree = "<group>"; };
 		881A39EB2A2A888100B4782D /* CellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellModel.swift; sourceTree = "<group>"; };
 		881A39EE2A2A88AB00B4782D /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
 		881A39F02A2A8D6200B4782D /* SheetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetModel.swift; sourceTree = "<group>"; };
@@ -96,6 +94,8 @@
 		8878A6222A3FD81900A2658C /* TrackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackView.swift; sourceTree = "<group>"; };
 		8878A6242A3FE75200A2658C /* VideoHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoHelpers.swift; sourceTree = "<group>"; };
 		8878A6262A3FE93700A2658C /* FileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileController.swift; sourceTree = "<group>"; };
+		8878A6352A411F9B00A2658C /* FileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileModel.swift; sourceTree = "<group>"; };
+		8878A6372A41305E00A2658C /* ClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,9 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				881A39E52A26B3AB00B4782D /* TimecodeKitUI in Frameworks */,
 				881A39D52A253A4900B4782D /* WrappingHStack in Frameworks */,
-				881A39E32A26B3AB00B4782D /* TimecodeKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -195,7 +193,6 @@
 		881A39E62A2A880E00B4782D /* Formatters */ = {
 			isa = PBXGroup;
 			children = (
-				881A39E72A2A883200B4782D /* TimeCodeFormatter.swift */,
 				8878A61B2A352A5200A2658C /* MillisTimeFormatter.swift */,
 			);
 			path = Formatters;
@@ -204,6 +201,7 @@
 		881A39E92A2A886400B4782D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				8878A62E2A3FFCB600A2658C /* Audio */,
 				8878A61D2A38D97500A2658C /* Layouts */,
 				8837C56B2A2D299B00F29182 /* Components */,
 				881A39EE2A2A88AB00B4782D /* CellView.swift */,
@@ -224,6 +222,7 @@
 				881A39F22A2A8D8700B4782D /* ColumnModel.swift */,
 				881A39F42A2A917E00B4782D /* ArgumentModel.swift */,
 				881A3A012A2C0B6500B4782D /* VideoModel.swift */,
+				8878A6352A411F9B00A2658C /* FileModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -241,6 +240,7 @@
 			children = (
 				8837C56C2A2D29AF00F29182 /* EditableLabel.swift */,
 				8878A6222A3FD81900A2658C /* TrackView.swift */,
+				8878A6372A41305E00A2658C /* ClockView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -279,6 +279,13 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		8878A62E2A3FFCB600A2658C /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -297,8 +304,6 @@
 			name = datavyu;
 			packageProductDependencies = (
 				881A39D42A253A4900B4782D /* WrappingHStack */,
-				881A39E22A26B3AB00B4782D /* TimecodeKit */,
-				881A39E42A26B3AB00B4782D /* TimecodeKitUI */,
 			);
 			productName = sheettest;
 			productReference = 881A39A52A242D4600B4782D /* datavyu.app */;
@@ -374,7 +379,6 @@
 			mainGroup = 881A399C2A242D4600B4782D;
 			packageReferences = (
 				881A39D32A253A4900B4782D /* XCRemoteSwiftPackageReference "WrappingHStack" */,
-				881A39E12A26B3AB00B4782D /* XCRemoteSwiftPackageReference "TimecodeKit" */,
 			);
 			productRefGroup = 881A39A62A242D4600B4782D /* Products */;
 			projectDirPath = "";
@@ -423,7 +427,6 @@
 				8878A6152A30275900A2658C /* RScriptEngine.swift in Sources */,
 				8878A6232A3FD81900A2658C /* TrackView.swift in Sources */,
 				8878A6212A3FD4A100A2658C /* TracksStackView.swift in Sources */,
-				881A39E82A2A883200B4782D /* TimeCodeFormatter.swift in Sources */,
 				8878A6172A30279700A2658C /* PythonScriptEngine.swift in Sources */,
 				881A39EC2A2A888100B4782D /* CellModel.swift in Sources */,
 				8878A6102A2FBC8700A2658C /* Config.swift in Sources */,
@@ -440,6 +443,8 @@
 				8878A6252A3FE75200A2658C /* VideoHelpers.swift in Sources */,
 				881A39A92A242D4600B4782D /* sheettestApp.swift in Sources */,
 				8878A6132A3026E100A2658C /* RubyScriptEngine.swift in Sources */,
+				8878A6382A41305E00A2658C /* ClockView.swift in Sources */,
+				8878A6362A411F9B00A2658C /* FileModel.swift in Sources */,
 				881A39F12A2A8D6200B4782D /* SheetModel.swift in Sources */,
 				881A39F72A2A9D5900B4782D /* SheetView.swift in Sources */,
 				881A39F32A2A8D8700B4782D /* ColumnModel.swift in Sources */,
@@ -763,14 +768,6 @@
 				minimumVersion = 2.0.0;
 			};
 		};
-		881A39E12A26B3AB00B4782D /* XCRemoteSwiftPackageReference "TimecodeKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/orchetect/TimecodeKit";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -778,16 +775,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 881A39D32A253A4900B4782D /* XCRemoteSwiftPackageReference "WrappingHStack" */;
 			productName = WrappingHStack;
-		};
-		881A39E22A26B3AB00B4782D /* TimecodeKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 881A39E12A26B3AB00B4782D /* XCRemoteSwiftPackageReference "TimecodeKit" */;
-			productName = TimecodeKit;
-		};
-		881A39E42A26B3AB00B4782D /* TimecodeKitUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 881A39E12A26B3AB00B4782D /* XCRemoteSwiftPackageReference "TimecodeKit" */;
-			productName = TimecodeKitUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
