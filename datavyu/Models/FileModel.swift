@@ -39,4 +39,11 @@ class FileModel: ObservableObject, Identifiable {
             return 0.0
         }
     }
+    
+    func syncVideos() {
+        let priTime = currentTime()
+        for videoModel in videoModels {
+            videoModel.seek(to: priTime)
+        }
+    }
 }

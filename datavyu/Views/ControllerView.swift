@@ -18,12 +18,14 @@ struct ControllerView: View {
         for videoModel in fileModel.videoModels {
             videoModel.play()
         }
+        fileModel.syncVideos()
     }
 
     func stop() {
         for videoModel in fileModel.videoModels {
             videoModel.stop()
         }
+        fileModel.syncVideos()
     }
 
     func nextFrame() {
