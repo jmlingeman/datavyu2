@@ -31,4 +31,12 @@ class FileModel: ObservableObject, Identifiable {
             return nil
         }
     }
+    
+    func currentTime() -> Double {
+        if videoModels.count >= 1 {
+            return videoModels[0].currentTime
+        } else {
+            return 0.0
+        }
+    }
 }

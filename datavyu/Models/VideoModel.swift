@@ -7,6 +7,10 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
     @Published var currentPos: Double
     @Published var duration: Double
     let player: AVPlayer
+    
+    /// The primary video will always have a sync point of 0
+    /// Subsequent videos then sync to the time on the primary video
+    var syncOffset = 0.0
 
     static func == (lhs: VideoModel, rhs: VideoModel) -> Bool {
         if lhs.videoFilePath == rhs.videoFilePath {
