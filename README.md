@@ -54,7 +54,7 @@ More details will be added as development continues.
 
 ## Feature Implementation Checklist
 - [x] Video Playback
-- [] Weak Temporal Ordering Layout
+- [x] Weak Temporal Ordering Layout
 - [] Hidden Columns
 - [] File saving/loading
 - [] Ordinal Layout
@@ -64,5 +64,6 @@ More details will be added as development continues.
 - [] Options menu
 - [] Auto update
 - [] App Store Deployment
-- [] Track timeline
+- [x] Track timeline
 - [] Audio Visualizations
+- [] Video sync
