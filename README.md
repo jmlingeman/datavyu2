@@ -54,15 +54,16 @@ More details will be added as development continues.
 
 ## Feature Implementation Checklist
 - [x] Video Playback
-- [] Weak Temporal Ordering Layout
-- [] Hidden Columns
-- [] File saving/loading
-- [] Ordinal Layout
-- [] Ruby Scripting
-- [] API
-- [] Code Editor
-- [] Options menu
-- [] Auto update
-- [] App Store Deployment
-- [] Track timeline
-- [] Audio Visualizations
+- [x] Weak Temporal Ordering Layout
+- [ ] Hidden Columns
+- [ ] File saving/loading
+- [ ] Ordinal Layout
+- [ ] Ruby Scripting
+- [ ] API
+- [ ] Code Editor
+- [ ] Options menu
+- [ ] Auto update
+- [ ] App Store Deployment
+- [x] Track timeline
+- [ ] Audio Visualizations
+- [ ] Video sync
