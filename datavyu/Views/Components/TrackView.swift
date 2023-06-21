@@ -9,13 +9,19 @@ import SwiftUI
 
 struct TrackView: View {
     @ObservedObject var videoModel: VideoModel
-    
+
+    func addMarker() {
+        videoModel.addMarker(time: videoModel.currentTime)
+    }
+
     var body: some View {
         GeometryReader { gr in
             ZStack {
                 Rectangle().frame(maxWidth: .infinity).foregroundColor(Color.blue)
                 Rectangle().frame(width: 5).foregroundColor(Color.red)
-                    .position(x: $videoModel.currentPos.wrappedValue * gr.size.width, y: gr.size.height / 2)
+                    .position(x: $videoModel.currentPos.wrappedValue * gr.size.width,
+                              y: gr.size.height / 2
+                    )
                     .gesture(
                         DragGesture()
                             .onChanged { gesture in
@@ -27,7 +33,22 @@ struct TrackView: View {
                                 videoModel.seekPercentage(to: relativePos)
                             }
                     )
+                ForEach(videoModel.markers) { marker in
+                    Rectangle().frame(width: 5).foregroundColor(Color.green)
+                        .position(x: marker.time / videoModel.getDuration() * gr.size.width,
+                                  y: gr.size.height / 2
+                        )
+                }
+            }.overlay(alignment: .bottomTrailing) {
+                trackOverlay
             }
+        }
+    }
+
+    var trackOverlay: some View {
+        HStack(alignment: .bottom) {
+            Spacer()
+            Button("Add Marker", action: addMarker)
         }
     }
 }

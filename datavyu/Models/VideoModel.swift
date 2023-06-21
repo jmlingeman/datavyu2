@@ -6,6 +6,8 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
     @Published var currentTime: Double
     @Published var currentPos: Double
     @Published var duration: Double
+    @Published var markers: [Marker]
+
     let player: AVPlayer
     
     /// The primary video will always have a sync point of 0
@@ -29,6 +31,7 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
         currentTime = 0.0
         player = AVPlayer(url: Bundle.main.url(forResource: videoFilePath, withExtension: "MOV")!)
         duration = player.getCurrentTrackDuration()
+        markers = []
     }
     
     func play() {
@@ -46,6 +49,14 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
             duration = player.getCurrentTrackDuration()
             return duration
         }
+    }
+    
+    func addMarker(time: Double) {
+        markers.append(Marker(value: time))
+    }
+    
+    func deleteMarker(time: Double) {
+        markers.removeAll(where: {x in x.time == time})
     }
     
     func nextFrame() {

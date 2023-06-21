@@ -40,6 +40,7 @@
 		8878A6272A3FE93700A2658C /* FileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6262A3FE93700A2658C /* FileController.swift */; };
 		8878A6362A411F9B00A2658C /* FileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6352A411F9B00A2658C /* FileModel.swift */; };
 		8878A6382A41305E00A2658C /* ClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6372A41305E00A2658C /* ClockView.swift */; };
+		8878A63A2A427C6000A2658C /* MarkerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6392A427C6000A2658C /* MarkerModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,6 +97,7 @@
 		8878A6262A3FE93700A2658C /* FileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileController.swift; sourceTree = "<group>"; };
 		8878A6352A411F9B00A2658C /* FileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileModel.swift; sourceTree = "<group>"; };
 		8878A6372A41305E00A2658C /* ClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockView.swift; sourceTree = "<group>"; };
+		8878A6392A427C6000A2658C /* MarkerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkerModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -223,6 +225,7 @@
 				881A39F42A2A917E00B4782D /* ArgumentModel.swift */,
 				881A3A012A2C0B6500B4782D /* VideoModel.swift */,
 				8878A6352A411F9B00A2658C /* FileModel.swift */,
+				8878A6392A427C6000A2658C /* MarkerModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -427,6 +430,7 @@
 				8878A6152A30275900A2658C /* RScriptEngine.swift in Sources */,
 				8878A6232A3FD81900A2658C /* TrackView.swift in Sources */,
 				8878A6212A3FD4A100A2658C /* TracksStackView.swift in Sources */,
+				8878A63A2A427C6000A2658C /* MarkerModel.swift in Sources */,
 				8878A6172A30279700A2658C /* PythonScriptEngine.swift in Sources */,
 				881A39EC2A2A888100B4782D /* CellModel.swift in Sources */,
 				8878A6102A2FBC8700A2658C /* Config.swift in Sources */,
