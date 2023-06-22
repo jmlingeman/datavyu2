@@ -9,15 +9,18 @@ import Foundation
 class FileModel: ObservableObject, Identifiable {
     @Published var videoModels: [VideoModel]
     @Published var sheetModel: SheetModel
+    @Published var updates: Int
     
     init(sheetModel: SheetModel) {
         self.sheetModel = sheetModel
         self.videoModels = []
+        self.updates = 0
     }
     
     init(sheetModel: SheetModel, videoModels: [VideoModel]) {
         self.sheetModel = sheetModel
         self.videoModels = videoModels
+        self.updates = 0
     }
     
     func addVideo(videoModel: VideoModel) {

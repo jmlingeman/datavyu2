@@ -7,6 +7,8 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
     @Published var currentPos: Double
     @Published var duration: Double
     @Published var markers: [Marker]
+    @Published var selectedMarker: Marker?
+    @Published var updates = 0
 
     let player: AVPlayer
     
@@ -46,8 +48,7 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
         if duration > 0 {
             return duration
         } else {
-            duration = player.getCurrentTrackDuration()
-            return duration
+            return player.getCurrentTrackDuration()
         }
     }
     

@@ -62,13 +62,8 @@ struct ControllerView: View {
                         VideoView(videoModel: videoModel)
                     }
                 }
-                ForEach(fileModel.videoModels) { videoModel in
-                    GridRow {
-                        TracksStackView(videoModel: videoModel)
-                    }
-                }
-                ForEach(fileModel.videoModels) { videoModel in
-                    ClockView(videoModel: videoModel)
+                GridRow {
+                    TracksStackView(fileModel: fileModel)
                 }
                 GridRow {
                     Button("Play", action: play).keyboardShortcut("p", modifiers: [])

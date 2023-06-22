@@ -9,9 +9,16 @@ import SwiftUI
 
 struct TrackView: View {
     @ObservedObject var videoModel: VideoModel
+    @State var selectedMarker: Marker?
 
     func addMarker() {
         videoModel.addMarker(time: videoModel.currentTime)
+    }
+    
+    func deleteMarker() {
+        if selectedMarker != nil {
+            videoModel.deleteMarker(time: selectedMarker!.time)
+        }
     }
 
     var body: some View {
@@ -34,14 +41,23 @@ struct TrackView: View {
                             }
                     )
                 ForEach(videoModel.markers) { marker in
-                    Rectangle().frame(width: 5).foregroundColor(Color.green)
+                    
+                    Rectangle().frame(width: 5).foregroundColor(marker == selectedMarker ? Color.purple : Color.green)
                         .position(x: marker.time / videoModel.getDuration() * gr.size.width,
                                   y: gr.size.height / 2
-                        )
+                        ).onTapGesture {
+                            if selectedMarker == marker {
+                                selectedMarker = nil
+                                videoModel.selectedMarker = nil
+                            } else {
+                                selectedMarker = marker
+                                videoModel.selectedMarker = marker
+                            }
+                        }
                 }
             }.overlay(alignment: .bottomTrailing) {
                 trackOverlay
-            }
+            }.offset(CGSize(width: videoModel.syncOffset, height: 0))
         }
     }
 
