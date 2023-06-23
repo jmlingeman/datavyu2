@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TrackView: View {
     @ObservedObject var videoModel: VideoModel
+    @State var primarySyncTime: Double
     @State var selectedMarker: Marker?
 
     func addMarker() {
@@ -57,9 +58,11 @@ struct TrackView: View {
                 }
             }.overlay(alignment: .bottomTrailing) {
                 trackOverlay
-            }.offset(CGSize(width: videoModel.syncOffset, height: 0))
+            }
+//            .offset(CGSize(width: videoModel.syncOffset != 0 ? -(videoModel.syncOffset - (videoModel.syncOffset - primarySyncTime)) / videoModel.getDuration() * gr.size.width : 0, height: 0))
         }
     }
+
 
     var trackOverlay: some View {
         HStack(alignment: .bottom) {
@@ -71,6 +74,6 @@ struct TrackView: View {
 
 struct TrackView_Previews: PreviewProvider {
     static var previews: some View {
-        TrackView(videoModel: VideoModel(videoFilePath: "IMG_1234"))
+        TrackView(videoModel: VideoModel(videoFilePath: "IMG_1234"), primarySyncTime: 0.0)
     }
 }

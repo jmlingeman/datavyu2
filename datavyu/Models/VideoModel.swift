@@ -14,7 +14,8 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
     
     /// The primary video will always have a sync point of 0
     /// Subsequent videos then sync to the time on the primary video
-    var syncOffset = 0.0
+    @Published var syncOffset = 0.0
+    @Published var syncMarker: Marker?
 
     static func == (lhs: VideoModel, rhs: VideoModel) -> Bool {
         if lhs.videoFilePath == rhs.videoFilePath {
@@ -71,13 +72,13 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
     }
     
     func seek(to: Double) {
-        let time = CMTime(seconds: to, preferredTimescale: 600)
+        let time = CMTime(seconds: to + syncOffset, preferredTimescale: 600)
         player.currentItem!.seek(to: time, completionHandler: nil)
         updateTimes()
     }
     
     func seekPercentage(to: Double) {
-        let relativeTime = to * getDuration()
+        let relativeTime = (to + syncOffset) * getDuration()
         let time = CMTime(seconds: relativeTime, preferredTimescale: 600)
         player.currentItem!.seek(to: time, completionHandler: nil)
         print(to, relativeTime, getDuration(), time)
@@ -85,7 +86,7 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
     }
     
     func updateTimes() {
-        currentTime = player.currentTime().seconds
+        currentTime = player.currentTime().seconds + syncOffset
         currentPos = currentTime / getDuration()
     }
 }

@@ -10,6 +10,7 @@ class FileModel: ObservableObject, Identifiable {
     @Published var videoModels: [VideoModel]
     @Published var sheetModel: SheetModel
     @Published var updates: Int
+    @Published var primarySyncTime: Double = 0.0
     
     init(sheetModel: SheetModel) {
         self.sheetModel = sheetModel
