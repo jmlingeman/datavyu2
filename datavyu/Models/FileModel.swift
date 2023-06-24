@@ -11,6 +11,7 @@ class FileModel: ObservableObject, Identifiable {
     @Published var sheetModel: SheetModel
     @Published var updates: Int
     @Published var primarySyncTime: Double = 0.0
+
     
     init(sheetModel: SheetModel) {
         self.sheetModel = sheetModel

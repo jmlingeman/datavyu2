@@ -53,6 +53,16 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
         }
     }
     
+    func getProportion(time: Double) -> Double {
+        let val = time / getDuration()
+        if val.isNaN {
+            return 0
+        } else {
+            return val
+        }
+    }
+    
+    
     func addMarker(time: Double) {
         markers.append(Marker(value: time))
     }

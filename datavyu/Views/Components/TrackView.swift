@@ -59,7 +59,7 @@ struct TrackView: View {
             }.overlay(alignment: .bottomTrailing) {
                 trackOverlay
             }
-//            .offset(CGSize(width: videoModel.syncOffset != 0 ? -(videoModel.syncOffset - (videoModel.syncOffset - primarySyncTime)) / videoModel.getDuration() * gr.size.width : 0, height: 0))
+            .offset(x: videoModel.syncOffset != 0 ? (primarySyncTime - videoModel.syncOffset) * gr.size.width : 0)
         }
     }
 

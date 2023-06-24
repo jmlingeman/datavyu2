@@ -12,7 +12,8 @@ struct TracksStackView: View {
             for videoModel in fileModel.videoModels[1...] {
                 let time = videoModel.selectedMarker?.time
                 if time != nil {
-                    videoModel.syncOffset = time!
+                    videoModel.syncOffset = videoModel.getProportion(time: videoModel.syncMarker?.time ?? 0)
+                    videoModel.syncMarker = videoModel.selectedMarker
                 }
             }
         }
@@ -23,13 +24,13 @@ struct TracksStackView: View {
 
         VStack {
             ForEach(fileModel.videoModels) { videoModel in
-                let primaryVideoSyncMarkerTime = fileModel.videoModels.count > 0 ? fileModel.videoModels[0].selectedMarker?.time ?? 0.0 : 0.0
-
                 HStack {
                     Text(videoModel.videoFilePath)
-                    TrackView(videoModel: videoModel, primarySyncTime: fileModel.primarySyncTime).onTapGesture {
-                        fileModel.updates += 1
-                        videoModel.updates += 1
+                    GeometryReader { gr in
+                        TrackView(videoModel: videoModel, primarySyncTime: fileModel.primaryVideo()?.syncOffset ?? 0).onTapGesture {
+                            fileModel.updates += 1
+                            videoModel.updates += 1
+                        }
                     }
                 }
             }
