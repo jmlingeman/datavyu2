@@ -6,11 +6,16 @@
 //
 
 import Foundation
+import SwiftUI
+
 class FileModel: ObservableObject, Identifiable {
     @Published var videoModels: [VideoModel]
     @Published var sheetModel: SheetModel
     @Published var updates: Int
     @Published var primarySyncTime: Double = 0.0
+    @Published var primaryVideo : VideoModel?
+    @Published var primaryVideoTime: Double = 0.0
+    @Published var primaryVideoDuration: Double = 0.0
 
     
     init(sheetModel: SheetModel) {
@@ -23,17 +28,37 @@ class FileModel: ObservableObject, Identifiable {
         self.sheetModel = sheetModel
         self.videoModels = videoModels
         self.updates = 0
+        
+        if videoModels.count > 0 {
+            primaryVideo = videoModels[0]
+            primaryVideoTime = videoModels[0].$currentPos
+            primaryVideoDuration = videoModels[0].getDuration()
+        }
     }
     
     func addVideo(videoModel: VideoModel) {
         self.videoModels.append(videoModel)
+        
+        if videoModels.count > 0 {
+            primaryVideo = videoModels[0]
+            primaryVideoTime = videoModels[0].currentPos
+            primaryVideoDuration = videoModels[0].getDuration()
+        }
     }
     
-    func primaryVideo() -> VideoModel? {
-        if videoModels.count >= 1 {
-            return videoModels[0]
-        } else {
-            return nil
+    func longestDuration() -> Double {
+        return videoModels.map({x in x.getDuration() + x.syncOffset}).max() ?? 0
+    }
+    
+    func seekAllVideos(to: Double) {
+        for videoModel in videoModels {
+            videoModel.seek(to: to)
+        }
+    }
+    
+    func seekAllVideosPercent(to: Double) {
+        for videoModel in videoModels {
+            videoModel.seekPercentage(to: to)
         }
     }
     
@@ -50,5 +75,16 @@ class FileModel: ObservableObject, Identifiable {
         for videoModel in videoModels {
             videoModel.seek(to: priTime)
         }
+    }
+}
+
+struct CurrentTimeEnvironmentKey: EnvironmentKey {
+    static var defaultValue = 0.0
+}
+
+extension EnvironmentValues {
+    var currentTime: Double {
+        get { self[CurrentTimeEnvironmentKey.self] }
+        set { self[CurrentTimeEnvironmentKey.self] = newValue }
     }
 }

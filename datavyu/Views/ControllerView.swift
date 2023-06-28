@@ -49,7 +49,7 @@ struct ControllerView: View {
     func addCell() {
         let cell = columnInFocus?.addCell()
         if cell != nil {
-            cell?.setOnset(onset: fileModel.primaryVideo()?.currentTime ?? 0)
+            cell?.setOnset(onset: fileModel.primaryVideo?.currentTime ?? 0)
         }
         fileModel.sheetModel.updates += 1 // Force sheetmodel updates of nested objects
     }

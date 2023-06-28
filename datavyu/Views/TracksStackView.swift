@@ -4,7 +4,7 @@ import SwiftUI
 
 struct TracksStackView: View {
     @ObservedObject var fileModel: FileModel
-    
+
     func syncVideos() {
         if fileModel.videoModels[0].selectedMarker != nil {
             fileModel.videoModels[0].syncMarker = fileModel.videoModels[0].selectedMarker
@@ -18,20 +18,38 @@ struct TracksStackView: View {
             }
         }
     }
-    
-    
-    var body: some View {
 
+    var body: some View {
         VStack {
-            ForEach(fileModel.videoModels) { videoModel in
-                HStack {
-                    Text(videoModel.videoFilePath)
-                    GeometryReader { gr in
-                        TrackView(videoModel: videoModel, primarySyncTime: fileModel.primaryVideo()?.syncOffset ?? 0).onTapGesture {
-                            fileModel.updates += 1
-                            videoModel.updates += 1
+            GeometryReader { gr in
+                VStack {
+                    ForEach(fileModel.videoModels) { videoModel in
+                        HStack {
+                            Text(videoModel.videoFilePath)
+                            TrackView(videoModel: videoModel,
+                                      primarySyncTime: fileModel.primaryVideo?.syncOffset ?? 0,
+                                      maxDuration: fileModel.longestDuration())
+                                .onTapGesture {
+                                    fileModel.updates += 1
+                                    videoModel.updates += 1
+                                }
                         }
                     }
+                }.overlay {
+                    Rectangle().frame(width: 5).foregroundColor(Color.red)
+                        .position(x: $fileModel.primaryVideoTime.wrappedValue * gr.size.width,
+                                  y: gr.size.height / 2)
+                        .gesture(
+                            DragGesture()
+                                .onChanged { gesture in
+                                    let relativePos = clamp(x: gesture.location.x / gr.size.width, minVal: 0, maxVal: 1)
+                                    fileModel.seekAllVideosPercent(to: relativePos)
+                                }
+                                .onEnded { gesture in
+                                    let relativePos = clamp(x: gesture.location.x / gr.size.width, minVal: 0, maxVal: 1)
+                                    fileModel.seekAllVideosPercent(to: relativePos)
+                                }
+                        )
                 }
             }
             ForEach(fileModel.videoModels) { videoModel in
@@ -41,7 +59,7 @@ struct TracksStackView: View {
             syncButton
         }
     }
-    
+
     var syncButton: some View {
         HStack(alignment: .bottom) {
             Spacer()
@@ -50,9 +68,8 @@ struct TracksStackView: View {
     }
 }
 
-//struct TracksStackView_Previews: PreviewProvider {
+// struct TracksStackView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        TracksStackView(videoModels: [VideoModel(videoFilePath: "IMG_1234")])
 //    }
-//}
-
+// }
