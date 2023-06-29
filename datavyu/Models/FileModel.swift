@@ -14,8 +14,6 @@ class FileModel: ObservableObject, Identifiable {
     @Published var updates: Int
     @Published var primarySyncTime: Double = 0.0
     @Published var primaryVideo : VideoModel?
-    @Published var primaryVideoTime: Double = 0.0
-    @Published var primaryVideoDuration: Double = 0.0
 
     
     init(sheetModel: SheetModel) {
@@ -31,8 +29,6 @@ class FileModel: ObservableObject, Identifiable {
         
         if videoModels.count > 0 {
             primaryVideo = videoModels[0]
-            primaryVideoTime = videoModels[0].$currentPos
-            primaryVideoDuration = videoModels[0].getDuration()
         }
     }
     
@@ -41,8 +37,6 @@ class FileModel: ObservableObject, Identifiable {
         
         if videoModels.count > 0 {
             primaryVideo = videoModels[0]
-            primaryVideoTime = videoModels[0].currentPos
-            primaryVideoDuration = videoModels[0].getDuration()
         }
     }
     

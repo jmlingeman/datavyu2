@@ -36,20 +36,9 @@ struct TracksStackView: View {
                         }
                     }
                 }.overlay {
-                    Rectangle().frame(width: 5).foregroundColor(Color.red)
-                        .position(x: $fileModel.primaryVideoTime.wrappedValue * gr.size.width,
-                                  y: gr.size.height / 2)
-                        .gesture(
-                            DragGesture()
-                                .onChanged { gesture in
-                                    let relativePos = clamp(x: gesture.location.x / gr.size.width, minVal: 0, maxVal: 1)
-                                    fileModel.seekAllVideosPercent(to: relativePos)
-                                }
-                                .onEnded { gesture in
-                                    let relativePos = clamp(x: gesture.location.x / gr.size.width, minVal: 0, maxVal: 1)
-                                    fileModel.seekAllVideosPercent(to: relativePos)
-                                }
-                        )
+                    if fileModel.videoModels.count > 0 {
+                        TrackPositionIndicator(fileModel: fileModel, videoModel: fileModel.videoModels[0], gr: gr)
+                    }
                 }
             }
             ForEach(fileModel.videoModels) { videoModel in
