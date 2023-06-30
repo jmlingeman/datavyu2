@@ -10,12 +10,17 @@ import Foundation
 class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable {
     @Published var columnName: String
     @Published var cells: [CellModel]
+    @Published var arguments: [Argument] = [Argument(name: "test1"), Argument(name: "test2")]
 
     static func == (lhs: ColumnModel, rhs: ColumnModel) -> Bool {
         if lhs.columnName == rhs.columnName {
             return true
         }
         return false
+    }
+    
+    func addArgument() {
+        arguments.append(Argument(name: "code\(arguments.count)"))
     }
 
     func hash(into hasher: inout Hasher) {

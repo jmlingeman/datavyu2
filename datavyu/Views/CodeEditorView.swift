@@ -6,15 +6,41 @@
 //
 
 import SwiftUI
+import WrappingHStack
 
 struct CodeEditorView: View {
+    @ObservedObject var fileModel: FileModel
+    @State var selectedColumn: ColumnModel?
+    
+    func addCode() {
+        if selectedColumn != nil {
+            selectedColumn!.addArgument()
+        }
+    }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ScrollView(.vertical) {
+            WrappingHStack($fileModel.sheetModel.columns) { $column in
+                HStack {
+                    Text(column.columnName)
+                    ForEach($column.arguments) { $argument in
+                        TextField(argument.name, text: $argument.name).frame(maxWidth: 100).onTapGesture {
+                            selectedColumn = column
+                        }
+                    }
+                    Button("+", action: addCode).onTapGesture {
+                        selectedColumn = column
+                    }
+                    Spacer()
+                }.padding()
+            }
+        }
     }
 }
 
 struct CodeEditorView_Previews: PreviewProvider {
     static var previews: some View {
-        CodeEditorView()
+        let fileModel = FileModel(sheetModel: SheetModel(sheetName: "IMG_1234"), videoModels: [VideoModel(videoFilePath: "IMG_1234")])
+        CodeEditorView(fileModel: fileModel)
     }
 }

@@ -8,11 +8,17 @@
 import Foundation
 
 class Argument: ObservableObject, Identifiable {
-    @Published var value: String = ""
-    let name: String
-
+    @Published var name: String
+    @Published var value: String
+    
+    init(name: String) {
+        self.name = name
+        self.value = ""
+    }
+    
     init(name: String, value: String) {
         self.name = name
         self.value = value
     }
+
 }
