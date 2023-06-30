@@ -9,8 +9,7 @@ import SwiftUI
 
 struct TrackView: View {
     @ObservedObject var videoModel: VideoModel
-    @State var primarySyncTime: Double
-    @State var maxDuration: Double
+    @Binding var primaryMarker: Marker?
     @State var selectedMarker: Marker?
 
     func addMarker() {
@@ -24,6 +23,8 @@ struct TrackView: View {
     }
 
     var body: some View {
+        
+        
         GeometryReader { gr in
             ZStack {
                 Rectangle().frame(maxWidth: .infinity).foregroundColor(Color.blue)
@@ -44,8 +45,23 @@ struct TrackView: View {
             }.overlay(alignment: .bottomTrailing) {
                 trackOverlay
             }
-            .offset(x: videoModel.syncOffset != 0 ? (videoModel.syncOffset - primarySyncTime) * gr.size.width : 0)
+            .offset(x: alignMarkers(primaryMarker: primaryMarker, secondaryMarker: videoModel.syncMarker, width: gr.size.width))
         }
+    }
+    
+    func alignMarkers(primaryMarker: Marker?, secondaryMarker: Marker?, width: Double) -> Double {
+        print("Markers: \(primaryMarker != nil) \(secondaryMarker != nil)")
+        if primaryMarker == nil || secondaryMarker == nil {
+            return 0
+        }
+        
+        // Get marker proportions
+        let priX = primaryMarker!.time / primaryMarker!.videoDuration * width
+        let secX = secondaryMarker!.time / secondaryMarker!.videoDuration * width
+        
+        print("Marker calc: \(secX) - \(priX) = \(secX-priX)")
+        
+        return -(secX - priX)
     }
 
 

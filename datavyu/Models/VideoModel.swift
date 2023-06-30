@@ -46,11 +46,10 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
     }
     
     func getDuration() -> Double {
-        if duration > 0 {
-            return duration
-        } else {
-            return player.getCurrentTrackDuration()
+        if duration == 0 {
+            duration = player.getCurrentTrackDuration()
         }
+        return duration
     }
     
     func getProportion(time: Double) -> Double {
@@ -83,20 +82,21 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
     
     func seek(to: Double) {
         let jumpTime: Double
-        if to + syncOffset > duration {
-            jumpTime = duration
+        if to + syncOffset > getDuration() {
+            jumpTime = getDuration()
         } else {
             jumpTime = to + syncOffset
         }
         let time = CMTime(seconds: jumpTime, preferredTimescale: 600)
         player.currentItem!.seek(to: time, completionHandler: nil)
+        print(to, syncOffset, jumpTime, getDuration(), time)
         updateTimes()
     }
     
     func seekPercentage(to: Double) {
-        var relativeTime = (to + syncOffset) * getDuration()
-        if relativeTime > duration {
-            relativeTime = duration
+        var relativeTime = to * getDuration() + syncOffset
+        if relativeTime > getDuration() {
+            relativeTime = getDuration()
         }
         let time = CMTime(seconds: relativeTime, preferredTimescale: 600)
         player.currentItem!.seek(to: time, completionHandler: nil)

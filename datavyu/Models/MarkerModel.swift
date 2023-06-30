@@ -14,9 +14,11 @@ class Marker: ObservableObject, Identifiable, Equatable {
     
     @Published var time: Double
     @Published var selected: Bool
+    @Published var videoDuration: Double
     
-    init(value: Double) {
+    init(value: Double, videoDuration: Double) {
         self.time = value
         self.selected = false
+        self.videoDuration = videoDuration
     }
 }

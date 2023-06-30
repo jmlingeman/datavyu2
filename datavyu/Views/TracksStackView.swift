@@ -8,39 +8,48 @@ struct TracksStackView: View {
     func syncVideos() {
         if fileModel.videoModels[0].selectedMarker != nil {
             fileModel.videoModels[0].syncMarker = fileModel.videoModels[0].selectedMarker
-            fileModel.primarySyncTime = fileModel.videoModels[0].syncMarker!.time
+            fileModel.primaryMarker = fileModel.videoModels[0].syncMarker
             for videoModel in fileModel.videoModels[1...] {
                 let time = videoModel.selectedMarker?.time
                 if time != nil {
-                    videoModel.syncOffset = videoModel.getProportion(time: videoModel.syncMarker?.time ?? 0)
                     videoModel.syncMarker = videoModel.selectedMarker
+                    videoModel.syncOffset = videoModel.syncMarker!.time - fileModel.primaryMarker!.time
                 }
             }
+            fileModel.seekAllVideos(to: fileModel.primaryMarker!.time)
         }
     }
 
     var body: some View {
         VStack {
-            GeometryReader { gr in
+            HStack {
                 VStack {
                     ForEach(fileModel.videoModels) { videoModel in
-                        HStack {
-                            Text(videoModel.videoFilePath)
-                            TrackView(videoModel: videoModel,
-                                      primarySyncTime: fileModel.primaryVideo?.syncOffset ?? 0,
-                                      maxDuration: fileModel.longestDuration())
+                        Text(videoModel.videoFilePath)
+                    }.frame(height: 30)
+                }
+                GeometryReader { gr in
+                    VStack {
+                        ForEach(fileModel.videoModels) { videoModel in
+                            HStack {
+                                
+                                TrackView(videoModel: videoModel,
+                                          primaryMarker: $fileModel.primaryMarker
+                                )
                                 .onTapGesture {
                                     fileModel.updates += 1
                                     videoModel.updates += 1
                                 }
+                            }
                         }
-                    }
-                }.overlay {
-                    if fileModel.videoModels.count > 0 {
-                        TrackPositionIndicator(fileModel: fileModel, videoModel: fileModel.videoModels[0], gr: gr)
+                    }.overlay {
+                        if fileModel.videoModels.count > 0 {
+                            TrackPositionIndicator(fileModel: fileModel, videoModel: fileModel.videoModels[0], gr: gr)
+                        }
                     }
                 }
             }
+                
             ForEach(fileModel.videoModels) { videoModel in
                 ClockView(videoModel: videoModel)
             }
