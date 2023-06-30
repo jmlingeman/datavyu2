@@ -64,7 +64,7 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
     
     
     func addMarker(time: Double) {
-        markers.append(Marker(value: time))
+        markers.append(Marker(value: time, videoDuration: getDuration()))
     }
     
     func deleteMarker(time: Double) {
@@ -82,13 +82,22 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
     }
     
     func seek(to: Double) {
-        let time = CMTime(seconds: to + syncOffset, preferredTimescale: 600)
+        let jumpTime: Double
+        if to + syncOffset > duration {
+            jumpTime = duration
+        } else {
+            jumpTime = to + syncOffset
+        }
+        let time = CMTime(seconds: jumpTime, preferredTimescale: 600)
         player.currentItem!.seek(to: time, completionHandler: nil)
         updateTimes()
     }
     
     func seekPercentage(to: Double) {
-        let relativeTime = (to + syncOffset) * getDuration()
+        var relativeTime = (to + syncOffset) * getDuration()
+        if relativeTime > duration {
+            relativeTime = duration
+        }
         let time = CMTime(seconds: relativeTime, preferredTimescale: 600)
         player.currentItem!.seek(to: time, completionHandler: nil)
         print(to, relativeTime, getDuration(), time)
