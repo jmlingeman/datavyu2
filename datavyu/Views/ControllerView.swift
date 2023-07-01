@@ -55,28 +55,40 @@ struct ControllerView: View {
     }
 
     var body: some View {
-        HStack {
-            Grid {
-                ForEach(fileModel.videoModels) { videoModel in
-                    GridRow {
-                        VideoView(videoModel: videoModel)
+        NavigationStack {
+            VStack {
+
+                HStack {
+                    Grid {
+                        ForEach(fileModel.videoModels) { videoModel in
+                            GridRow {
+                                VideoView(videoModel: videoModel)
+                            }
+                        }
+                        GridRow {
+                            TracksStackView(fileModel: fileModel)
+                        }
+                        GridRow {
+                            Button("Play", action: play).keyboardShortcut("p", modifiers: [])
+                            Button("Stop", action: stop).keyboardShortcut("s", modifiers: [])
+                        }
+                        GridRow {
+                            Button("Next", action: nextFrame).keyboardShortcut("w", modifiers: [])
+                            Button("Prev", action: prevFrame).keyboardShortcut("q", modifiers: [])
+                            Button("Add Col", action: addCol).keyboardShortcut("c", modifiers: [])
+                            Button("Add Cell", action: addCell).keyboardShortcut("c", modifiers: [])
+                        }
                     }
-                }
-                GridRow {
-                    TracksStackView(fileModel: fileModel)
-                }
-                GridRow {
-                    Button("Play", action: play).keyboardShortcut("p", modifiers: [])
-                    Button("Stop", action: stop).keyboardShortcut("s", modifiers: [])
-                }
-                GridRow {
-                    Button("Next", action: nextFrame).keyboardShortcut("w", modifiers: [])
-                    Button("Prev", action: prevFrame).keyboardShortcut("q", modifiers: [])
-                    Button("Add Col", action: addCol).keyboardShortcut("c", modifiers: [])
-                    Button("Add Cell", action: addCell).keyboardShortcut("c", modifiers: [])
+                    Sheet(sheetDataModel: fileModel.sheetModel, columnInFocus: _columnInFocus)
+                }.navigationTitle(Text(fileModel.sheetModel.sheetName))
+            }.toolbar {
+                ToolbarItemGroup(placement: .automatic) {
+                    NavigationLink(
+                        destination: CodeEditorView(fileModel: fileModel),
+                        label: {Text("Code Editor")}
+                    ).navigationTitle(Text("Code Editor"))
                 }
             }
-            Sheet(sheetDataModel: fileModel.sheetModel, columnInFocus: _columnInFocus)
         }
     }
 }

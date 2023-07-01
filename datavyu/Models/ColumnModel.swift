@@ -18,9 +18,13 @@ class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable {
         }
         return false
     }
-    
+        
     func addArgument() {
-        arguments.append(Argument(name: "code\(arguments.count)"))
+        let newArg = Argument(name: "code\(arguments.count)")
+        arguments.append(newArg)
+        for cell in cells {
+            cell.arguments.append(newArg)
+        }
     }
 
     func hash(into hasher: inout Hasher) {

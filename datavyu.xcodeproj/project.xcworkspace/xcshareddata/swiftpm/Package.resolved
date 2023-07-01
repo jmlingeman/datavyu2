@@ -1,6 +1,24 @@
 {
   "pins" : [
     {
+      "identity" : "cruby",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/johnfairh/CRuby",
+      "state" : {
+        "revision" : "eb26e48106c60390a17f83c984ce3b26ccf9caf9",
+        "version" : "2.0.0"
+      }
+    },
+    {
+      "identity" : "rubygateway",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/johnfairh/RubyGateway",
+      "state" : {
+        "branch" : "main",
+        "revision" : "7e4eb09e55f15a5fdefc6d28fd60f11100547dd2"
+      }
+    },
+    {
       "identity" : "wrappinghstack",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/dkk/WrappingHStack",

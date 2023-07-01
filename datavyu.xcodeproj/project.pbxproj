@@ -26,6 +26,10 @@
 		881A3A002A2BE73B00B4782D /* ControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39FF2A2BE73B00B4782D /* ControllerView.swift */; };
 		881A3A022A2C0B6500B4782D /* VideoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A3A012A2C0B6500B4782D /* VideoModel.swift */; };
 		8837C56D2A2D29AF00F29182 /* EditableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8837C56C2A2D29AF00F29182 /* EditableLabel.swift */; };
+		884B0DF52A4F792A00D16304 /* RubyGateway in Frameworks */ = {isa = PBXBuildFile; productRef = 884B0DF42A4F792A00D16304 /* RubyGateway */; };
+		884B0DF72A50BE6B00D16304 /* DatavyuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884B0DF62A50BE6B00D16304 /* DatavyuView.swift */; };
+		884B0DF92A50CB1B00D16304 /* CodeEditorAddCodeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884B0DF82A50CB1B00D16304 /* CodeEditorAddCodeButton.swift */; };
+		884B0DFC2A50CC3900D16304 /* CodeEditorRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884B0DFB2A50CC3900D16304 /* CodeEditorRow.swift */; };
 		8878A60E2A2D698900A2658C /* CodeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A60D2A2D698900A2658C /* CodeEditorView.swift */; };
 		8878A6102A2FBC8700A2658C /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A60F2A2FBC8700A2658C /* Config.swift */; };
 		8878A6132A3026E100A2658C /* RubyScriptEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6122A3026E100A2658C /* RubyScriptEngine.swift */; };
@@ -84,6 +88,9 @@
 		881A39FF2A2BE73B00B4782D /* ControllerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerView.swift; sourceTree = "<group>"; };
 		881A3A012A2C0B6500B4782D /* VideoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoModel.swift; sourceTree = "<group>"; };
 		8837C56C2A2D29AF00F29182 /* EditableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableLabel.swift; sourceTree = "<group>"; };
+		884B0DF62A50BE6B00D16304 /* DatavyuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatavyuView.swift; sourceTree = "<group>"; };
+		884B0DF82A50CB1B00D16304 /* CodeEditorAddCodeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorAddCodeButton.swift; sourceTree = "<group>"; };
+		884B0DFB2A50CC3900D16304 /* CodeEditorRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorRow.swift; sourceTree = "<group>"; };
 		8878A60D2A2D698900A2658C /* CodeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorView.swift; sourceTree = "<group>"; };
 		8878A60F2A2FBC8700A2658C /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		8878A6122A3026E100A2658C /* RubyScriptEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RubyScriptEngine.swift; sourceTree = "<group>"; };
@@ -108,6 +115,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				881A39D52A253A4900B4782D /* WrappingHStack in Frameworks */,
+				884B0DF52A4F792A00D16304 /* RubyGateway in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -205,6 +213,7 @@
 		881A39E92A2A886400B4782D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				884B0DFA2A50CC2300D16304 /* CodeEditor */,
 				8878A62E2A3FFCB600A2658C /* Audio */,
 				8878A61D2A38D97500A2658C /* Layouts */,
 				8837C56B2A2D299B00F29182 /* Components */,
@@ -212,8 +221,8 @@
 				881A39F62A2A9D5900B4782D /* SheetView.swift */,
 				881A39FA2A2AB66900B4782D /* VideoView.swift */,
 				881A39FF2A2BE73B00B4782D /* ControllerView.swift */,
-				8878A60D2A2D698900A2658C /* CodeEditorView.swift */,
 				8878A6202A3FD4A100A2658C /* TracksStackView.swift */,
+				884B0DF62A50BE6B00D16304 /* DatavyuView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -249,6 +258,16 @@
 				88D3FE362A4DE12A0094F953 /* TrackPositionIndicator.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		884B0DFA2A50CC2300D16304 /* CodeEditor */ = {
+			isa = PBXGroup;
+			children = (
+				8878A60D2A2D698900A2658C /* CodeEditorView.swift */,
+				884B0DF82A50CB1B00D16304 /* CodeEditorAddCodeButton.swift */,
+				884B0DFB2A50CC3900D16304 /* CodeEditorRow.swift */,
+			);
+			path = CodeEditor;
 			sourceTree = "<group>";
 		};
 		885CC2AC2A2D3E9A00AA5304 /* Extensions */ = {
@@ -310,6 +329,7 @@
 			name = datavyu;
 			packageProductDependencies = (
 				881A39D42A253A4900B4782D /* WrappingHStack */,
+				884B0DF42A4F792A00D16304 /* RubyGateway */,
 			);
 			productName = sheettest;
 			productReference = 881A39A52A242D4600B4782D /* datavyu.app */;
@@ -385,6 +405,7 @@
 			mainGroup = 881A399C2A242D4600B4782D;
 			packageReferences = (
 				881A39D32A253A4900B4782D /* XCRemoteSwiftPackageReference "WrappingHStack" */,
+				884B0DF32A4F792A00D16304 /* XCRemoteSwiftPackageReference "RubyGateway" */,
 			);
 			productRefGroup = 881A39A62A242D4600B4782D /* Products */;
 			projectDirPath = "";
@@ -447,8 +468,10 @@
 				881A39F52A2A917E00B4782D /* ArgumentModel.swift in Sources */,
 				8878A61F2A38D99100A2658C /* WeakTemporalLayout.swift in Sources */,
 				881A39FB2A2AB66900B4782D /* VideoView.swift in Sources */,
+				884B0DFC2A50CC3900D16304 /* CodeEditorRow.swift in Sources */,
 				8878A6252A3FE75200A2658C /* VideoHelpers.swift in Sources */,
 				881A39A92A242D4600B4782D /* sheettestApp.swift in Sources */,
+				884B0DF72A50BE6B00D16304 /* DatavyuView.swift in Sources */,
 				8878A6132A3026E100A2658C /* RubyScriptEngine.swift in Sources */,
 				8878A6382A41305E00A2658C /* ClockView.swift in Sources */,
 				8878A6362A411F9B00A2658C /* FileModel.swift in Sources */,
@@ -456,6 +479,7 @@
 				881A39F72A2A9D5900B4782D /* SheetView.swift in Sources */,
 				881A39F32A2A8D8700B4782D /* ColumnModel.swift in Sources */,
 				88D3FE372A4DE12A0094F953 /* TrackPositionIndicator.swift in Sources */,
+				884B0DF92A50CB1B00D16304 /* CodeEditorAddCodeButton.swift in Sources */,
 				881A3A002A2BE73B00B4782D /* ControllerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -776,6 +800,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		884B0DF32A4F792A00D16304 /* XCRemoteSwiftPackageReference "RubyGateway" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/johnfairh/RubyGateway";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -783,6 +815,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 881A39D32A253A4900B4782D /* XCRemoteSwiftPackageReference "WrappingHStack" */;
 			productName = WrappingHStack;
+		};
+		884B0DF42A4F792A00D16304 /* RubyGateway */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 884B0DF32A4F792A00D16304 /* XCRemoteSwiftPackageReference "RubyGateway" */;
+			productName = RubyGateway;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
