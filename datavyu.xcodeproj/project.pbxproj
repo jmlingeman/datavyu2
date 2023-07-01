@@ -30,6 +30,7 @@
 		884B0DF72A50BE6B00D16304 /* DatavyuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884B0DF62A50BE6B00D16304 /* DatavyuView.swift */; };
 		884B0DF92A50CB1B00D16304 /* CodeEditorAddCodeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884B0DF82A50CB1B00D16304 /* CodeEditorAddCodeButton.swift */; };
 		884B0DFC2A50CC3900D16304 /* CodeEditorRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884B0DFB2A50CC3900D16304 /* CodeEditorRow.swift */; };
+		884B0DFE2A50CDCE00D16304 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 884B0DFD2A50CDCE00D16304 /* README.md */; };
 		8878A60E2A2D698900A2658C /* CodeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A60D2A2D698900A2658C /* CodeEditorView.swift */; };
 		8878A6102A2FBC8700A2658C /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A60F2A2FBC8700A2658C /* Config.swift */; };
 		8878A6132A3026E100A2658C /* RubyScriptEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6122A3026E100A2658C /* RubyScriptEngine.swift */; };
@@ -91,6 +92,7 @@
 		884B0DF62A50BE6B00D16304 /* DatavyuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatavyuView.swift; sourceTree = "<group>"; };
 		884B0DF82A50CB1B00D16304 /* CodeEditorAddCodeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorAddCodeButton.swift; sourceTree = "<group>"; };
 		884B0DFB2A50CC3900D16304 /* CodeEditorRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorRow.swift; sourceTree = "<group>"; };
+		884B0DFD2A50CDCE00D16304 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		8878A60D2A2D698900A2658C /* CodeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorView.swift; sourceTree = "<group>"; };
 		8878A60F2A2FBC8700A2658C /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		8878A6122A3026E100A2658C /* RubyScriptEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RubyScriptEngine.swift; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 		881A399C2A242D4600B4782D = {
 			isa = PBXGroup;
 			children = (
+				884B0DFD2A50CDCE00D16304 /* README.md */,
 				881A39A72A242D4600B4782D /* datavyu */,
 				881A39B92A242D4700B4782D /* sheettestTests */,
 				881A39C32A242D4700B4782D /* sheettestUITests */,
@@ -425,6 +428,7 @@
 			files = (
 				881A39B02A242D4700B4782D /* Preview Assets.xcassets in Resources */,
 				881A39AD2A242D4700B4782D /* Assets.xcassets in Resources */,
+				884B0DFE2A50CDCE00D16304 /* README.md in Resources */,
 				881A39FD2A2ABBB900B4782D /* IMG_1234.MOV in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -60,10 +60,10 @@ More details will be added as development continues.
 - [ ] Ordinal Layout
 - [ ] Ruby Scripting
 - [ ] API
-- [ ] Code Editor
+- [x] Code Editor
 - [ ] Options menu
 - [ ] Auto update
 - [ ] App Store Deployment
 - [x] Track timeline
 - [ ] Audio Visualizations
-- [ ] Video sync
+- [x] Video sync
