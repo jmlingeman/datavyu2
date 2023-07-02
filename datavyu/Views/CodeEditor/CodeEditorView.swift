@@ -13,9 +13,7 @@ struct CodeEditorView: View {
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        
-        
-        VStack(alignment: .leading) {
+        ScrollView(.vertical) {
             Text("Code Editor").font(.system(size: 30)).frame(alignment: .topLeading).padding()
             WrappingHStack(fileModel.sheetModel.columns, id: \.self) { column in
                 CodeEditorRow(column: column)
