@@ -10,14 +10,18 @@ import WrappingHStack
 
 struct CodeEditorView: View {
     @ObservedObject var fileModel: FileModel
-    @State var selectedColumn: ColumnModel?
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        VStack {
-            WrappingHStack($fileModel.sheetModel.columns) { $column in
+        
+        
+        VStack(alignment: .leading) {
+            Text("Code Editor").font(.system(size: 30)).frame(alignment: .topLeading).padding()
+            WrappingHStack(fileModel.sheetModel.columns, id: \.self) { column in
                 CodeEditorRow(column: column)
             }
-        }.padding()
+            Button("Close") {dismiss()}.padding()
+        }
     }
 }
 

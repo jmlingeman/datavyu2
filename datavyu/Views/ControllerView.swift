@@ -10,8 +10,7 @@ import CoreMedia
 import SwiftUI
 
 struct ControllerView: View {
-    @StateObject var fileModel: FileModel
-    
+    @ObservedObject var fileModel: FileModel
     @FocusState private var columnInFocus: ColumnModel?
 
     func play() {
@@ -55,9 +54,7 @@ struct ControllerView: View {
     }
 
     var body: some View {
-        NavigationStack {
             VStack {
-
                 HStack {
                     Grid {
                         ForEach(fileModel.videoModels) { videoModel in
@@ -80,15 +77,8 @@ struct ControllerView: View {
                         }
                     }
                     Sheet(sheetDataModel: fileModel.sheetModel, columnInFocus: _columnInFocus)
-                }.navigationTitle(Text(fileModel.sheetModel.sheetName))
-            }.toolbar {
-                ToolbarItemGroup(placement: .automatic) {
-                    NavigationLink(
-                        destination: CodeEditorView(fileModel: fileModel),
-                        label: {Text("Code Editor")}
-                    ).navigationTitle(Text("Code Editor"))
                 }
-            }
+            
         }
     }
 }

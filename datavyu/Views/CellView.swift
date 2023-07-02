@@ -10,7 +10,6 @@ import WrappingHStack
 
 struct Cell: View {
     @ObservedObject var cellDataModel: CellModel
-    var isEditing: FocusState<Bool>.Binding
     let tcFormatter = MillisTimeFormatter()
     var columnInFocus: FocusState<ColumnModel?>.Binding
     let config = Config()

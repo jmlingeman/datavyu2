@@ -9,11 +9,11 @@ import SwiftUI
 import WrappingHStack
 
 struct ContentView: View {
-    @StateObject var fileModel = FileModel(sheetModel: SheetModel(sheetName: "IMG_1234"), videoModels: [VideoModel(videoFilePath: "IMG_1234"), VideoModel(videoFilePath: "IMG_1234")])
+    @StateObject private var fileModel = FileModel(sheetModel: SheetModel(sheetName: "IMG_1234"), videoModels: [VideoModel(videoFilePath: "IMG_1234"), VideoModel(videoFilePath: "IMG_1234")])
     
     var body: some View {
         HStack {
-            ControllerView(fileModel: fileModel)
+            DatavyuView(fileModel: fileModel)
         }
     }
 }
