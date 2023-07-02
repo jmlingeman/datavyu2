@@ -12,7 +12,7 @@ struct CodeEditorRow: View {
     
     var body: some View {
         HStack {
-            Text(column.columnName)
+            EditableLabel($column.columnName)
             ForEach($column.arguments) { $argument in
                 TextField(argument.name, text: $argument.name).frame(maxWidth: 100)
             }

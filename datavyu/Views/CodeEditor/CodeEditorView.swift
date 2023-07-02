@@ -18,7 +18,10 @@ struct CodeEditorView: View {
             WrappingHStack(fileModel.sheetModel.columns, id: \.self) { column in
                 CodeEditorRow(column: column)
             }
-            Button("Close") {dismiss()}.padding()
+            Button("Close") {
+                dismiss()
+                fileModel.sheetModel.updates += 1 // Force sheet update when we close
+            }.padding()
         }
     }
 }
