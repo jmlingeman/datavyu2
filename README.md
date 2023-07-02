@@ -1,5 +1,13 @@
 # Datavyu 2.0
 
+## Installion
+
+Not yet released.
+
+## Requirements
+
+- MacOS 11.0 or higher
+
 ## Why?
 
 Datavyu was a piece of software built during a time where Java was in deep transition between Java 6, 8, and (later) 10.

@@ -19,6 +19,15 @@
       }
     },
     {
+      "identity" : "swiftui-reorderable-foreach",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/globulus/swiftui-reorderable-foreach",
+      "state" : {
+        "revision" : "47f6ca1ad906ef2ae1f872ed34a10cc615ad99ca",
+        "version" : "1.0.0"
+      }
+    },
+    {
       "identity" : "wrappinghstack",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/dkk/WrappingHStack",

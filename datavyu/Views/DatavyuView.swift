@@ -9,7 +9,8 @@ import SwiftUI
 
 struct DatavyuView: View {
     @ObservedObject var fileModel: FileModel
-    @State private var showingSheet = false
+    @State private var showingCodeEditor = false
+    @State private var showingOptions = false
     
     var body: some View {
         ZStack {
@@ -18,10 +19,16 @@ struct DatavyuView: View {
                     .toolbar {
                         ToolbarItemGroup {
                             Button("Code Editor") {
-                                showingSheet.toggle()
+                                showingCodeEditor.toggle()
                             }
-                            .sheet(isPresented: $showingSheet) {
+                            .sheet(isPresented: $showingCodeEditor) {
                                 CodeEditorView(fileModel: fileModel).frame(width: gr.size.width / 2, height: gr.size.height / 2)
+                            }
+                            Button("Options") {
+                                showingOptions.toggle()
+                            }
+                            .sheet(isPresented: $showingOptions) {
+                                OptionsView().frame(width: gr.size.width / 2, height: gr.size.height / 2)
                             }
                         }
                     }

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		88140FC82A5214F90095DB5A /* SwiftUIReorderableForEach in Frameworks */ = {isa = PBXBuildFile; productRef = 88140FC72A5214F90095DB5A /* SwiftUIReorderableForEach */; };
+		88140FCD2A5218100095DB5A /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88140FCC2A5218100095DB5A /* OptionsView.swift */; };
 		881A39A92A242D4600B4782D /* sheettestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39A82A242D4600B4782D /* sheettestApp.swift */; };
 		881A39AB2A242D4600B4782D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39AA2A242D4600B4782D /* ContentView.swift */; };
 		881A39AD2A242D4700B4782D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 881A39AC2A242D4700B4782D /* Assets.xcassets */; };
@@ -67,6 +69,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		88140FCC2A5218100095DB5A /* OptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsView.swift; sourceTree = "<group>"; };
 		881A39A52A242D4600B4782D /* datavyu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = datavyu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		881A39A82A242D4600B4782D /* sheettestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sheettestApp.swift; sourceTree = "<group>"; };
 		881A39AA2A242D4600B4782D /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ContentView.swift; sourceTree = "<group>"; };
@@ -116,6 +119,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88140FC82A5214F90095DB5A /* SwiftUIReorderableForEach in Frameworks */,
 				881A39D52A253A4900B4782D /* WrappingHStack in Frameworks */,
 				884B0DF52A4F792A00D16304 /* RubyGateway in Frameworks */,
 			);
@@ -138,6 +142,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		88140FCB2A5217FE0095DB5A /* Options */ = {
+			isa = PBXGroup;
+			children = (
+				88140FCC2A5218100095DB5A /* OptionsView.swift */,
+			);
+			path = Options;
+			sourceTree = "<group>";
+		};
 		881A399C2A242D4600B4782D = {
 			isa = PBXGroup;
 			children = (
@@ -216,6 +228,7 @@
 		881A39E92A2A886400B4782D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				88140FCB2A5217FE0095DB5A /* Options */,
 				884B0DFA2A50CC2300D16304 /* CodeEditor */,
 				8878A62E2A3FFCB600A2658C /* Audio */,
 				8878A61D2A38D97500A2658C /* Layouts */,
@@ -333,6 +346,7 @@
 			packageProductDependencies = (
 				881A39D42A253A4900B4782D /* WrappingHStack */,
 				884B0DF42A4F792A00D16304 /* RubyGateway */,
+				88140FC72A5214F90095DB5A /* SwiftUIReorderableForEach */,
 			);
 			productName = sheettest;
 			productReference = 881A39A52A242D4600B4782D /* datavyu.app */;
@@ -409,6 +423,7 @@
 			packageReferences = (
 				881A39D32A253A4900B4782D /* XCRemoteSwiftPackageReference "WrappingHStack" */,
 				884B0DF32A4F792A00D16304 /* XCRemoteSwiftPackageReference "RubyGateway" */,
+				88140FC62A5214F90095DB5A /* XCRemoteSwiftPackageReference "swiftui-reorderable-foreach" */,
 			);
 			productRefGroup = 881A39A62A242D4600B4782D /* Products */;
 			projectDirPath = "";
@@ -473,6 +488,7 @@
 				8878A61F2A38D99100A2658C /* WeakTemporalLayout.swift in Sources */,
 				881A39FB2A2AB66900B4782D /* VideoView.swift in Sources */,
 				884B0DFC2A50CC3900D16304 /* CodeEditorRow.swift in Sources */,
+				88140FCD2A5218100095DB5A /* OptionsView.swift in Sources */,
 				8878A6252A3FE75200A2658C /* VideoHelpers.swift in Sources */,
 				881A39A92A242D4600B4782D /* sheettestApp.swift in Sources */,
 				884B0DF72A50BE6B00D16304 /* DatavyuView.swift in Sources */,
@@ -571,7 +587,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -626,7 +642,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -800,6 +816,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		88140FC62A5214F90095DB5A /* XCRemoteSwiftPackageReference "swiftui-reorderable-foreach" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/globulus/swiftui-reorderable-foreach";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		881A39D32A253A4900B4782D /* XCRemoteSwiftPackageReference "WrappingHStack" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/dkk/WrappingHStack";
@@ -819,6 +843,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		88140FC72A5214F90095DB5A /* SwiftUIReorderableForEach */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 88140FC62A5214F90095DB5A /* XCRemoteSwiftPackageReference "swiftui-reorderable-foreach" */;
+			productName = SwiftUIReorderableForEach;
+		};
 		881A39D42A253A4900B4782D /* WrappingHStack */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 881A39D32A253A4900B4782D /* XCRemoteSwiftPackageReference "WrappingHStack" */;
