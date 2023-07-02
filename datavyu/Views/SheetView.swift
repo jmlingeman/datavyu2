@@ -27,8 +27,8 @@ struct Sheet: View {
                 GeometryReader { sheetGr in
                     ScrollView([.horizontal, .vertical], showsIndicators: true) {
                         WeakTemporalLayout(sheetModel: $sheetDataModel) {
-                            ForEach(Array(sheetDataModel.columns.enumerated()), id: \.offset) { idx, column in
-                                Text(column.columnName)
+                            ForEach(Array($sheetDataModel.columns.enumerated()), id: \.offset) { idx, $column in
+                                EditableLabel($column.columnName)
                                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
                                     .focused($columnInFocus, equals: column)
                                     .background(columnInFocus == column ? Color.blue : Color.black)
