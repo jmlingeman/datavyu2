@@ -32,7 +32,7 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
         self.videoFilePath = videoFilePath
         currentPos = 0.0
         currentTime = 0.0
-        player = AVPlayer(url: Bundle.main.url(forResource: videoFilePath, withExtension: "MOV")!)
+        player = AVPlayer(url: URL(fileURLWithPath: videoFilePath))
         duration = player.getCurrentTrackDuration()
         markers = []
     }

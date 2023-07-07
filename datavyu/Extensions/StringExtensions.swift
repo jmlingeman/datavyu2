@@ -30,3 +30,10 @@ extension String
         return self
     }
 }
+
+extension String {
+    func matchFirst(_ regex: Regex<Substring>) -> Bool {
+        // errors count as "not match"
+        (try? regex.firstMatch(in: self)) != nil
+    }
+}

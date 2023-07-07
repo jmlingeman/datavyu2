@@ -7,6 +7,7 @@
 
 import Foundation
 import ZIPFoundation
+import Yams
 
 struct FileLoad {
     let file: FileModel
@@ -16,8 +17,9 @@ struct FileLoad {
 func saveOpfFile(outputFilename: String) {}
 
 func loadOpfFile(inputFilename: URL) -> FileModel {
-    let workingDirectory = NSTemporaryDirectory()
+    let workingDirectory = NSTemporaryDirectory() + "/" + UUID().uuidString + "/"
     var db = FileModel()
+    var media: [VideoModel] = []
     do {
         try FileManager.default.unzipItem(at: inputFilename, to: URL(filePath: workingDirectory))
         var items: [String]
@@ -28,11 +30,15 @@ func loadOpfFile(inputFilename: URL) -> FileModel {
             items = []
         }
         
-        var media: [VideoModel] = []
         for item in items {
             switch item {
             case "db":
                 db = parseDbFile(fileUrl: URL(filePath: "\(workingDirectory)/\(item)"))
+            case "project":
+                print("Loading project")
+                media = parseProjectFile(fileUrl: URL(filePath: "\(workingDirectory)/\(item)"))
+            case let s where s.matchFirst(/^[0-9]+$/):
+                print(item)
             default:
                 print("Went beyond index of assumed files")
             }
@@ -40,8 +46,74 @@ func loadOpfFile(inputFilename: URL) -> FileModel {
     } catch {
         print("Error opening opf file: \(error) for \(inputFilename.absoluteString)")
     }
+    
+    if !media.isEmpty {
+        db.videoModels = media
+    }
 
     return db
+}
+
+struct ProjectFile: Codable {
+    var dbFile: String
+    var name: String
+    var origpath: String
+    var version: Int
+    var viewerSettings: [ViewerSetting]
+}
+
+struct ViewerSetting: Codable {
+    var classifier: String
+    var feed: String
+    var plugin: String
+    var settingsId: String
+    var trackSettings: TrackSetting
+    var version: Int
+}
+
+struct TrackSetting: Codable {
+    var bookmark: String
+    var bookmarks: [String]
+    var locked: Bool
+    var version: Int
+}
+
+func parseProjectFile(fileUrl: URL) -> [VideoModel] {
+    /*
+     !project
+     dbFile: test.opf
+     name: test
+     origpath: /Users/jesse/Downloads
+     version: 5
+     viewerSettings:
+     - !vs
+     classifier: datavyu.video
+     feed: /Users/jesse/Downloads/IMG_0822 2.MOV
+     plugin: db3fc496-58a7-3706-8538-3f61278b5bec
+     settingsId: '1'
+     trackSettings: !ts
+     bookmark: '-1'
+     bookmarks: []
+     locked: false
+     version: 2
+     version: 3
+     */
+    var videoModels = [VideoModel]()
+    do {
+        let text = try String(contentsOf: fileUrl, encoding: .utf8)
+        let project = try YAMLDecoder().decode(ProjectFile.self, from: text)
+        
+        for vs in project.viewerSettings {
+            let videoPath = vs.feed
+            let videoModel = VideoModel(videoFilePath: videoPath)
+            videoModels.append(videoModel)
+        }
+        
+    } catch { /* error handling here */
+        print("ERROR \(error)")
+    }
+    
+    return videoModels
 }
 
 func parseDbFile(fileUrl: URL) -> FileModel {

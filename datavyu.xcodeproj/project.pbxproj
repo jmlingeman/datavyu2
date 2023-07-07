@@ -52,6 +52,7 @@
 		88F62E982A58B05500DC5B60 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F62E972A58B05500DC5B60 /* StringExtensions.swift */; };
 		88F62E9B2A58BDD700DC5B60 /* DatavyuErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F62E9A2A58BDD700DC5B60 /* DatavyuErrors.swift */; };
 		88F62E9E2A58CEA800DC5B60 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 88F62E9D2A58CEA800DC5B60 /* ZIPFoundation */; };
+		88F62EA12A58D51600DC5B60 /* Yams in Frameworks */ = {isa = PBXBuildFile; productRef = 88F62EA02A58D51600DC5B60 /* Yams */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -125,6 +126,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				88140FC82A5214F90095DB5A /* SwiftUIReorderableForEach in Frameworks */,
+				88F62EA12A58D51600DC5B60 /* Yams in Frameworks */,
 				881A39D52A253A4900B4782D /* WrappingHStack in Frameworks */,
 				884B0DF52A4F792A00D16304 /* RubyGateway in Frameworks */,
 				88F62E9E2A58CEA800DC5B60 /* ZIPFoundation in Frameworks */,
@@ -364,6 +366,7 @@
 				884B0DF42A4F792A00D16304 /* RubyGateway */,
 				88140FC72A5214F90095DB5A /* SwiftUIReorderableForEach */,
 				88F62E9D2A58CEA800DC5B60 /* ZIPFoundation */,
+				88F62EA02A58D51600DC5B60 /* Yams */,
 			);
 			productName = sheettest;
 			productReference = 881A39A52A242D4600B4782D /* datavyu.app */;
@@ -442,6 +445,7 @@
 				884B0DF32A4F792A00D16304 /* XCRemoteSwiftPackageReference "RubyGateway" */,
 				88140FC62A5214F90095DB5A /* XCRemoteSwiftPackageReference "swiftui-reorderable-foreach" */,
 				88F62E9C2A58CEA800DC5B60 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
+				88F62E9F2A58D51600DC5B60 /* XCRemoteSwiftPackageReference "Yams" */,
 			);
 			productRefGroup = 881A39A62A242D4600B4782D /* Products */;
 			projectDirPath = "";
@@ -870,6 +874,14 @@
 				minimumVersion = 0.9.16;
 			};
 		};
+		88F62E9F2A58D51600DC5B60 /* XCRemoteSwiftPackageReference "Yams" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jpsim/Yams";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -892,6 +904,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 88F62E9C2A58CEA800DC5B60 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
 			productName = ZIPFoundation;
+		};
+		88F62EA02A58D51600DC5B60 /* Yams */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 88F62E9F2A58D51600DC5B60 /* XCRemoteSwiftPackageReference "Yams" */;
+			productName = Yams;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
