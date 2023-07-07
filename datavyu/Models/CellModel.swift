@@ -25,9 +25,21 @@ class CellModel: ObservableObject, Identifiable, Equatable, Hashable {
     func setOnset(onset: Double) {
         self.onset = Int(onset * 1000)
     }
+    
+    func setOnset(onset: String) {
+        self.onset = timestringToTimestamp(timestring: onset)
+    }
+    
+    func setOffset(offset: String) {
+        self.offset = timestringToTimestamp(timestring: offset)
+    }
 
     func setOffset(offset: Double) {
         self.offset = Int(offset * 1000)
+    }
+    
+    func setArgumentValue(index: Int, value: String) {
+        arguments[index].value = value
     }
 
     func formatTimestamp(timestamp: Int) -> String {

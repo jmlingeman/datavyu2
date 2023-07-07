@@ -9,6 +9,8 @@ import Foundation
 import SwiftUI
 
 class FileModel: ObservableObject, Identifiable {
+    var version = "#4"
+    
     @Published var videoModels: [VideoModel]
     @Published var sheetModel: SheetModel
     @Published var updates: Int

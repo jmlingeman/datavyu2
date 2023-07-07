@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DatavyuView: View {
-    @ObservedObject var fileModel: FileModel
+    @State var fileModel: FileModel
     @State private var showingCodeEditor = false
     @State private var showingOptions = false
     
@@ -29,6 +29,15 @@ struct DatavyuView: View {
                             }
                             .sheet(isPresented: $showingOptions) {
                                 OptionsView().frame(width: gr.size.width / 2, height: gr.size.height / 2)
+                            }
+                            Button("Open File")
+                            {
+                                let panel = NSOpenPanel()
+                                panel.allowsMultipleSelection = false
+                                panel.canChooseDirectories = false
+                                if panel.runModal() == .OK {
+                                    fileModel = parseDbFile(fileUrl: panel.url!)
+                                }
                             }
                         }
                     }

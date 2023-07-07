@@ -11,6 +11,7 @@ class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable {
     @Published var columnName: String
     @Published var cells: [CellModel]
     @Published var arguments: [Argument] = [Argument(name: "test1"), Argument(name: "test2")]
+    @Published var hidden: Bool = false
 
     static func == (lhs: ColumnModel, rhs: ColumnModel) -> Bool {
         if lhs.columnName == rhs.columnName {
@@ -26,6 +27,14 @@ class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable {
             cell.arguments.append(newArg)
         }
     }
+    
+    func addArgument(argument: Argument) {
+        arguments.append(argument)
+        for cell in cells {
+            cell.arguments.append(argument)
+        }
+    }
+    
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(columnName)
@@ -33,6 +42,19 @@ class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable {
 
     init(columnName: String) {
         self.columnName = columnName
+        cells = [CellModel]()
+    }
+    
+    init(columnName: String, arguments: [Argument]) {
+        self.columnName = columnName
+        self.arguments = arguments
+        cells = [CellModel]()
+    }
+    
+    init(columnName: String, arguments: [Argument], hidden: Bool) {
+        self.columnName = columnName
+        self.arguments = arguments
+        self.hidden = hidden
         cells = [CellModel]()
     }
 
