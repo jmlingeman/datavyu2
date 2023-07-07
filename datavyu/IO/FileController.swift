@@ -6,63 +6,59 @@
 //
 
 import Foundation
-import ZipArchive
+import ZIPFoundation
 
 struct FileLoad {
     let file: FileModel
-    var currentColumn: ColumnModel = ColumnModel(columnName: "")
+    var currentColumn: ColumnModel = .init(columnName: "")
 }
 
-func saveOpfFile(outputFilename: String) {
-    
-}
+func saveOpfFile(outputFilename: String) {}
 
-//func loadOpfFile(inputFilename: String) -> FileModel {
-//    let workingDirectory = NSTemporaryDirectory()
-//    let success: Bool = SSZipArchive.unzipFile(atPath: inputFilename, toDestination: workingDirectory)
-//    
-//    if success {
-//        var items: [String]
-//        do {
-//            items = try FileManager.default.contentsOfDirectory(atPath: workingDirectory)
-//        } catch {
-//            return FileModel()
-//        }
-//        
-//        var db: FileModel
-//        var media: [VideoModel] = []
-//        for (index, item) in items.enumerated() {
-//            switch item {
-//            case "db":
-//                db = parseDbFile(filename: item)
-//                return db
-//            default:
-//                print("Went beyond index of assumed files")
-//            }
-//        }
-//    } else {
-//        print("Error: File could not be unzipped and may be corrupted.")
-//    }
-//}
+func loadOpfFile(inputFilename: URL) -> FileModel {
+    let workingDirectory = NSTemporaryDirectory()
+    var db = FileModel()
+    do {
+        try FileManager.default.unzipItem(at: inputFilename, to: URL(filePath: workingDirectory))
+        var items: [String]
+        do {
+            items = try FileManager.default.contentsOfDirectory(atPath: workingDirectory)
+        } catch {
+            print("Error reading zip file contents: \(error)")
+            items = []
+        }
+        
+        var media: [VideoModel] = []
+        for item in items {
+            switch item {
+            case "db":
+                db = parseDbFile(fileUrl: URL(filePath: "\(workingDirectory)/\(item)"))
+            default:
+                print("Went beyond index of assumed files")
+            }
+        }
+    } catch {
+        print("Error opening opf file: \(error) for \(inputFilename.absoluteString)")
+    }
+
+    return db
+}
 
 func parseDbFile(fileUrl: URL) -> FileModel {
-    
-    
     let sheet = SheetModel(sheetName: fileUrl.lastPathComponent)
     let file = FileModel(sheetModel: sheet)
     var fileLoad = FileLoad(file: file)
-    
+
     do {
         let text = try String(contentsOf: fileUrl, encoding: .utf8)
         print(text)
         for line in text.split(separator: "\n") {
             parseDbLine(line: line, fileLoad: &fileLoad)
         }
-    }
-    catch {/* error handling here */
+    } catch { /* error handling here */
         print("ERROR \(error)")
     }
-    
+
     return file
 }
 
@@ -91,27 +87,27 @@ func parseDbLine(line: Substring, fileLoad: inout FileLoad) {
             let arg = Argument(name: argName)
             column.addArgument(argument: arg)
         }
-        
+
         print("Adding column \(columnName) with arguments \(arguments)")
-        
+
         fileLoad.file.sheetModel.addColumn(column: column)
         fileLoad.currentColumn = column
     } else if line.firstMatch(of: /^[0-9]+:[0-9]+:[0-9]+:[0-9]+/) != nil {
         let onset = line.split(separator: ",")[0]
         let offset = line.split(separator: ",")[1]
         let lineStripParens = String(line.replacing("(", with: "", maxReplacements: 1)).replacingLastOccurrenceOfString(")", with: "", caseInsensitive: false)
-        
+
         let values = [String]()
         let cell = fileLoad.currentColumn.addCell()
         cell.setOnset(onset: String(onset))
         cell.setOffset(offset: String(offset))
-        
+
         var index = 0
         for value in lineStripParens.split(separator: ",")[2...] {
             cell.setArgumentValue(index: index, value: String(value))
             index += 1
         }
-        
+
         print("Adding cell \(onset) with values \(values)")
     } else {
         print("ERROR LINE DID NOT MATCH")

@@ -36,7 +36,7 @@ struct DatavyuView: View {
                                 panel.allowsMultipleSelection = false
                                 panel.canChooseDirectories = false
                                 if panel.runModal() == .OK {
-                                    fileModel = parseDbFile(fileUrl: panel.url!)
+                                    fileModel = loadOpfFile(inputFilename: panel.url!)
                                 }
                             }
                         }

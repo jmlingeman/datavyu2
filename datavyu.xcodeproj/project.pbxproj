@@ -33,7 +33,6 @@
 		884B0DF92A50CB1B00D16304 /* CodeEditorAddCodeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884B0DF82A50CB1B00D16304 /* CodeEditorAddCodeButton.swift */; };
 		884B0DFC2A50CC3900D16304 /* CodeEditorRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884B0DFB2A50CC3900D16304 /* CodeEditorRow.swift */; };
 		884B0DFE2A50CDCE00D16304 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 884B0DFD2A50CDCE00D16304 /* README.md */; };
-		884DDB382A55F64E00235979 /* ZipArchive in Frameworks */ = {isa = PBXBuildFile; productRef = 884DDB372A55F64E00235979 /* ZipArchive */; };
 		8878A60E2A2D698900A2658C /* CodeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A60D2A2D698900A2658C /* CodeEditorView.swift */; };
 		8878A6102A2FBC8700A2658C /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A60F2A2FBC8700A2658C /* Config.swift */; };
 		8878A6132A3026E100A2658C /* RubyScriptEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6122A3026E100A2658C /* RubyScriptEngine.swift */; };
@@ -51,6 +50,8 @@
 		8878A63A2A427C6000A2658C /* MarkerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6392A427C6000A2658C /* MarkerModel.swift */; };
 		88D3FE372A4DE12A0094F953 /* TrackPositionIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3FE362A4DE12A0094F953 /* TrackPositionIndicator.swift */; };
 		88F62E982A58B05500DC5B60 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F62E972A58B05500DC5B60 /* StringExtensions.swift */; };
+		88F62E9B2A58BDD700DC5B60 /* DatavyuErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F62E9A2A58BDD700DC5B60 /* DatavyuErrors.swift */; };
+		88F62E9E2A58CEA800DC5B60 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 88F62E9D2A58CEA800DC5B60 /* ZIPFoundation */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,6 +116,7 @@
 		8878A6392A427C6000A2658C /* MarkerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkerModel.swift; sourceTree = "<group>"; };
 		88D3FE362A4DE12A0094F953 /* TrackPositionIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackPositionIndicator.swift; sourceTree = "<group>"; };
 		88F62E972A58B05500DC5B60 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
+		88F62E9A2A58BDD700DC5B60 /* DatavyuErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatavyuErrors.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,7 +127,7 @@
 				88140FC82A5214F90095DB5A /* SwiftUIReorderableForEach in Frameworks */,
 				881A39D52A253A4900B4782D /* WrappingHStack in Frameworks */,
 				884B0DF52A4F792A00D16304 /* RubyGateway in Frameworks */,
-				884DDB382A55F64E00235979 /* ZipArchive in Frameworks */,
+				88F62E9E2A58CEA800DC5B60 /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -178,6 +180,7 @@
 		881A39A72A242D4600B4782D /* datavyu */ = {
 			isa = PBXGroup;
 			children = (
+				88F62E992A58BDCA00DC5B60 /* Errors */,
 				8878A62A2A3FED2E00A2658C /* Helpers */,
 				8878A6112A3026CB00A2658C /* Scripting */,
 				885CC2AC2A2D3E9A00AA5304 /* Extensions */,
@@ -332,6 +335,14 @@
 			path = Audio;
 			sourceTree = "<group>";
 		};
+		88F62E992A58BDCA00DC5B60 /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				88F62E9A2A58BDD700DC5B60 /* DatavyuErrors.swift */,
+			);
+			path = Errors;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -352,7 +363,7 @@
 				881A39D42A253A4900B4782D /* WrappingHStack */,
 				884B0DF42A4F792A00D16304 /* RubyGateway */,
 				88140FC72A5214F90095DB5A /* SwiftUIReorderableForEach */,
-				884DDB372A55F64E00235979 /* ZipArchive */,
+				88F62E9D2A58CEA800DC5B60 /* ZIPFoundation */,
 			);
 			productName = sheettest;
 			productReference = 881A39A52A242D4600B4782D /* datavyu.app */;
@@ -430,7 +441,7 @@
 				881A39D32A253A4900B4782D /* XCRemoteSwiftPackageReference "WrappingHStack" */,
 				884B0DF32A4F792A00D16304 /* XCRemoteSwiftPackageReference "RubyGateway" */,
 				88140FC62A5214F90095DB5A /* XCRemoteSwiftPackageReference "swiftui-reorderable-foreach" */,
-				884DDB362A55F64E00235979 /* XCRemoteSwiftPackageReference "ZipArchive" */,
+				88F62E9C2A58CEA800DC5B60 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
 			);
 			productRefGroup = 881A39A62A242D4600B4782D /* Products */;
 			projectDirPath = "";
@@ -499,6 +510,7 @@
 				88140FCD2A5218100095DB5A /* OptionsView.swift in Sources */,
 				8878A6252A3FE75200A2658C /* VideoHelpers.swift in Sources */,
 				881A39A92A242D4600B4782D /* sheettestApp.swift in Sources */,
+				88F62E9B2A58BDD700DC5B60 /* DatavyuErrors.swift in Sources */,
 				884B0DF72A50BE6B00D16304 /* DatavyuView.swift in Sources */,
 				8878A6132A3026E100A2658C /* RubyScriptEngine.swift in Sources */,
 				8878A6382A41305E00A2658C /* ClockView.swift in Sources */,
@@ -850,12 +862,12 @@
 				kind = branch;
 			};
 		};
-		884DDB362A55F64E00235979 /* XCRemoteSwiftPackageReference "ZipArchive" */ = {
+		88F62E9C2A58CEA800DC5B60 /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ZipArchive/ZipArchive";
+			repositoryURL = "https://github.com/weichsel/ZIPFoundation";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
+				minimumVersion = 0.9.16;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -876,10 +888,10 @@
 			package = 884B0DF32A4F792A00D16304 /* XCRemoteSwiftPackageReference "RubyGateway" */;
 			productName = RubyGateway;
 		};
-		884DDB372A55F64E00235979 /* ZipArchive */ = {
+		88F62E9D2A58CEA800DC5B60 /* ZIPFoundation */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 884DDB362A55F64E00235979 /* XCRemoteSwiftPackageReference "ZipArchive" */;
-			productName = ZipArchive;
+			package = 88F62E9C2A58CEA800DC5B60 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

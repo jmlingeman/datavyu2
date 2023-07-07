@@ -37,12 +37,12 @@
       }
     },
     {
-      "identity" : "ziparchive",
+      "identity" : "zipfoundation",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ZipArchive/ZipArchive",
+      "location" : "https://github.com/weichsel/ZIPFoundation",
       "state" : {
-        "revision" : "b56f8c605a233fb25fe8d49f1b9ed50912c2d1b7",
-        "version" : "2.5.4"
+        "revision" : "43ec568034b3731101dbf7670765d671c30f54f3",
+        "version" : "0.9.16"
       }
     }
   ],

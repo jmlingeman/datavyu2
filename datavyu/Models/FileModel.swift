@@ -17,6 +17,11 @@ class FileModel: ObservableObject, Identifiable {
     @Published var primaryMarker : Marker?
     @Published var primaryVideo : VideoModel?
 
+    init() {
+        self.sheetModel = SheetModel(sheetName: "default")
+        self.videoModels = []
+        self.updates = 0
+    }
     
     init(sheetModel: SheetModel) {
         self.sheetModel = sheetModel
