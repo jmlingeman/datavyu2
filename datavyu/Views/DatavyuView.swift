@@ -39,6 +39,13 @@ struct DatavyuView: View {
                                     fileModel = loadOpfFile(inputFilename: panel.url!)
                                 }
                             }
+                            Button("Save File")
+                            {
+                                let panel = NSSavePanel()
+                                if panel.runModal() == .OK {
+                                    saveOpfFile(fileModel: fileModel, outputFilename: panel.url!)
+                                }
+                            }
                         }
                     }
             }

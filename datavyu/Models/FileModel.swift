@@ -16,6 +16,8 @@ class FileModel: ObservableObject, Identifiable {
     @Published var updates: Int
     @Published var primaryMarker : Marker?
     @Published var primaryVideo : VideoModel?
+    
+    var legacyProjectSettings: ProjectFile?
 
     init() {
         self.sheetModel = SheetModel(sheetName: "default")
@@ -37,6 +39,11 @@ class FileModel: ObservableObject, Identifiable {
         if videoModels.count > 0 {
             primaryVideo = videoModels[0]
         }
+    }
+    
+    convenience init(sheetModel: SheetModel, videoModels: [VideoModel], legacyProjectSettings: ProjectFile) {
+        self.init(sheetModel: sheetModel, videoModels: videoModels)
+        self.legacyProjectSettings = legacyProjectSettings
     }
     
     func addVideo(videoModel: VideoModel) {

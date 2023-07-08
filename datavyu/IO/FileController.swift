@@ -9,12 +9,107 @@ import Foundation
 import ZIPFoundation
 import Yams
 
-struct FileLoad {
-    let file: FileModel
-    var currentColumn: ColumnModel = .init(columnName: "")
+
+
+func saveOpfFile(fileModel: FileModel, outputFilename: URL) {
+    let db = saveDB(fileModel: fileModel)
+    let project = saveProject(fileModel: fileModel)
+    
+    let fileManager = FileManager()
+    
+    let archive = Archive(url: outputFilename, accessMode: .create)
+    
+    do {
+        try archive?.addEntry(with: "db", type: .file, uncompressedSize: UInt32(db.count), provider: { (position, size) -> Data in
+            return db.data(using: .utf8)!.subdata(in: position..<position+size)
+        })
+        try archive?.addEntry(with: "project", type: .file, uncompressedSize: UInt32(project.count), provider: { (position, size) -> Data in
+            return project.data(using: .utf8)!.subdata(in: position..<position+size)
+        })
+    } catch {
+        print("ERROR WRITING ZIP FILE: \(error)")
+    }
 }
 
-func saveOpfFile(outputFilename: String) {}
+func saveDB(fileModel: FileModel) -> String {
+    var dbString = "#4\n"
+    for column in fileModel.sheetModel.columns {
+        let colstr = generateColumnString(columnModel: column)
+        dbString += colstr
+    }
+    
+    return dbString
+}
+
+private func generateColumnString(columnModel: ColumnModel) -> String {
+    var s = "\(columnModel.columnName) (MATRIX,\(columnModel.hidden),)-"
+    
+    var argnames = [String]()
+    for argument in columnModel.arguments {
+        argnames.append("\(argument.name)|NOMINAL")
+    }
+    s += argnames.joined(separator: ",") + "\n"
+    
+    for cell in columnModel.cells {
+        var args = [String]()
+        for argument in cell.arguments {
+            args.append(argument.value)
+        }
+        let argstr = "(\(args.joined(separator: ",")))"
+        let cellstr = "\(formatTimestamp(timestamp: cell.onset)),\(formatTimestamp(timestamp: cell.offset))," + argstr + "\n"
+        
+        s += cellstr
+    }
+    
+    return s
+}
+
+func saveProject(fileModel: FileModel) -> String {
+    /*
+     !project
+     dbFile: test.opf
+     name: test
+     origpath: /Users/jesse/Downloads
+     version: 5
+     viewerSettings:
+     - !vs
+     classifier: datavyu.video
+     feed: /Users/jesse/Downloads/IMG_0822 2.MOV
+     plugin: db3fc496-58a7-3706-8538-3f61278b5bec
+     settingsId: '1'
+     trackSettings: !ts
+     bookmark: '-1'
+     bookmarks: []
+     locked: false
+     version: 2
+     version: 3
+     */
+    
+    var viewerSettings = [ViewerSetting]()
+    for video in fileModel.videoModels {
+        let vs = ViewerSetting(classifier: "datavyu.video",
+                               feed: video.videoFilePath,
+                               plugin: "db3fc496-58a7-3706-8538-3f61278b5bec",
+                               settingsId: "1",
+                               trackSettings: video.trackSettings != nil ? video.trackSettings! : TrackSetting(), version: 2)
+    }
+    var project = ProjectFile(dbFile: fileModel.sheetModel.sheetName,
+                              name: fileModel.sheetModel.sheetName,
+                              origpath: "", version: 5,
+                              viewerSettings: viewerSettings)
+    
+    do {
+        let encodedYaml = try YAMLEncoder().encode(project)
+        return encodedYaml
+    } catch {
+        print("ERROR encoding project file: \(error)")
+    }
+    return ""
+}
+
+func saveLegacyFiles(fileModel: FileModel) {
+    
+}
 
 func loadOpfFile(inputFilename: URL) -> FileModel {
     let workingDirectory = NSTemporaryDirectory() + "/" + UUID().uuidString + "/"
@@ -37,6 +132,7 @@ func loadOpfFile(inputFilename: URL) -> FileModel {
             case "project":
                 print("Loading project")
                 media = parseProjectFile(fileUrl: URL(filePath: "\(workingDirectory)/\(item)"))
+                
             case let s where s.matchFirst(/^[0-9]+$/):
                 print(item)
             default:
@@ -54,29 +150,6 @@ func loadOpfFile(inputFilename: URL) -> FileModel {
     return db
 }
 
-struct ProjectFile: Codable {
-    var dbFile: String
-    var name: String
-    var origpath: String
-    var version: Int
-    var viewerSettings: [ViewerSetting]
-}
-
-struct ViewerSetting: Codable {
-    var classifier: String
-    var feed: String
-    var plugin: String
-    var settingsId: String
-    var trackSettings: TrackSetting
-    var version: Int
-}
-
-struct TrackSetting: Codable {
-    var bookmark: String
-    var bookmarks: [String]
-    var locked: Bool
-    var version: Int
-}
 
 func parseProjectFile(fileUrl: URL) -> [VideoModel] {
     /*
@@ -102,7 +175,7 @@ func parseProjectFile(fileUrl: URL) -> [VideoModel] {
     do {
         let text = try String(contentsOf: fileUrl, encoding: .utf8)
         let project = try YAMLDecoder().decode(ProjectFile.self, from: text)
-        
+                
         for vs in project.viewerSettings {
             let videoPath = vs.feed
             let videoModel = VideoModel(videoFilePath: videoPath)
@@ -164,7 +237,7 @@ func parseDbLine(line: Substring, fileLoad: inout FileLoad) {
 
         fileLoad.file.sheetModel.addColumn(column: column)
         fileLoad.currentColumn = column
-    } else if line.firstMatch(of: /^[0-9]+:[0-9]+:[0-9]+:[0-9]+/) != nil {
+    } else if line.firstMatch(of: /^[0-9]+:[0-9]+:[0-9]+:[0-9]+/) != nil { // Capture a timestamp
         let onset = line.split(separator: ",")[0]
         let offset = line.split(separator: ",")[1]
         let lineStripParens = String(line.replacing("(", with: "", maxReplacements: 1)).replacingLastOccurrenceOfString(")", with: "", caseInsensitive: false)

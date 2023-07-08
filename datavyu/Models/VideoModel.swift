@@ -9,6 +9,8 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
     @Published var markers: [Marker]
     @Published var selectedMarker: Marker?
     @Published var updates = 0
+    
+    var trackSettings: TrackSetting? = nil
 
     let player: AVPlayer
     
@@ -36,6 +38,12 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
         duration = player.getCurrentTrackDuration()
         markers = []
     }
+    
+    convenience init(videoFilePath: String, trackSettings: TrackSetting) {
+        self.init(videoFilePath: videoFilePath)
+        self.trackSettings = trackSettings
+    }
+    
     
     func play() {
         player.play()

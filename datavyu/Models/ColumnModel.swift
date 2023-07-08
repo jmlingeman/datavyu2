@@ -34,7 +34,6 @@ class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable {
             cell.arguments.append(argument)
         }
     }
-    
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(columnName)
