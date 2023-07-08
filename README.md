@@ -64,7 +64,7 @@ More details will be added as development continues.
 - [x] Video Playback
 - [x] Weak Temporal Ordering Layout
 - [ ] Hidden Columns
-- [ ] File saving/loading
+- [x] File saving/loading
 - [ ] Ordinal Layout
 - [ ] Ruby Scripting
 - [ ] API
