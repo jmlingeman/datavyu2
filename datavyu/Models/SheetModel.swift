@@ -30,4 +30,16 @@ class SheetModel: ObservableObject, Identifiable {
         let _ = column.addCell()
         let _ = column2.addCell()
     }
+    
+    func setColumn(column: ColumnModel) {
+        let colIdx = columns.firstIndex(where: { c in
+            c.columnName == column.columnName
+        })
+        
+        if colIdx == nil {
+            addColumn(column: column)
+        } else {
+            columns[colIdx!] = column
+        }
+    }
 }

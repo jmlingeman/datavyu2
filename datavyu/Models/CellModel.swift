@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import Vapor
 
-class CellModel: ObservableObject, Identifiable, Equatable, Hashable {
+final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Codable, Content {
 
-    @Published var column: ColumnModel
+//    @Published var column: ColumnModel
     @Published var onset: Int = 0
     @Published var offset: Int = 0
     @Published var ordinal: Int = 0
@@ -19,7 +20,7 @@ class CellModel: ObservableObject, Identifiable, Equatable, Hashable {
     @Published var offsetPosition: Double = 0
         
     init(column: ColumnModel) {
-        self.column = column
+//        self.column = column
     }
 
     func setOnset(onset: Double) {
@@ -53,5 +54,28 @@ class CellModel: ObservableObject, Identifiable, Equatable, Hashable {
         hasher.combine(onset)
         hasher.combine(offset)
         hasher.combine(id)
+    }
+    
+    enum CodingKeys: CodingKey {
+        case onset
+        case offset
+        case comment
+        case arguments
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        onset = try container.decode(Int.self, forKey: .onset)
+        offset = try container.decode(Int.self, forKey: .offset)
+        comment = try container.decode(String.self, forKey: .comment)
+        arguments = try container.decode(Array<Argument>.self, forKey: .arguments)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(onset, forKey: .onset)
+        try container.encode(offset, forKey: .offset)
+        try container.encode(comment, forKey: .comment)
+        try container.encode(arguments, forKey: .arguments)
     }
 }

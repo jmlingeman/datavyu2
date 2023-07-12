@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import Vapor
 
-class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable {
+final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Codable, Content {
     @Published var columnName: String
     @Published var cells: [CellModel]
     @Published var arguments: [Argument] = [Argument(name: "test1"), Argument(name: "test2")]
@@ -67,5 +68,25 @@ class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable {
         let cell = CellModel(column: self)
         cells.append(cell)
         return cell
+    }
+    
+    enum CodingKeys: CodingKey {
+        case columnName
+        case cells
+        case arguments
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        columnName = try container.decode(String.self, forKey: .columnName)
+        cells = try container.decode(Array<CellModel>.self, forKey: .cells)
+        arguments = try container.decode(Array<Argument>.self, forKey: .arguments)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(columnName, forKey: .columnName)
+        try container.encode(cells, forKey: .cells)
+        try container.encode(arguments, forKey: .arguments)
     }
 }

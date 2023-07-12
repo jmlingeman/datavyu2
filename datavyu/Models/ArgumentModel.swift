@@ -6,8 +6,12 @@
 //
 
 import Foundation
+import Vapor
 
-class Argument: ObservableObject, Identifiable, Equatable, Hashable {
+final class Argument: ObservableObject, Identifiable, Equatable, Hashable, Codable, Content {
+    @Published var name: String
+    @Published var value: String
+    
     static func == (lhs: Argument, rhs: Argument) -> Bool {
         lhs.name == rhs.name && lhs.value == rhs.value
     }
@@ -18,9 +22,6 @@ class Argument: ObservableObject, Identifiable, Equatable, Hashable {
         hasher.combine(id)
     }
     
-    @Published var name: String
-    @Published var value: String
-    
     init(name: String) {
         self.name = name
         self.value = ""
@@ -30,5 +31,24 @@ class Argument: ObservableObject, Identifiable, Equatable, Hashable {
         self.name = name
         self.value = value
     }
+    
+    enum CodingKeys: CodingKey {
+        case name
+        case value
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        name = try container.decode(String.self, forKey: .name)
+        value = try container.decode(String.self, forKey: .value)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(name, forKey: .name)
+        try container.encode(value, forKey: .value)
+    }
 
+
+    
 }

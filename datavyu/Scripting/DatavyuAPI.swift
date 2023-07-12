@@ -7,16 +7,17 @@
 
 import Leaf
 import Vapor
+import SwiftUI
 
 class FileServer: ObservableObject {
-    // 1
-    var app: Application
 
-    // 2
+    var app: Application
     let port: Int
+    @ObservedObject var fileModel: FileModel
     
     init(port: Int) {
         self.port = port
+        self.fileModel = FileModel()
         // 3
         app = Application(.development)
         // 4
@@ -24,26 +25,19 @@ class FileServer: ObservableObject {
     }
     
     private func configure(_ app: Application) {
-        // 1
         app.http.server.configuration.hostname = "127.0.0.1"
         app.http.server.configuration.port = port
-        
-        // 2
         app.views.use(.leaf)
-        // 3
         app.leaf.cache.isEnabled = app.environment.isRelease
-        // 4
         app.leaf.configuration.rootDirectory = Bundle.main.bundlePath
-        // 5
         app.routes.defaultMaxBodySize = "50MB"
-        
     }
     
-    func start() {
+    func start(fileModel: FileModel) {
+        self.fileModel = fileModel
         // 1
         Task {
             do {
-                // 2
                 try app.start()
             } catch {
                 print("\(error)")
@@ -55,3 +49,59 @@ class FileServer: ObservableObject {
         
 }
 
+struct FileWebRouteCollection: RouteCollection {
+    @ObservedObject var fileModel: FileModel
+    
+    func boot(routes: RoutesBuilder) throws {
+        let router = routes.grouped("api")
+        router.get(use: getColumn)
+        router.post("setcolumn") { req in
+            let column = try req.content.decode(ColumnModel.self)
+            setColumn(column: column)
+            return HTTPStatus.ok
+        }
+        
+//        todos.group(":id") { todo in
+//            todo.get(use: show)
+//            todo.put(use: update)
+//            todo.delete(use: delete)
+//        }
+    }
+    
+    func getColumn(req: Request) async throws -> ColumnModel {
+        let columnName = req.parameters.get("columnName")
+        if columnName != nil {
+            for col in fileModel.sheetModel.columns {
+                if col.columnName == columnName {
+                    return col
+                }
+            }
+        }
+        return ColumnModel(columnName: "")
+    }
+    
+    func setColumn(column: ColumnModel) {
+        return fileModel.sheetModel.setColumn(column: column)
+    }
+//
+//    func show(req: Request) throws -> String {
+//        guard let id = req.parameters.get("id") else {
+//            throw Abort(.internalServerError)
+//        }
+//        // ...
+//    }
+//
+//    func update(req: Request) throws -> String {
+//        guard let id = req.parameters.get("id") else {
+//            throw Abort(.internalServerError)
+//        }
+//        // ...
+//    }
+//
+//    func delete(req: Request) throws -> String {
+//        guard let id = req.parameters.get("id") else {
+//            throw Abort(.internalServerError)
+//        }
+//        // ...
+//    }
+}
