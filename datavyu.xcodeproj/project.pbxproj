@@ -55,6 +55,8 @@
 		88F62EA12A58D51600DC5B60 /* Yams in Frameworks */ = {isa = PBXBuildFile; productRef = 88F62EA02A58D51600DC5B60 /* Yams */; };
 		88F62EA32A5A012400DC5B60 /* IOModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F62EA22A5A012400DC5B60 /* IOModels.swift */; };
 		88F62EA52A5A041200DC5B60 /* TimeHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F62EA42A5A041200DC5B60 /* TimeHelpers.swift */; };
+		88F62EA82A5E1D2300DC5B60 /* Vapor in Frameworks */ = {isa = PBXBuildFile; productRef = 88F62EA72A5E1D2300DC5B60 /* Vapor */; };
+		88F62EAB2A5E230800DC5B60 /* Leaf in Frameworks */ = {isa = PBXBuildFile; productRef = 88F62EAA2A5E230800DC5B60 /* Leaf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -132,7 +134,9 @@
 				88140FC82A5214F90095DB5A /* SwiftUIReorderableForEach in Frameworks */,
 				88F62EA12A58D51600DC5B60 /* Yams in Frameworks */,
 				881A39D52A253A4900B4782D /* WrappingHStack in Frameworks */,
+				88F62EA82A5E1D2300DC5B60 /* Vapor in Frameworks */,
 				884B0DF52A4F792A00D16304 /* RubyGateway in Frameworks */,
+				88F62EAB2A5E230800DC5B60 /* Leaf in Frameworks */,
 				88F62E9E2A58CEA800DC5B60 /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -373,6 +377,8 @@
 				88140FC72A5214F90095DB5A /* SwiftUIReorderableForEach */,
 				88F62E9D2A58CEA800DC5B60 /* ZIPFoundation */,
 				88F62EA02A58D51600DC5B60 /* Yams */,
+				88F62EA72A5E1D2300DC5B60 /* Vapor */,
+				88F62EAA2A5E230800DC5B60 /* Leaf */,
 			);
 			productName = sheettest;
 			productReference = 881A39A52A242D4600B4782D /* datavyu.app */;
@@ -452,6 +458,8 @@
 				88140FC62A5214F90095DB5A /* XCRemoteSwiftPackageReference "swiftui-reorderable-foreach" */,
 				88F62E9C2A58CEA800DC5B60 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
 				88F62E9F2A58D51600DC5B60 /* XCRemoteSwiftPackageReference "Yams" */,
+				88F62EA62A5E1D2300DC5B60 /* XCRemoteSwiftPackageReference "vapor" */,
+				88F62EA92A5E230800DC5B60 /* XCRemoteSwiftPackageReference "leaf" */,
 			);
 			productRefGroup = 881A39A62A242D4600B4782D /* Products */;
 			projectDirPath = "";
@@ -890,6 +898,22 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		88F62EA62A5E1D2300DC5B60 /* XCRemoteSwiftPackageReference "vapor" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/vapor/vapor";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
+		88F62EA92A5E230800DC5B60 /* XCRemoteSwiftPackageReference "leaf" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/vapor/leaf.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -917,6 +941,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 88F62E9F2A58D51600DC5B60 /* XCRemoteSwiftPackageReference "Yams" */;
 			productName = Yams;
+		};
+		88F62EA72A5E1D2300DC5B60 /* Vapor */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 88F62EA62A5E1D2300DC5B60 /* XCRemoteSwiftPackageReference "vapor" */;
+			productName = Vapor;
+		};
+		88F62EAA2A5E230800DC5B60 /* Leaf */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 88F62EA92A5E230800DC5B60 /* XCRemoteSwiftPackageReference "leaf" */;
+			productName = Leaf;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
