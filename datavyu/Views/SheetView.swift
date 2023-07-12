@@ -36,7 +36,7 @@ struct Sheet: View {
                                     .setColumnIdx(idx)
                                     .setObjectType("title")
                                 ForEach(Array(zip(column.cells.indices, column.cells)), id: \.0) { cellIdx, cell in
-                                    Cell(cellDataModel: cell, columnInFocus: $columnInFocus)
+                                    Cell(parentColumn: column, cellDataModel: cell, columnInFocus: $columnInFocus)
                                         .setColumnIdx(idx).setObjectType("cell").setCellIdx("\(column.columnName)-\(cellIdx)")
                                 }
                             }

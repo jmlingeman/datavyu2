@@ -31,6 +31,12 @@ class FileServer: ObservableObject {
         app.leaf.cache.isEnabled = app.environment.isRelease
         app.leaf.configuration.rootDirectory = Bundle.main.bundlePath
         app.routes.defaultMaxBodySize = "50MB"
+        
+        do {
+            try app.register(collection: FileWebRouteCollection(fileModel: fileModel))
+        } catch {
+            print("\(error)")
+        }
     }
     
     func start(fileModel: FileModel) {
@@ -69,14 +75,16 @@ struct FileWebRouteCollection: RouteCollection {
     }
     
     func getColumn(req: Request) async throws -> ColumnModel {
-        let columnName = req.parameters.get("columnName")
-        if columnName != nil {
-            for col in fileModel.sheetModel.columns {
-                if col.columnName == columnName {
-                    return col
-                }
+        guard let columnName = req.query[String.self, at: "columnName"] else {
+            throw Abort(.badRequest)
+        }
+        print(req.parameters)
+        for col in fileModel.sheetModel.columns {
+            if col.columnName == columnName {
+                return col
             }
         }
+        
         return ColumnModel(columnName: "")
     }
     
