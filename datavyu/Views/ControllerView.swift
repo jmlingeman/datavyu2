@@ -55,7 +55,7 @@ struct ControllerView: View {
 
     var body: some View {
             VStack {
-                HStack {
+                HSplitView {
                     Grid {
                         ForEach(fileModel.videoModels) { videoModel in
                             GridRow {
@@ -66,14 +66,19 @@ struct ControllerView: View {
                             TracksStackView(fileModel: fileModel)
                         }
                         GridRow {
-                            Button("Play", action: play).keyboardShortcut("p", modifiers: [])
-                            Button("Stop", action: stop).keyboardShortcut("s", modifiers: [])
+                            HStack {
+                                Button("Play", action: play).keyboardShortcut("p", modifiers: [])
+                                Button("Stop", action: stop).keyboardShortcut("s", modifiers: [])
+                                Button("Next", action: nextFrame).keyboardShortcut("w", modifiers: [])
+                            }
+                            
                         }
                         GridRow {
-                            Button("Next", action: nextFrame).keyboardShortcut("w", modifiers: [])
-                            Button("Prev", action: prevFrame).keyboardShortcut("q", modifiers: [])
-                            Button("Add Col", action: addCol).keyboardShortcut("c", modifiers: [])
-                            Button("Add Cell", action: addCell).keyboardShortcut("c", modifiers: [])
+                            HStack {
+                                Button("Prev", action: prevFrame).keyboardShortcut("q", modifiers: [])
+                                Button("Add Col", action: addCol).keyboardShortcut("c", modifiers: [])
+                                Button("Add Cell", action: addCell).keyboardShortcut("c", modifiers: [])
+                            }
                         }
                     }
                     Sheet(sheetDataModel: fileModel.sheetModel, columnInFocus: _columnInFocus)

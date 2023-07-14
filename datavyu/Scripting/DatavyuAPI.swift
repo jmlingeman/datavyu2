@@ -78,7 +78,6 @@ struct FileWebRouteCollection: RouteCollection {
         guard let columnName = req.query[String.self, at: "columnName"] else {
             throw Abort(.badRequest)
         }
-        print(req.parameters)
         for col in fileModel.sheetModel.columns {
             if col.columnName == columnName {
                 return col
