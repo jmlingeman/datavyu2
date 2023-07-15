@@ -12,6 +12,7 @@ import WrappingHStack
 struct Sheet: View {
     @ObservedObject var sheetDataModel: SheetModel
     @FocusState var columnInFocus: ColumnModel?
+    @FocusState var cellInFocus: CellModel?
     @State private var offset: CGPoint = .zero
     @FocusState private var isFocused: Bool
 //    @ObservedObject var columnWidths:
@@ -36,7 +37,7 @@ struct Sheet: View {
                                     .setColumnIdx(idx)
                                     .setObjectType("title")
                                 ForEach(Array(zip(column.cells.indices, column.cells)), id: \.0) { cellIdx, cell in
-                                    Cell(parentColumn: column, cellDataModel: cell, columnInFocus: $columnInFocus)
+                                    Cell(parentColumn: column, cellDataModel: cell, columnInFocus: $columnInFocus, cellInFocus: $cellInFocus)
                                         .setColumnIdx(idx).setObjectType("cell").setCellIdx("\(column.columnName)-\(cellIdx)")
                                 }
                             }

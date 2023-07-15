@@ -13,6 +13,7 @@ struct Cell: View {
     @ObservedObject var cellDataModel: CellModel
     let tcFormatter = MillisTimeFormatter()
     var columnInFocus: FocusState<ColumnModel?>.Binding
+    var cellInFocus: FocusState<CellModel?>.Binding
     let config = Config()
 
     var body: some View {
@@ -38,6 +39,7 @@ struct Cell: View {
             .frame(maxHeight: .infinity, alignment: .topLeading)
             .border(config.cellBorder, width: 4)
             .focused(columnInFocus, equals: parentColumn)
+            .focused(cellInFocus, equals: cellDataModel)
             .setOnset($cellDataModel.onset)
             .setOffset($cellDataModel.offset)
             .frame(width: CGFloat(config.defaultCellWidth))

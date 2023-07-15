@@ -12,6 +12,7 @@ import SwiftUI
 struct ControllerView: View {
     @ObservedObject var fileModel: FileModel
     @FocusState private var columnInFocus: ColumnModel?
+    @FocusState private var cellInFocus: CellModel?
 
     func play() {
         for videoModel in fileModel.videoModels {
@@ -52,6 +53,21 @@ struct ControllerView: View {
         }
         fileModel.sheetModel.updates += 1 // Force sheetmodel updates of nested objects
     }
+    
+    func setOnset() {
+        cellInFocus?.setOnset(onset: fileModel.currentTime())
+    }
+    
+    func setOffset() {
+        cellInFocus?.setOffset(offset: fileModel.currentTime())
+    }
+    
+    func setOffsetAndAddNewCell() {
+        cellInFocus?.setOffset(offset: fileModel.currentTime())
+        let cell = columnInFocus?.addCell()
+        cell?.setOnset(onset: fileModel.currentTime() + 1)
+        cellInFocus = cell
+    }
 
     var body: some View {
             VStack {
@@ -67,21 +83,28 @@ struct ControllerView: View {
                         }
                         GridRow {
                             HStack {
+                                Button("Prev", action: prevFrame).keyboardShortcut("q", modifiers: [])
                                 Button("Play", action: play).keyboardShortcut("p", modifiers: [])
                                 Button("Stop", action: stop).keyboardShortcut("s", modifiers: [])
                                 Button("Next", action: nextFrame).keyboardShortcut("w", modifiers: [])
                             }
-                            
                         }
                         GridRow {
                             HStack {
-                                Button("Prev", action: prevFrame).keyboardShortcut("q", modifiers: [])
                                 Button("Add Col", action: addCol).keyboardShortcut("c", modifiers: [])
-                                Button("Add Cell", action: addCell).keyboardShortcut("c", modifiers: [])
+                                Button("Add Cell", action: addCell).keyboardShortcut("v", modifiers: [])
+                            }
+                        }
+                        GridRow {
+                            HStack {
+                                Button("Set Onset", action: setOnset).keyboardShortcut("j", modifiers: [])
+                                Button("Set Offset", action: setOffset).keyboardShortcut("k", modifiers: [])
+                                Button("Set Offset + Add", action: setOffsetAndAddNewCell).keyboardShortcut("l", modifiers: [])
+
                             }
                         }
                     }
-                    Sheet(sheetDataModel: fileModel.sheetModel, columnInFocus: _columnInFocus)
+                    Sheet(sheetDataModel: fileModel.sheetModel, columnInFocus: _columnInFocus, cellInFocus: _cellInFocus)
                 }
             
         }
