@@ -34,6 +34,14 @@ struct ControllerView: View {
             videoModel.stop()
         }
         fileModel.syncVideos()
+        fileModel.resetShuttleSpeed()
+    }
+    
+    func pause() {
+        for videoModel in fileModel.videoModels {
+            videoModel.stop()
+        }
+        fileModel.syncVideos()
     }
 
     func nextFrame() {
@@ -108,6 +116,7 @@ struct ControllerView: View {
                         GridRow {
                             HStack {
                                 Button("Prev", action: prevFrame).keyboardShortcut("q", modifiers: [])
+                                Button("Pause", action: pause).keyboardShortcut("s", modifiers: [])
                                 Button("Next", action: nextFrame).keyboardShortcut("w", modifiers: [])
                                 Button("Add Cell", action: addCell).keyboardShortcut("v", modifiers: [])
                                 Button("Set Offset + Add", action: setOffsetAndAddNewCell).keyboardShortcut("l", modifiers: [])

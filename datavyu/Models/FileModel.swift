@@ -61,6 +61,10 @@ class FileModel: ObservableObject, Identifiable {
         }
     }
     
+    func resetShuttleSpeed() {
+        currentShuttleSpeedIdx = config.shuttleSpeeds.firstIndex(of: 0)!
+    }
+    
     func addVideo(videoModel: VideoModel) {
         self.videoModels.append(videoModel)
         
