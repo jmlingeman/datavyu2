@@ -12,7 +12,7 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
     
     var trackSettings: TrackSetting? = nil
 
-    let player: AVPlayer
+    var player: AVPlayer
     
     /// The primary video will always have a sync point of 0
     /// Subsequent videos then sync to the time on the primary video

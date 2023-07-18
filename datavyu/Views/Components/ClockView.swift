@@ -11,7 +11,7 @@ struct ClockView: View {
     @ObservedObject var videoModel: VideoModel
     var body: some View {
         GridRow {
-            Text("\($videoModel.currentTime.wrappedValue)")
+            Text("\($videoModel.currentTime.wrappedValue) @ \($videoModel.player.rate.wrappedValue)")
         }
     }
 }

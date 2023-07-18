@@ -19,6 +19,15 @@ struct ControllerView: View {
             videoModel.play()
         }
     }
+    
+    func shuttleStepUp() {
+        fileModel.changeShuttleSpeed(step: 1)
+    }
+    
+    func shuttleStepDown() {
+        fileModel.changeShuttleSpeed(step: -1)
+    }
+
 
     func stop() {
         for videoModel in fileModel.videoModels {
@@ -83,25 +92,31 @@ struct ControllerView: View {
                         }
                         GridRow {
                             HStack {
-                                Button("Prev", action: prevFrame).keyboardShortcut("q", modifiers: [])
-                                Button("Play", action: play).keyboardShortcut("p", modifiers: [])
-                                Button("Stop", action: stop).keyboardShortcut("s", modifiers: [])
-                                Button("Next", action: nextFrame).keyboardShortcut("w", modifiers: [])
-                            }
-                        }
-                        GridRow {
-                            HStack {
-                                Button("Add Col", action: addCol).keyboardShortcut("c", modifiers: [])
-                                Button("Add Cell", action: addCell).keyboardShortcut("v", modifiers: [])
-                            }
-                        }
-                        GridRow {
-                            HStack {
                                 Button("Set Onset", action: setOnset).keyboardShortcut("j", modifiers: [])
+                                Button("Play", action: play).keyboardShortcut("p", modifiers: [])
                                 Button("Set Offset", action: setOffset).keyboardShortcut("k", modifiers: [])
+                            }
+                        }
+                        GridRow {
+                            HStack {
+                                Button("Shuttle <", action: shuttleStepDown).keyboardShortcut("s", modifiers: [])
+                                Button("Stop", action: stop).keyboardShortcut("s", modifiers: [])
+                                Button("Shuttle >", action: shuttleStepUp).keyboardShortcut("s", modifiers: [])
+
+                            }
+                        }
+                        GridRow {
+                            HStack {
+                                Button("Prev", action: prevFrame).keyboardShortcut("q", modifiers: [])
+                                Button("Next", action: nextFrame).keyboardShortcut("w", modifiers: [])
+                                Button("Add Cell", action: addCell).keyboardShortcut("v", modifiers: [])
                                 Button("Set Offset + Add", action: setOffsetAndAddNewCell).keyboardShortcut("l", modifiers: [])
 
                             }
+                        }
+                        GridRow {
+                            Button("Add Col", action: addCol).keyboardShortcut("c", modifiers: [])
+
                         }
                     }
                     Sheet(sheetDataModel: fileModel.sheetModel, columnInFocus: _columnInFocus, cellInFocus: _cellInFocus)

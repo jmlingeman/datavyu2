@@ -11,12 +11,17 @@ class SheetModel: ObservableObject, Identifiable {
     @Published var sheetName: String
     @Published var columns: [ColumnModel]
     @Published var updates: Int = 0
-
+    
+    let config = Config()
+    
+    
     init(sheetName: String) {
         self.sheetName = sheetName
         columns = [ColumnModel]()
         setup()
     }
+    
+
 
     func addColumn(column: ColumnModel) {
         columns.append(column)

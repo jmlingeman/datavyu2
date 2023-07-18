@@ -17,24 +17,30 @@ class FileModel: ObservableObject, Identifiable {
     @Published var primaryMarker : Marker?
     @Published var primaryVideo : VideoModel?
     
+    var currentShuttleSpeedIdx: Int
     var legacyProjectSettings: ProjectFile?
+    
+    let config = Config()
 
     init() {
         self.sheetModel = SheetModel(sheetName: "default")
         self.videoModels = []
         self.updates = 0
+        currentShuttleSpeedIdx = config.shuttleSpeeds.firstIndex(of: 0)!
     }
     
     init(sheetModel: SheetModel) {
         self.sheetModel = sheetModel
         self.videoModels = []
         self.updates = 0
+        currentShuttleSpeedIdx = config.shuttleSpeeds.firstIndex(of: 0)!
     }
     
     init(sheetModel: SheetModel, videoModels: [VideoModel]) {
         self.sheetModel = sheetModel
         self.videoModels = videoModels
         self.updates = 0
+        currentShuttleSpeedIdx = config.shuttleSpeeds.firstIndex(of: 0)!
         
         if videoModels.count > 0 {
             primaryVideo = videoModels[0]
@@ -44,6 +50,15 @@ class FileModel: ObservableObject, Identifiable {
     convenience init(sheetModel: SheetModel, videoModels: [VideoModel], legacyProjectSettings: ProjectFile) {
         self.init(sheetModel: sheetModel, videoModels: videoModels)
         self.legacyProjectSettings = legacyProjectSettings
+    }
+    
+    func changeShuttleSpeed(step: Int) {
+        if currentShuttleSpeedIdx + step < config.shuttleSpeeds.count && currentShuttleSpeedIdx + step >= 0 {
+            currentShuttleSpeedIdx += step
+        }
+        for video in videoModels {
+            video.player.rate = config.shuttleSpeeds[currentShuttleSpeedIdx]
+        }
     }
     
     func addVideo(videoModel: VideoModel) {
