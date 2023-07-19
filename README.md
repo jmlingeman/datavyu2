@@ -10,11 +10,11 @@ Not yet released.
 
 ## Why?
 
-Datavyu was a piece of software built during a time where Java was in deep transition between Java 6, 8, and (later) 10.
+Datavyu is a piece of software built during a time where Java was in deep transition between Java 6, 8, and (later) 10.
 This led to a lot of design decisions that were not very future proof -- the video stack in particular fell apart as 
 video codecs required more CPU power or dedicated hardware to decode, and the interface was half developed in the relic that is Java Swing.
 
-Datavyu is a unique tool deeply in need of improvements, but no other software exists to fill the gap.
+Datavyu is a unique tool deeply in need of modernization in terms of its frameworks, and no other software exists to fill the gap.
 Re-implementation in a modern framework (SwiftUI, specifically) will help to ensure future generations of researchers will be able to use this tool.
 
 ## Why SwiftUI?
@@ -22,14 +22,14 @@ SwiftUI was chosen for several reasons: It is Apple's brand new UI design langua
 Additionally, the MacOS video playback stack is by far the best available out of the box for this project.
 FFMpeg is too unwieldly and sensitive for interactive use in the way that Datavyu demands, and the Windows video playback stack is a joke.
 
-## What about Datavyu 1 and people stuck on Windows?
+## What about Datavyu 1 and people on Windows?
 Datavyu 2.0 aims to be interoperable with both .opf files from Datavyu 1 and Ruby scripts from Datavyu 1.
-This means that files created in Datavyu 1.* will work in Datavyu 2, and vice versa.
+This means that files and scripts created in Datavyu 1.* will work in Datavyu 2, and vice versa.
 
 ## What is new?
 There are four main new features in the design of Datavyu 2.0:
 
-1. A proper JSON API that exposes Datavyu's internals to scripts running externally to Datavyu.
+1. A proper JSON REST API that exposes Datavyu's internals to scripts running externally to Datavyu.
 2. Quality-of-life features (resizable columns, pinned column names, rebindable keyboard shortcuts, non-numpad keyboard shortcuts, unified timeline/video UI, improved timeline, improved scripting)
 3. Study/Project management
 4. Project history
@@ -67,7 +67,7 @@ More details will be added as development continues.
 - [x] File saving/loading
 - [ ] Ordinal Layout
 - [ ] Ruby Scripting
-- [ ] API
+- [x] Scripting API
 - [x] Code Editor
 - [ ] Options menu
 - [ ] Auto update
@@ -75,3 +75,5 @@ More details will be added as development continues.
 - [x] Track timeline
 - [ ] Audio Visualizations
 - [x] Video sync
+- [ ] File history
+- [ ] Project management
