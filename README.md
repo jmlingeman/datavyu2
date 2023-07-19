@@ -1,6 +1,6 @@
 # Datavyu 2.0
 
-## Installion
+## Installation
 
 Not yet released.
 
