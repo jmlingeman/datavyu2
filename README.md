@@ -65,11 +65,11 @@ More details will be added as development continues.
 - [x] Weak Temporal Ordering Layout
 - [ ] Hidden Columns
 - [x] File saving/loading
-- [ ] Ordinal Layout
+- [x] Ordinal Layout
 - [ ] Ruby Scripting
 - [x] Scripting API
 - [x] Code Editor
-- [ ] Options menu
+- [x] Options menu
 - [ ] Auto update
 - [ ] App Store Deployment
 - [x] Track timeline
@@ -77,3 +77,4 @@ More details will be added as development continues.
 - [x] Video sync
 - [ ] File history
 - [ ] Project management
+
