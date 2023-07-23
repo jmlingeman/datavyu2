@@ -92,51 +92,53 @@ struct ControllerView: View {
             VStack {
                 HSplitView {
                     if !hideController {
-                        Grid {
-                            ForEach(fileModel.videoModels) { videoModel in
+                        GeometryReader { gr in
+                            Grid {
+                                ForEach(fileModel.videoModels) { videoModel in
+                                    GridRow {
+                                        VideoView(videoModel: videoModel)
+                                    }
+                                }
                                 GridRow {
-                                    VideoView(videoModel: videoModel)
+                                    TracksStackView(fileModel: fileModel)
                                 }
-                            }
-                            GridRow {
-                                TracksStackView(fileModel: fileModel)
-                            }
-                            GridRow {
-                                HStack {
-                                    Button("Set Onset", action: setOnset).keyboardShortcut("j", modifiers: [])
-                                    Button("Play", action: play).keyboardShortcut("p", modifiers: [])
-                                    Button("Set Offset", action: setOffset).keyboardShortcut("k", modifiers: [])
+                                GridRow {
+                                    HStack {
+                                        Button("Set Onset", action: setOnset).keyboardShortcut("j", modifiers: [])
+                                        Button("Play", action: play).keyboardShortcut("p", modifiers: [])
+                                        Button("Set Offset", action: setOffset).keyboardShortcut("k", modifiers: [])
+                                    }
                                 }
-                            }
-                            GridRow {
-                                HStack {
-                                    Button("Shuttle <", action: shuttleStepDown).keyboardShortcut("s", modifiers: [])
-                                    Button("Stop", action: stop).keyboardShortcut("s", modifiers: [])
-                                    Button("Shuttle >", action: shuttleStepUp).keyboardShortcut("s", modifiers: [])
-                                    
+                                GridRow {
+                                    HStack {
+                                        Button("Shuttle <", action: shuttleStepDown).keyboardShortcut("s", modifiers: [])
+                                        Button("Stop", action: stop).keyboardShortcut("s", modifiers: [])
+                                        Button("Shuttle >", action: shuttleStepUp).keyboardShortcut("s", modifiers: [])
+                                        
+                                    }
                                 }
-                            }
-                            GridRow {
-                                HStack {
-                                    Button("Prev", action: prevFrame).keyboardShortcut("q", modifiers: [])
-                                    Button("Pause", action: pause).keyboardShortcut("s", modifiers: [])
-                                    Button("Next", action: nextFrame).keyboardShortcut("w", modifiers: [])
-                                    
+                                GridRow {
+                                    HStack {
+                                        Button("Prev", action: prevFrame).keyboardShortcut("q", modifiers: [])
+                                        Button("Pause", action: pause).keyboardShortcut("s", modifiers: [])
+                                        Button("Next", action: nextFrame).keyboardShortcut("w", modifiers: [])
+                                        
+                                    }
                                 }
-                            }
-                            GridRow {
-                                HStack {
-                                    Button("Add Cell", action: addCell).keyboardShortcut("v", modifiers: [])
-                                    Button("Set Offset + Add", action: setOffsetAndAddNewCell).keyboardShortcut("l", modifiers: [])
-                                    Button("Add Col", action: addCol).keyboardShortcut("c", modifiers: [])
+                                GridRow {
+                                    HStack {
+                                        Button("Add Cell", action: addCell).keyboardShortcut("v", modifiers: [])
+                                        Button("Set Offset + Add", action: setOffsetAndAddNewCell).keyboardShortcut("l", modifiers: [])
+                                        Button("Add Col", action: addCol).keyboardShortcut("c", modifiers: [])
+                                    }
                                 }
-                            }
-                        }
+                            }.padding().frame(minWidth: 300)
+                        }.layoutPriority(2)
                     }
-                    Sheet(sheetDataModel: fileModel.sheetModel, columnInFocus: _columnInFocus, cellInFocus: _cellInFocus, temporalLayout: $temporalLayout)
+                    Sheet(sheetDataModel: fileModel.sheetModel, columnInFocus: _columnInFocus, cellInFocus: _cellInFocus, temporalLayout: $temporalLayout).frame(minWidth: 600).layoutPriority(1)
                 }
             
-        }
+            }
     }
 }
 
