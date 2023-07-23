@@ -14,6 +14,7 @@ struct ControllerView: View {
     @Binding var temporalLayout: Bool
     @FocusState private var columnInFocus: ColumnModel?
     @FocusState private var cellInFocus: CellModel?
+    @Binding var hideController: Bool
 
     func play() {
         for videoModel in fileModel.videoModels {
@@ -90,43 +91,46 @@ struct ControllerView: View {
     var body: some View {
             VStack {
                 HSplitView {
-                    Grid {
-                        ForEach(fileModel.videoModels) { videoModel in
+                    if !hideController {
+                        Grid {
+                            ForEach(fileModel.videoModels) { videoModel in
+                                GridRow {
+                                    VideoView(videoModel: videoModel)
+                                }
+                            }
                             GridRow {
-                                VideoView(videoModel: videoModel)
+                                TracksStackView(fileModel: fileModel)
                             }
-                        }
-                        GridRow {
-                            TracksStackView(fileModel: fileModel)
-                        }
-                        GridRow {
-                            HStack {
-                                Button("Set Onset", action: setOnset).keyboardShortcut("j", modifiers: [])
-                                Button("Play", action: play).keyboardShortcut("p", modifiers: [])
-                                Button("Set Offset", action: setOffset).keyboardShortcut("k", modifiers: [])
+                            GridRow {
+                                HStack {
+                                    Button("Set Onset", action: setOnset).keyboardShortcut("j", modifiers: [])
+                                    Button("Play", action: play).keyboardShortcut("p", modifiers: [])
+                                    Button("Set Offset", action: setOffset).keyboardShortcut("k", modifiers: [])
+                                }
                             }
-                        }
-                        GridRow {
-                            HStack {
-                                Button("Shuttle <", action: shuttleStepDown).keyboardShortcut("s", modifiers: [])
-                                Button("Stop", action: stop).keyboardShortcut("s", modifiers: [])
-                                Button("Shuttle >", action: shuttleStepUp).keyboardShortcut("s", modifiers: [])
-
+                            GridRow {
+                                HStack {
+                                    Button("Shuttle <", action: shuttleStepDown).keyboardShortcut("s", modifiers: [])
+                                    Button("Stop", action: stop).keyboardShortcut("s", modifiers: [])
+                                    Button("Shuttle >", action: shuttleStepUp).keyboardShortcut("s", modifiers: [])
+                                    
+                                }
                             }
-                        }
-                        GridRow {
-                            HStack {
-                                Button("Prev", action: prevFrame).keyboardShortcut("q", modifiers: [])
-                                Button("Pause", action: pause).keyboardShortcut("s", modifiers: [])
-                                Button("Next", action: nextFrame).keyboardShortcut("w", modifiers: [])
-                                
+                            GridRow {
+                                HStack {
+                                    Button("Prev", action: prevFrame).keyboardShortcut("q", modifiers: [])
+                                    Button("Pause", action: pause).keyboardShortcut("s", modifiers: [])
+                                    Button("Next", action: nextFrame).keyboardShortcut("w", modifiers: [])
+                                    
+                                }
                             }
-                        }
-                        GridRow {
-                            Button("Add Cell", action: addCell).keyboardShortcut("v", modifiers: [])
-                            Button("Set Offset + Add", action: setOffsetAndAddNewCell).keyboardShortcut("l", modifiers: [])
-                            Button("Add Col", action: addCol).keyboardShortcut("c", modifiers: [])
-
+                            GridRow {
+                                HStack {
+                                    Button("Add Cell", action: addCell).keyboardShortcut("v", modifiers: [])
+                                    Button("Set Offset + Add", action: setOffsetAndAddNewCell).keyboardShortcut("l", modifiers: [])
+                                    Button("Add Col", action: addCol).keyboardShortcut("c", modifiers: [])
+                                }
+                            }
                         }
                     }
                     Sheet(sheetDataModel: fileModel.sheetModel, columnInFocus: _columnInFocus, cellInFocus: _cellInFocus, temporalLayout: $temporalLayout)
@@ -140,6 +144,8 @@ struct ControllerView_Previews: PreviewProvider {
     static var previews: some View {
         let fileModel = FileModel(sheetModel: SheetModel(sheetName: "IMG_1234"), videoModels: [VideoModel(videoFilePath: "IMG_1234")])
         @State var temporalLayout = false
-        ControllerView(fileModel: fileModel, temporalLayout: $temporalLayout)
+        @State var hideController = false
+
+        ControllerView(fileModel: fileModel, temporalLayout: $temporalLayout, hideController: $hideController)
     }
 }

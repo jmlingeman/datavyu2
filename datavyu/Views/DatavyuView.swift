@@ -13,11 +13,13 @@ struct DatavyuView: View {
     @State private var showingOptions = false
     @State private var layoutLabel = "Ordinal Layout"
     @State private var temporalLayout = false
+    @State private var hideLabel = "Hide Controller"
+    @State private var hideController = false
 
     var body: some View {
         ZStack {
             GeometryReader { gr in
-                ControllerView(fileModel: fileModel, temporalLayout: $temporalLayout)
+                ControllerView(fileModel: fileModel, temporalLayout: $temporalLayout, hideController: $hideController)
                     .toolbar {
                         ToolbarItemGroup {
                             Button("Code Editor") {
@@ -56,7 +58,16 @@ struct DatavyuView: View {
                                     layoutLabel = "Ordinal Layout"
                                     temporalLayout = false
                                 }
-                            }
+                            }.keyboardShortcut("t")
+                            Button(hideLabel) {
+                                if hideLabel == "Hide Controller" {
+                                    hideLabel = "Show Controller"
+                                    hideController = true
+                                } else {
+                                    hideLabel = "Hide Controller"
+                                    hideController = false
+                                }
+                            }.keyboardShortcut("g")
                         }
                     }
             }
