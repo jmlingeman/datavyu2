@@ -60,12 +60,14 @@ struct DatavyuView: View {
                                 }
                             }.keyboardShortcut("t")
                             Button(hideLabel) {
-                                if hideLabel == "Hide Controller" {
-                                    hideLabel = "Show Controller"
-                                    hideController = true
-                                } else {
-                                    hideLabel = "Hide Controller"
-                                    hideController = false
+                                withAnimation {
+                                    if hideLabel == "Hide Controller" {
+                                        hideLabel = "Show Controller"
+                                        hideController = true
+                                    } else {
+                                        hideLabel = "Hide Controller"
+                                        hideController = false
+                                    }
                                 }
                             }.keyboardShortcut("g")
                         }
@@ -78,7 +80,7 @@ struct DatavyuView: View {
 
 struct DatavyuView_Previews: PreviewProvider {
     static var previews: some View {
-        let fileModel = FileModel(sheetModel: SheetModel(sheetName: "IMG_1234"), videoModels: [VideoModel(videoFilePath: "IMG_1234")])
+        let fileModel = FileModel(sheetModel: SheetModel(sheetName: "IMG_1234"), videoModels: [VideoModel(videoFilePath: URL(fileURLWithPath: "/Users/jesse/Downloads/IMG_0822.MOV"))])
 
         DatavyuView(fileModel: fileModel)
     }

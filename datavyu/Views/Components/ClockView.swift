@@ -18,7 +18,7 @@ struct ClockView: View {
 
 struct ClockView_Previews: PreviewProvider {
     static var previews: some View {
-        let videoModel = VideoModel(videoFilePath: "IMG_1234")
+        let videoModel = VideoModel(videoFilePath: URL(fileURLWithPath: "/Users/jesse/Downloads/IMG_0822.MOV"))
         ClockView(videoModel: videoModel)
     }
 }

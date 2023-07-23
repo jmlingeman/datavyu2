@@ -61,8 +61,24 @@ class FileModel: ObservableObject, Identifiable {
         }
     }
     
+    func removeVideoModel(videoModel: VideoModel) {
+        let idx = videoModels.firstIndex(of: videoModel)
+        if idx != nil {
+            videoModels.remove(at: idx!)
+        }
+        if videoModels.count > 0 {
+            primaryVideo = videoModels[0]
+        }
+    }
+    
     func resetShuttleSpeed() {
         currentShuttleSpeedIdx = config.shuttleSpeeds.firstIndex(of: 0)!
+    }
+    
+    func addVideo(videoUrl: URL) {
+        let vm = VideoModel(videoFilePath: videoUrl)
+        print(videoUrl.absoluteString)
+        self.addVideo(videoModel: vm)
     }
     
     func addVideo(videoModel: VideoModel) {

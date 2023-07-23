@@ -87,6 +87,15 @@ struct ControllerView: View {
         cell?.setOnset(onset: fileModel.currentTime() + 1)
         cellInFocus = cell
     }
+    
+    func addVideo() {
+        let panel = NSOpenPanel()
+        panel.allowsMultipleSelection = false
+        panel.canChooseDirectories = false
+        if panel.runModal() == .OK {
+            fileModel.addVideo(videoUrl: panel.url!)
+        }
+    }
 
     var body: some View {
             VStack {
@@ -130,6 +139,7 @@ struct ControllerView: View {
                                         Button("Add Cell", action: addCell).keyboardShortcut("v", modifiers: [])
                                         Button("Set Offset + Add", action: setOffsetAndAddNewCell).keyboardShortcut("l", modifiers: [])
                                         Button("Add Col", action: addCol).keyboardShortcut("c", modifiers: [])
+                                        Button("Add Video", action: addVideo).keyboardShortcut("c", modifiers: [])
                                     }
                                 }
                             }.padding().frame(minWidth: 300)
@@ -144,7 +154,7 @@ struct ControllerView: View {
 
 struct ControllerView_Previews: PreviewProvider {
     static var previews: some View {
-        let fileModel = FileModel(sheetModel: SheetModel(sheetName: "IMG_1234"), videoModels: [VideoModel(videoFilePath: "IMG_1234")])
+        let fileModel = FileModel(sheetModel: SheetModel(sheetName: "IMG_1234"), videoModels: [VideoModel(videoFilePath: URL(fileURLWithPath: "/Users/jesse/Downloads/IMG_0822.MOV"))])
         @State var temporalLayout = false
         @State var hideController = false
 

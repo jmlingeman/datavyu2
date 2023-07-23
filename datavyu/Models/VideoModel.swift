@@ -2,7 +2,7 @@ import SwiftUI
 import AVFoundation
 
 class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
-    @Published var videoFilePath: String
+    @Published var videoFilePath: URL
     @Published var currentTime: Double
     @Published var currentPos: Double
     @Published var duration: Double
@@ -30,16 +30,16 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
         hasher.combine(videoFilePath)
     }
 
-    init(videoFilePath: String) {
+    init(videoFilePath: URL) {
         self.videoFilePath = videoFilePath
         currentPos = 0.0
         currentTime = 0.0
-        player = AVPlayer(url: URL(fileURLWithPath: videoFilePath))
+        player = AVPlayer(url: videoFilePath)
         duration = player.getCurrentTrackDuration()
         markers = []
     }
     
-    convenience init(videoFilePath: String, trackSettings: TrackSetting) {
+    convenience init(videoFilePath: URL, trackSettings: TrackSetting) {
         self.init(videoFilePath: videoFilePath)
         self.trackSettings = trackSettings
     }

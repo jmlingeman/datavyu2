@@ -28,7 +28,7 @@ struct VideoView: View {
 
 struct VideoView_Previews: PreviewProvider {
     static var previews: some View {
-        let vm = VideoModel(videoFilePath: "IMG_1234")
+        let vm = VideoModel(videoFilePath: URL(fileURLWithPath: "/Users/jesse/Downloads/IMG_0822.MOV"))
         VideoView(videoModel: vm)
     }
 }

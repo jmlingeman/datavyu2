@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TrackView: View {
     @ObservedObject var videoModel: VideoModel
+    @ObservedObject var fileModel: FileModel
     @Binding var primaryMarker: Marker?
     @State var selectedMarker: Marker?
 
@@ -20,6 +21,10 @@ struct TrackView: View {
         if selectedMarker != nil {
             videoModel.deleteMarker(time: selectedMarker!.time)
         }
+    }
+    
+    func removeVideo() {
+        fileModel.removeVideoModel(videoModel: videoModel)
     }
 
     var body: some View {
@@ -69,6 +74,7 @@ struct TrackView: View {
         HStack(alignment: .bottom) {
             Spacer()
             Button("Add Marker", action: addMarker)
+            Button("❌", action: removeVideo)
         }
     }
 }

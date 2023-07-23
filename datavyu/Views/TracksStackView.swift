@@ -25,7 +25,7 @@ struct TracksStackView: View {
             HStack {
                 VStack {
                     ForEach(fileModel.videoModels) { videoModel in
-                        Text(videoModel.videoFilePath)
+                        Text(videoModel.videoFilePath.lastPathComponent)
                     }.frame(height: 30)
                 }
                 GeometryReader { gr in
@@ -34,6 +34,7 @@ struct TracksStackView: View {
                             HStack {
                                 
                                 TrackView(videoModel: videoModel,
+                                          fileModel: fileModel,
                                           primaryMarker: $fileModel.primaryMarker
                                 )
                                 .onTapGesture {

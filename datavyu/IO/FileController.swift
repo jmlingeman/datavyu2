@@ -88,7 +88,7 @@ func saveProject(fileModel: FileModel) -> String {
     var viewerSettings = [ViewerSetting]()
     for video in fileModel.videoModels {
         let vs = ViewerSetting(classifier: "datavyu.video",
-                               feed: video.videoFilePath,
+                               feed: video.videoFilePath.absoluteString,
                                plugin: "db3fc496-58a7-3706-8538-3f61278b5bec",
                                settingsId: "1",
                                trackSettings: video.trackSettings != nil ? video.trackSettings! : TrackSetting(), version: 2)
@@ -178,7 +178,7 @@ func parseProjectFile(fileUrl: URL) -> [VideoModel] {
                 
         for vs in project.viewerSettings {
             let videoPath = vs.feed
-            let videoModel = VideoModel(videoFilePath: videoPath)
+            let videoModel = VideoModel(videoFilePath: URL(fileURLWithPath: videoPath))
             videoModels.append(videoModel)
         }
         
