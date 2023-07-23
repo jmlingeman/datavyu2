@@ -33,6 +33,8 @@
 		884B0DF92A50CB1B00D16304 /* CodeEditorAddCodeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884B0DF82A50CB1B00D16304 /* CodeEditorAddCodeButton.swift */; };
 		884B0DFC2A50CC3900D16304 /* CodeEditorRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884B0DFB2A50CC3900D16304 /* CodeEditorRow.swift */; };
 		884B0DFE2A50CDCE00D16304 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 884B0DFD2A50CDCE00D16304 /* README.md */; };
+		884CBB512A6CA4EF00D5DBA8 /* OrdinalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884CBB502A6CA4EF00D5DBA8 /* OrdinalLayout.swift */; };
+		884CBB532A6CA58F00D5DBA8 /* LayoutKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884CBB522A6CA58F00D5DBA8 /* LayoutKeys.swift */; };
 		8878A60E2A2D698900A2658C /* CodeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A60D2A2D698900A2658C /* CodeEditorView.swift */; };
 		8878A6102A2FBC8700A2658C /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A60F2A2FBC8700A2658C /* Config.swift */; };
 		8878A6132A3026E100A2658C /* RubyScriptEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6122A3026E100A2658C /* RubyScriptEngine.swift */; };
@@ -104,6 +106,8 @@
 		884B0DF82A50CB1B00D16304 /* CodeEditorAddCodeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorAddCodeButton.swift; sourceTree = "<group>"; };
 		884B0DFB2A50CC3900D16304 /* CodeEditorRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorRow.swift; sourceTree = "<group>"; };
 		884B0DFD2A50CDCE00D16304 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		884CBB502A6CA4EF00D5DBA8 /* OrdinalLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdinalLayout.swift; sourceTree = "<group>"; };
+		884CBB522A6CA58F00D5DBA8 /* LayoutKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutKeys.swift; sourceTree = "<group>"; };
 		8878A60D2A2D698900A2658C /* CodeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorView.swift; sourceTree = "<group>"; };
 		8878A60F2A2FBC8700A2658C /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		8878A6122A3026E100A2658C /* RubyScriptEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RubyScriptEngine.swift; sourceTree = "<group>"; };
@@ -327,6 +331,8 @@
 			isa = PBXGroup;
 			children = (
 				8878A61E2A38D99100A2658C /* WeakTemporalLayout.swift */,
+				884CBB502A6CA4EF00D5DBA8 /* OrdinalLayout.swift */,
+				884CBB522A6CA58F00D5DBA8 /* LayoutKeys.swift */,
 			);
 			path = Layouts;
 			sourceTree = "<group>";
@@ -514,6 +520,7 @@
 				88F62EA52A5A041200DC5B60 /* TimeHelpers.swift in Sources */,
 				88F62E982A58B05500DC5B60 /* StringExtensions.swift in Sources */,
 				881A39EC2A2A888100B4782D /* CellModel.swift in Sources */,
+				884CBB532A6CA58F00D5DBA8 /* LayoutKeys.swift in Sources */,
 				8878A6102A2FBC8700A2658C /* Config.swift in Sources */,
 				8878A61A2A3027F500A2658C /* DatavyuAPI.swift in Sources */,
 				8878A6272A3FE93700A2658C /* FileController.swift in Sources */,
@@ -539,6 +546,7 @@
 				881A39F72A2A9D5900B4782D /* SheetView.swift in Sources */,
 				881A39F32A2A8D8700B4782D /* ColumnModel.swift in Sources */,
 				88D3FE372A4DE12A0094F953 /* TrackPositionIndicator.swift in Sources */,
+				884CBB512A6CA4EF00D5DBA8 /* OrdinalLayout.swift in Sources */,
 				884B0DF92A50CB1B00D16304 /* CodeEditorAddCodeButton.swift in Sources */,
 				881A3A002A2BE73B00B4782D /* ControllerView.swift in Sources */,
 			);

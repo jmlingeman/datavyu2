@@ -15,11 +15,14 @@ struct Sheet: View {
     @FocusState var cellInFocus: CellModel?
     @State private var offset: CGPoint = .zero
     @FocusState private var isFocused: Bool
+    @Binding var temporalLayout: Bool
 //    @ObservedObject var columnWidths:
     
     let config = Config()
 
     var body: some View {
+        let sheetLayout = temporalLayout ? AnyLayout(WeakTemporalLayout(sheetModel: $sheetDataModel)) : AnyLayout(OrdinalLayout(sheetModel: $sheetDataModel))
+        
         VStack {
             ScrollViewReader { proxy in
                 // TODO: Have this proxy scroll us to new columns and cells
@@ -27,7 +30,7 @@ struct Sheet: View {
                 Text("").id("top") // Anchor for 2d scrollview
                 GeometryReader { sheetGr in
                     ScrollView([.horizontal, .vertical], showsIndicators: true) {
-                        WeakTemporalLayout(sheetModel: $sheetDataModel) {
+                        sheetLayout {
                             ForEach(Array($sheetDataModel.columns.enumerated()), id: \.offset) { idx, $column in
                                 EditableLabel($column.columnName)
                                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
@@ -55,6 +58,7 @@ struct Sheet: View {
 struct Sheet_Previews: PreviewProvider {
     static var previews: some View {
         let sheetDataModel = SheetModel(sheetName: "TestSheet")
-        Sheet(sheetDataModel: sheetDataModel)
+        @State var temporalLayout = false
+        Sheet(sheetDataModel: sheetDataModel, temporalLayout: $temporalLayout)
     }
 }

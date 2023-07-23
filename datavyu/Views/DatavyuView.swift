@@ -11,11 +11,13 @@ struct DatavyuView: View {
     @State var fileModel: FileModel
     @State private var showingCodeEditor = false
     @State private var showingOptions = false
-    
+    @State private var layoutLabel = "Ordinal Layout"
+    @State private var temporalLayout = false
+
     var body: some View {
         ZStack {
             GeometryReader { gr in
-                ControllerView(fileModel: fileModel)
+                ControllerView(fileModel: fileModel, temporalLayout: $temporalLayout)
                     .toolbar {
                         ToolbarItemGroup {
                             Button("Code Editor") {
@@ -44,6 +46,15 @@ struct DatavyuView: View {
                                 let panel = NSSavePanel()
                                 if panel.runModal() == .OK {
                                     saveOpfFile(fileModel: fileModel, outputFilename: panel.url!)
+                                }
+                            }
+                            Button(layoutLabel) {
+                                if layoutLabel == "Ordinal Layout" {
+                                    layoutLabel = "Temporal Layout"
+                                    temporalLayout = true
+                                } else {
+                                    layoutLabel = "Ordinal Layout"
+                                    temporalLayout = false
                                 }
                             }
                         }

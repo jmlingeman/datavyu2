@@ -8,7 +8,7 @@
 import SwiftUI
 import Foundation
 
-struct WeakTemporalLayout: Layout {
+struct OrdinalLayout: Layout {
     var sheetModel: ObservedObject<SheetModel>.Wrapper
     var spacing: CGFloat? = nil
     
@@ -52,14 +52,14 @@ struct WeakTemporalLayout: Layout {
          - If a cell's offset is at that location, extend that subview's frame
          
          */
-//        var pt = CGPoint(x: bounds.minX, y: bounds.minY)
+        //        var pt = CGPoint(x: bounds.minX, y: bounds.minY)
         
         
         let config = Config()
         let gapSize = config.gapSize
         let columnSize = config.defaultCellWidth
         let headerSize = config.headerSize
-
+        
         
         
         let titleSubviews = subviews.filter({subview in
@@ -83,7 +83,8 @@ struct WeakTemporalLayout: Layout {
         var heightMap: [Int: Double] = [:]
         var onsetToPos: [Int: Double] = [:]
         var offsetToPos: [Int: Double] = [:]
-
+        
+        
         // Assign defaults
         for subview in cellSubviews {
             sizes[subview.cellIdx] = CGSize(width: columnSize, height: 0)
@@ -112,31 +113,7 @@ struct WeakTemporalLayout: Layout {
             titleView.place(at: pt, proposal: .unspecified)
         }
         
-        /* Go through each column and assign "height" values to onset times.
-         This will determine how much space to allocate between onset times.
-         For each column, create an intermediate map and then merge with the
-         actual map using maximum values.  This is required since a column can have
-         multiple cells with the same onset.
-         Also accumulate all unique times.
-         */
-        
 
-
-        for colIdx in columnViews.keys {
-            var intermediateMap: [Int: Double] = [:]
-            for cell in columnViews[colIdx]! {
-                let height = cell.sizeThatFits(.unspecified).height
-                let onset = cell.onset
-                intermediateMap[onset] = intermediateMap[onset, default: 0] + height
-                times.insert(cell.onset)
-                if cell.offset > cell.onset {
-                    times.insert(cell.offset)
-                }
-            }
-            for onset in intermediateMap.keys {
-                heightMap[onset] = max(heightMap[onset, default: 0], intermediateMap[onset]!)
-            }
-        }
         
         
         var pos = headerSize
@@ -152,76 +129,35 @@ struct WeakTemporalLayout: Layout {
          the onset map to get positions for cells sharing onsets.
          */
         for colIdx in columnViews.keys {
-            var colHeight = 0.0
-            var onsetMapLocal: [Int: Double] = onsetToPos
-            var prevCell: LayoutSubview?
+            var colHeight = config.headerSize
             let colCells = columnViews[colIdx]!
             for (idx, curCell) in colCells.enumerated() {
-                var nextCell: LayoutSubview?
-                if idx+1 < colCells.count {
-                    nextCell = colCells[idx+1]
-                }
                 
                 let onset = curCell.onset
                 let offset = curCell.offset
-                let cellTopY = onsetMapLocal[onset]!
+                let cellTopY = colHeight
                 
-                var cellHeight = 0.0
-                if onset > offset {
-                    // TODO: Set overlap border here
-                    cellHeight = curCell.sizeThatFits(.unspecified).height
-                } else if nextCell != nil && onset == nextCell!.onset {
-                    if onset != offset || offset == nextCell!.offset {
-                        // TODO: Set overlap border here
-                    }
-                    cellHeight = curCell.sizeThatFits(.unspecified).height
-                } else if nextCell != nil && offset >= nextCell!.onset {
-                    // TODO: Set overlap border here
-                    cellHeight = onsetMapLocal[nextCell!.onset]! - cellTopY;
-                } else {
-                    cellHeight = offsetToPos[offset, default: onsetToPos[offset]!] - cellTopY;
-                }
+                var cellHeight = curCell.sizeThatFits(.unspecified).height
+
                 
-                if prevCell != nil && onset - prevCell!.offset == 1 {
-                    sizes[prevCell!.cellIdx]!.height =  cellTopY - sizes[prevCell!.cellIdx]!.height
-                    offsetToPos[offset] = max(offsetToPos[offset] ?? 0, cellTopY)
-                }
-                
-                // fix for edge cases...maybe investigate later
-                cellHeight = max(cellHeight, curCell.sizeThatFits(.unspecified).height);
                 // Set cell boundary
                 pts[curCell.cellIdx]?.y = cellTopY
                 sizes[curCell.cellIdx]?.height = cellHeight
                 
-                // Update local onset map
-                onsetMapLocal[onset] = onsetMapLocal[onset]! + cellHeight
-                
-                // Only do if we're not setting overlap
-                if curCell.onset < curCell.offset {
-                    offsetToPos[offset] = max(offsetToPos[offset, default: cellTopY + cellHeight], cellTopY + cellHeight)
-                }
-                
-                // Update offset map
-//                if(!curCell.getOverlapBorder()) {
-//                    int adjOff = cellTopY + cellHeight;
-//                    offsetMap.compute(offset, (k, v) -> (v == null) ? adjOff : Math.max(v, adjOff));
-//                }
-                
                 // Update vars
                 colHeight = cellTopY + cellHeight;
-                prevCell = curCell;
             }
             
             cache.maxHeight = max(cache.maxHeight, colHeight)
         }
-
+        
         
         for colIdx in columnViews.keys {
             let colCells = columnViews[colIdx]!
             for curCell in colCells {
                 let mapHeight = offsetToPos[curCell.offset, default: -1] - pts[curCell.cellIdx]!.y
                 if sizes[curCell.cellIdx]!.height < mapHeight {
-                    sizes[curCell.cellIdx]?.height = mapHeight
+//                    sizes[curCell.cellIdx]?.height = mapHeight
                 }
                 curCell.place(at: pts[curCell.cellIdx]!, proposal: ProposedViewSize(sizes[curCell.cellIdx]!))
             }
@@ -229,7 +165,7 @@ struct WeakTemporalLayout: Layout {
         
         cache.maxWidth = Double(sheetModel.columns.count) * columnSize
     }
-        
+    
     
     func computeSpaces(subviews: LayoutSubviews) -> [CGFloat] {
         if let spacing {
@@ -254,7 +190,7 @@ struct WeakTemporalLayout: Layout {
     }
     
     func updateCache(_ cache: inout CacheData, subviews: Subviews) {
-//        cache.maxHeight = computeMaxHeight(subviews: subviews)
-//        cache.spaces = computeSpaces(subviews: subviews)
+        //        cache.maxHeight = computeMaxHeight(subviews: subviews)
+        //        cache.spaces = computeSpaces(subviews: subviews)
     }
 }
