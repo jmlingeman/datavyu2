@@ -15,6 +15,7 @@ struct ControllerView: View {
     @FocusState private var columnInFocus: ColumnModel?
     @FocusState private var cellInFocus: CellModel?
     @Binding var hideController: Bool
+    @State private var showingColumnNameDialog = false
 
     func play() {
         for videoModel in fileModel.videoModels {
@@ -58,11 +59,14 @@ struct ControllerView: View {
         }
     }
 
-    func addCol() {
-        let columnModel = ColumnModel(columnName: "test4444")
+    func addColumn() {
+        let columnModel = ColumnModel(columnName: "")
         let _ = columnModel.addCell()
         let _ = columnModel.addCell()
         fileModel.sheetModel.addColumn(column: columnModel)
+        columnInFocus = columnModel
+        
+        showingColumnNameDialog.toggle()
     }
 
     func addCell() {
@@ -138,7 +142,11 @@ struct ControllerView: View {
                                     HStack {
                                         Button("Add Cell", action: addCell).keyboardShortcut("v", modifiers: [])
                                         Button("Set Offset + Add", action: setOffsetAndAddNewCell).keyboardShortcut("l", modifiers: [])
-                                        Button("Add Col", action: addCol).keyboardShortcut("c", modifiers: [])
+                                        Button("Add Col", action: addColumn)
+                                            .keyboardShortcut("c", modifiers: [])
+                                            .sheet(isPresented: $showingColumnNameDialog) {
+                                                ColumnNameDialog(column: (columnInFocus ?? fileModel.sheetModel.columns.last)!)
+                                        }
                                         Button("Add Video", action: addVideo).keyboardShortcut("c", modifiers: [])
                                     }
                                 }

@@ -35,6 +35,7 @@
 		884B0DFE2A50CDCE00D16304 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 884B0DFD2A50CDCE00D16304 /* README.md */; };
 		884CBB512A6CA4EF00D5DBA8 /* OrdinalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884CBB502A6CA4EF00D5DBA8 /* OrdinalLayout.swift */; };
 		884CBB532A6CA58F00D5DBA8 /* LayoutKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884CBB522A6CA58F00D5DBA8 /* LayoutKeys.swift */; };
+		884CBB552A6DF8F600D5DBA8 /* ColumnNameDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884CBB542A6DF8F600D5DBA8 /* ColumnNameDialog.swift */; };
 		8878A60E2A2D698900A2658C /* CodeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A60D2A2D698900A2658C /* CodeEditorView.swift */; };
 		8878A6102A2FBC8700A2658C /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A60F2A2FBC8700A2658C /* Config.swift */; };
 		8878A6132A3026E100A2658C /* RubyScriptEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6122A3026E100A2658C /* RubyScriptEngine.swift */; };
@@ -108,6 +109,7 @@
 		884B0DFD2A50CDCE00D16304 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		884CBB502A6CA4EF00D5DBA8 /* OrdinalLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdinalLayout.swift; sourceTree = "<group>"; };
 		884CBB522A6CA58F00D5DBA8 /* LayoutKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutKeys.swift; sourceTree = "<group>"; };
+		884CBB542A6DF8F600D5DBA8 /* ColumnNameDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnNameDialog.swift; sourceTree = "<group>"; };
 		8878A60D2A2D698900A2658C /* CodeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorView.swift; sourceTree = "<group>"; };
 		8878A60F2A2FBC8700A2658C /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		8878A6122A3026E100A2658C /* RubyScriptEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RubyScriptEngine.swift; sourceTree = "<group>"; };
@@ -294,6 +296,7 @@
 				8878A6222A3FD81900A2658C /* TrackView.swift */,
 				8878A6372A41305E00A2658C /* ClockView.swift */,
 				88D3FE362A4DE12A0094F953 /* TrackPositionIndicator.swift */,
+				884CBB542A6DF8F600D5DBA8 /* ColumnNameDialog.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -549,6 +552,7 @@
 				884CBB512A6CA4EF00D5DBA8 /* OrdinalLayout.swift in Sources */,
 				884B0DF92A50CB1B00D16304 /* CodeEditorAddCodeButton.swift in Sources */,
 				881A3A002A2BE73B00B4782D /* ControllerView.swift in Sources */,
+				884CBB552A6DF8F600D5DBA8 /* ColumnNameDialog.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

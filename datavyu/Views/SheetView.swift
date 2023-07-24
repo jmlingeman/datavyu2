@@ -16,7 +16,6 @@ struct Sheet: View {
     @State private var offset: CGPoint = .zero
     @FocusState private var isFocused: Bool
     @Binding var temporalLayout: Bool
-//    @ObservedObject var columnWidths:
     
     let config = Config()
 
