@@ -9,7 +9,7 @@ import Leaf
 import Vapor
 import SwiftUI
 
-class FileServer: ObservableObject {
+class FileServer {
 
     var app: Application
     let port: Int
@@ -18,9 +18,7 @@ class FileServer: ObservableObject {
     init(port: Int) {
         self.port = port
         self.fileModel = FileModel()
-        // 3
         app = Application(.development)
-        // 4
         configure(app)
     }
     
@@ -60,18 +58,12 @@ struct FileWebRouteCollection: RouteCollection {
     
     func boot(routes: RoutesBuilder) throws {
         let router = routes.grouped("api")
-        router.get(use: getColumn)
+        router.get("getcolumn", use: getColumn)
         router.post("setcolumn") { req in
             let column = try req.content.decode(ColumnModel.self)
             setColumn(column: column)
             return HTTPStatus.ok
         }
-        
-//        todos.group(":id") { todo in
-//            todo.get(use: show)
-//            todo.put(use: update)
-//            todo.delete(use: delete)
-//        }
     }
     
     func getColumn(req: Request) async throws -> ColumnModel {
@@ -83,12 +75,14 @@ struct FileWebRouteCollection: RouteCollection {
                 return col
             }
         }
-        
         return ColumnModel(columnName: "")
     }
     
     func setColumn(column: ColumnModel) {
-        return fileModel.sheetModel.setColumn(column: column)
+        DispatchQueue.main.async {
+            fileModel.sheetModel.setColumn(column: column)
+            fileModel.updates += 1
+        }
     }
 //
 //    func show(req: Request) throws -> String {

@@ -27,7 +27,7 @@ struct ColumnNameDialog: View {
                     dismiss()
                 }.focused($focusedField, equals: true)
                     .onAppear {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {  /// Anything over 0.5 seems to work
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                             self.focusedField = true
                         }
                     }

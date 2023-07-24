@@ -20,8 +20,6 @@ class SheetModel: ObservableObject, Identifiable {
         columns = [ColumnModel]()
         setup()
     }
-    
-
 
     func addColumn(column: ColumnModel) {
         columns.append(column)
@@ -37,14 +35,19 @@ class SheetModel: ObservableObject, Identifiable {
     }
     
     func setColumn(column: ColumnModel) {
-        let colIdx = columns.firstIndex(where: { c in
-            c.columnName == column.columnName
-        })
-        
-        if colIdx == nil {
-            addColumn(column: column)
-        } else {
-            columns[colIdx!] = column
+        DispatchQueue.main.async {
+            let colIdx = self.columns.firstIndex(where: { c in
+                c.columnName == column.columnName
+            })
+            
+            if colIdx == nil {
+                self.addColumn(column: column)
+            } else {
+                self.columns[colIdx!] = column
+                self.updates += 1
+            }
+            print("SET COL")
         }
+
     }
 }
