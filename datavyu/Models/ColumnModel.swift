@@ -66,6 +66,7 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
     
     func addCell() -> CellModel {
         let cell = CellModel(column: self)
+        cell.ordinal = cells.count + 1
         cells.append(cell)
         return cell
     }
