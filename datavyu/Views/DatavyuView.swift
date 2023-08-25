@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DatavyuView: View {
-    @State var fileModel: FileModel
+    @ObservedObject var fileModel: FileModel
     @State private var showingCodeEditor = false
     @State private var showingOptions = false
     @State private var layoutLabel = "Ordinal Layout"
@@ -40,7 +40,7 @@ struct DatavyuView: View {
                                 panel.allowsMultipleSelection = false
                                 panel.canChooseDirectories = false
                                 if panel.runModal() == .OK {
-                                    fileModel = loadOpfFile(inputFilename: panel.url!)
+//                                    fileModel = loadOpfFile(inputFilename: panel.url!)
                                 }
                             }
                             Button("Save File")

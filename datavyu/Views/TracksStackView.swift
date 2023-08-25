@@ -19,6 +19,21 @@ struct TracksStackView: View {
             fileModel.seekAllVideos(to: fileModel.primaryMarker!.time)
         }
     }
+    
+    func addVideo() {
+        if fileModel.videoModels[0].selectedMarker != nil {
+            fileModel.videoModels[0].syncMarker = fileModel.videoModels[0].selectedMarker
+            fileModel.primaryMarker = fileModel.videoModels[0].syncMarker
+            for videoModel in fileModel.videoModels[1...] {
+                let time = videoModel.selectedMarker?.time
+                if time != nil {
+                    videoModel.syncMarker = videoModel.selectedMarker
+                    videoModel.syncOffset = videoModel.syncMarker!.time - fileModel.primaryMarker!.time
+                }
+            }
+            fileModel.seekAllVideos(to: fileModel.primaryMarker!.time)
+        }
+    }
 
     var body: some View {
         VStack {
@@ -63,6 +78,13 @@ struct TracksStackView: View {
         HStack(alignment: .bottom) {
             Spacer()
             Button("Sync Videos", action: syncVideos)
+        }
+    }
+    
+    var addVideoButton: some View {
+        HStack(alignment: .bottom) {
+            Spacer()
+            Button("Add Video", action: addVideo)
         }
     }
 }

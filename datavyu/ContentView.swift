@@ -15,14 +15,14 @@ struct ContentView: View {
                                                     videoFilePath: URL(fileURLWithPath: "/Users/jesse/Downloads/IMG_0822.MOV")),
                                                 VideoModel(
                                                     videoFilePath: URL(fileURLWithPath: "/Users/jesse/Downloads/IMG_0822.MOV"))])
-    var server = FileServer(port: 1312)
 
                                                                                                     
     
     var body: some View {
         HStack {
             DatavyuView(fileModel: fileModel).onAppear {
-                server.start(fileModel: fileModel)
+                let server = DatavyuAPIServer(fileModel: fileModel, port: 1312)
+                server.start()
             }
         }
     }

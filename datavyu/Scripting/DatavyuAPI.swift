@@ -9,20 +9,21 @@ import Leaf
 import Vapor
 import SwiftUI
 
-class FileServer {
+class DatavyuAPIServer {
 
     var app: Application
     let port: Int
     @ObservedObject var fileModel: FileModel
     
-    init(port: Int) {
+    init(fileModel: FileModel, port: Int) {
         self.port = port
-        self.fileModel = FileModel()
-        app = Application(.development)
+        self.fileModel = fileModel
+        self.app = Application(.development)
         configure(app)
     }
     
     private func configure(_ app: Application) {
+        // Listen only to localhost, no outside comms
         app.http.server.configuration.hostname = "127.0.0.1"
         app.http.server.configuration.port = port
         app.views.use(.leaf)
@@ -37,8 +38,7 @@ class FileServer {
         }
     }
     
-    func start(fileModel: FileModel) {
-        self.fileModel = fileModel
+    func start() {
         // 1
         Task {
             do {
@@ -53,15 +53,19 @@ class FileServer {
         
 }
 
-struct FileWebRouteCollection: RouteCollection {
+class FileWebRouteCollection: RouteCollection {
     @ObservedObject var fileModel: FileModel
+    
+    init(fileModel: FileModel) {
+        self.fileModel = fileModel
+    }
     
     func boot(routes: RoutesBuilder) throws {
         let router = routes.grouped("api")
         router.get("getcolumn", use: getColumn)
         router.post("setcolumn") { req in
             let column = try req.content.decode(ColumnModel.self)
-            setColumn(column: column)
+            self.setColumn(column: column)
             return HTTPStatus.ok
         }
     }
@@ -80,8 +84,8 @@ struct FileWebRouteCollection: RouteCollection {
     
     func setColumn(column: ColumnModel) {
         DispatchQueue.main.async {
-            fileModel.sheetModel.setColumn(column: column)
-            fileModel.updates += 1
+            self.fileModel.sheetModel.setColumn(column: column)
+            self.fileModel.updates += 1
         }
     }
 //

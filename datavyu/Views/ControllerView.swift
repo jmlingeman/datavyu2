@@ -10,7 +10,7 @@ import CoreMedia
 import SwiftUI
 
 struct ControllerView: View {
-    @ObservedObject var fileModel: FileModel
+    var fileModel: FileModel
     @Binding var temporalLayout: Bool
     @FocusState private var columnInFocus: ColumnModel?
     @FocusState private var cellInFocus: CellModel?
