@@ -117,9 +117,9 @@ struct ControllerView: View {
                                 }
                                 GridRow {
                                     HStack {
-                                        Button("Set Onset", action: setOnset).keyboardShortcut("j", modifiers: [])
-                                        Button("Play", action: play).keyboardShortcut("p", modifiers: [])
-                                        Button("Set Offset", action: setOffset).keyboardShortcut("k", modifiers: [])
+                                        ControllerButton(buttonName: "Set\nOnset", action: setOnset, gr: gr)
+                                        ControllerButton(buttonName: "Play", action: play, gr: gr)
+                                        ControllerButton(buttonName: "Set\nOffset", action: setOffset, gr: gr)
                                     }
                                 }
                                 GridRow {

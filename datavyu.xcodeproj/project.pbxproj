@@ -60,6 +60,7 @@
 		88F62EA52A5A041200DC5B60 /* TimeHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F62EA42A5A041200DC5B60 /* TimeHelpers.swift */; };
 		88F62EA82A5E1D2300DC5B60 /* Vapor in Frameworks */ = {isa = PBXBuildFile; productRef = 88F62EA72A5E1D2300DC5B60 /* Vapor */; };
 		88F62EAB2A5E230800DC5B60 /* Leaf in Frameworks */ = {isa = PBXBuildFile; productRef = 88F62EAA2A5E230800DC5B60 /* Leaf */; };
+		88F8A9322A993954001EEB21 /* ControllerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F8A9312A993954001EEB21 /* ControllerButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -130,6 +131,7 @@
 		88F62E9A2A58BDD700DC5B60 /* DatavyuErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatavyuErrors.swift; sourceTree = "<group>"; };
 		88F62EA22A5A012400DC5B60 /* IOModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOModels.swift; sourceTree = "<group>"; };
 		88F62EA42A5A041200DC5B60 /* TimeHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeHelpers.swift; sourceTree = "<group>"; };
+		88F8A9312A993954001EEB21 /* ControllerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -297,6 +299,7 @@
 				8878A6372A41305E00A2658C /* ClockView.swift */,
 				88D3FE362A4DE12A0094F953 /* TrackPositionIndicator.swift */,
 				884CBB542A6DF8F600D5DBA8 /* ColumnNameDialog.swift */,
+				88F8A9312A993954001EEB21 /* ControllerButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -548,6 +551,7 @@
 				881A39F12A2A8D6200B4782D /* SheetModel.swift in Sources */,
 				881A39F72A2A9D5900B4782D /* SheetView.swift in Sources */,
 				881A39F32A2A8D8700B4782D /* ColumnModel.swift in Sources */,
+				88F8A9322A993954001EEB21 /* ControllerButton.swift in Sources */,
 				88D3FE372A4DE12A0094F953 /* TrackPositionIndicator.swift in Sources */,
 				884CBB512A6CA4EF00D5DBA8 /* OrdinalLayout.swift in Sources */,
 				884B0DF92A50CB1B00D16304 /* CodeEditorAddCodeButton.swift in Sources */,
