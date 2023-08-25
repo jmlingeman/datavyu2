@@ -118,36 +118,61 @@ struct ControllerView: View {
                                 GridRow {
                                     HStack {
                                         ControllerButton(buttonName: "Set\nOnset", action: setOnset, gr: gr)
+                                            .keyboardShortcut("7", modifiers: .numericPad)
+                                            .keyboardShortcut("[")
                                         ControllerButton(buttonName: "Play", action: play, gr: gr)
+                                            .keyboardShortcut("8", modifiers: .numericPad)
+                                            .keyboardShortcut(",")
                                         ControllerButton(buttonName: "Set\nOffset", action: setOffset, gr: gr)
+                                            .keyboardShortcut("9", modifiers: .numericPad)
+                                            .keyboardShortcut("]")
                                     }
                                 }
                                 GridRow {
                                     HStack {
-                                        Button("Shuttle <", action: shuttleStepDown).keyboardShortcut("s", modifiers: [])
-                                        Button("Stop", action: stop).keyboardShortcut("s", modifiers: [])
-                                        Button("Shuttle >", action: shuttleStepUp).keyboardShortcut("s", modifiers: [])
+                                        ControllerButton(buttonName: "Shuttle <", action: shuttleStepDown, gr: gr)
+                                            .keyboardShortcut("4", modifiers: .numericPad)
+                                            .keyboardShortcut(";")
+                                        ControllerButton(buttonName: "Stop", action: stop, gr: gr)
+                                            .keyboardShortcut("5", modifiers: .numericPad)
+                                            .keyboardShortcut(".")
+                                        ControllerButton(buttonName: "Shuttle >", action: shuttleStepUp, gr: gr)
+                                            .keyboardShortcut("6", modifiers: .numericPad)
+                                            .keyboardShortcut("'")
                                         
                                     }
                                 }
                                 GridRow {
                                     HStack {
-                                        Button("Prev", action: prevFrame).keyboardShortcut("q", modifiers: [])
-                                        Button("Pause", action: pause).keyboardShortcut("s", modifiers: [])
-                                        Button("Next", action: nextFrame).keyboardShortcut("w", modifiers: [])
+                                        ControllerButton(buttonName: "Prev", action: prevFrame, gr: gr)
+                                            .keyboardShortcut("1", modifiers: .numericPad)
+                                            .keyboardShortcut("-")
+                                        ControllerButton(buttonName: "Pause", action: pause, gr: gr)
+                                            .keyboardShortcut("2", modifiers: .numericPad)
+                                            .keyboardShortcut("/")
+                                        ControllerButton(buttonName: "Next", action: nextFrame, gr: gr)
+                                            .keyboardShortcut("3", modifiers: .numericPad)
+                                            .keyboardShortcut("=")
                                         
                                     }
                                 }
                                 GridRow {
                                     HStack {
-                                        Button("Add Cell", action: addCell).keyboardShortcut("v", modifiers: [])
-                                        Button("Set Offset + Add", action: setOffsetAndAddNewCell).keyboardShortcut("l", modifiers: [])
-                                        Button("Add Col", action: addColumn)
-                                            .keyboardShortcut("c", modifiers: [])
+                                        ControllerButton(buttonName: "Add Cell", action: addCell, gr: gr)
+                                            .keyboardShortcut("9", modifiers: .numericPad)
+                                            .keyboardShortcut("]")
+                                        ControllerButton(buttonName: "Set Offset + Add", action: setOffsetAndAddNewCell, gr: gr)
+                                            .keyboardShortcut("9", modifiers: .numericPad)
+                                            .keyboardShortcut("]")
+                                        ControllerButton(buttonName: "Add Col", action: addColumn, gr: gr)
+                                            .keyboardShortcut("9", modifiers: .numericPad)
+                                            .keyboardShortcut("]")
                                             .sheet(isPresented: $showingColumnNameDialog) {
                                                 ColumnNameDialog(column: (columnInFocus ?? fileModel.sheetModel.columns.last)!)
                                         }
-                                        Button("Add Video", action: addVideo).keyboardShortcut("c", modifiers: [])
+                                        ControllerButton(buttonName: "Add Video", action: addVideo, gr: gr)
+                                            .keyboardShortcut("9", modifiers: .numericPad)
+                                            .keyboardShortcut("]")
                                     }
                                 }
                             }.padding().frame(minWidth: 300)
