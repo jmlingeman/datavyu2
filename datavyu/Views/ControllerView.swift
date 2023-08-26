@@ -5,8 +5,6 @@
 //  Created by Jesse Lingeman on 6/3/23.
 //
 
-import AVKit
-import CoreMedia
 import SwiftUI
 
 struct ControllerView: View {
@@ -32,7 +30,7 @@ struct ControllerView: View {
                                     TracksStackView(fileModel: fileModel)
                                 }
                                 GridRow {
-                                    Controller(fileModel: fileModel, columnInFocus: columnInFocus, cellInFocus: cellInFocus, gr: gr)
+                                    ControllerPanelView(fileModel: fileModel, gr: gr, columnInFocus: _columnInFocus, cellInFocus: _cellInFocus)
                                 }
                                 
                             }.padding().frame(minWidth: 300)

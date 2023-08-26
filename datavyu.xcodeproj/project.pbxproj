@@ -61,7 +61,7 @@
 		88F62EA82A5E1D2300DC5B60 /* Vapor in Frameworks */ = {isa = PBXBuildFile; productRef = 88F62EA72A5E1D2300DC5B60 /* Vapor */; };
 		88F62EAB2A5E230800DC5B60 /* Leaf in Frameworks */ = {isa = PBXBuildFile; productRef = 88F62EAA2A5E230800DC5B60 /* Leaf */; };
 		88F8A9322A993954001EEB21 /* ControllerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F8A9312A993954001EEB21 /* ControllerButton.swift */; };
-		88F8A9342A9A56FB001EEB21 /* ControllerPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F8A9332A9A56FB001EEB21 /* ControllerPanel.swift */; };
+		88F8A9342A9A56FB001EEB21 /* ControllerPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F8A9332A9A56FB001EEB21 /* ControllerPanelView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,7 +102,7 @@
 		881A39F62A2A9D5900B4782D /* SheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetView.swift; sourceTree = "<group>"; };
 		881A39FA2A2AB66900B4782D /* VideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
 		881A39FC2A2ABBB900B4782D /* IMG_1234.MOV */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = IMG_1234.MOV; sourceTree = "<group>"; };
-		881A39FF2A2BE73B00B4782D /* ControllerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerView.swift; sourceTree = "<group>"; };
+		881A39FF2A2BE73B00B4782D /* ControllerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ControllerView.swift; path = datavyu/Views/ControllerView.swift; sourceTree = SOURCE_ROOT; };
 		881A3A012A2C0B6500B4782D /* VideoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoModel.swift; sourceTree = "<group>"; };
 		8837C56C2A2D29AF00F29182 /* EditableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableLabel.swift; sourceTree = "<group>"; };
 		884B0DF62A50BE6B00D16304 /* DatavyuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatavyuView.swift; sourceTree = "<group>"; };
@@ -133,7 +133,7 @@
 		88F62EA22A5A012400DC5B60 /* IOModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOModels.swift; sourceTree = "<group>"; };
 		88F62EA42A5A041200DC5B60 /* TimeHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeHelpers.swift; sourceTree = "<group>"; };
 		88F8A9312A993954001EEB21 /* ControllerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerButton.swift; sourceTree = "<group>"; };
-		88F8A9332A9A56FB001EEB21 /* ControllerPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerPanel.swift; sourceTree = "<group>"; };
+		88F8A9332A9A56FB001EEB21 /* ControllerPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerPanelView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -264,6 +264,7 @@
 				881A39F62A2A9D5900B4782D /* SheetView.swift */,
 				881A39FA2A2AB66900B4782D /* VideoView.swift */,
 				881A39FF2A2BE73B00B4782D /* ControllerView.swift */,
+				88F8A9332A9A56FB001EEB21 /* ControllerPanelView.swift */,
 				8878A6202A3FD4A100A2658C /* TracksStackView.swift */,
 				884B0DF62A50BE6B00D16304 /* DatavyuView.swift */,
 			);
@@ -302,7 +303,6 @@
 				88D3FE362A4DE12A0094F953 /* TrackPositionIndicator.swift */,
 				884CBB542A6DF8F600D5DBA8 /* ColumnNameDialog.swift */,
 				88F8A9312A993954001EEB21 /* ControllerButton.swift */,
-				88F8A9332A9A56FB001EEB21 /* ControllerPanel.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -556,7 +556,7 @@
 				881A39F32A2A8D8700B4782D /* ColumnModel.swift in Sources */,
 				88F8A9322A993954001EEB21 /* ControllerButton.swift in Sources */,
 				88D3FE372A4DE12A0094F953 /* TrackPositionIndicator.swift in Sources */,
-				88F8A9342A9A56FB001EEB21 /* ControllerPanel.swift in Sources */,
+				88F8A9342A9A56FB001EEB21 /* ControllerPanelView.swift in Sources */,
 				884CBB512A6CA4EF00D5DBA8 /* OrdinalLayout.swift in Sources */,
 				884B0DF92A50CB1B00D16304 /* CodeEditorAddCodeButton.swift in Sources */,
 				881A3A002A2BE73B00B4782D /* ControllerView.swift in Sources */,

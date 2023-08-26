@@ -1,5 +1,5 @@
 //
-//  ControllerPanel.swift
+//  ControllerPanelView.swift
 //  datavyu
 //
 //  Created by Jesse Lingeman on 8/26/23.
@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-struct ControllerPanel: View {
-    
+struct ControllerPanelView: View {
     @ObservedObject var fileModel: FileModel
-    @Binding private var columnInFocus: ColumnModel?
-    @Binding private var cellInFocus: CellModel?
     var gr: GeometryProxy
+    @FocusState var columnInFocus: ColumnModel?
+    @FocusState var cellInFocus: CellModel?
     
-    @State private var showingColumnNameDialog = false
+    
+    @State var showingColumnNameDialog = false
     
     func play() {
         for videoModel in fileModel.videoModels {
@@ -29,7 +29,6 @@ struct ControllerPanel: View {
     func shuttleStepDown() {
         fileModel.changeShuttleSpeed(step: -1)
     }
-    
     
     func stop() {
         for videoModel in fileModel.videoModels {
@@ -126,7 +125,6 @@ struct ControllerPanel: View {
                     ControllerButton(buttonName: "Shuttle >", action: shuttleStepUp, gr: gr)
                         .keyboardShortcut("6", modifiers: .numericPad)
                         .keyboardShortcut("'")
-                    
                 }
             }
             GridRow {
