@@ -14,7 +14,7 @@ struct ControllerButton: View {
     
     var body: some View {
         Button(action: action) {
-            Text(buttonName).font(.system(size: 12))
+            Text(buttonName).font(.system(size: 10))
                 .multilineTextAlignment(.center)
                 .padding()
                 .background(RoundedRectangle(cornerRadius: 8).fill(Color.secondary))
