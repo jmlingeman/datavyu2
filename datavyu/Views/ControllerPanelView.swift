@@ -134,14 +134,14 @@ struct ControllerPanelView: View {
             GridRow {
                 HStack {
                     ControllerButton(buttonName: "Add\nCell", action: addCell, gr: gr)
-                        .keyboardShortcut("9", modifiers: .numericPad)
-                        .keyboardShortcut("]")
+                        .keyboardShortcut("0", modifiers: .numericPad)
+                        .keyboardShortcut("c")
                     ControllerButton(buttonName: "Set\nOffset\n+ Add", action: setOffsetAndAddNewCell, gr: gr)
-                        .keyboardShortcut("9", modifiers: .numericPad)
-                        .keyboardShortcut("]")
+                        .keyboardShortcut(".", modifiers: .numericPad)
+                        .keyboardShortcut("v")
                     ControllerButton(buttonName: "Add\nCol", action: addColumn, gr: gr)
-                        .keyboardShortcut("9", modifiers: .numericPad)
-                        .keyboardShortcut("]")
+                        .keyboardShortcut(KeyEquivalent.return, modifiers: .numericPad)
+                        .keyboardShortcut("g")
                         .sheet(isPresented: $showingColumnNameDialog) {
                             ColumnNameDialog(column: (columnInFocus ?? fileModel.sheetModel.columns.last)!)
                         }
