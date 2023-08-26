@@ -31,6 +31,10 @@ struct TracksStackView: View {
             fileModel.updates += 1
         }
     }
+    
+    func getTrackWidthProportion(videoModel: VideoModel) -> Double {
+        return videoModel.duration / fileModel.longestDuration()
+    }
 
     var body: some View {
         VStack {
@@ -38,8 +42,8 @@ struct TracksStackView: View {
                 VStack {
                     ForEach(fileModel.videoModels) { videoModel in
                         Text(videoModel.videoFilePath.lastPathComponent)
-                    }.frame(height: 30)
-                }
+                    }
+                }.frame(height: 30)
                 GeometryReader { gr in
                     VStack {
                         ForEach(fileModel.videoModels) { videoModel in
@@ -53,6 +57,8 @@ struct TracksStackView: View {
                                     fileModel.updates += 1
                                     videoModel.updates += 1
                                 }
+                                // TODO Fix this up
+//                                .frame(width: gr.size.width * getTrackWidthProportion(videoModel: videoModel))
                             }
                         }
                     }.overlay {

@@ -28,8 +28,6 @@ struct TrackView: View {
     }
 
     var body: some View {
-        
-        
         GeometryReader { gr in
             ZStack {
                 Rectangle().frame(maxWidth: .infinity).foregroundColor(Color.blue)
