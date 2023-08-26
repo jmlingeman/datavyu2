@@ -90,15 +90,6 @@ struct ControllerPanelView: View {
         cellInFocus = cell
     }
     
-    func addVideo() {
-        let panel = NSOpenPanel()
-        panel.allowsMultipleSelection = false
-        panel.canChooseDirectories = false
-        if panel.runModal() == .OK {
-            fileModel.addVideo(videoUrl: panel.url!)
-        }
-    }
-    
     var body: some View {
         Grid {
             GridRow {
@@ -154,9 +145,6 @@ struct ControllerPanelView: View {
                         .sheet(isPresented: $showingColumnNameDialog) {
                             ColumnNameDialog(column: (columnInFocus ?? fileModel.sheetModel.columns.last)!)
                         }
-                    ControllerButton(buttonName: "Add\nVideo", action: addVideo, gr: gr)
-                        .keyboardShortcut("9", modifiers: .numericPad)
-                        .keyboardShortcut("]")
                 }
             }
         }

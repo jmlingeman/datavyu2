@@ -6,7 +6,7 @@ struct TracksStackView: View {
     @ObservedObject var fileModel: FileModel
 
     func syncVideos() {
-        if fileModel.videoModels[0].selectedMarker != nil {
+        if fileModel.videoModels.count > 1 && fileModel.videoModels[0].selectedMarker != nil {
             fileModel.videoModels[0].syncMarker = fileModel.videoModels[0].selectedMarker
             fileModel.primaryMarker = fileModel.videoModels[0].syncMarker
             for videoModel in fileModel.videoModels[1...] {
@@ -21,17 +21,11 @@ struct TracksStackView: View {
     }
     
     func addVideo() {
-        if fileModel.videoModels[0].selectedMarker != nil {
-            fileModel.videoModels[0].syncMarker = fileModel.videoModels[0].selectedMarker
-            fileModel.primaryMarker = fileModel.videoModels[0].syncMarker
-            for videoModel in fileModel.videoModels[1...] {
-                let time = videoModel.selectedMarker?.time
-                if time != nil {
-                    videoModel.syncMarker = videoModel.selectedMarker
-                    videoModel.syncOffset = videoModel.syncMarker!.time - fileModel.primaryMarker!.time
-                }
-            }
-            fileModel.seekAllVideos(to: fileModel.primaryMarker!.time)
+        let panel = NSOpenPanel()
+        panel.allowsMultipleSelection = false
+        panel.canChooseDirectories = false
+        if panel.runModal() == .OK {
+            fileModel.addVideo(videoUrl: panel.url!)
         }
     }
 
@@ -70,20 +64,14 @@ struct TracksStackView: View {
                 ClockView(videoModel: videoModel)
             }
         }.frame(height: 100).overlay(alignment: .bottomTrailing) {
-            syncButton
+            overlayButtons
         }
     }
 
-    var syncButton: some View {
+    var overlayButtons: some View {
         HStack(alignment: .bottom) {
             Spacer()
             Button("Sync Videos", action: syncVideos)
-        }
-    }
-    
-    var addVideoButton: some View {
-        HStack(alignment: .bottom) {
-            Spacer()
             Button("Add Video", action: addVideo)
         }
     }
