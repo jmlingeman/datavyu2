@@ -1,6 +1,7 @@
 
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct TracksStackView: View {
     @ObservedObject var fileModel: FileModel
@@ -22,10 +23,12 @@ struct TracksStackView: View {
     
     func addVideo() {
         let panel = NSOpenPanel()
+        panel.allowedContentTypes = [.video, .quickTimeMovie, .mpeg]
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = false
         if panel.runModal() == .OK {
             fileModel.addVideo(videoUrl: panel.url!)
+            fileModel.updates += 1
         }
     }
 
