@@ -29,6 +29,13 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         }
     }
     
+    func removeArgument() {
+        arguments.popLast()
+        for cell in cells {
+            cell.arguments.popLast()
+        }
+    }
+    
     func addArgument(argument: Argument) {
         arguments.append(argument)
         for cell in cells {

@@ -18,6 +18,7 @@ struct CodeEditorRow: View {
                 TextField(argument.name, text: $argument.name).frame(maxWidth: 100).padding().border(Color.black, width: 5)
             }
             CodeEditorAddCodeButton(column: column)
+            CodeEditorRemoveCodeButton(column: column)
             Spacer()
         }.padding()
     }
