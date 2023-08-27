@@ -18,6 +18,8 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
     /// Subsequent videos then sync to the time on the primary video
     @Published var syncOffset = 0.0
     @Published var syncMarker: Marker?
+    
+    var ready: Bool = false
 
     static func == (lhs: VideoModel, rhs: VideoModel) -> Bool {
         if lhs.videoFilePath == rhs.videoFilePath {
@@ -35,8 +37,9 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
         currentPos = 0.0
         currentTime = 0.0
         player = AVPlayer(url: videoFilePath)
-        duration = player.getCurrentTrackDuration()
         markers = []
+        duration = 0.0
+        
     }
     
     convenience init(videoFilePath: URL, trackSettings: TrackSetting) {

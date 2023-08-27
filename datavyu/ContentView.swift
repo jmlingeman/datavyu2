@@ -14,7 +14,11 @@ struct ContentView: View {
                                                 VideoModel(
                                                     videoFilePath: URL(fileURLWithPath: "/Users/jesse/Downloads/IMG_0822.MOV")),
                                                 VideoModel(
-                                                    videoFilePath: URL(fileURLWithPath: "/Users/jesse/Downloads/IMG_0822.MOV"))])
+                                                    videoFilePath: URL(fileURLWithPath: "/Users/jesse/Downloads/IMG_0822.MOV")),
+                                                VideoModel(
+                                                    videoFilePath: URL(fileURLWithPath: "/Users/jesse/Downloads/IMG_1234.MOV")),
+                                           
+                                           ])
 
                                                                                                     
     

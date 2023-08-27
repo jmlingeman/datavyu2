@@ -16,6 +16,9 @@ class FileModel: ObservableObject, Identifiable {
     @Published var updates: Int
     @Published var primaryMarker : Marker?
     @Published var primaryVideo : VideoModel?
+    @Published var longestDuration : Double = 0
+    
+    var videoObservers: [NSKeyValueObservation] = []
     
     var currentShuttleSpeedIdx: Int
     var legacyProjectSettings: ProjectFile?
@@ -43,7 +46,21 @@ class FileModel: ObservableObject, Identifiable {
         currentShuttleSpeedIdx = config.shuttleSpeeds.firstIndex(of: 0)!
         
         if videoModels.count > 0 {
-            primaryVideo = videoModels[0]
+            self.primaryVideo = videoModels[0]
+        }
+        
+        for videoModel in videoModels {
+            var observer = videoModel.player.currentItem!.observe(\.status, options:  [.new, .old], changeHandler: { (playerItem, change) in
+                if playerItem.status == .readyToPlay {
+                    videoModel.ready = true
+                    videoModel.duration = videoModel.player.getCurrentTrackDuration()
+                    
+                    if videoModel.duration > self.longestDuration {
+                        self.longestDuration = videoModel.duration
+                    }
+                }
+            })
+            videoObservers.append(observer)
         }
     }
     
@@ -87,10 +104,10 @@ class FileModel: ObservableObject, Identifiable {
         if videoModels.count > 0 {
             primaryVideo = videoModels[0]
         }
-    }
-    
-    func longestDuration() -> Double {
-        return videoModels.map({x in x.getDuration() + x.syncOffset}).max() ?? 0
+        
+        if videoModel.duration > longestDuration {
+            longestDuration = videoModel.duration
+        }
     }
     
     func seekAllVideos(to: Double) {
