@@ -68,6 +68,7 @@ class FileWebRouteCollection: RouteCollection {
             self.setColumn(column: column)
             return HTTPStatus.ok
         }
+        router.get("getcolumnlist", use: getColumnList)
     }
     
     func getColumn(req: Request) async throws -> ColumnModel {
@@ -80,6 +81,14 @@ class FileWebRouteCollection: RouteCollection {
             }
         }
         return ColumnModel(columnName: "")
+    }
+    
+    func getColumnList(req: Request) async throws -> [String] {
+        var colList: [String] = []
+        for col in fileModel.sheetModel.columns {
+            colList.append(col.columnName)
+        }
+        return colList
     }
     
     func setColumn(column: ColumnModel) {
