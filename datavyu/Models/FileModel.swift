@@ -57,6 +57,7 @@ class FileModel: ObservableObject, Identifiable {
                     
                     if videoModel.duration > self.longestDuration {
                         self.longestDuration = videoModel.duration
+                        self.primaryVideo = videoModel
                     }
                 }
             })
@@ -101,12 +102,13 @@ class FileModel: ObservableObject, Identifiable {
     func addVideo(videoModel: VideoModel) {
         self.videoModels.append(videoModel)
         
-        if videoModels.count > 0 {
+        if videoModels.count == 1 {
             primaryVideo = videoModels[0]
         }
         
         if videoModel.duration > longestDuration {
             longestDuration = videoModel.duration
+            self.primaryVideo = videoModel
         }
     }
     
@@ -124,7 +126,7 @@ class FileModel: ObservableObject, Identifiable {
     
     func currentTime() -> Double {
         if videoModels.count >= 1 {
-            return videoModels[0].currentTime
+            return primaryVideo!.currentTime
         } else {
             return 0.0
         }

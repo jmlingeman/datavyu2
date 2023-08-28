@@ -15,16 +15,19 @@ struct TrackPositionIndicator: View {
     var body: some View {
         Rectangle().frame(width: 5).foregroundColor(Color.red)
             .position(x: videoModel.currentPos * gr.size.width,
-                      y: gr.size.height / CGFloat(fileModel.videoModels.count))
+                      y: 15)
             .gesture(
                 DragGesture()
                     .onChanged { gesture in
                         let relativePos = clamp(x: gesture.location.x / gr.size.width, minVal: 0, maxVal: 1)
-                        fileModel.seekAllVideosPercent(to: relativePos)
+                        let absoluteTime = fileModel.primaryVideo!.getDuration() * relativePos
+                        print(absoluteTime)
+                        fileModel.seekAllVideos(to: absoluteTime)
                     }
                     .onEnded { gesture in
                         let relativePos = clamp(x: gesture.location.x / gr.size.width, minVal: 0, maxVal: 1)
-                        fileModel.seekAllVideosPercent(to: relativePos)
+                        let absoluteTime = fileModel.primaryVideo!.getDuration() * relativePos
+                        fileModel.seekAllVideos(to: absoluteTime)
                     }
             )
     }

@@ -51,12 +51,12 @@ struct TracksStackView: View {
                                 .onTapGesture {
                                     fileModel.updates += 1
                                     videoModel.updates += 1
+                                }.overlay {
+                                    if fileModel.videoModels.count > 0 {
+                                        TrackPositionIndicator(fileModel: fileModel, videoModel: fileModel.primaryVideo!, gr: gr)
+                                    }
                                 }
                             }.frame(height: 30)
-                        }
-                    }.overlay {
-                        if fileModel.videoModels.count > 0 {
-                            TrackPositionIndicator(fileModel: fileModel, videoModel: fileModel.primaryVideo!, gr: gr)
                         }
                     }
                 }

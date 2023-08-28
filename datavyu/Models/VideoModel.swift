@@ -99,8 +99,11 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
             jumpTime = to + syncOffset
         }
         let time = CMTime(seconds: jumpTime, preferredTimescale: 600)
-        player.currentItem!.seek(to: time, completionHandler: nil)
-        updateTimes()
+        player.currentItem!.seek(to: time, toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero) { finished in
+            if finished {
+                self.updateTimes()
+            }
+        }
     }
     
     func seekPercentage(to: Double) {
@@ -109,13 +112,17 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
             relativeTime = getDuration()
         }
         let time = CMTime(seconds: relativeTime, preferredTimescale: 600)
-        player.currentItem!.seek(to: time, completionHandler: nil)
-        updateTimes()
+        player.currentItem!.seek(to: time, toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero) { finished in
+            if finished {
+                self.updateTimes()
+            }
+        }
     }
     
     func updateTimes() {
         currentTime = player.currentTime().seconds + syncOffset
         currentPos = currentTime / getDuration()
+        print("UPDATING TIME \(currentPos) \(currentTime)")
     }
 }
 
