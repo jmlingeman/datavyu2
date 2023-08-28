@@ -37,20 +37,13 @@ struct TracksStackView: View {
     }
 
     var body: some View {
-        VStack {
-            HStack {
-                VStack {
-                    ForEach(fileModel.videoModels) { videoModel in
-                        HStack {
-                            Text(videoModel.videoFileURL.lastPathComponent)
-                        }.frame(height: 30)
-                    }
-                }
+        Grid {
+            GridRow {
                 GeometryReader { gr in
-                    VStack {
+                    Grid {
                         ForEach(fileModel.videoModels) { videoModel in
-                            HStack {
-                                
+                            GridRow {
+                                Text(videoModel.videoFileURL.lastPathComponent).frame(width: 150)
                                 TrackView(videoModel: videoModel,
                                           fileModel: fileModel,
                                           primaryMarker: $fileModel.primaryMarker
@@ -59,22 +52,22 @@ struct TracksStackView: View {
                                     fileModel.updates += 1
                                     videoModel.updates += 1
                                 }
-                                // TODO Fix this up
-//                                .frame(width: gr.size.width * getTrackWidthProportion(videoModel: videoModel))
                             }.frame(height: 30)
                         }
                     }.overlay {
                         if fileModel.videoModels.count > 0 {
-                            TrackPositionIndicator(fileModel: fileModel, videoModel: fileModel.videoModels[0], gr: gr)
+                            TrackPositionIndicator(fileModel: fileModel, videoModel: fileModel.primaryVideo!, gr: gr)
                         }
                     }
                 }
             }
-                
-            ForEach(fileModel.videoModels) { videoModel in
-                ClockView(videoModel: videoModel)
+            GridRow {
+                if fileModel.primaryVideo != nil {
+                    ClockView(videoModel: fileModel.primaryVideo!)
+                }
             }
-        }.frame(height: 100).overlay(alignment: .bottomTrailing) {
+            
+        }.overlay(alignment: .bottomTrailing) {
             overlayButtons
         }
     }

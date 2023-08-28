@@ -54,6 +54,7 @@
 		88BFE4252A9BE78F00B37DC3 /* CodeEditorRemoveCodeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BFE4242A9BE78F00B37DC3 /* CodeEditorRemoveCodeButton.swift */; };
 		88BFE4292A9D13FC00B37DC3 /* DSWaveformImage in Frameworks */ = {isa = PBXBuildFile; productRef = 88BFE4282A9D13FC00B37DC3 /* DSWaveformImage */; };
 		88BFE42B2A9D13FC00B37DC3 /* DSWaveformImageViews in Frameworks */ = {isa = PBXBuildFile; productRef = 88BFE42A2A9D13FC00B37DC3 /* DSWaveformImageViews */; };
+		88BFE42D2A9D25CB00B37DC3 /* WaveformViewDV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BFE42C2A9D25CB00B37DC3 /* WaveformViewDV.swift */; };
 		88D3FE372A4DE12A0094F953 /* TrackPositionIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3FE362A4DE12A0094F953 /* TrackPositionIndicator.swift */; };
 		88F62E982A58B05500DC5B60 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F62E972A58B05500DC5B60 /* StringExtensions.swift */; };
 		88F62E9B2A58BDD700DC5B60 /* DatavyuErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F62E9A2A58BDD700DC5B60 /* DatavyuErrors.swift */; };
@@ -131,6 +132,7 @@
 		8878A6372A41305E00A2658C /* ClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockView.swift; sourceTree = "<group>"; };
 		8878A6392A427C6000A2658C /* MarkerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkerModel.swift; sourceTree = "<group>"; };
 		88BFE4242A9BE78F00B37DC3 /* CodeEditorRemoveCodeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorRemoveCodeButton.swift; sourceTree = "<group>"; };
+		88BFE42C2A9D25CB00B37DC3 /* WaveformViewDV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformViewDV.swift; sourceTree = "<group>"; };
 		88D3FE362A4DE12A0094F953 /* TrackPositionIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackPositionIndicator.swift; sourceTree = "<group>"; };
 		88F62E972A58B05500DC5B60 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		88F62E9A2A58BDD700DC5B60 /* DatavyuErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatavyuErrors.swift; sourceTree = "<group>"; };
@@ -206,6 +208,7 @@
 		881A39A72A242D4600B4782D /* datavyu */ = {
 			isa = PBXGroup;
 			children = (
+				88BFE42E2A9D264300B37DC3 /* Visualizations */,
 				88F62E992A58BDCA00DC5B60 /* Errors */,
 				8878A62A2A3FED2E00A2658C /* Helpers */,
 				8878A6112A3026CB00A2658C /* Scripting */,
@@ -375,6 +378,14 @@
 				88BFE4242A9BE78F00B37DC3 /* CodeEditorRemoveCodeButton.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		88BFE42E2A9D264300B37DC3 /* Visualizations */ = {
+			isa = PBXGroup;
+			children = (
+				88BFE42C2A9D25CB00B37DC3 /* WaveformViewDV.swift */,
+			);
+			path = Visualizations;
 			sourceTree = "<group>";
 		};
 		88F62E992A58BDCA00DC5B60 /* Errors */ = {
@@ -572,6 +583,7 @@
 				8878A6362A411F9B00A2658C /* FileModel.swift in Sources */,
 				881A39F12A2A8D6200B4782D /* SheetModel.swift in Sources */,
 				881A39F72A2A9D5900B4782D /* SheetView.swift in Sources */,
+				88BFE42D2A9D25CB00B37DC3 /* WaveformViewDV.swift in Sources */,
 				881A39F32A2A8D8700B4782D /* ColumnModel.swift in Sources */,
 				88F8A9322A993954001EEB21 /* ControllerButton.swift in Sources */,
 				88D3FE372A4DE12A0094F953 /* TrackPositionIndicator.swift in Sources */,
@@ -944,7 +956,7 @@
 			repositoryURL = "https://github.com/dmrschmidt/DSWaveformImage";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 13.0.2;
+				minimumVersion = 13.0.0;
 			};
 		};
 		88F62E9C2A58CEA800DC5B60 /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {

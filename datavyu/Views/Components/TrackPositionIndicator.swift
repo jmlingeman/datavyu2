@@ -15,7 +15,7 @@ struct TrackPositionIndicator: View {
     var body: some View {
         Rectangle().frame(width: 5).foregroundColor(Color.red)
             .position(x: videoModel.currentPos * gr.size.width,
-                      y: gr.size.height / 2)
+                      y: gr.size.height / CGFloat(fileModel.videoModels.count))
             .gesture(
                 DragGesture()
                     .onChanged { gesture in

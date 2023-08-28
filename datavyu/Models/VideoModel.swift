@@ -100,7 +100,6 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
         }
         let time = CMTime(seconds: jumpTime, preferredTimescale: 600)
         player.currentItem!.seek(to: time, completionHandler: nil)
-        print(to, syncOffset, jumpTime, getDuration(), time)
         updateTimes()
     }
     
@@ -111,7 +110,6 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
         }
         let time = CMTime(seconds: relativeTime, preferredTimescale: 600)
         player.currentItem!.seek(to: time, completionHandler: nil)
-        print(to, relativeTime, getDuration(), time)
         updateTimes()
     }
     

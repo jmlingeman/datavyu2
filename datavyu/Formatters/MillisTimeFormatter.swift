@@ -65,7 +65,6 @@ class MillisTimeFormatter: Formatter {
         }
         
         let timeInMillis = (hours * 1000 * 60 * 60) + (minutes * 1000 * 60) + (seconds * 1000) + milliseconds
-        print(timeInMillis)
         return timeInMillis
     }
 }
