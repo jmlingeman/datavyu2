@@ -6,7 +6,7 @@ Not yet released.
 
 ## Requirements
 
-- MacOS 11.0 or higher
+- MacOS 13.0 or higher
 
 ## Why?
 
@@ -16,6 +16,10 @@ video codecs required more CPU power or dedicated hardware to decode, and the in
 
 Datavyu is a unique tool deeply in need of modernization in terms of its frameworks, and no other software exists to fill the gap.
 Re-implementation in a modern framework (SwiftUI, specifically) will help to ensure future generations of researchers will be able to use this tool.
+
+The reason the MacOS version is so recent is because SwiftUI is a very quickly
+evolving language.
+Datavyu2 will likely only support the most recent OS until the code base settles.
 
 ## Why SwiftUI?
 SwiftUI was chosen for several reasons: It is Apple's brand new UI design language, so it will likely be supported for quite a while.
@@ -66,14 +70,14 @@ More details will be added as development continues.
 - [ ] Hidden Columns
 - [x] File saving/loading
 - [x] Ordinal Layout
-- [ ] Ruby Scripting
+- [x] Ruby Scripting
 - [x] Scripting API
 - [x] Code Editor
 - [x] Options menu
 - [ ] Auto update
 - [ ] App Store Deployment
 - [x] Track timeline
-- [ ] Audio Visualizations
+- [x] Audio Visualizations
 - [x] Video sync
 - [ ] File history
 - [ ] Project management
