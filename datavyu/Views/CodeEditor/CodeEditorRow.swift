@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import SwiftUIReorderableForEach
+//import SwiftUIReorderableForEach
 
 struct CodeEditorRow: View {
     @ObservedObject var column: ColumnModel

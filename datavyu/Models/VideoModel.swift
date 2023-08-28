@@ -2,7 +2,7 @@ import SwiftUI
 import AVFoundation
 
 class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
-    @Published var videoFilePath: URL
+    @Published var videoFileURL: URL
     @Published var currentTime: Double
     @Published var currentPos: Double
     @Published var duration: Double
@@ -22,18 +22,18 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
     var ready: Bool = false
 
     static func == (lhs: VideoModel, rhs: VideoModel) -> Bool {
-        if lhs.videoFilePath == rhs.videoFilePath {
+        if lhs.videoFileURL == rhs.videoFileURL {
             return true
         }
         return false
     }
 
     func hash(into hasher: inout Hasher) {
-        hasher.combine(videoFilePath)
+        hasher.combine(videoFileURL)
     }
 
     init(videoFilePath: URL) {
-        self.videoFilePath = videoFilePath
+        self.videoFileURL = videoFilePath
         currentPos = 0.0
         currentTime = 0.0
         player = AVPlayer(url: videoFilePath)

@@ -6,12 +6,19 @@
 //
 
 import SwiftUI
+import DSWaveformImage
+import DSWaveformImageViews
 
 struct TrackView: View {
     @ObservedObject var videoModel: VideoModel
     @ObservedObject var fileModel: FileModel
     @Binding var primaryMarker: Marker?
     @State var selectedMarker: Marker?
+    
+    @State var configuration: Waveform.Configuration = Waveform.Configuration(
+        style: .outlined(.blue, 3),
+        verticalScalingFactor: 0.5
+    )
 
     func addMarker() {
         videoModel.addMarker(time: videoModel.currentTime)
@@ -31,6 +38,7 @@ struct TrackView: View {
         GeometryReader { gr in
             ZStack {
                 Rectangle().frame(maxWidth: .infinity).foregroundColor(Color.blue)
+                WaveformView(audioURL: videoModel.videoFileURL, configuration: configuration).frame(maxWidth: .infinity)
                 ForEach(videoModel.markers) { marker in
                     Rectangle().frame(width: 5).foregroundColor(marker == selectedMarker ? Color.purple : Color.green)
                         .position(x: marker.time / videoModel.getDuration() * gr.size.width,

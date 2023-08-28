@@ -42,7 +42,7 @@ struct TracksStackView: View {
                 VStack {
                     ForEach(fileModel.videoModels) { videoModel in
                         HStack {
-                            Text(videoModel.videoFilePath.lastPathComponent)
+                            Text(videoModel.videoFileURL.lastPathComponent)
                         }.frame(height: 30)
                     }
                 }
