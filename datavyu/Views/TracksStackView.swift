@@ -54,7 +54,7 @@ struct TracksStackView: View {
                                         videoModel.updates += 1
                                     }.overlay {
                                         if fileModel.videoModels.count > 0 {
-                                            TrackPositionIndicator(fileModel: fileModel, videoModel: fileModel.primaryVideo!, gr: gr)
+                                            TrackPositionIndicator(fileModel: fileModel, videoModel: fileModel.primaryVideo!)
                                         }
                                     }
                                 }
