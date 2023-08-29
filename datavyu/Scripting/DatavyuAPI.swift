@@ -69,6 +69,32 @@ class FileWebRouteCollection: RouteCollection {
             return HTTPStatus.ok
         }
         router.get("getcolumnlist", use: getColumnList)
+        router.post("savedb") { req in
+            let filename = try req.content.decode(String.self)
+            self.saveDB(filename: filename)
+            return HTTPStatus.ok
+        }
+        
+        router.post("loaddb") { req in
+            let filename = try req.content.decode(String.self)
+            self.loadDB(filename: filename)
+            return HTTPStatus.ok
+        }
+    }
+    
+    func saveDB(filename: String) {
+        DispatchQueue.main.async {
+            saveOpfFile(fileModel: self.fileModel, outputFilename: URL(fileURLWithPath: filename))
+        }
+    }
+    
+    func loadDB(filename: String) {
+        DispatchQueue.main.async {
+            let fileModel = loadOpfFile(inputFilename: URL(fileURLWithPath: filename))
+            // TODO
+            // Going to need this to be called from the fileMOdel object so it can change itself.
+            // so the listeners arent destroyed.
+        }
     }
     
     func getColumn(req: Request) async throws -> ColumnModel {
