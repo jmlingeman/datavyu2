@@ -10,6 +10,7 @@ import Combine
 import SwiftUI
 
 public struct EditableLabel: View {
+    
     @Binding var text: String
 
     @State var editProcessGoing = false

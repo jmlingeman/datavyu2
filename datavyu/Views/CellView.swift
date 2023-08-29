@@ -11,9 +11,12 @@ import WrappingHStack
 struct Cell: View {
     @ObservedObject var parentColumn: ColumnModel
     @ObservedObject var cellDataModel: CellModel
-    let tcFormatter = MillisTimeFormatter()
     var columnInFocus: FocusState<ColumnModel?>.Binding
     var cellInFocus: FocusState<CellModel?>.Binding
+    @ObservedObject var focusOrderedArguments : ArgumentFocusModel
+    var focus: FocusState<Argument?>.Binding
+    
+    let tcFormatter = MillisTimeFormatter()
     let config = Config()
 
     var body: some View {
@@ -21,6 +24,7 @@ struct Cell: View {
             HStack {
                 Text(String(cellDataModel.ordinal))
                 Spacer()
+                
                 TextField("Onset", value: $cellDataModel.onset, formatter: tcFormatter).frame(minWidth: 100, idealWidth: 100, maxWidth: 100)
                 TextField("Offset", value: $cellDataModel.offset, formatter: tcFormatter).frame(minWidth: 100, idealWidth: 100, maxWidth: 100)
             }.padding()
@@ -28,10 +32,15 @@ struct Cell: View {
                 $cellDataModel.arguments
             ) { $item in
                 VStack {
-                    TextField(item.name, text: $item.value, axis: .horizontal)
-                        .padding(3)
-                        .fixedSize(horizontal: true, vertical: false)
-                        .frame(minWidth: 50, idealWidth: 100)
+                    ArgumentTextField(displayObject: item, focus: focus, nextFocus: {
+                        guard let index = self.focusOrderedArguments.arguments.firstIndex(of: $0) else {
+                            return
+                        }
+                        self.focus.wrappedValue = focusOrderedArguments.arguments.indices.contains(index + 1) ? focusOrderedArguments.arguments[index + 1] : nil
+                    })
+                    .padding(3)
+                    .fixedSize(horizontal: true, vertical: false)
+                    .frame(minWidth: 50, idealWidth: 100)
                     Text(item.name)
                 }.padding().border(config.cellBorder, width: 1).foregroundColor(config.cellFG)
             }.frame(alignment: .topLeading)

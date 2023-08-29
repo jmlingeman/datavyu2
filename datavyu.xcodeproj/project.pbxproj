@@ -55,6 +55,8 @@
 		88BFE4292A9D13FC00B37DC3 /* DSWaveformImage in Frameworks */ = {isa = PBXBuildFile; productRef = 88BFE4282A9D13FC00B37DC3 /* DSWaveformImage */; };
 		88BFE42B2A9D13FC00B37DC3 /* DSWaveformImageViews in Frameworks */ = {isa = PBXBuildFile; productRef = 88BFE42A2A9D13FC00B37DC3 /* DSWaveformImageViews */; };
 		88BFE42D2A9D25CB00B37DC3 /* WaveformViewDV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BFE42C2A9D25CB00B37DC3 /* WaveformViewDV.swift */; };
+		88BFE4302A9E98CB00B37DC3 /* ArgumentTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BFE42F2A9E98CB00B37DC3 /* ArgumentTextField.swift */; };
+		88BFE4322A9E9E8700B37DC3 /* ArgumentFocusModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BFE4312A9E9E8700B37DC3 /* ArgumentFocusModel.swift */; };
 		88D3FE372A4DE12A0094F953 /* TrackPositionIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3FE362A4DE12A0094F953 /* TrackPositionIndicator.swift */; };
 		88F62E982A58B05500DC5B60 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F62E972A58B05500DC5B60 /* StringExtensions.swift */; };
 		88F62E9B2A58BDD700DC5B60 /* DatavyuErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F62E9A2A58BDD700DC5B60 /* DatavyuErrors.swift */; };
@@ -133,6 +135,8 @@
 		8878A6392A427C6000A2658C /* MarkerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkerModel.swift; sourceTree = "<group>"; };
 		88BFE4242A9BE78F00B37DC3 /* CodeEditorRemoveCodeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorRemoveCodeButton.swift; sourceTree = "<group>"; };
 		88BFE42C2A9D25CB00B37DC3 /* WaveformViewDV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformViewDV.swift; sourceTree = "<group>"; };
+		88BFE42F2A9E98CB00B37DC3 /* ArgumentTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentTextField.swift; sourceTree = "<group>"; };
+		88BFE4312A9E9E8700B37DC3 /* ArgumentFocusModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentFocusModel.swift; sourceTree = "<group>"; };
 		88D3FE362A4DE12A0094F953 /* TrackPositionIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackPositionIndicator.swift; sourceTree = "<group>"; };
 		88F62E972A58B05500DC5B60 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		88F62E9A2A58BDD700DC5B60 /* DatavyuErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatavyuErrors.swift; sourceTree = "<group>"; };
@@ -291,6 +295,7 @@
 				8878A6352A411F9B00A2658C /* FileModel.swift */,
 				8878A6392A427C6000A2658C /* MarkerModel.swift */,
 				88F62EA22A5A012400DC5B60 /* IOModels.swift */,
+				88BFE4312A9E9E8700B37DC3 /* ArgumentFocusModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -312,6 +317,7 @@
 				88D3FE362A4DE12A0094F953 /* TrackPositionIndicator.swift */,
 				884CBB542A6DF8F600D5DBA8 /* ColumnNameDialog.swift */,
 				88F8A9312A993954001EEB21 /* ControllerButton.swift */,
+				88BFE42F2A9E98CB00B37DC3 /* ArgumentTextField.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -557,8 +563,10 @@
 				8878A6172A30279700A2658C /* PythonScriptEngine.swift in Sources */,
 				88F62EA52A5A041200DC5B60 /* TimeHelpers.swift in Sources */,
 				88F62E982A58B05500DC5B60 /* StringExtensions.swift in Sources */,
+				88BFE4322A9E9E8700B37DC3 /* ArgumentFocusModel.swift in Sources */,
 				881A39EC2A2A888100B4782D /* CellModel.swift in Sources */,
 				884CBB532A6CA58F00D5DBA8 /* LayoutKeys.swift in Sources */,
+				88BFE4302A9E98CB00B37DC3 /* ArgumentTextField.swift in Sources */,
 				8878A6102A2FBC8700A2658C /* Config.swift in Sources */,
 				8878A61A2A3027F500A2658C /* DatavyuAPI.swift in Sources */,
 				8878A6272A3FE93700A2658C /* FileController.swift in Sources */,

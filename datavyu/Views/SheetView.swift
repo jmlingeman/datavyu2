@@ -13,9 +13,12 @@ struct Sheet: View {
     @ObservedObject var sheetDataModel: SheetModel
     @FocusState var columnInFocus: ColumnModel?
     @FocusState var cellInFocus: CellModel?
+    @FocusState var argInFocus: Argument?
     @State private var offset: CGPoint = .zero
     @FocusState private var isFocused: Bool
     @Binding var temporalLayout: Bool
+    
+    @State var argumentFocusModel: ArgumentFocusModel
     
     let config = Config()
 
@@ -31,15 +34,16 @@ struct Sheet: View {
                     ScrollView([.horizontal, .vertical], showsIndicators: true) {
                         sheetLayout {
                             ForEach(Array($sheetDataModel.columns.enumerated()), id: \.offset) { idx, $column in
-                                EditableLabel($column.columnName)
-                                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-                                    .focused($columnInFocus, equals: column)
-                                    .background(columnInFocus == column ? Color.blue : Color.black)
-                                    .frame(width: Double(config.defaultCellWidth), height: config.headerSize)
-                                    .setColumnIdx(idx)
-                                    .setObjectType("title")
+
                                 ForEach(Array(zip(column.cells.indices, column.cells)), id: \.0) { cellIdx, cell in
-                                    Cell(parentColumn: column, cellDataModel: cell, columnInFocus: $columnInFocus, cellInFocus: $cellInFocus)
+                                    EditableLabel($column.columnName)
+                                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                                        .focused($columnInFocus, equals: column)
+                                        .background(columnInFocus == column ? Color.blue : Color.black)
+                                        .frame(width: Double(config.defaultCellWidth), height: config.headerSize)
+                                        .setColumnIdx(idx)
+                                        .setObjectType("title")
+                                    Cell(parentColumn: column, cellDataModel: cell, columnInFocus: $columnInFocus, cellInFocus: $cellInFocus, focusOrderedArguments: argumentFocusModel, focus: $argInFocus)
                                         .setColumnIdx(idx).setObjectType("cell").setCellIdx("\(column.columnName)-\(cellIdx)")
                                 }
                             }
@@ -51,13 +55,5 @@ struct Sheet: View {
                 }
             }
         }
-    }
-}
-
-struct Sheet_Previews: PreviewProvider {
-    static var previews: some View {
-        let sheetDataModel = SheetModel(sheetName: "TestSheet")
-        @State var temporalLayout = false
-        Sheet(sheetDataModel: sheetDataModel, temporalLayout: $temporalLayout)
     }
 }

@@ -8,8 +8,8 @@
 import Foundation
 import Vapor
 
-final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Codable, Content {
-
+final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Codable, Content, Comparable {
+    
 //    @Published var column: ColumnModel
     @Published var onset: Int = 0
     @Published var offset: Int = 0
@@ -21,6 +21,14 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
         
     init(column: ColumnModel) {
 //        self.column = column
+    }
+    
+    static func < (lhs: CellModel, rhs: CellModel) -> Bool {
+        if lhs.onset == rhs.onset {
+            return lhs.offset < rhs.offset
+        } else {
+            return lhs.onset < rhs.onset
+        }
     }
 
     func setOnset(onset: Double) {

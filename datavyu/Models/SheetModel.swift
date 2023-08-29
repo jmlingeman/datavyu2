@@ -46,7 +46,6 @@ class SheetModel: ObservableObject, Identifiable {
                 self.columns[colIdx!] = column
                 self.updates += 1
             }
-            print("SET COL")
         }
 
     }

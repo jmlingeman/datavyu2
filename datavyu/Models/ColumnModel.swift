@@ -29,6 +29,10 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         }
     }
     
+    func getSortedCells() -> [CellModel] {
+        return cells.sorted()
+    }
+    
     func removeArgument() {
         arguments.popLast()
         for cell in cells {
