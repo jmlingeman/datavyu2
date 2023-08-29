@@ -43,17 +43,19 @@ struct TracksStackView: View {
                     Grid {
                         ForEach(fileModel.videoModels) { videoModel in
                             GridRow {
-                                Text(videoModel.videoFileURL.lastPathComponent).frame(width: 150)
-                                TrackView(videoModel: videoModel,
-                                          fileModel: fileModel,
-                                          primaryMarker: $fileModel.primaryMarker
-                                )
-                                .onTapGesture {
-                                    fileModel.updates += 1
-                                    videoModel.updates += 1
-                                }.overlay {
-                                    if fileModel.videoModels.count > 0 {
-                                        TrackPositionIndicator(fileModel: fileModel, videoModel: fileModel.primaryVideo!, gr: gr)
+                                HStack {
+                                    Text(videoModel.videoFileURL.lastPathComponent).frame(width: 150)
+                                    TrackView(videoModel: videoModel,
+                                              fileModel: fileModel,
+                                              primaryMarker: $fileModel.primaryMarker
+                                    )
+                                    .onTapGesture {
+                                        fileModel.updates += 1
+                                        videoModel.updates += 1
+                                    }.overlay {
+                                        if fileModel.videoModels.count > 0 {
+                                            TrackPositionIndicator(fileModel: fileModel, videoModel: fileModel.primaryVideo!, gr: gr)
+                                        }
                                     }
                                 }
                             }.frame(height: 30)

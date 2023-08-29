@@ -42,7 +42,7 @@ struct TrackView: View {
                 WaveformViewDV(audioURL: videoModel.videoFileURL, size: CGSize(width: calcWidth, height: gr.size.height), configuration: configuration).frame(maxWidth: .infinity)
                 ForEach(videoModel.markers) { marker in
                     Rectangle().frame(width: 5).foregroundColor(marker == selectedMarker ? Color.purple : Color.green)
-                        .position(x: marker.time / videoModel.getDuration() * gr.size.width,
+                        .position(x: marker.time / videoModel.getDuration() * calcWidth,
                                   y: gr.size.height / 2
                         ).onTapGesture {
                             if selectedMarker == marker {
