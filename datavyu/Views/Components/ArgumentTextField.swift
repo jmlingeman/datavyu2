@@ -7,14 +7,11 @@ struct ArgumentTextField: View {
     
     @State var displayObject: Argument
     @FocusState var isFocused: Bool
-    var focus: FocusState<Argument?>.Binding
+    var focus: FocusState<Int?>.Binding
     var nextFocus: (Argument) -> Void
     
     var body: some View {
         TextField(displayObject.name, text: $displayObject.value, axis: .horizontal)
-            .onChange(of: focus.wrappedValue, perform: { newValue in
-                self.isFocused = newValue == displayObject
-            })
             .focused(self.$isFocused)
             .submitLabel(.next)
             .onSubmit {

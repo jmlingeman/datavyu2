@@ -13,7 +13,7 @@ struct Sheet: View {
     @ObservedObject var sheetDataModel: SheetModel
     @FocusState var columnInFocus: ColumnModel?
     @FocusState var cellInFocus: CellModel?
-    @FocusState var argInFocus: Argument?
+    @FocusState var argInFocusIdx: Int?
     @State private var offset: CGPoint = .zero
     @FocusState private var isFocused: Bool
     @Binding var temporalLayout: Bool
@@ -43,12 +43,20 @@ struct Sheet: View {
                                         .frame(width: Double(config.defaultCellWidth), height: config.headerSize)
                                         .setColumnIdx(idx)
                                         .setObjectType("title")
-                                    Cell(parentColumn: column, cellDataModel: cell, columnInFocus: $columnInFocus, cellInFocus: $cellInFocus, focusOrderedArguments: argumentFocusModel, focus: $argInFocus)
-                                        .setColumnIdx(idx).setObjectType("cell").setCellIdx("\(column.columnName)-\(cellIdx)")
+                                    Cell(parentColumn: column, 
+                                         cellDataModel: cell,
+                                         columnInFocus: $columnInFocus,
+                                         cellInFocus: $cellInFocus,
+                                         focusOrderedArguments: argumentFocusModel,
+                                         focus: $argInFocusIdx)
+                                        .setColumnIdx(idx)
+                                        .setObjectType("cell")
+                                        .setCellIdx("\(column.columnName)-\(cellIdx)")
                                 }
                             }
                         }
                         .frame(minHeight: sheetGr.size.height)
+
                     }.onAppear {
                         proxy.scrollTo("top")
                     }

@@ -12,13 +12,13 @@ final class Argument: ObservableObject, Identifiable, Equatable, Hashable, Codab
     @Published var name: String
     @Published var value: String
     
+    var id: UUID = UUID()
+    
     static func == (lhs: Argument, rhs: Argument) -> Bool {
-        lhs.name == rhs.name && lhs.value == rhs.value
+        lhs.name == rhs.name && lhs.value == rhs.value && lhs.id == rhs.id
     }
     
     func hash(into hasher: inout Hasher) {
-        hasher.combine(name)
-        hasher.combine(value)
         hasher.combine(id)
     }
     

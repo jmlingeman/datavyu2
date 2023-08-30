@@ -14,10 +14,19 @@ struct Cell: View {
     var columnInFocus: FocusState<ColumnModel?>.Binding
     var cellInFocus: FocusState<CellModel?>.Binding
     @ObservedObject var focusOrderedArguments : ArgumentFocusModel
-    var focus: FocusState<Argument?>.Binding
+    var focus: FocusState<Int?>.Binding
     
     let tcFormatter = MillisTimeFormatter()
     let config = Config()
+    
+    func updateFocus(item: Argument) {
+        if focus.wrappedValue == nil {
+            focus.wrappedValue = focusOrderedArguments.argumentMap[item]
+        } else {
+            focus.wrappedValue = (focus.wrappedValue! + 1) % focusOrderedArguments.arguments.count
+        }
+        focusOrderedArguments.update()
+    }
 
     var body: some View {
         LazyVStack {
@@ -32,15 +41,14 @@ struct Cell: View {
                 $cellDataModel.arguments
             ) { $item in
                 VStack {
-                    ArgumentTextField(displayObject: item, focus: focus, nextFocus: {
-                        guard let index = self.focusOrderedArguments.arguments.firstIndex(of: $0) else {
-                            return
-                        }
-                        self.focus.wrappedValue = focusOrderedArguments.arguments.indices.contains(index + 1) ? focusOrderedArguments.arguments[index + 1] : nil
-                    })
+                    TextField(item.name, text: $item.value, axis: .horizontal)
                     .padding(3)
                     .fixedSize(horizontal: true, vertical: false)
                     .frame(minWidth: 50, idealWidth: 100)
+                    .focused(focus, equals: focusOrderedArguments.argumentMap[item])
+                    .onSubmit {
+                        updateFocus(item: item)
+                    }
                     Text(item.name)
                 }.padding().border(config.cellBorder, width: 1).foregroundColor(config.cellFG)
             }.frame(alignment: .topLeading)

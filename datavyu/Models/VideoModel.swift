@@ -122,7 +122,6 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
     func updateTimes() {
         currentTime = player.currentTime().seconds + syncOffset
         currentPos = currentTime / getDuration()
-        print("UPDATING TIME \(currentPos) \(currentTime)")
     }
 }
 
