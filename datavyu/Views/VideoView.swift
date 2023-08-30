@@ -22,6 +22,7 @@ struct VideoView: View {
                         $videoModel.currentPos.wrappedValue = time.seconds / videoModel.player.getCurrentTrackDuration()
                     }
                 }
+                
         }
     }
 }

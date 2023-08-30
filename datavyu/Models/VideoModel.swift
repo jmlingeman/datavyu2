@@ -39,7 +39,6 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
         player = AVPlayer(url: videoFilePath)
         markers = []
         duration = 0.0
-        
     }
     
     convenience init(videoFilePath: URL, trackSettings: TrackSetting) {
