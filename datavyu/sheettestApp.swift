@@ -9,9 +9,22 @@ import SwiftUI
 
 @main
 struct sheettestApp: App {
+    @StateObject var fileController: FileControllerModel = FileControllerModel(fileModels: [
+        FileModel(sheetModel: SheetModel(sheetName: "IMG_1234"),
+                  videoModels: [
+                    VideoModel(
+                        videoFilePath: URL(fileURLWithPath: "/Users/jesse/Downloads/IMG_0822.MOV")),
+                    VideoModel(
+                        videoFilePath: URL(fileURLWithPath: "/Users/jesse/Downloads/IMG_0822.MOV")),
+                    VideoModel(
+                        videoFilePath: URL(fileURLWithPath: "/Users/jesse/Downloads/IMG_1234.MOV")),
+                    
+                  ])
+    ])
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView().environmentObject(fileController)
         }
     }
 }

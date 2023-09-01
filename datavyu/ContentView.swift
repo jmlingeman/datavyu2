@@ -9,25 +9,18 @@ import SwiftUI
 import WrappingHStack
 
 struct ContentView: View {
-    @StateObject var fileModel = FileModel(sheetModel: SheetModel(sheetName: "IMG_1234"),
-                                           videoModels: [
-                                                VideoModel(
-                                                    videoFilePath: URL(fileURLWithPath: "/Users/jesse/Downloads/IMG_0822.MOV")),
-                                                VideoModel(
-                                                    videoFilePath: URL(fileURLWithPath: "/Users/jesse/Downloads/IMG_0822.MOV")),
-                                                VideoModel(
-                                                    videoFilePath: URL(fileURLWithPath: "/Users/jesse/Downloads/IMG_1234.MOV")),
-                                           
-                                           ])
-
+    @EnvironmentObject var fileController: FileControllerModel
                                                                                                     
     
     var body: some View {
-        HStack {
-            DatavyuView(fileModel: fileModel).onAppear {
-                let server = DatavyuAPIServer(fileModel: fileModel, port: 1312)
-                server.start()
+        
+        TabView {
+            ForEach($fileController.fileModels) { $fileModel in
+                DatavyuView(fileModel: fileModel)
             }
+        }.onAppear {
+            let server = DatavyuAPIServer(fileController: fileController, port: 1312)
+            server.start()
         }
     }
 }

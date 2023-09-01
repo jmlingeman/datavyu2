@@ -13,12 +13,12 @@ class DatavyuAPIServer {
 
     var app: Application
     let port: Int
-    @ObservedObject var fileModel: FileModel
+    @ObservedObject var fileController: FileControllerModel
     
-    init(fileModel: FileModel, port: Int) {
+    init(fileController: FileControllerModel, port: Int) {
         self.port = port
-        self.fileModel = fileModel
         self.app = Application(.development)
+        self.fileController = fileController
         configure(app)
     }
     
@@ -32,7 +32,7 @@ class DatavyuAPIServer {
         app.routes.defaultMaxBodySize = "50MB"
         
         do {
-            try app.register(collection: FileWebRouteCollection(fileModel: fileModel))
+            try app.register(collection: FileWebRouteCollection(fileModel: fileController.activeFileModel))
         } catch {
             print("\(error)")
         }

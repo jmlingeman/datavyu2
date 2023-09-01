@@ -57,6 +57,7 @@
 		88BFE42D2A9D25CB00B37DC3 /* WaveformViewDV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BFE42C2A9D25CB00B37DC3 /* WaveformViewDV.swift */; };
 		88BFE4302A9E98CB00B37DC3 /* ArgumentTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BFE42F2A9E98CB00B37DC3 /* ArgumentTextField.swift */; };
 		88BFE4322A9E9E8700B37DC3 /* ArgumentFocusModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BFE4312A9E9E8700B37DC3 /* ArgumentFocusModel.swift */; };
+		88CE94532AA25E69000E8DFB /* FileControllerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CE94522AA25E69000E8DFB /* FileControllerModel.swift */; };
 		88D3FE372A4DE12A0094F953 /* TrackPositionIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3FE362A4DE12A0094F953 /* TrackPositionIndicator.swift */; };
 		88EF5ABF2A9ED19400D1EADA /* MelSpectrogram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EF5ABA2A9ED19400D1EADA /* MelSpectrogram.swift */; };
 		88EF5AC12A9ED19400D1EADA /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EF5ABC2A9ED19400D1EADA /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift */; };
@@ -140,6 +141,7 @@
 		88BFE42C2A9D25CB00B37DC3 /* WaveformViewDV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformViewDV.swift; sourceTree = "<group>"; };
 		88BFE42F2A9E98CB00B37DC3 /* ArgumentTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentTextField.swift; sourceTree = "<group>"; };
 		88BFE4312A9E9E8700B37DC3 /* ArgumentFocusModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentFocusModel.swift; sourceTree = "<group>"; };
+		88CE94522AA25E69000E8DFB /* FileControllerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileControllerModel.swift; sourceTree = "<group>"; };
 		88D3FE362A4DE12A0094F953 /* TrackPositionIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackPositionIndicator.swift; sourceTree = "<group>"; };
 		88EF5ABA2A9ED19400D1EADA /* MelSpectrogram.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MelSpectrogram.swift; sourceTree = "<group>"; };
 		88EF5ABC2A9ED19400D1EADA /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift"; sourceTree = "<group>"; };
@@ -302,6 +304,7 @@
 				8878A6392A427C6000A2658C /* MarkerModel.swift */,
 				88F62EA22A5A012400DC5B60 /* IOModels.swift */,
 				88BFE4312A9E9E8700B37DC3 /* ArgumentFocusModel.swift */,
+				88CE94522AA25E69000E8DFB /* FileControllerModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -611,6 +614,7 @@
 				881A39F12A2A8D6200B4782D /* SheetModel.swift in Sources */,
 				881A39F72A2A9D5900B4782D /* SheetView.swift in Sources */,
 				88BFE42D2A9D25CB00B37DC3 /* WaveformViewDV.swift in Sources */,
+				88CE94532AA25E69000E8DFB /* FileControllerModel.swift in Sources */,
 				881A39F32A2A8D8700B4782D /* ColumnModel.swift in Sources */,
 				88EF5AC22A9ED19400D1EADA /* AudioSpectrogram.swift in Sources */,
 				88F8A9322A993954001EEB21 /* ControllerButton.swift in Sources */,
