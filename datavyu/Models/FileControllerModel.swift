@@ -12,7 +12,7 @@ class FileControllerModel: ObservableObject, Identifiable {
     @Published var activeFileModel: FileModel
     
     init() {
-        var defaultFileModel = FileModel()
+        let defaultFileModel = FileModel()
         fileModels = [defaultFileModel]
         activeFileModel = defaultFileModel
     }
@@ -22,14 +22,16 @@ class FileControllerModel: ObservableObject, Identifiable {
             activeFileModel = fileModels.first!
             self.fileModels = fileModels
         } else {
-            var defaultFileModel = FileModel()
+            let defaultFileModel = FileModel()
             activeFileModel = defaultFileModel
             self.fileModels = [defaultFileModel]
         }
     }
     
-    func openFile() {
-        
+    func openFile(inputFilename: URL) {
+        var fileModel = loadOpfFile(inputFilename: inputFilename)
+        self.fileModels.append(fileModel)
+        self.activeFileModel = fileModel
     }
     
     func closeFile() {

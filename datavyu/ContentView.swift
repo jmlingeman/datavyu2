@@ -16,9 +16,10 @@ struct ContentView: View {
         
         TabView {
             ForEach($fileController.fileModels) { $fileModel in
-                DatavyuView(fileModel: fileModel)
+                DatavyuView(fileModel: fileModel).tabItem { Text(fileModel.sheetModel.sheetName) }
             }
-        }.onAppear {
+        }
+        .onAppear {
             let server = DatavyuAPIServer(fileController: fileController, port: 1312)
             server.start()
         }

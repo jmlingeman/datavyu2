@@ -127,16 +127,16 @@ func loadOpfFile(inputFilename: URL) -> FileModel {
         
         for item in items {
             switch item {
-            case "db":
-                db = parseDbFile(fileUrl: URL(filePath: "\(workingDirectory)/\(item)"))
-            case "project":
-                print("Loading project")
-                media = parseProjectFile(fileUrl: URL(filePath: "\(workingDirectory)/\(item)"))
-                
-            case let s where s.matchFirst(/^[0-9]+$/):
-                print(item)
-            default:
-                print("Went beyond index of assumed files")
+                case "db":
+                    db = parseDbFile(sheetName: inputFilename.lastPathComponent, fileUrl: URL(filePath: "\(workingDirectory)/\(item)"))
+                case "project":
+                    print("Loading project")
+                    media = parseProjectFile(fileUrl: URL(filePath: "\(workingDirectory)/\(item)"))
+                    
+                case let s where s.matchFirst(/^[0-9]+$/):
+                    print(item)
+                default:
+                    print("Went beyond index of assumed files")
             }
         }
     } catch {
@@ -144,7 +144,9 @@ func loadOpfFile(inputFilename: URL) -> FileModel {
     }
     
     if !media.isEmpty {
-        db.videoModels = media
+        for vm in media {
+            db.addVideo(videoModel: vm)
+        }
     }
 
     return db
@@ -189,8 +191,8 @@ func parseProjectFile(fileUrl: URL) -> [VideoModel] {
     return videoModels
 }
 
-func parseDbFile(fileUrl: URL) -> FileModel {
-    let sheet = SheetModel(sheetName: fileUrl.lastPathComponent)
+func parseDbFile(sheetName: String, fileUrl: URL) -> FileModel {
+    let sheet = SheetModel(sheetName: sheetName)
     let file = FileModel(sheetModel: sheet)
     var fileLoad = FileLoad(file: file)
 

@@ -15,6 +15,8 @@ struct DatavyuView: View {
     @State private var temporalLayout = false
     @State private var hideLabel = "Hide Controller"
     @State private var hideController = false
+    
+    @EnvironmentObject var fileController: FileControllerModel
 
     var body: some View {
         ZStack {
@@ -40,7 +42,7 @@ struct DatavyuView: View {
                                 panel.allowsMultipleSelection = false
                                 panel.canChooseDirectories = false
                                 if panel.runModal() == .OK {
-//                                    fileModel = loadOpfFile(inputFilename: panel.url!)
+                                    fileController.openFile(inputFilename: panel.url!)
                                 }
                             }
                             Button("Save File")
