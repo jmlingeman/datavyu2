@@ -7,14 +7,16 @@ struct TracksStackView: View {
     @ObservedObject var fileModel: FileModel
 
     func syncVideos() {
-        if fileModel.videoModels.count > 1 && fileModel.videoModels[0].selectedMarker != nil {
-            fileModel.videoModels[0].syncMarker = fileModel.videoModels[0].selectedMarker
-            fileModel.primaryMarker = fileModel.videoModels[0].syncMarker
-            for videoModel in fileModel.videoModels[1...] {
-                let time = videoModel.selectedMarker?.time
-                if time != nil {
-                    videoModel.syncMarker = videoModel.selectedMarker
-                    videoModel.syncOffset = videoModel.syncMarker!.time - fileModel.primaryMarker!.time
+        if fileModel.primaryVideo != nil && fileModel.videoModels.count > 1 && fileModel.primaryVideo!.selectedMarker != nil {
+            fileModel.primaryVideo!.syncMarker = fileModel.primaryVideo!.selectedMarker
+            fileModel.primaryMarker = fileModel.primaryVideo!.syncMarker
+            for videoModel in fileModel.videoModels {
+                if videoModel != fileModel.primaryVideo {
+                    let time = videoModel.selectedMarker?.time
+                    if time != nil {
+                        videoModel.syncMarker = videoModel.selectedMarker
+                        videoModel.syncOffset = videoModel.syncMarker!.time - fileModel.primaryMarker!.time
+                    }
                 }
             }
             fileModel.seekAllVideos(to: fileModel.primaryMarker!.time)

@@ -58,17 +58,17 @@ struct TrackView: View {
                 trackOverlay
             }
             .frame(width: calcWidth)
-            .offset(x: alignMarkers(primaryMarker: primaryMarker, secondaryMarker: videoModel.syncMarker, width: gr.size.width))
+            .offset(x: alignMarkers(primaryMarker: fileModel.primaryMarker, secondaryMarker: videoModel.syncMarker, primaryWidth: gr.size.width, secondaryWidth: calcWidth))
         }
     }
     
-    func alignMarkers(primaryMarker: Marker?, secondaryMarker: Marker?, width: Double) -> Double {
+    func alignMarkers(primaryMarker: Marker?, secondaryMarker: Marker?, primaryWidth: Double, secondaryWidth: Double) -> Double {
         if primaryMarker == nil || secondaryMarker == nil {
             return 0
         }
         // Get marker proportions
-        let priX = primaryMarker!.time / primaryMarker!.videoDuration * width
-        let secX = secondaryMarker!.time / secondaryMarker!.videoDuration * width
+        let priX = primaryMarker!.time / primaryMarker!.videoDuration * primaryWidth
+        let secX = secondaryMarker!.time / secondaryMarker!.videoDuration * secondaryWidth
         return -(secX - priX)
     }
 

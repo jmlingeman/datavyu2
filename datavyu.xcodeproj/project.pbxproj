@@ -59,10 +59,8 @@
 		88BFE4322A9E9E8700B37DC3 /* ArgumentFocusModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BFE4312A9E9E8700B37DC3 /* ArgumentFocusModel.swift */; };
 		88D3FE372A4DE12A0094F953 /* TrackPositionIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3FE362A4DE12A0094F953 /* TrackPositionIndicator.swift */; };
 		88EF5ABF2A9ED19400D1EADA /* MelSpectrogram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EF5ABA2A9ED19400D1EADA /* MelSpectrogram.swift */; };
-		88EF5AC02A9ED19400D1EADA /* AudioSpectrogramApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EF5ABB2A9ED19400D1EADA /* AudioSpectrogramApp.swift */; };
 		88EF5AC12A9ED19400D1EADA /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EF5ABC2A9ED19400D1EADA /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift */; };
 		88EF5AC22A9ED19400D1EADA /* AudioSpectrogram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EF5ABD2A9ED19400D1EADA /* AudioSpectrogram.swift */; };
-		88EF5AC32A9ED19400D1EADA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EF5ABE2A9ED19400D1EADA /* ContentView.swift */; };
 		88F62E982A58B05500DC5B60 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F62E972A58B05500DC5B60 /* StringExtensions.swift */; };
 		88F62E9B2A58BDD700DC5B60 /* DatavyuErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F62E9A2A58BDD700DC5B60 /* DatavyuErrors.swift */; };
 		88F62E9E2A58CEA800DC5B60 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 88F62E9D2A58CEA800DC5B60 /* ZIPFoundation */; };
@@ -144,10 +142,8 @@
 		88BFE4312A9E9E8700B37DC3 /* ArgumentFocusModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentFocusModel.swift; sourceTree = "<group>"; };
 		88D3FE362A4DE12A0094F953 /* TrackPositionIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackPositionIndicator.swift; sourceTree = "<group>"; };
 		88EF5ABA2A9ED19400D1EADA /* MelSpectrogram.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MelSpectrogram.swift; sourceTree = "<group>"; };
-		88EF5ABB2A9ED19400D1EADA /* AudioSpectrogramApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSpectrogramApp.swift; sourceTree = "<group>"; };
 		88EF5ABC2A9ED19400D1EADA /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift"; sourceTree = "<group>"; };
 		88EF5ABD2A9ED19400D1EADA /* AudioSpectrogram.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSpectrogram.swift; sourceTree = "<group>"; };
-		88EF5ABE2A9ED19400D1EADA /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		88F62E972A58B05500DC5B60 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		88F62E9A2A58BDD700DC5B60 /* DatavyuErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatavyuErrors.swift; sourceTree = "<group>"; };
 		88F62EA22A5A012400DC5B60 /* IOModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOModels.swift; sourceTree = "<group>"; };
@@ -410,8 +406,6 @@
 			children = (
 				88EF5ABD2A9ED19400D1EADA /* AudioSpectrogram.swift */,
 				88EF5ABC2A9ED19400D1EADA /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift */,
-				88EF5ABB2A9ED19400D1EADA /* AudioSpectrogramApp.swift */,
-				88EF5ABE2A9ED19400D1EADA /* ContentView.swift */,
 				88EF5ABA2A9ED19400D1EADA /* MelSpectrogram.swift */,
 			);
 			path = Spectrogram;
@@ -604,7 +598,6 @@
 				8878A61F2A38D99100A2658C /* WeakTemporalLayout.swift in Sources */,
 				881A39FB2A2AB66900B4782D /* VideoView.swift in Sources */,
 				88EF5AC12A9ED19400D1EADA /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift in Sources */,
-				88EF5AC32A9ED19400D1EADA /* ContentView.swift in Sources */,
 				884B0DFC2A50CC3900D16304 /* CodeEditorRow.swift in Sources */,
 				88140FCD2A5218100095DB5A /* OptionsView.swift in Sources */,
 				8878A6252A3FE75200A2658C /* VideoHelpers.swift in Sources */,
@@ -625,7 +618,6 @@
 				88F8A9342A9A56FB001EEB21 /* ControllerPanelView.swift in Sources */,
 				884CBB512A6CA4EF00D5DBA8 /* OrdinalLayout.swift in Sources */,
 				884B0DF92A50CB1B00D16304 /* CodeEditorAddCodeButton.swift in Sources */,
-				88EF5AC02A9ED19400D1EADA /* AudioSpectrogramApp.swift in Sources */,
 				881A3A002A2BE73B00B4782D /* ControllerView.swift in Sources */,
 				884CBB552A6DF8F600D5DBA8 /* ColumnNameDialog.swift in Sources */,
 			);
