@@ -11,6 +11,7 @@ struct DatavyuView: View {
     @ObservedObject var fileModel: FileModel
     @State private var showingCodeEditor = false
     @State private var showingOptions = false
+    @State private var showingColumnList = false
     @State private var layoutLabel = "Ordinal Layout"
     @State private var temporalLayout = false
     @State private var hideLabel = "Hide Controller"
@@ -35,6 +36,12 @@ struct DatavyuView: View {
                             }
                             .sheet(isPresented: $showingOptions) {
                                 OptionsView().frame(width: gr.size.width / 2, height: gr.size.height / 2)
+                            }
+                            Button("Hide/Show Columns") {
+                                showingColumnList.toggle()
+                            }
+                            .sheet(isPresented: $showingColumnList) {
+                                ColumnListView(sheetModel: fileModel.sheetModel).frame(width: gr.size.width / 2, height: gr.size.height / 2)
                             }
                             Button("Open File")
                             {

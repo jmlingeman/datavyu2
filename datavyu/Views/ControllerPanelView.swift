@@ -13,7 +13,6 @@ struct ControllerPanelView: View {
     @FocusState var columnInFocus: ColumnModel?
     @FocusState var cellInFocus: CellModel?
     
-    
     @State var showingColumnNameDialog = false
     
     func play() {
@@ -88,6 +87,8 @@ struct ControllerPanelView: View {
         let cell = columnInFocus?.addCell()
         cell?.setOnset(onset: fileModel.currentTime() + 1)
         cellInFocus = cell
+        
+        fileModel.sheetModel.updates += 1
     }
     
     var body: some View {

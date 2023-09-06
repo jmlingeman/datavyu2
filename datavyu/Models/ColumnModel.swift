@@ -20,6 +20,10 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         }
         return false
     }
+    
+    func setHidden(val: Bool) {
+        self.hidden = val
+    }
         
     func addArgument() {
         let newArg = Argument(name: "code\(arguments.count)")

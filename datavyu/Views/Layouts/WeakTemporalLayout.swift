@@ -201,12 +201,6 @@ struct WeakTemporalLayout: Layout {
                     offsetToPos[offset] = max(offsetToPos[offset, default: cellTopY + cellHeight], cellTopY + cellHeight)
                 }
                 
-                // Update offset map
-//                if(!curCell.getOverlapBorder()) {
-//                    int adjOff = cellTopY + cellHeight;
-//                    offsetMap.compute(offset, (k, v) -> (v == null) ? adjOff : Math.max(v, adjOff));
-//                }
-                
                 // Update vars
                 colHeight = cellTopY + cellHeight;
                 prevCell = curCell;

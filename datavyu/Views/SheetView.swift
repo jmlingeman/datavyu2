@@ -34,24 +34,25 @@ struct Sheet: View {
                     ScrollView([.horizontal, .vertical], showsIndicators: true) {
                         sheetLayout {
                             ForEach(Array($sheetDataModel.columns.enumerated()), id: \.offset) { idx, $column in
-
-                                ForEach(Array(zip(column.cells.indices, column.cells)), id: \.0) { cellIdx, cell in
-                                    EditableLabel($column.columnName)
-                                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-                                        .focused($columnInFocus, equals: column)
-                                        .background(columnInFocus == column ? Color.blue : Color.black)
-                                        .frame(width: Double(config.defaultCellWidth), height: config.headerSize)
-                                        .setColumnIdx(idx)
-                                        .setObjectType("title")
-                                    Cell(parentColumn: column, 
-                                         cellDataModel: cell,
-                                         columnInFocus: $columnInFocus,
-                                         cellInFocus: $cellInFocus,
-                                         focusOrderedArguments: argumentFocusModel,
-                                         focus: $argInFocusIdx)
+                                if !column.hidden {
+                                    ForEach(Array(zip(column.cells.indices, column.cells)), id: \.0) { cellIdx, cell in
+                                        EditableLabel($column.columnName)
+                                            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                                            .focused($columnInFocus, equals: column)
+                                            .background(columnInFocus == column ? Color.blue : Color.black)
+                                            .frame(width: Double(config.defaultCellWidth), height: config.headerSize)
+                                            .setColumnIdx(idx)
+                                            .setObjectType("title")
+                                        Cell(parentColumn: column, 
+                                             cellDataModel: cell,
+                                             columnInFocus: $columnInFocus,
+                                             cellInFocus: $cellInFocus,
+                                             focusOrderedArguments: argumentFocusModel,
+                                             focus: $argInFocusIdx)
                                         .setColumnIdx(idx)
                                         .setObjectType("cell")
                                         .setCellIdx("\(column.columnName)-\(cellIdx)")
+                                    }
                                 }
                             }
                         }
