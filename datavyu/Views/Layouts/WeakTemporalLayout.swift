@@ -59,7 +59,6 @@ struct WeakTemporalLayout: Layout {
         let gapSize = config.gapSize
         let columnSize = config.defaultCellWidth
         let headerSize = config.headerSize
-
         
         
         let titleSubviews = subviews.filter({subview in
