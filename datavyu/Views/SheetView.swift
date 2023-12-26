@@ -32,7 +32,7 @@ struct Sheet: View {
                 Text("").id("top") // Anchor for 2d scrollview
                 GeometryReader { sheetGr in
                     ScrollView([.horizontal, .vertical], showsIndicators: true) {
-                        sheetLayout {
+                        List {
                             ForEach(Array($sheetDataModel.columns.enumerated()), id: \.offset) { idx, $column in
                                 if !column.hidden {
                                     ForEach(Array(zip(column.cells.indices, column.cells)), id: \.0) { cellIdx, cell in

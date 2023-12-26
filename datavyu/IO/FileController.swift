@@ -17,18 +17,18 @@ func saveOpfFile(fileModel: FileModel, outputFilename: URL) {
     
     let fileManager = FileManager()
     
-    let archive = Archive(url: outputFilename, accessMode: .create)
-    
-    do {
-        try archive?.addEntry(with: "db", type: .file, uncompressedSize: UInt32(db.count), provider: { (position, size) -> Data in
-            return db.data(using: .utf8)!.subdata(in: position..<position+size)
-        })
-        try archive?.addEntry(with: "project", type: .file, uncompressedSize: UInt32(project.count), provider: { (position, size) -> Data in
-            return project.data(using: .utf8)!.subdata(in: position..<position+size)
-        })
-    } catch {
-        print("ERROR WRITING ZIP FILE: \(error)")
-    }
+//    let archive = Archive(url: outputFilename, accessMode: .create)
+//    
+//    do {
+//        try archive?.addEntry(with: "db", type: .file, uncompressedSize: UInt32(db.count), provider: { (position, size) -> Data in
+//            return db.data(using: .utf8)!.subdata(in: position..<position+size)
+//        })
+//        try archive?.addEntry(with: "project", type: .file, uncompressedSize: UInt32(project.count), provider: { (position, size) -> Data in
+//            return project.data(using: .utf8)!.subdata(in: position..<position+size)
+//        })
+//    } catch {
+//        print("ERROR WRITING ZIP FILE: \(error)")
+//    }
 }
 
 func saveDB(fileModel: FileModel) -> String {
