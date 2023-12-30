@@ -1,126 +1,121 @@
 import SwiftUI
 import AppKit
-final class HostingCellView: NSCollectionViewItem {
-    func setView<Content>(_ newValue: Content) where Content: View {
-        for view in self.view.subviews {
-            view.removeFromSuperview()
-        }
-        let view = NSHostingView(rootView: newValue)
-        view.autoresizingMask = [.width, .height]
-        self.view.addSubview(view)
-    }
-}
-struct CollectionCell: View {
-    static let reuseIdentifier = NSUserInterfaceItemIdentifier("Cell")
-    var body: some View {
-        Text("Cell")
-    }
-}
 
-final class HostingSupplementaryView: NSView, NSCollectionViewElement {
-    override init(frame frameRect: NSRect) {
-        super.init(frame: frameRect)
+class TemporalCollectionView: NSCollectionView {
+    
+    var sheetModel: SheetModel
+    private var rightClickIndex: Int = NSNotFound
+    
+    init(sheetModel: SheetModel) {
+        self.sheetModel = sheetModel
+        super.init(frame: .zero)
+        let layout = NSCollectionViewGridLayout()
+        layout.maximumNumberOfColumns = 1
+        layout.minimumLineSpacing = 100
+        self.collectionViewLayout = layout
     }
-    @objc required dynamic init?(coder aDecoder: NSCoder) {
+    
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    func setView<Content>(_ newValue: Content) where Content: View {
-        for view in self.subviews {
-            view.removeFromSuperview()
+    
+}
+
+class CollectionCell: NSCollectionViewItem {
+    static let identifier: String = "AppCollectionCell"
+    
+    override func loadView() {
+        self.view = NSView()
+        self.view.wantsLayer = true
+        self.view.layer?.backgroundColor = .clear
+    }
+    
+    func configureCell(_ article: CellModel, size: NSSize) {
+        for v in self.view.subviews {
+            v.removeFromSuperview()
         }
-        let view = NSHostingView(rootView: newValue)
-        view.autoresizingMask = [.width, .height]
-        self.addSubview(view)
-    }
-}
-struct Header: View {
-    static let reuseIdentifier = NSUserInterfaceItemIdentifier("Header")
-    var body: some View {
-        Text("Header")
-    }
-}
-struct Footer: View {
-    static let reuseIdentifier = NSUserInterfaceItemIdentifier("Footer")
-    var body: some View {
-        Text("Footer")
+        let contentView = NSHostingView(rootView:
+                                            Cell(cellDataModel: article)
+        )
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(contentView)
+        contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        contentView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
 }
 
-struct Collection: NSViewRepresentable {
-    static let headerIdentifier = "ViewHeader"
-    static let footerIdentifier = "ViewFooter"
-    typealias NSViewType = NSCollectionView
+struct TemporalLayoutCollection: NSViewRepresentable {
+    @ObservedObject var sheetModel: SheetModel
+    var itemSize: NSSize
     
-    func makeNSView(context: Context) -> NSCollectionView {
+    // MARK: - Coordinator for Delegate & Data Source & Flow Layout
+    
+    class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout {
+        var parent: TemporalLayoutCollection
+        var cells: [CellModel]
+        var itemSize: NSSize
         
-        let view = NSCollectionView()
-        view.delegate = context.coordinator
-        
-        view.register(HostingCellView.self, forItemWithIdentifier: CollectionCell.reuseIdentifier)
-        view.register(HostingSupplementaryView.self, forSupplementaryViewOfKind: Self.headerIdentifier, withIdentifier: Header.reuseIdentifier)
-        view.register(HostingSupplementaryView.self, forSupplementaryViewOfKind: Self.footerIdentifier, withIdentifier: Footer.reuseIdentifier)
-        
-        view.collectionViewLayout = NSCollectionViewCompositionalLayout { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection in
-            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
-            let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            let group = NSCollectionLayoutGroup.vertical(layoutSize: itemSize, subitem: item, count: 1)
-            let section = NSCollectionLayoutSection(group: group)
-            section.orthogonalScrollingBehavior = .continuous
-            let supplementarySize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44))
-            let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: supplementarySize, elementKind: Self.headerIdentifier, alignment: .topLeading)
-            let footer = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: supplementarySize, elementKind: Self.footerIdentifier, alignment: .bottomTrailing)
-            section.boundarySupplementaryItems = [header, footer]
-            return section
+        init(parent: TemporalLayoutCollection, cells: [CellModel], itemSize: NSSize) {
+            self.parent = parent
+            self.cells = cells
+            self.itemSize = itemSize
         }
         
-        let dataSource = NSCollectionViewDiffableDataSource<Int, Int>(collectionView: view) { (view, indexPath, sectionIndex) -> NSCollectionViewItem? in
-            guard let item = view.makeItem(withIdentifier: CollectionCell.reuseIdentifier, for: indexPath) as? HostingCellView else {
-                fatalError()
-            }
-            item.setView(CollectionCell())
+        func numberOfSections(in collectionView: NSCollectionView) -> Int {
+            return 1
+        }
+        
+        func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
+            return cells.count
+        }
+        
+        func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
+            let item = collectionView.makeItem(withIdentifier: .init(CollectionCell.identifier), for: indexPath) as! CollectionCell
+            let cell = cells[indexPath.item]
+            item.configureCell(cell, size: itemSize)
             return item
         }
         
-        dataSource.supplementaryViewProvider = { (view: NSCollectionView, kind: String, indexPath: IndexPath) -> (NSView & NSCollectionViewElement)? in
-            switch kind {
-            case Self.headerIdentifier:
-                guard let supplementary = view.makeSupplementaryView(ofKind: kind, withIdentifier: Header.reuseIdentifier, for: indexPath) as? HostingSupplementaryView else {
-                    fatalError()
-                }
-                supplementary.setView(Header())
-                return supplementary
-            case Self.footerIdentifier:
-                guard let supplementary = view.makeSupplementaryView(ofKind: kind, withIdentifier: Footer.reuseIdentifier, for: indexPath) as? HostingSupplementaryView else {
-                    fatalError()
-                }
-                supplementary.setView(Footer())
-                return supplementary
-            default:
-                return nil
-            }
+        func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
+            return parent.itemSize
         }
-        context.coordinator.dataSource = dataSource
-        return view
-    }
-    
-    func updateNSView(_ nsView: NSCollectionView, context: Context) {
-        var snapshot = NSDiffableDataSourceSnapshot<Int, Int>()
-        snapshot.appendSections([0])
-        //        snapshot.appendItems(Array<Int>(0..<10), toSection: 0)
-        context.coordinator.dataSource?.apply(snapshot, animatingDifferences: true)
+        
+        func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+            return 100
+        }
+        
+        func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+            return 100
+        }
     }
     
     func makeCoordinator() -> Coordinator {
-        return Coordinator(self)
+        return Coordinator(parent: self, cells: sheetModel.columns[0].getSortedCells(), itemSize: itemSize)
     }
     
-    class Coordinator: NSObject {
-        let view: Collection
-        var dataSource: NSCollectionViewDiffableDataSource<Int, Int>? = nil
-        init(_ view: Collection) {
-            self.view = view
+    // MARK: - NSViewRepresentable
+    
+    func makeNSView(context: Context) -> some NSScrollView {
+        let collectionView = TemporalCollectionView(sheetModel: sheetModel)
+        collectionView.delegate = context.coordinator
+        collectionView.dataSource = context.coordinator
+        collectionView.allowsEmptySelection = false
+        collectionView.allowsMultipleSelection = false
+        collectionView.isSelectable = false
+        let scrollView = NSScrollView()
+        scrollView.documentView = collectionView
+        collectionView.register(CollectionCell.self, forItemWithIdentifier: .init(CollectionCell.identifier))
+        return scrollView
+    }
+    
+    func updateNSView(_ nsView: NSViewType, context: Context) {
+        if let collectionView = nsView.documentView as? TemporalCollectionView {
+            collectionView.sheetModel = sheetModel
+            context.coordinator.cells = sheetModel.columns[0].getSortedCells()
+            context.coordinator.itemSize = itemSize
+            collectionView.reloadData()
         }
     }
 }
-
-extension Collection.Coordinator: NSCollectionViewDelegate {}

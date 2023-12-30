@@ -23,46 +23,26 @@ struct Sheet: View {
     let config = Config()
 
     var body: some View {
-        let sheetLayout = temporalLayout ? AnyLayout(WeakTemporalLayout(sheetModel: $sheetDataModel)) : AnyLayout(OrdinalLayout(sheetModel: $sheetDataModel))
+//        let sheetLayout = temporalLayout ? AnyLayout(WeakTemporalLayout(sheetModel: $sheetDataModel)) : AnyLayout(OrdinalLayout(sheetModel: $sheetDataModel))
+//        let collectionContent = [1,2,3,4,5,6,7,8]
+
         
-        VStack {
-            ScrollViewReader { proxy in
+//        VStack {
+//            ScrollViewReader { proxy in
                 // TODO: Have this proxy scroll us to new columns and cells
                 
-                Text("").id("top") // Anchor for 2d scrollview
-                GeometryReader { sheetGr in
-                    ScrollView([.horizontal, .vertical], showsIndicators: true) {
-                        List {
-                            ForEach(Array($sheetDataModel.columns.enumerated()), id: \.offset) { idx, $column in
-                                if !column.hidden {
-                                    ForEach(Array(zip(column.cells.indices, column.cells)), id: \.0) { cellIdx, cell in
-                                        EditableLabel($column.columnName)
-                                            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-                                            .focused($columnInFocus, equals: column)
-                                            .background(columnInFocus == column ? Color.blue : Color.black)
-                                            .frame(width: Double(config.defaultCellWidth), height: config.headerSize)
-                                            .setColumnIdx(idx)
-                                            .setObjectType("title")
-                                        Cell(parentColumn: column, 
-                                             cellDataModel: cell,
-                                             columnInFocus: $columnInFocus,
-                                             cellInFocus: $cellInFocus,
-                                             focusOrderedArguments: argumentFocusModel,
-                                             focus: $argInFocusIdx)
-                                        .setColumnIdx(idx)
-                                        .setObjectType("cell")
-                                        .setCellIdx("\(column.columnName)-\(cellIdx)")
-                                    }
-                                }
-                            }
-                        }
-                        .frame(minHeight: sheetGr.size.height)
+//                Text("").id("top") // Anchor for 2d scrollview
+//                GeometryReader { sheetGr in
+//                    ScrollView([.horizontal, .vertical], showsIndicators: true) {
+        TemporalLayoutCollection(sheetModel: sheetDataModel, 
+                                 itemSize: NSSize.init(width: 100, height: 100)
+        )
 
-                    }.onAppear {
-                        proxy.scrollTo("top")
-                    }
-                }
-            }
-        }
+//                    }.onAppear {
+//                        proxy.scrollTo("top")
+//                    }
+//                }
+//            }
+//        }
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AppKit
 
 class SheetModel: ObservableObject, Identifiable {
     @Published var sheetName: String
@@ -30,7 +31,9 @@ class SheetModel: ObservableObject, Identifiable {
         let column2 = ColumnModel(columnName: "Test2")
         addColumn(column: column)
         addColumn(column: column2)
-        let _ = column.addCell()
+        for k in 1...1500 {
+            let _ = column.addCell()
+        }
         let _ = column2.addCell()
     }
     

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		880CBC8B2B3B699D00D7701F /* TemporalLayoutUIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880CBC8A2B3B699D00D7701F /* TemporalLayoutUIKit.swift */; };
+		880CBD132B3FB61500D7701F /* TemporalCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880CBD122B3FB61500D7701F /* TemporalCollectionViewLayout.swift */; };
 		88140FC82A5214F90095DB5A /* SwiftUIReorderableForEach in Frameworks */ = {isa = PBXBuildFile; productRef = 88140FC72A5214F90095DB5A /* SwiftUIReorderableForEach */; };
 		88140FCD2A5218100095DB5A /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88140FCC2A5218100095DB5A /* OptionsView.swift */; };
 		881A39A92A242D4600B4782D /* sheettestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39A82A242D4600B4782D /* sheettestApp.swift */; };
@@ -95,6 +96,7 @@
 
 /* Begin PBXFileReference section */
 		880CBC8A2B3B699D00D7701F /* TemporalLayoutUIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemporalLayoutUIKit.swift; sourceTree = "<group>"; };
+		880CBD122B3FB61500D7701F /* TemporalCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemporalCollectionViewLayout.swift; sourceTree = "<group>"; };
 		88140FCC2A5218100095DB5A /* OptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsView.swift; sourceTree = "<group>"; };
 		881A39A52A242D4600B4782D /* datavyu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = datavyu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		881A39A82A242D4600B4782D /* sheettestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sheettestApp.swift; sourceTree = "<group>"; };
@@ -372,6 +374,7 @@
 				884CBB502A6CA4EF00D5DBA8 /* OrdinalLayout.swift */,
 				884CBB522A6CA58F00D5DBA8 /* LayoutKeys.swift */,
 				880CBC8A2B3B699D00D7701F /* TemporalLayoutUIKit.swift */,
+				880CBD122B3FB61500D7701F /* TemporalCollectionViewLayout.swift */,
 			);
 			path = Layouts;
 			sourceTree = "<group>";
@@ -627,6 +630,7 @@
 				8878A6382A41305E00A2658C /* ClockView.swift in Sources */,
 				8878A6362A411F9B00A2658C /* FileModel.swift in Sources */,
 				881A39F12A2A8D6200B4782D /* SheetModel.swift in Sources */,
+				880CBD132B3FB61500D7701F /* TemporalCollectionViewLayout.swift in Sources */,
 				881A39F72A2A9D5900B4782D /* SheetView.swift in Sources */,
 				88BFE42D2A9D25CB00B37DC3 /* WaveformViewDV.swift in Sources */,
 				880CBC8B2B3B699D00D7701F /* TemporalLayoutUIKit.swift in Sources */,
