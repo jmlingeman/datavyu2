@@ -9,9 +9,7 @@ class TemporalCollectionView: NSCollectionView {
     init(sheetModel: SheetModel) {
         self.sheetModel = sheetModel
         super.init(frame: .zero)
-        let layout = NSCollectionViewGridLayout()
-        layout.maximumNumberOfColumns = 1
-        layout.minimumLineSpacing = 100
+        let layout = TemporalCollectionViewLayout(sheetModel: sheetModel)
         self.collectionViewLayout = layout
     }
     
