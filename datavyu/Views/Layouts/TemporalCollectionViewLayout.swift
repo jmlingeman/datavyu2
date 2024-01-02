@@ -12,10 +12,11 @@ import SwiftUI
 class TemporalCollectionViewLayout: NSCollectionViewLayout {
     
     @ObservedObject var sheetModel: SheetModel
-    var cache: CacheData = CacheData(indexToLayout: [Int : NSCollectionViewLayoutAttributes](), maxHeight: 0, maxWidth: 0, cellLayouts: [CellInfo: NSCollectionViewLayoutAttributes]())
+    var cache: CacheData = CacheData(indexToLayout: [IndexPath : NSCollectionViewLayoutAttributes](), maxHeight: 0, maxWidth: 0, cellLayouts: [CellInfo: NSCollectionViewLayoutAttributes]())
     override var collectionViewContentSize: NSSize {
         get {
-            return NSSize(width: cache.maxWidth, height: cache.maxWidth)
+            print(cache.maxHeight)
+            return NSSize(width: cache.maxWidth, height: cache.maxHeight)
         }
     }
     
@@ -35,7 +36,7 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
     }
     
     struct CacheData {
-        var indexToLayout: [Int: NSCollectionViewLayoutAttributes]
+        var indexToLayout: [IndexPath: NSCollectionViewLayoutAttributes]
         var maxHeight: CGFloat
         var maxWidth: CGFloat
         var cellLayouts: [CellInfo: NSCollectionViewLayoutAttributes]
@@ -43,6 +44,7 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
     
     override func prepare() {
         print("PREPARING")
+        
         let config = Config()
         let gapSize = config.gapSize
         let columnSize = config.defaultCellWidth
@@ -50,13 +52,11 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
         
         
         var cellLayouts = [CellInfo: NSCollectionViewLayoutAttributes]()
-        var idx = 0
+        
         for (colIdx, column) in sheetModel.columns.enumerated() {
             for (cellIdx, cell) in column.cells.enumerated() {
                 let cellInfo = CellInfo(model: cell, columnIdx: colIdx, cellIdx: cellIdx)
-                cellLayouts[cellInfo] = NSCollectionViewLayoutAttributes(forItemWith: IndexPath(item: idx, section: 0))
-                print(cellInfo)
-                idx += 1
+                cellLayouts[cellInfo] = NSCollectionViewLayoutAttributes(forItemWith: IndexPath(item: cellIdx, section: colIdx))
             }
         }
         
@@ -195,7 +195,7 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
         }
         
         var i = 0
-        var indexToLayout = [Int: NSCollectionViewLayoutAttributes]()
+        var indexToLayout = [IndexPath: NSCollectionViewLayoutAttributes]()
         for colIdx in columnViews.keys {
             let colCells = columnViews[colIdx]!
             for curCell in colCells {
@@ -207,13 +207,15 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
                 cellLayouts[curCell]?.frame.size = sizes[curCell]!
                 cellLayouts[curCell]?.size = sizes[curCell]!
                 
-                indexToLayout[i] = cellLayouts[curCell]
+                indexToLayout[cellLayouts[curCell]!.indexPath!] = cellLayouts[curCell]
                 
                 i += 1
                 
 //                curCell.place(at: pts[curCell]!, proposal: ProposedViewSize(sizes[curCell]!))
             }
         }
+        
+        print("OFFSETS: \(offsetToPos.values)")
         
         cache.indexToLayout = indexToLayout
         cache.cellLayouts = cellLayouts
@@ -232,7 +234,7 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
     }
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
-        return cache.indexToLayout[indexPath.item]
+        return cache.indexToLayout[indexPath]
     }
 //    
 //    override func layoutAttributesForSupplementaryView(ofKind elementKind: NSCollectionView.SupplementaryElementKind, at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {

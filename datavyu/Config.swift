@@ -14,7 +14,7 @@ struct Config {
     
     let shuttleSpeeds: [Float] = [-32, -16, -8, -4, -2, -1, -1/2, -1/4, -1/8, -1/16, -1/32, 0, 1/32, 1/16, 1/8, 1/4, 1/2, 1, 2, 4, 8, 16, 32]
     
-    let minCellHeight = 100
+    let minCellHeight = 150
     let minCellWidth = 100
     let defaultCellWidth = 300.0
     let gapSize = 15.0

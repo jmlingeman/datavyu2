@@ -12,6 +12,7 @@ class SheetModel: ObservableObject, Identifiable {
     @Published var sheetName: String
     @Published var columns: [ColumnModel]
     @Published var updates: Int = 0
+    @Published var updated: Bool = false
     
     let config = Config()
     

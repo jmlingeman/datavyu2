@@ -51,27 +51,27 @@ struct TemporalLayoutCollection: NSViewRepresentable {
     // MARK: - Coordinator for Delegate & Data Source & Flow Layout
     
     class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout {
+        @ObservedObject var sheetModel: SheetModel
         var parent: TemporalLayoutCollection
-        var cells: [CellModel]
         var itemSize: NSSize
         
-        init(parent: TemporalLayoutCollection, cells: [CellModel], itemSize: NSSize) {
+        init(parent: TemporalLayoutCollection, sheetModel: SheetModel, itemSize: NSSize) {
             self.parent = parent
-            self.cells = cells
+            self.sheetModel = sheetModel
             self.itemSize = itemSize
         }
         
         func numberOfSections(in collectionView: NSCollectionView) -> Int {
-            return 1
+            return sheetModel.columns.count
         }
         
         func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-            return cells.count
+            return sheetModel.columns[section].cells.count
         }
         
         func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
             let item = collectionView.makeItem(withIdentifier: .init(CollectionCell.identifier), for: indexPath) as! CollectionCell
-            let cell = cells[indexPath.item]
+            let cell = sheetModel.columns[indexPath.section].cells[indexPath.item]
             item.configureCell(cell, size: itemSize)
             return item
         }
@@ -90,7 +90,7 @@ struct TemporalLayoutCollection: NSViewRepresentable {
     }
     
     func makeCoordinator() -> Coordinator {
-        return Coordinator(parent: self, cells: sheetModel.columns[0].getSortedCells(), itemSize: itemSize)
+        return Coordinator(parent: self, sheetModel: sheetModel, itemSize: itemSize)
     }
     
     // MARK: - NSViewRepresentable
@@ -102,8 +102,10 @@ struct TemporalLayoutCollection: NSViewRepresentable {
         collectionView.allowsEmptySelection = false
         collectionView.allowsMultipleSelection = false
         collectionView.isSelectable = false
+        
         let scrollView = NSScrollView()
         scrollView.documentView = collectionView
+        
         collectionView.register(CollectionCell.self, forItemWithIdentifier: .init(CollectionCell.identifier))
         return scrollView
     }
@@ -111,7 +113,7 @@ struct TemporalLayoutCollection: NSViewRepresentable {
     func updateNSView(_ nsView: NSViewType, context: Context) {
         if let collectionView = nsView.documentView as? TemporalCollectionView {
             collectionView.sheetModel = sheetModel
-            context.coordinator.cells = sheetModel.columns[0].getSortedCells()
+            context.coordinator.sheetModel = sheetModel
             context.coordinator.itemSize = itemSize
             collectionView.reloadData()
         }
