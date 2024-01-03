@@ -35,7 +35,9 @@ public struct EditableLabel: View {
                 // TextField for edit mode of View
                 TextField("", text: $text)
                     .onSubmit {
-                        editProcessGoing = false; onEditEnd()
+                        print("SUBMIT")
+                        editProcessGoing = false
+                        onEditEnd()
                     }
                     .onAppear {
                         renameTmpText = ""
@@ -43,6 +45,7 @@ public struct EditableLabel: View {
                     }
                     .focused($isFocused)
                     .onReceive(NotificationCenter.default.publisher(for: NSTextView.didChangeSelectionNotification)) { obj in
+                        print("GOT NOTIF")
                         if let textView = obj.object as? NSTextView {
                             guard !textSelected else { return }
                             let range = NSRange(location: 0, length: textView.string.count)
@@ -56,7 +59,10 @@ public struct EditableLabel: View {
         // Enable EditMode on double tap
         .onTapGesture(count: 2, perform: { editProcessGoing = true; print(editProcessGoing) })
         // Exit from EditMode on Esc key press
-        .onExitCommand(perform: { editProcessGoing = false })
+        .onExitCommand(perform: {
+            editProcessGoing = false
+            onEditEnd()
+        })
     }
 }
 
