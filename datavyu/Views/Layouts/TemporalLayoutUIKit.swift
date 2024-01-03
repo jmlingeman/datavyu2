@@ -38,6 +38,7 @@ final class HeaderCell: NSView, NSCollectionViewElement {
         view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         view.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         view.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
         self.addSubview(view)
     }
 }

@@ -82,3 +82,8 @@ More details will be added as development continues.
 - [ ] File history
 - [ ] Project management
 
+## TODOs
+- Register proper events for sheet updates so NSCollectionView refreshes
+- Horizontal scrolling on spreadsheet not working
+- Vertical scrolling performance on spreadsheet
+- Fix column renaming
