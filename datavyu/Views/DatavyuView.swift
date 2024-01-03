@@ -23,6 +23,7 @@ struct DatavyuView: View {
         ZStack {
             GeometryReader { gr in
                 ControllerView(fileModel: fileModel, temporalLayout: $temporalLayout, hideController: $hideController)
+                    .environmentObject(fileModel.sheetModel)
                     .toolbar {
                         ToolbarItemGroup {
                             Button("Code Editor") {

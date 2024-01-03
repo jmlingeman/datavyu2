@@ -11,6 +11,7 @@ import WrappingHStack
 struct Cell: View {
 //    @ObservedObject var parentColumn: ColumnModel
     @ObservedObject var cellDataModel: CellModel
+    @EnvironmentObject var sheetModel: SheetModel
 //    var columnInFocus: FocusState<ColumnModel?>.Binding
 //    var cellInFocus: FocusState<CellModel?>.Binding
 //    @ObservedObject var focusOrderedArguments : ArgumentFocusModel
@@ -35,7 +36,11 @@ struct Cell: View {
                 Spacer()
                 
                 TextField("Onset", value: $cellDataModel.onset, formatter: tcFormatter).frame(minWidth: 100, idealWidth: 100, maxWidth: 100)
+                    
                 TextField("Offset", value: $cellDataModel.offset, formatter: tcFormatter).frame(minWidth: 100, idealWidth: 100, maxWidth: 100)
+                    .onSubmit {
+                        sheetModel.updates += 1
+                    }
             }.padding()
             WrappingHStack(
                 $cellDataModel.arguments

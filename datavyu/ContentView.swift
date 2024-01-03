@@ -17,6 +17,7 @@ struct ContentView: View {
         TabView {
             ForEach($fileController.fileModels) { $fileModel in
                 DatavyuView(fileModel: fileModel).tabItem { Text(fileModel.sheetModel.sheetName) }
+                    .environmentObject(fileModel.sheetModel)
             }
         }
         .onAppear {

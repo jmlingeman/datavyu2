@@ -10,7 +10,7 @@ import SwiftUI
 import WrappingHStack
 
 struct Sheet: View {
-    @ObservedObject var sheetDataModel: SheetModel
+    @EnvironmentObject var sheetModel: SheetModel
     @FocusState var columnInFocus: ColumnModel?
     @FocusState var cellInFocus: CellModel?
     @FocusState var argInFocusIdx: Int?
@@ -23,8 +23,12 @@ struct Sheet: View {
     let config = Config()
 
     var body: some View {
-        TemporalLayoutCollection(sheetModel: sheetDataModel,
-                                 itemSize: NSSize.init(width: 100, height: 100)
-        )
+        GeometryReader { sheetGr in
+            VStack {
+                let _ = print(sheetGr.size)
+                TemporalCollectionView().environmentObject(sheetModel)
+                
+            }
+        }
     }
 }

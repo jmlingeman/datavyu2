@@ -36,12 +36,13 @@ struct ControllerView: View {
                             }.padding().frame(minWidth: 300)
                         }.layoutPriority(2)
                     }
-                    Sheet(sheetDataModel: fileModel.sheetModel,
-                          columnInFocus: _columnInFocus,
+                    Sheet(columnInFocus: _columnInFocus,
                           cellInFocus: _cellInFocus,
                           temporalLayout: $temporalLayout,
                           argumentFocusModel: ArgumentFocusModel(sheetModel: fileModel.sheetModel))
-                    .frame(minWidth: 600).layoutPriority(1)
+                    .frame(minWidth: 600)
+                    .layoutPriority(1)
+                    .environmentObject(fileModel.sheetModel)
                 }
             
             }

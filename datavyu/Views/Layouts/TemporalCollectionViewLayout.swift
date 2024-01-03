@@ -10,7 +10,8 @@ import AppKit
 import SwiftUI
 
 class TemporalCollectionViewLayout: NSCollectionViewLayout {
-    @ObservedObject var sheetModel: SheetModel
+    var sheetModel: SheetModel
+    var updateCount: Int = 0
     
     struct CellInfo: Hashable {
         let model: CellModel
@@ -266,6 +267,10 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
 //    }
     
     override func shouldInvalidateLayout(forBoundsChange newBounds: NSRect) -> Bool {
+        if updateCount < sheetModel.updates {
+            updateCount = sheetModel.updates
+            return true
+        }
         return false
     }
     

@@ -1,9 +1,16 @@
 import SwiftUI
 import AppKit
 
-class TemporalCollectionView: NSCollectionView {
+struct TemporalCollectionView: View {
+    @EnvironmentObject var sheetModel: SheetModel
+    var body: some View {
+        TemporalLayoutCollection(sheetModel: sheetModel, itemSize: NSSize(width: 100, height: 100))
+    }
+}
+
+final class TemporalCollectionAppKitView: NSCollectionView {
     
-    var sheetModel: SheetModel
+    @ObservedObject var sheetModel: SheetModel
     private var rightClickIndex: Int = NSNotFound
     
     init(sheetModel: SheetModel) {
@@ -11,6 +18,14 @@ class TemporalCollectionView: NSCollectionView {
         super.init(frame: .zero)
         let layout = TemporalCollectionViewLayout(sheetModel: sheetModel)
         self.collectionViewLayout = layout
+    }
+    
+    override func setFrameSize(_ newSize: NSSize) {
+        var size = NSSize(width: newSize.width, height: newSize.height)
+        if newSize.width != self.collectionViewLayout?.collectionViewContentSize.width {
+            size.width = self.collectionViewLayout?.collectionViewContentSize.width ?? 0
+        }
+        super.setFrameSize(size)
     }
     
     required init?(coder: NSCoder) {
@@ -57,7 +72,7 @@ struct Header: View {
     }
 }
 
-class CollectionCell: NSCollectionViewItem {
+final class CollectionCell: NSCollectionViewItem {
     static let identifier: String = "AppCollectionCell"
     
     override func loadView() {
@@ -93,9 +108,9 @@ struct TemporalLayoutCollection: NSViewRepresentable {
         var parent: TemporalLayoutCollection
         var itemSize: NSSize
         
-        init(parent: TemporalLayoutCollection, sheetModel: SheetModel, itemSize: NSSize) {
-            self.parent = parent
+        init(sheetModel: SheetModel, parent: TemporalLayoutCollection, itemSize: NSSize) {
             self.sheetModel = sheetModel
+            self.parent = parent
             self.itemSize = itemSize
         }
         
@@ -134,32 +149,31 @@ struct TemporalLayoutCollection: NSViewRepresentable {
     }
     
     func makeCoordinator() -> Coordinator {
-        return Coordinator(parent: self, sheetModel: sheetModel, itemSize: itemSize)
+        return Coordinator(sheetModel: self.sheetModel, parent: self, itemSize: itemSize)
     }
     
     // MARK: - NSViewRepresentable
     
     func makeNSView(context: Context) -> some NSScrollView {
-        let collectionView = TemporalCollectionView(sheetModel: sheetModel)
+        let collectionView = TemporalCollectionAppKitView(sheetModel: sheetModel)
         collectionView.delegate = context.coordinator
         collectionView.dataSource = context.coordinator
         collectionView.allowsEmptySelection = false
-        collectionView.allowsMultipleSelection = false
-        collectionView.isSelectable = false
+        collectionView.allowsMultipleSelection = true
+        collectionView.isSelectable = true
         
         collectionView.register(CollectionCell.self, forItemWithIdentifier: .init(CollectionCell.identifier))
         collectionView.register(HeaderCell.self, forSupplementaryViewOfKind: "header", withIdentifier: .init(HeaderCell.identifier))
         
         let scrollView = NSScrollView()
         scrollView.documentView = collectionView
+        scrollView.hasHorizontalScroller = true
         
         return scrollView
     }
     
     func updateNSView(_ nsView: NSViewType, context: Context) {
-        if let collectionView = nsView.documentView as? TemporalCollectionView {
-            collectionView.sheetModel = sheetModel
-            context.coordinator.sheetModel = sheetModel
+        if let collectionView = nsView.documentView as? TemporalCollectionAppKitView {
             context.coordinator.itemSize = itemSize
             collectionView.reloadData()
         }
