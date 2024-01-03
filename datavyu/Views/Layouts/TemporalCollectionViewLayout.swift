@@ -26,7 +26,6 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
         var headerLayouts: [Int: NSCollectionViewLayoutAttributes]
     }
     
-    
     var cache: CacheData = CacheData(
         indexToLayout: [IndexPath : NSCollectionViewLayoutAttributes](),
         maxHeight: 0,

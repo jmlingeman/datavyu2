@@ -152,7 +152,6 @@ struct TemporalLayoutCollection: NSViewRepresentable {
         let scrollView = NSScrollView()
         scrollView.documentView = collectionView
         
-        
         return scrollView
     }
     
