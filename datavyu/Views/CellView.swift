@@ -42,7 +42,7 @@ struct Cell: View {
                         sheetModel.updates += 1
                     }
             }.padding()
-            WrappingHStack(
+            WrappedHStack(
                 $cellDataModel.arguments
             ) { $item in
                 VStack {

@@ -11,6 +11,7 @@ import SwiftUI
 
 class TemporalCollectionViewLayout: NSCollectionViewLayout {
     var sheetModel: SheetModel
+    var scrollView: NSScrollView
     var updateCount: Int = 0
     
     struct CellInfo: Hashable {
@@ -40,17 +41,16 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
         }
     }
     
-    init(sheetModel: SheetModel) {
+    init(sheetModel: SheetModel, scrollView: NSScrollView) {
         self.sheetModel = sheetModel
+        self.scrollView = scrollView
         super.init()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-
-    
+        
     override func prepare() {
         print("PREPARING")
         
@@ -273,7 +273,7 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
         }
         return false
     }
-    
+        
 //    override func initialLayoutAttributesForAppearingItem(at itemIndexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
 //        
 //    }

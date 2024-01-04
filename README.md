@@ -83,6 +83,6 @@ More details will be added as development continues.
 - [ ] Project management
 
 ## TODOs
-- Horizontal scrolling on spreadsheet not working
-- Vertical scrolling performance on spreadsheet
-- Fix column renaming
+- File save/load testing
+- Multiple sheets/tabs
+- Timeline view

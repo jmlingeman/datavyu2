@@ -25,7 +25,6 @@ struct Sheet: View {
     var body: some View {
         GeometryReader { sheetGr in
             VStack {
-                let _ = print(sheetGr.size)
                 TemporalCollectionView().environmentObject(sheetModel)
                 
             }

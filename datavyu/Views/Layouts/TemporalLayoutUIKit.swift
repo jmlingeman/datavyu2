@@ -4,19 +4,23 @@ import AppKit
 struct TemporalCollectionView: View {
     @EnvironmentObject var sheetModel: SheetModel
     var body: some View {
-        TemporalLayoutCollection(sheetModel: sheetModel, itemSize: NSSize(width: 100, height: 100))
+        VStack {
+            TemporalLayoutCollection(sheetModel: sheetModel, itemSize: NSSize(width: 100, height: 100))
+        }
     }
 }
 
 final class TemporalCollectionAppKitView: NSCollectionView {
     
     @ObservedObject var sheetModel: SheetModel
+    var parentScrollView: NSScrollView
     private var rightClickIndex: Int = NSNotFound
     
-    init(sheetModel: SheetModel) {
+    init(sheetModel: SheetModel, parentScrollView: NSScrollView) {
         self.sheetModel = sheetModel
+        self.parentScrollView = parentScrollView
         super.init(frame: .zero)
-        let layout = TemporalCollectionViewLayout(sheetModel: sheetModel)
+        let layout = TemporalCollectionViewLayout(sheetModel: sheetModel, scrollView: parentScrollView)
         self.collectionViewLayout = layout
     }
     
@@ -49,12 +53,13 @@ final class HeaderCell: NSView, NSCollectionViewElement {
         let view = NSHostingView(rootView: newValue)
         view.autoresizingMask = [.width, .height]
         view.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(view)
         view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         view.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         view.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
-        self.addSubview(view)
+        
     }
 }
 
@@ -101,6 +106,8 @@ struct TemporalLayoutCollection: NSViewRepresentable {
     @ObservedObject var sheetModel: SheetModel
     var itemSize: NSSize
     
+    var scrollView: NSScrollView = NSScrollView()
+    
     // MARK: - Coordinator for Delegate & Data Source & Flow Layout
     
     class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout {
@@ -132,6 +139,11 @@ struct TemporalLayoutCollection: NSViewRepresentable {
         func collectionView(_ collectionView: NSCollectionView, viewForSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind, at indexPath: IndexPath) -> NSView {
             let item = collectionView.makeSupplementaryView(ofKind: kind, withIdentifier: .init(HeaderCell.identifier), for: indexPath) as! HeaderCell
             item.setView(Header(columnModel: $sheetModel.columns[indexPath.section]))
+            
+            let floatingHeader = NSHostingView(rootView: Header(columnModel: $sheetModel.columns[indexPath.section]))
+            floatingHeader.frame = item.frame
+            parent.scrollView.addFloatingSubview(floatingHeader, for: .vertical)
+            
             return item
         }
         
@@ -155,7 +167,8 @@ struct TemporalLayoutCollection: NSViewRepresentable {
     // MARK: - NSViewRepresentable
     
     func makeNSView(context: Context) -> some NSScrollView {
-        let collectionView = TemporalCollectionAppKitView(sheetModel: sheetModel)
+//        let scrollView = NSScrollView()
+        let collectionView = TemporalCollectionAppKitView(sheetModel: sheetModel, parentScrollView: scrollView)
         collectionView.delegate = context.coordinator
         collectionView.dataSource = context.coordinator
         collectionView.allowsEmptySelection = false
@@ -164,8 +177,7 @@ struct TemporalLayoutCollection: NSViewRepresentable {
         
         collectionView.register(CollectionCell.self, forItemWithIdentifier: .init(CollectionCell.identifier))
         collectionView.register(HeaderCell.self, forSupplementaryViewOfKind: "header", withIdentifier: .init(HeaderCell.identifier))
-        
-        let scrollView = NSScrollView()
+                
         scrollView.documentView = collectionView
         scrollView.hasHorizontalScroller = true
         

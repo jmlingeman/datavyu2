@@ -38,6 +38,7 @@
 		884CBB512A6CA4EF00D5DBA8 /* OrdinalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884CBB502A6CA4EF00D5DBA8 /* OrdinalLayout.swift */; };
 		884CBB532A6CA58F00D5DBA8 /* LayoutKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884CBB522A6CA58F00D5DBA8 /* LayoutKeys.swift */; };
 		884CBB552A6DF8F600D5DBA8 /* ColumnNameDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884CBB542A6DF8F600D5DBA8 /* ColumnNameDialog.swift */; };
+		885411852B463924006A86C0 /* WrappedHStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885411842B463924006A86C0 /* WrappedHStack.swift */; };
 		8878A60E2A2D698900A2658C /* CodeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A60D2A2D698900A2658C /* CodeEditorView.swift */; };
 		8878A6102A2FBC8700A2658C /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A60F2A2FBC8700A2658C /* Config.swift */; };
 		8878A6132A3026E100A2658C /* RubyScriptEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6122A3026E100A2658C /* RubyScriptEngine.swift */; };
@@ -127,6 +128,7 @@
 		884CBB502A6CA4EF00D5DBA8 /* OrdinalLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdinalLayout.swift; sourceTree = "<group>"; };
 		884CBB522A6CA58F00D5DBA8 /* LayoutKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutKeys.swift; sourceTree = "<group>"; };
 		884CBB542A6DF8F600D5DBA8 /* ColumnNameDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnNameDialog.swift; sourceTree = "<group>"; };
+		885411842B463924006A86C0 /* WrappedHStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedHStack.swift; sourceTree = "<group>"; };
 		8878A60D2A2D698900A2658C /* CodeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorView.swift; sourceTree = "<group>"; };
 		8878A60F2A2FBC8700A2658C /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		8878A6122A3026E100A2658C /* RubyScriptEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RubyScriptEngine.swift; sourceTree = "<group>"; };
@@ -334,6 +336,7 @@
 				884CBB542A6DF8F600D5DBA8 /* ColumnNameDialog.swift */,
 				88F8A9312A993954001EEB21 /* ControllerButton.swift */,
 				88BFE42F2A9E98CB00B37DC3 /* ArgumentTextField.swift */,
+				885411842B463924006A86C0 /* WrappedHStack.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -638,6 +641,7 @@
 				881A39F32A2A8D8700B4782D /* ColumnModel.swift in Sources */,
 				88EF5AC22A9ED19400D1EADA /* AudioSpectrogram.swift in Sources */,
 				88F8A9322A993954001EEB21 /* ControllerButton.swift in Sources */,
+				885411852B463924006A86C0 /* WrappedHStack.swift in Sources */,
 				88D3FE372A4DE12A0094F953 /* TrackPositionIndicator.swift in Sources */,
 				88F8A9342A9A56FB001EEB21 /* ControllerPanelView.swift in Sources */,
 				884CBB512A6CA4EF00D5DBA8 /* OrdinalLayout.swift in Sources */,
