@@ -66,7 +66,7 @@ More details will be added as development continues.
 
 ## Feature Implementation Checklist
 - [x] Video Playback
-- [x] Weak Temporal Ordering Layout
+- [x] Weak Temporal Ordering Layout (AppKit implementation of NSCollectionView for SwiftUI)
 - [ ] Hidden Columns
 - [x] File saving/loading
 - [x] Ordinal Layout
@@ -86,3 +86,6 @@ More details will be added as development continues.
 - File save/load testing
 - Multiple sheets/tabs
 - Timeline view
+- File history saving (backups)
+- Hidden column handling
+- Project management UI prototyping
