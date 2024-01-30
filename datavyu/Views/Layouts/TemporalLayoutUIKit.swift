@@ -6,6 +6,10 @@ struct TemporalCollectionView: View {
     var body: some View {
         VStack {
             TemporalLayoutCollection(sheetModel: sheetModel, itemSize: NSSize(width: 100, height: 100))
+                .onKeyPress(KeyEquivalent.tab, action: {
+                    print("GETTING TAB EVENT")
+                    return .handled
+                })
         }
     }
 }
@@ -23,7 +27,7 @@ final class TemporalCollectionAppKitView: NSCollectionView {
         let layout = TemporalCollectionViewLayout(sheetModel: sheetModel, scrollView: parentScrollView)
         self.collectionViewLayout = layout
     }
-    
+        
     override func setFrameSize(_ newSize: NSSize) {
         var size = NSSize(width: newSize.width, height: newSize.height)
         if newSize.width != self.collectionViewLayout?.collectionViewContentSize.width {
@@ -36,6 +40,19 @@ final class TemporalCollectionAppKitView: NSCollectionView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func setResponderChain() {
+        let currentIndex = IndexPath(item: 0, section: 0)
+        var indexSet = Set<IndexPath>()
+        let newIndex = IndexPath(item: currentIndex.item + 1, section: currentIndex.section)
+        indexSet.insert(newIndex)
+        self.animator().selectItems(at: indexSet, scrollPosition: NSCollectionView.ScrollPosition.top)
+    }
+    
+    override func keyDown(with event: NSEvent) {
+        print("AAAA")
+        setResponderChain()
+    }
+            
 }
 
 final class HeaderCell: NSView, NSCollectionViewElement {
@@ -77,6 +94,12 @@ struct Header: View {
     }
 }
 
+final class AppKitCell: NSCollectionViewItem {
+    static let identifier: String = "AppCollectionCell"
+    
+    
+}
+
 final class CollectionCell: NSCollectionViewItem {
     static let identifier: String = "AppCollectionCell"
     
@@ -90,16 +113,22 @@ final class CollectionCell: NSCollectionViewItem {
         for v in self.view.subviews {
             v.removeFromSuperview()
         }
-        let contentView = NSHostingView(rootView:
-                                            Cell(cellDataModel: article)
-        )
+        let rootView = Cell(cellDataModel: article)
+        let contentView = NSHostingView(rootView: rootView)
         contentView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(contentView)
+        
         contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         contentView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
     }
+    
+    override func keyDown(with event: NSEvent) {
+        print("AA")
+    }
+    
 }
 
 struct TemporalLayoutCollection: NSViewRepresentable {
@@ -114,12 +143,34 @@ struct TemporalLayoutCollection: NSViewRepresentable {
         @ObservedObject var sheetModel: SheetModel
         var parent: TemporalLayoutCollection
         var itemSize: NSSize
+        var cellItemMap = [CellModel: NSCollectionViewItem]()
         
         init(sheetModel: SheetModel, parent: TemporalLayoutCollection, itemSize: NSSize) {
             self.sheetModel = sheetModel
             self.parent = parent
             self.itemSize = itemSize
         }
+        
+        //        func connectCellResponders() {
+        //            var prevCell: CellModel? = nil
+        //            for column in sheetModel.columns {
+        //                for cell in column.cells {
+        //                    if prevCell != nil {
+        //                        print(cellItemMap[prevCell!])
+        //                        let prevCellItem = cellItemMap[prevCell!]
+        //                        if prevCellItem != nil {
+        //                            for subview in prevCellItem!.view.subviews {
+        //                                subview.nextResponder = cellItemMap[cell]
+        //                            }
+        //                            cellItemMap[prevCell!]?.nextResponder = cellItemMap[cell]
+        //                            cellItemMap[prevCell!]?.view.nextResponder = cellItemMap[cell]?.view
+        //                        }
+        //
+        //                    }
+        //                    prevCell = cell
+        //                }
+        //            }
+        //        }
         
         func numberOfSections(in collectionView: NSCollectionView) -> Int {
             return sheetModel.columns.count
@@ -133,6 +184,9 @@ struct TemporalLayoutCollection: NSViewRepresentable {
             let item = collectionView.makeItem(withIdentifier: .init(CollectionCell.identifier), for: indexPath) as! CollectionCell
             let cell = sheetModel.columns[indexPath.section].cells[indexPath.item]
             item.configureCell(cell, size: itemSize)
+            
+            cellItemMap[cell] = item
+            
             return item
         }
         
@@ -159,6 +213,7 @@ struct TemporalLayoutCollection: NSViewRepresentable {
             return 100
         }
     }
+        
     
     func makeCoordinator() -> Coordinator {
         return Coordinator(sheetModel: self.sheetModel, parent: self, itemSize: itemSize)
@@ -177,10 +232,10 @@ struct TemporalLayoutCollection: NSViewRepresentable {
         
         collectionView.register(CollectionCell.self, forItemWithIdentifier: .init(CollectionCell.identifier))
         collectionView.register(HeaderCell.self, forSupplementaryViewOfKind: "header", withIdentifier: .init(HeaderCell.identifier))
-                
+                        
         scrollView.documentView = collectionView
         scrollView.hasHorizontalScroller = true
-        
+                
         return scrollView
     }
     
