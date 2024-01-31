@@ -6,21 +6,21 @@
 //
 
 import Cocoa
+import SwiftUI
 
-class ArgumentView: NSCollectionViewItem {
-    static let identifier: String = "ArgumentView"
+class ArgumentViewUIKit: NSCollectionViewItem {
+    static let identifier: String = "ArgumentViewUIKit"
     
     @IBOutlet var argumentLabel: NSTextField!
     @IBOutlet var argumentValue: NSTextField!
     
-    var argument: Argument
+    @ObservedObject var argument: Argument
     
-    init(argument: Argument) {
-        self.argumentLabel = NSTextField(string: argument.name)
-        self.argumentValue = NSTextField(string: argument.value)
-        self.argument = argument
-        
-        super.init(nibName: "ArgumentView", bundle: nil)
+    override init(nibName nibNameOrNil: NSNib.Name?, bundle nibBundleOrNil: Bundle?) {
+        self.argument = Argument()
+        self.argumentLabel = NSTextField()
+        self.argumentValue = NSTextField()
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
     func configureCell(with argument: Argument) {

@@ -19,6 +19,8 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
     @Published var onsetPosition: Double = 0
     @Published var offsetPosition: Double = 0
         
+    init() {}
+    
     init(column: ColumnModel) {
 //        self.column = column
     }

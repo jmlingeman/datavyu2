@@ -67,10 +67,10 @@
 		88CE94562AA81359000E8DFB /* ColumnListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CE94552AA81359000E8DFB /* ColumnListView.swift */; };
 		88D3FE372A4DE12A0094F953 /* TrackPositionIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3FE362A4DE12A0094F953 /* TrackPositionIndicator.swift */; };
 		88E094642B670CAD00A93660 /* MbSwiftUIFirstResponder in Frameworks */ = {isa = PBXBuildFile; productRef = 88E094632B670CAD00A93660 /* MbSwiftUIFirstResponder */; };
-		88E094752B69B5AB00A93660 /* ArgumentCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E094732B69B5AB00A93660 /* ArgumentCellView.swift */; };
-		88E094762B69B5AB00A93660 /* ArgumentCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88E094742B69B5AB00A93660 /* ArgumentCellView.xib */; };
-		88E094792B69B81A00A93660 /* ArgumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E094772B69B81A00A93660 /* ArgumentView.swift */; };
-		88E0947A2B69B81A00A93660 /* ArgumentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88E094782B69B81A00A93660 /* ArgumentView.xib */; };
+		88E094752B69B5AB00A93660 /* CellViewUIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E094732B69B5AB00A93660 /* CellViewUIKit.swift */; };
+		88E094762B69B5AB00A93660 /* CellViewUIKit.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88E094742B69B5AB00A93660 /* CellViewUIKit.xib */; };
+		88E094792B69B81A00A93660 /* ArgumentViewUIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E094772B69B81A00A93660 /* ArgumentViewUIKit.swift */; };
+		88E0947A2B69B81A00A93660 /* ArgumentViewUIKit.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88E094782B69B81A00A93660 /* ArgumentViewUIKit.xib */; };
 		88EF5ABF2A9ED19400D1EADA /* MelSpectrogram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EF5ABA2A9ED19400D1EADA /* MelSpectrogram.swift */; };
 		88EF5AC12A9ED19400D1EADA /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EF5ABC2A9ED19400D1EADA /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift */; };
 		88EF5AC22A9ED19400D1EADA /* AudioSpectrogram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EF5ABD2A9ED19400D1EADA /* AudioSpectrogram.swift */; };
@@ -160,10 +160,10 @@
 		88CE94522AA25E69000E8DFB /* FileControllerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileControllerModel.swift; sourceTree = "<group>"; };
 		88CE94552AA81359000E8DFB /* ColumnListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnListView.swift; sourceTree = "<group>"; };
 		88D3FE362A4DE12A0094F953 /* TrackPositionIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackPositionIndicator.swift; sourceTree = "<group>"; };
-		88E094732B69B5AB00A93660 /* ArgumentCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentCellView.swift; sourceTree = "<group>"; };
-		88E094742B69B5AB00A93660 /* ArgumentCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ArgumentCellView.xib; sourceTree = "<group>"; };
-		88E094772B69B81A00A93660 /* ArgumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentView.swift; sourceTree = "<group>"; };
-		88E094782B69B81A00A93660 /* ArgumentView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ArgumentView.xib; sourceTree = "<group>"; };
+		88E094732B69B5AB00A93660 /* CellViewUIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellViewUIKit.swift; sourceTree = "<group>"; };
+		88E094742B69B5AB00A93660 /* CellViewUIKit.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CellViewUIKit.xib; sourceTree = "<group>"; };
+		88E094772B69B81A00A93660 /* ArgumentViewUIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentViewUIKit.swift; sourceTree = "<group>"; };
+		88E094782B69B81A00A93660 /* ArgumentViewUIKit.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ArgumentViewUIKit.xib; sourceTree = "<group>"; };
 		88EF5ABA2A9ED19400D1EADA /* MelSpectrogram.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MelSpectrogram.swift; sourceTree = "<group>"; };
 		88EF5ABC2A9ED19400D1EADA /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift"; sourceTree = "<group>"; };
 		88EF5ABD2A9ED19400D1EADA /* AudioSpectrogram.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSpectrogram.swift; sourceTree = "<group>"; };
@@ -307,10 +307,10 @@
 				8878A61D2A38D97500A2658C /* Layouts */,
 				8837C56B2A2D299B00F29182 /* Components */,
 				881A39EE2A2A88AB00B4782D /* CellView.swift */,
-				88E094732B69B5AB00A93660 /* ArgumentCellView.swift */,
-				88E094742B69B5AB00A93660 /* ArgumentCellView.xib */,
-				88E094772B69B81A00A93660 /* ArgumentView.swift */,
-				88E094782B69B81A00A93660 /* ArgumentView.xib */,
+				88E094732B69B5AB00A93660 /* CellViewUIKit.swift */,
+				88E094742B69B5AB00A93660 /* CellViewUIKit.xib */,
+				88E094772B69B81A00A93660 /* ArgumentViewUIKit.swift */,
+				88E094782B69B81A00A93660 /* ArgumentViewUIKit.xib */,
 				881A39F62A2A9D5900B4782D /* SheetView.swift */,
 				881A39FA2A2AB66900B4782D /* VideoView.swift */,
 				881A39FF2A2BE73B00B4782D /* ControllerView.swift */,
@@ -598,8 +598,8 @@
 				881A39AD2A242D4700B4782D /* Assets.xcassets in Resources */,
 				884B0DFE2A50CDCE00D16304 /* README.md in Resources */,
 				881A39FD2A2ABBB900B4782D /* IMG_1234.MOV in Resources */,
-				88E094762B69B5AB00A93660 /* ArgumentCellView.xib in Resources */,
-				88E0947A2B69B81A00A93660 /* ArgumentView.xib in Resources */,
+				88E094762B69B5AB00A93660 /* CellViewUIKit.xib in Resources */,
+				88E0947A2B69B81A00A93660 /* ArgumentViewUIKit.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -627,7 +627,7 @@
 				8837C56D2A2D29AF00F29182 /* EditableLabel.swift in Sources */,
 				8878A6152A30275900A2658C /* RScriptEngine.swift in Sources */,
 				8878A6232A3FD81900A2658C /* TrackView.swift in Sources */,
-				88E094792B69B81A00A93660 /* ArgumentView.swift in Sources */,
+				88E094792B69B81A00A93660 /* ArgumentViewUIKit.swift in Sources */,
 				8878A6212A3FD4A100A2658C /* TracksStackView.swift in Sources */,
 				8878A63A2A427C6000A2658C /* MarkerModel.swift in Sources */,
 				8878A6172A30279700A2658C /* PythonScriptEngine.swift in Sources */,
@@ -671,7 +671,7 @@
 				881A39F32A2A8D8700B4782D /* ColumnModel.swift in Sources */,
 				88EF5AC22A9ED19400D1EADA /* AudioSpectrogram.swift in Sources */,
 				88F8A9322A993954001EEB21 /* ControllerButton.swift in Sources */,
-				88E094752B69B5AB00A93660 /* ArgumentCellView.swift in Sources */,
+				88E094752B69B5AB00A93660 /* CellViewUIKit.swift in Sources */,
 				885411852B463924006A86C0 /* WrappedHStack.swift in Sources */,
 				88D3FE372A4DE12A0094F953 /* TrackPositionIndicator.swift in Sources */,
 				88F8A9342A9A56FB001EEB21 /* ControllerPanelView.swift in Sources */,

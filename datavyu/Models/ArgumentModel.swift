@@ -22,6 +22,11 @@ final class Argument: ObservableObject, Identifiable, Equatable, Hashable, Codab
         hasher.combine(id)
     }
     
+    init() {
+        self.name = ""
+        self.value = ""
+    }
+    
     init(name: String) {
         self.name = name
         self.value = ""

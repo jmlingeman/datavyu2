@@ -181,9 +181,11 @@ struct TemporalLayoutCollection: NSViewRepresentable {
         }
         
         func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-            let item = collectionView.makeItem(withIdentifier: .init(CollectionCell.identifier), for: indexPath) as! CollectionCell
+            let item = collectionView.makeItem(withIdentifier: .init(CellViewUIKit.identifier), for: indexPath) as! CellViewUIKit
             let cell = sheetModel.columns[indexPath.section].cells[indexPath.item]
-            item.configureCell(cell, size: itemSize)
+            item.configureCell(cell)
+            
+            print("CREATING CELL")
             
             cellItemMap[cell] = item
             
@@ -230,7 +232,7 @@ struct TemporalLayoutCollection: NSViewRepresentable {
         collectionView.allowsMultipleSelection = true
         collectionView.isSelectable = true
         
-        collectionView.register(CollectionCell.self, forItemWithIdentifier: .init(CollectionCell.identifier))
+        collectionView.register(CellViewUIKit.self, forItemWithIdentifier: .init(CellViewUIKit.identifier))
         collectionView.register(HeaderCell.self, forSupplementaryViewOfKind: "header", withIdentifier: .init(HeaderCell.identifier))
                         
         scrollView.documentView = collectionView
