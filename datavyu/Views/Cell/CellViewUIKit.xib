@@ -9,7 +9,8 @@
             <connections>
                 <outlet property="argumentsCollectionView" destination="FkL-xF-ebC" id="Dk2-MV-EAg"/>
                 <outlet property="offset" destination="fpe-kJ-HL3" id="WED-LL-kXs"/>
-                <outlet property="onset" destination="26d-Ng-VFa" id="vvB-Iu-F9C"/>
+                <outlet property="onset" destination="4OB-Io-y4d" id="prc-K5-9OS"/>
+                <outlet property="ordinal" destination="GsG-gp-xUO" id="cki-C5-SNn"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
@@ -36,6 +37,9 @@
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
+                    <connections>
+                        <outlet property="delegate" destination="Wl8-Ky-qj4" id="5Mv-vo-1BA"/>
+                    </connections>
                 </textField>
                 <scrollView wantsLayer="YES" fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QUz-hs-gfX">
                     <rect key="frame" x="0.0" y="0.0" width="300" height="126"/>
@@ -63,17 +67,23 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
-                <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="26d-Ng-VFa">
-                    <rect key="frame" x="100" y="129" width="96" height="21"/>
+                <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4OB-Io-y4d">
+                    <rect key="frame" x="102" y="129" width="96" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="ped-qz-iQp">
-                        <font key="font" usesAppearanceFont="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="QWk-5M-u2l">
+                        <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
+                    <connections>
+                        <outlet property="delegate" destination="AcX-Hb-TPx" id="Web-Wt-Mqj"/>
+                    </connections>
                 </textField>
             </subviews>
             <point key="canvasLocation" x="-5" y="-70"/>
         </customView>
+        <userDefaultsController representsSharedInstance="YES" id="VS1-Gi-cNN"/>
+        <customObject id="AcX-Hb-TPx" customClass="OnsetCoordinator" customModule="datavyu" customModuleProvider="target"/>
+        <customObject id="Wl8-Ky-qj4" customClass="OffsetCoordinator" customModule="datavyu" customModuleProvider="target"/>
     </objects>
 </document>

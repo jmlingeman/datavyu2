@@ -24,7 +24,9 @@ struct sheettestApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView().environmentObject(fileController)
+            ContentView().environmentObject(fileController).onAppear {
+                ValueTransformer.setValueTransformer(TimestampTransformer(), forName: .classNameTransformerName)
+            }
         }
     }
 }

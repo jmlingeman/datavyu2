@@ -6,10 +6,6 @@ struct TemporalCollectionView: View {
     var body: some View {
         VStack {
             TemporalLayoutCollection(sheetModel: sheetModel, itemSize: NSSize(width: 100, height: 100))
-                .onKeyPress(KeyEquivalent.tab, action: {
-                    print("GETTING TAB EVENT")
-                    return .handled
-                })
         }
     }
 }
@@ -94,43 +90,6 @@ struct Header: View {
     }
 }
 
-final class AppKitCell: NSCollectionViewItem {
-    static let identifier: String = "AppCollectionCell"
-    
-    
-}
-
-final class CollectionCell: NSCollectionViewItem {
-    static let identifier: String = "AppCollectionCell"
-    
-    override func loadView() {
-        self.view = NSView()
-        self.view.wantsLayer = true
-        self.view.layer?.backgroundColor = .clear
-    }
-    
-    func configureCell(_ article: CellModel, size: NSSize) {
-        for v in self.view.subviews {
-            v.removeFromSuperview()
-        }
-        let rootView = Cell(cellDataModel: article)
-        let contentView = NSHostingView(rootView: rootView)
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(contentView)
-        
-        contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        contentView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        
-    }
-    
-    override func keyDown(with event: NSEvent) {
-        print("AA")
-    }
-    
-}
-
 struct TemporalLayoutCollection: NSViewRepresentable {
     @ObservedObject var sheetModel: SheetModel
     var itemSize: NSSize
@@ -183,9 +142,10 @@ struct TemporalLayoutCollection: NSViewRepresentable {
         func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
             let item = collectionView.makeItem(withIdentifier: .init(CellViewUIKit.identifier), for: indexPath) as! CellViewUIKit
             let cell = sheetModel.columns[indexPath.section].cells[indexPath.item]
+
             item.configureCell(cell)
             
-            print("CREATING CELL")
+            print("CREATING CELL AT \(indexPath.section) \(indexPath.item) \(Unmanaged.passUnretained(cell).toOpaque())")
             
             cellItemMap[cell] = item
             
@@ -242,9 +202,12 @@ struct TemporalLayoutCollection: NSViewRepresentable {
     }
     
     func updateNSView(_ nsView: NSViewType, context: Context) {
+        print("Trying to reload data...")
         if let collectionView = nsView.documentView as? TemporalCollectionAppKitView {
             context.coordinator.itemSize = itemSize
+            print("RELOADING DATA")
             collectionView.reloadData()
+            print("RELOADED")
         }
     }
 }

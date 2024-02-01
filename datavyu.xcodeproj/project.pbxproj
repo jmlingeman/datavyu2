@@ -71,6 +71,8 @@
 		88E094762B69B5AB00A93660 /* CellViewUIKit.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88E094742B69B5AB00A93660 /* CellViewUIKit.xib */; };
 		88E094792B69B81A00A93660 /* ArgumentViewUIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E094772B69B81A00A93660 /* ArgumentViewUIKit.swift */; };
 		88E0947A2B69B81A00A93660 /* ArgumentViewUIKit.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88E094782B69B81A00A93660 /* ArgumentViewUIKit.xib */; };
+		88E0947C2B69D8FA00A93660 /* TimestampTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E0947B2B69D8FA00A93660 /* TimestampTransformer.swift */; };
+		88E0947F2B6AAD5600A93660 /* CellTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E0947E2B6AAD5600A93660 /* CellTimeView.swift */; };
 		88EF5ABF2A9ED19400D1EADA /* MelSpectrogram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EF5ABA2A9ED19400D1EADA /* MelSpectrogram.swift */; };
 		88EF5AC12A9ED19400D1EADA /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EF5ABC2A9ED19400D1EADA /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift */; };
 		88EF5AC22A9ED19400D1EADA /* AudioSpectrogram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EF5ABD2A9ED19400D1EADA /* AudioSpectrogram.swift */; };
@@ -164,6 +166,8 @@
 		88E094742B69B5AB00A93660 /* CellViewUIKit.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CellViewUIKit.xib; sourceTree = "<group>"; };
 		88E094772B69B81A00A93660 /* ArgumentViewUIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentViewUIKit.swift; sourceTree = "<group>"; };
 		88E094782B69B81A00A93660 /* ArgumentViewUIKit.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ArgumentViewUIKit.xib; sourceTree = "<group>"; };
+		88E0947B2B69D8FA00A93660 /* TimestampTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimestampTransformer.swift; sourceTree = "<group>"; };
+		88E0947E2B6AAD5600A93660 /* CellTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellTimeView.swift; sourceTree = "<group>"; };
 		88EF5ABA2A9ED19400D1EADA /* MelSpectrogram.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MelSpectrogram.swift; sourceTree = "<group>"; };
 		88EF5ABC2A9ED19400D1EADA /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift"; sourceTree = "<group>"; };
 		88EF5ABD2A9ED19400D1EADA /* AudioSpectrogram.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSpectrogram.swift; sourceTree = "<group>"; };
@@ -300,6 +304,7 @@
 		881A39E92A2A886400B4782D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				88E0947D2B6AAD2900A93660 /* Cell */,
 				88CE94542AA81345000E8DFB /* ColumnList */,
 				88140FCB2A5217FE0095DB5A /* Options */,
 				884B0DFA2A50CC2300D16304 /* CodeEditor */,
@@ -307,10 +312,6 @@
 				8878A61D2A38D97500A2658C /* Layouts */,
 				8837C56B2A2D299B00F29182 /* Components */,
 				881A39EE2A2A88AB00B4782D /* CellView.swift */,
-				88E094732B69B5AB00A93660 /* CellViewUIKit.swift */,
-				88E094742B69B5AB00A93660 /* CellViewUIKit.xib */,
-				88E094772B69B81A00A93660 /* ArgumentViewUIKit.swift */,
-				88E094782B69B81A00A93660 /* ArgumentViewUIKit.xib */,
 				881A39F62A2A9D5900B4782D /* SheetView.swift */,
 				881A39FA2A2AB66900B4782D /* VideoView.swift */,
 				881A39FF2A2BE73B00B4782D /* ControllerView.swift */,
@@ -408,6 +409,7 @@
 			children = (
 				8878A6242A3FE75200A2658C /* VideoHelpers.swift */,
 				88F62EA42A5A041200DC5B60 /* TimeHelpers.swift */,
+				88E0947B2B69D8FA00A93660 /* TimestampTransformer.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -443,6 +445,18 @@
 				88CE94552AA81359000E8DFB /* ColumnListView.swift */,
 			);
 			path = ColumnList;
+			sourceTree = "<group>";
+		};
+		88E0947D2B6AAD2900A93660 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				88E094732B69B5AB00A93660 /* CellViewUIKit.swift */,
+				88E094742B69B5AB00A93660 /* CellViewUIKit.xib */,
+				88E094772B69B81A00A93660 /* ArgumentViewUIKit.swift */,
+				88E094782B69B81A00A93660 /* ArgumentViewUIKit.xib */,
+				88E0947E2B6AAD5600A93660 /* CellTimeView.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		88EF5AB92A9ED17200D1EADA /* Spectrogram */ = {
@@ -644,6 +658,7 @@
 				881A3A022A2C0B6500B4782D /* VideoModel.swift in Sources */,
 				8878A61C2A352A5200A2658C /* MillisTimeFormatter.swift in Sources */,
 				88CE94562AA81359000E8DFB /* ColumnListView.swift in Sources */,
+				88E0947C2B69D8FA00A93660 /* TimestampTransformer.swift in Sources */,
 				881A39AB2A242D4600B4782D /* ContentView.swift in Sources */,
 				88BFE4252A9BE78F00B37DC3 /* CodeEditorRemoveCodeButton.swift in Sources */,
 				8878A60E2A2D698900A2658C /* CodeEditorView.swift in Sources */,
@@ -660,6 +675,7 @@
 				88F62EA32A5A012400DC5B60 /* IOModels.swift in Sources */,
 				884B0DF72A50BE6B00D16304 /* DatavyuView.swift in Sources */,
 				8878A6132A3026E100A2658C /* RubyScriptEngine.swift in Sources */,
+				88E0947F2B6AAD5600A93660 /* CellTimeView.swift in Sources */,
 				8878A6382A41305E00A2658C /* ClockView.swift in Sources */,
 				8878A6362A411F9B00A2658C /* FileModel.swift in Sources */,
 				881A39F12A2A8D6200B4782D /* SheetModel.swift in Sources */,

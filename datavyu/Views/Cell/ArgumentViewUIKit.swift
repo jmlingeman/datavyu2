@@ -24,6 +24,7 @@ class ArgumentViewUIKit: NSCollectionViewItem {
     }
     
     func configureCell(with argument: Argument) {
+        self.argument = argument
         self.argumentLabel.stringValue = argument.name
         self.argumentValue.stringValue = argument.value
     }
