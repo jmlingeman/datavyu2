@@ -106,7 +106,7 @@ class FileWebRouteCollection: RouteCollection {
                 return col
             }
         }
-        return ColumnModel(columnName: "")
+        return ColumnModel(sheetModel: fileModel.sheetModel, columnName: "")
     }
     
     func getColumnList(req: Request) async throws -> [String] {

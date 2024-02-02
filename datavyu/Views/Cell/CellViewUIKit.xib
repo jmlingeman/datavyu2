@@ -45,11 +45,11 @@
                     <rect key="frame" x="0.0" y="0.0" width="300" height="126"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <clipView key="contentView" id="veI-IV-tbX">
-                        <rect key="frame" x="1" y="1" width="298" height="124"/>
+                        <rect key="frame" x="1" y="1" width="283" height="124"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView id="FkL-xF-ebC">
-                                <rect key="frame" x="0.0" y="0.0" width="298" height="158"/>
+                                <rect key="frame" x="0.0" y="0.0" width="283" height="158"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="L05-8g-cp1">
                                     <size key="itemSize" width="50" height="50"/>
@@ -63,7 +63,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="Pcp-xf-8Wn">
-                        <rect key="frame" x="283" y="1" width="16" height="124"/>
+                        <rect key="frame" x="284" y="1" width="15" height="124"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>

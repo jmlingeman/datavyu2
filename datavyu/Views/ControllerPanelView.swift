@@ -57,7 +57,7 @@ struct ControllerPanelView: View {
     }
     
     func addColumn() {
-        let columnModel = ColumnModel(columnName: "")
+        let columnModel = ColumnModel(sheetModel: fileModel.sheetModel, columnName: "")
         let _ = columnModel.addCell()
         let _ = columnModel.addCell()
         fileModel.sheetModel.addColumn(column: columnModel)

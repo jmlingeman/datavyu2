@@ -8,7 +8,9 @@
 import Foundation
 import AppKit
 
-class SheetModel: ObservableObject, Identifiable {
+final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
+
+    
     @Published var sheetName: String
     @Published var columns: [ColumnModel]
     @Published var updates: Int = 0
@@ -22,14 +24,18 @@ class SheetModel: ObservableObject, Identifiable {
         columns = [ColumnModel]()
         setup()
     }
+    
+    static func == (lhs: SheetModel, rhs: SheetModel) -> Bool {
+        return lhs.columns == rhs.columns
+    }
 
     func addColumn(column: ColumnModel) {
         columns.append(column)
     }
     
     func setup() {
-        let column = ColumnModel(columnName: "Test1")
-        let column2 = ColumnModel(columnName: "Test2")
+        let column = ColumnModel(sheetModel: self, columnName: "Test1")
+        let column2 = ColumnModel(sheetModel: self, columnName: "Test2")
         addColumn(column: column)
         addColumn(column: column2)
         for k in 1...1500 {
@@ -52,5 +58,22 @@ class SheetModel: ObservableObject, Identifiable {
             }
         }
 
+    }
+    
+    enum CodingKeys: CodingKey {
+        case sheetName
+        case columns
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        sheetName = try container.decode(String.self, forKey: .sheetName)
+        columns = try container.decode(Array<ColumnModel>.self, forKey: .columns)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(sheetName, forKey: .sheetName)
+        try container.encode(columns, forKey: .columns)
     }
 }

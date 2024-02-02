@@ -9,8 +9,8 @@ import Foundation
 import Vapor
 
 final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Codable, Content, Comparable {
-    
-//    @Published var column: ColumnModel
+        
+    @Published var column: ColumnModel
     @Published var onset: Int = 0
     @Published var offset: Int = 0
     @Published var ordinal: Int = 0
@@ -19,10 +19,14 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
     @Published var onsetPosition: Double = 0
     @Published var offsetPosition: Double = 0
         
-    init() {}
+//    init() {}
     
     init(column: ColumnModel) {
-//        self.column = column
+        self.column = column
+    }
+    
+    static func == (lhs: CellModel, rhs: CellModel) -> Bool {
+        return lhs.onset == rhs.onset && lhs.offset == rhs.offset && lhs.arguments == rhs.arguments
     }
     
     static func < (lhs: CellModel, rhs: CellModel) -> Bool {
@@ -31,6 +35,11 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
         } else {
             return lhs.onset < rhs.onset
         }
+    }
+    
+    func setOnset(onset: Int) {
+        self.onset = onset
+        self.column.sheetModel.updates += 1
     }
 
     func setOnset(onset: Double) {
@@ -44,6 +53,10 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
     func setOffset(offset: String) {
         self.offset = timestringToTimestamp(timestring: offset)
     }
+    
+    func setOffset(offset: Int) {
+        self.offset = offset
+    }
 
     func setOffset(offset: Double) {
         self.offset = Int(offset * 1000)
@@ -53,12 +66,12 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
         arguments[index].value = value
     }
     
-    static func == (lhs: CellModel, rhs: CellModel) -> Bool {
-        if lhs.id == rhs.id {
-            return true
-        }
-        return false
-    }
+//    static func == (lhs: CellModel, rhs: CellModel) -> Bool {
+//        if lhs.id == rhs.id {
+//            return true
+//        }
+//        return false
+//    }
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(onset)
@@ -71,6 +84,7 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
         case offset
         case comment
         case arguments
+        case column
     }
     
     required init(from decoder: Decoder) throws {
@@ -79,6 +93,7 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
         offset = try container.decode(Int.self, forKey: .offset)
         comment = try container.decode(String.self, forKey: .comment)
         arguments = try container.decode(Array<Argument>.self, forKey: .arguments)
+        column = try container.decode(ColumnModel.self, forKey: .column)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -87,5 +102,6 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
         try container.encode(offset, forKey: .offset)
         try container.encode(comment, forKey: .comment)
         try container.encode(arguments, forKey: .arguments)
+        try container.encode(column, forKey: .column)
     }
 }

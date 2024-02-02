@@ -22,10 +22,3 @@ struct CodeEditorRow: View {
         }.padding()
     }
 }
-
-struct CodeEditorRow_Previews: PreviewProvider {
-    static var previews: some View {
-        let c = ColumnModel(columnName: "test1")
-        CodeEditorRow(column: c)
-    }
-}

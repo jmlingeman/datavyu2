@@ -9,16 +9,14 @@ import Foundation
 import Vapor
 
 final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Codable, Content {
+    @Published var sheetModel: SheetModel
     @Published var columnName: String
     @Published var cells: [CellModel]
     @Published var arguments: [Argument] = [Argument(name: "test1"), Argument(name: "test2")]
     @Published var hidden: Bool = false
 
     static func == (lhs: ColumnModel, rhs: ColumnModel) -> Bool {
-        if lhs.columnName == rhs.columnName {
-            return true
-        }
-        return false
+        return lhs.cells == rhs.cells
     }
     
     func setHidden(val: Bool) {
@@ -55,18 +53,21 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         hasher.combine(columnName)
     }
 
-    init(columnName: String) {
+    init(sheetModel: SheetModel, columnName: String) {
+        self.sheetModel = sheetModel
         self.columnName = columnName
         cells = [CellModel]()
     }
     
-    init(columnName: String, arguments: [Argument]) {
+    init(sheetModel: SheetModel, columnName: String, arguments: [Argument]) {
+        self.sheetModel = sheetModel
         self.columnName = columnName
         self.arguments = arguments
         cells = [CellModel]()
     }
     
-    init(columnName: String, arguments: [Argument], hidden: Bool) {
+    init(sheetModel: SheetModel, columnName: String, arguments: [Argument], hidden: Bool) {
+        self.sheetModel = sheetModel
         self.columnName = columnName
         self.arguments = arguments
         self.hidden = hidden
@@ -90,6 +91,7 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         case columnName
         case cells
         case arguments
+        case sheetModel
     }
     
     required init(from decoder: Decoder) throws {
@@ -97,6 +99,7 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         columnName = try container.decode(String.self, forKey: .columnName)
         cells = try container.decode(Array<CellModel>.self, forKey: .cells)
         arguments = try container.decode(Array<Argument>.self, forKey: .arguments)
+        sheetModel = try container.decode(SheetModel.self, forKey: .sheetModel)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -104,5 +107,6 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         try container.encode(columnName, forKey: .columnName)
         try container.encode(cells, forKey: .cells)
         try container.encode(arguments, forKey: .arguments)
+        try container.encode(sheetModel, forKey: .sheetModel)
     }
 }

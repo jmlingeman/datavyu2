@@ -200,7 +200,7 @@ func parseDbFile(sheetName: String, fileUrl: URL) -> FileModel {
         let text = try String(contentsOf: fileUrl, encoding: .utf8)
         print(text)
         for line in text.split(separator: "\n") {
-            parseDbLine(line: line, fileLoad: &fileLoad)
+            parseDbLine(sheetModel: sheet, line: line, fileLoad: &fileLoad)
         }
     } catch { /* error handling here */
         print("ERROR \(error)")
@@ -209,7 +209,7 @@ func parseDbFile(sheetName: String, fileUrl: URL) -> FileModel {
     return file
 }
 
-func parseDbLine(line: Substring, fileLoad: inout FileLoad) {
+func parseDbLine(sheetModel: SheetModel, line: Substring, fileLoad: inout FileLoad) {
     /*
      #4
      test (MATRIX,true,)-code01|NOMINAL,code02|NOMINAL,code03|NOMINAL
@@ -226,7 +226,7 @@ func parseDbLine(line: Substring, fileLoad: inout FileLoad) {
     } else if line.firstMatch(of: /^[0-9a-zA-Z]+(?:\s+)/) != nil { // Capture a column name followed by a space
         let columnName = String(line.split(separator: " ").first!)
         let columnHidden = line.split(separator: "(")[1].split(separator: ")")[0].split(separator: ",")[1]
-        let column = ColumnModel(columnName: columnName, arguments: [], hidden: columnHidden == "true")
+        let column = ColumnModel(sheetModel: sheetModel, columnName: columnName, arguments: [], hidden: columnHidden == "true")
 
         let arguments = line.split(separator: "-")[1]
         for argument in arguments.split(separator: ",") {

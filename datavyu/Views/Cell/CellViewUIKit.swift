@@ -22,7 +22,7 @@ class CellViewUIKit: NSCollectionViewItem {
     @ObservedObject var cell: CellModel
     
     override init(nibName nibNameOrNil: NSNib.Name?, bundle nibBundleOrNil: Bundle?) {
-        self.cell = CellModel()
+        self.cell = CellModel(column: ColumnModel(sheetModel: SheetModel(sheetName: "temp"), columnName: "temp"))
         self.ordinal = NSTextField()
         self.onset = NSTextField()
         self.offset = NSTextField()
@@ -38,12 +38,12 @@ class CellViewUIKit: NSCollectionViewItem {
     }
     
     func configureCell(_ cell: CellModel) {
-        print("CONFIGURING CELL")
+//        print("CONFIGURING CELL")
         self.cell = cell
         (self.onset.delegate as! OnsetCoordinator).configure(cell: cell)
         (self.offset.delegate as! OffsetCoordinator).configure(cell: cell)
         self.ordinal.stringValue = String(cell.ordinal)
-        print("CONFIGURED CELL \(self.onset) \(self.offset) \(self.cell) \(cell.ordinal) \(cell)")
+//        print("CONFIGURED CELL \(self.onset) \(self.offset) \(self.cell) \(cell.ordinal) \(cell)")
     }
 
     override func viewDidLoad() {
@@ -118,22 +118,17 @@ extension OnsetCoordinator: NSTextFieldDelegate {
     
     func controlTextDidEndEditing(_ obj: Notification) {
         print(#function)
+        if let textField = obj.object as? NSTextField {
+            let timestampStr = textField.stringValue
+            let timestamp = timestringToTimestamp(timestring: timestampStr)
+            print("SETTING ONSET TO \(timestamp)")
+            cell!.setOnset(onset: timestamp)
+        }
     }
     
     func controlTextDidChange(_ obj: Notification) {
         print(self)
         print(#function)
-//        if let textField = obj.object as? NSTextField {
-//            let timestampStr = textField.stringValue
-//            let timestamp = timestringToTimestamp(timestring: timestampStr)
-//            if textField == self.onset {
-//                print("SETTING ONSET TO \(timestamp)")
-//                cell.onset = timestamp
-//            } else if textField == self.offset {
-//                print("SETTING OFFSET TO \(timestamp)")
-//                cell.offset = timestamp
-//            }
-//        }
     }
     
     func control(_ control: NSControl, textShouldBeginEditing fieldEditor: NSText) -> Bool {
@@ -186,23 +181,19 @@ extension OffsetCoordinator: NSTextFieldDelegate {
     
     func controlTextDidEndEditing(_ obj: Notification) {
         print(#function)
+        print("CELL: \(self.cell)")
+        if let textField = obj.object as? NSTextField {
+            let timestampStr = textField.stringValue
+            let timestamp = timestringToTimestamp(timestring: timestampStr)
+            print("SETTING OFFSET TO \(timestamp)")
+            cell!.setOffset(offset: timestamp)
+        }
     }
     
     func controlTextDidChange(_ obj: Notification) {
         print(self)
         print(#function)
-        print("CELL: \(self.cell)")
-        //        if let textField = obj.object as? NSTextField {
-        //            let timestampStr = textField.stringValue
-        //            let timestamp = timestringToTimestamp(timestring: timestampStr)
-        //            if textField == self.onset {
-        //                print("SETTING ONSET TO \(timestamp)")
-        //                cell.onset = timestamp
-        //            } else if textField == self.offset {
-        //                print("SETTING OFFSET TO \(timestamp)")
-        //                cell.offset = timestamp
-        //            }
-        //        }
+
     }
     
     func control(_ control: NSControl, textShouldBeginEditing fieldEditor: NSText) -> Bool {

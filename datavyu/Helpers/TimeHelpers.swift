@@ -20,9 +20,20 @@ func timestringToTimestamp(timestring: String) -> Int {
     if timestring.contains(":") {
         let clock = timestring.split(separator: ":")
         let hours = Int(clock[0]) ?? 0
-        let minutes = Int(clock[1]) ?? 0
-        let seconds = Int(clock[2]) ?? 0
-        let milliseconds = Int(clock[3]) ?? 0
+        var minutes = 0
+        if clock.count >= 2 {
+            minutes = Int(clock[1]) ?? 0
+        }
+        var seconds = 0
+        if clock.count >= 3 {
+            seconds = Int(clock[2]) ?? 0
+        }
+        var milliseconds = 0
+        if clock.count >= 4 {
+            milliseconds = Int(clock[3]) ?? 0
+        }
+        
+        
         
         return (hours * 1000 * 60 * 60) + (minutes * 1000 * 60) + (seconds * 1000) + milliseconds
     } else {

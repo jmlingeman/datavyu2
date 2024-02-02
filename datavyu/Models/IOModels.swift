@@ -33,5 +33,5 @@ struct TrackSetting: Codable {
 
 struct FileLoad {
     let file: FileModel
-    var currentColumn: ColumnModel = .init(columnName: "")
+    var currentColumn: ColumnModel = .init(sheetModel: SheetModel(sheetName: "test"), columnName: "")
 }
