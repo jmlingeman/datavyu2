@@ -26,6 +26,9 @@
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
+                    <connections>
+                        <outlet property="delegate" destination="wVX-cf-szG" id="2al-0P-3dz"/>
+                    </connections>
                 </textField>
                 <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ne2-q8-cuk">
                     <rect key="frame" x="7" y="0.0" width="37" height="16"/>
@@ -39,5 +42,6 @@
             </subviews>
             <point key="canvasLocation" x="-73" y="-200"/>
         </customView>
+        <customObject id="wVX-cf-szG" customClass="ArgumentCoordinator" customModule="datavyu" customModuleProvider="target"/>
     </objects>
 </document>

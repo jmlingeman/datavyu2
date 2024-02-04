@@ -15,18 +15,22 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
     @Published var offset: Int = 0
     @Published var ordinal: Int = 0
     @Published var comment: String = ""
-    @Published var arguments: [Argument] = [Argument(name: "test1", value: "a"), Argument(name: "test2", value: "b")]
+    @Published var arguments: [Argument] = []
     @Published var onsetPosition: Double = 0
     @Published var offsetPosition: Double = 0
         
-//    init() {}
+    init() {
+        self.column = ColumnModel(sheetModel: SheetModel(sheetName: "dummy"), columnName: "dummy")
+        syncArguments()
+    }
     
     init(column: ColumnModel) {
         self.column = column
+        syncArguments()
     }
     
     static func == (lhs: CellModel, rhs: CellModel) -> Bool {
-        return lhs.onset == rhs.onset && lhs.offset == rhs.offset && lhs.arguments == rhs.arguments
+        return lhs.onset == rhs.onset && lhs.offset == rhs.offset && lhs.arguments == rhs.arguments && lhs.id == rhs.id
     }
     
     static func < (lhs: CellModel, rhs: CellModel) -> Bool {
@@ -34,6 +38,21 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
             return lhs.offset < rhs.offset
         } else {
             return lhs.onset < rhs.onset
+        }
+    }
+    
+    func syncArguments() {
+        let args = column.arguments
+        for arg in args {
+            var found = false
+            for x in self.arguments {
+                if arg.name == x.name {
+                    found = true
+                }
+            }
+            if !found {
+                self.arguments.append(Argument(name: arg.name, column: arg.column))
+            }
         }
     }
     

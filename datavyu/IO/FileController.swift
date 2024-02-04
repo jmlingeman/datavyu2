@@ -231,7 +231,7 @@ func parseDbLine(sheetModel: SheetModel, line: Substring, fileLoad: inout FileLo
         let arguments = line.split(separator: "-")[1]
         for argument in arguments.split(separator: ",") {
             let argName = String(argument.split(separator: "|")[0])
-            let arg = Argument(name: argName)
+            let arg = Argument(name: argName, column: column)
             column.addArgument(argument: arg)
         }
 

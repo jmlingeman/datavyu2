@@ -267,7 +267,6 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
 //    }
     
     override func shouldInvalidateLayout(forBoundsChange newBounds: NSRect) -> Bool {
-        print("Update count \(updateCount) \(sheetModel.updates)")
         if updateCount < sheetModel.updates {
             updateCount = sheetModel.updates
             return true

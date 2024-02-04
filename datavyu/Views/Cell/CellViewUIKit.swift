@@ -45,6 +45,9 @@ class CellViewUIKit: NSCollectionViewItem {
         self.ordinal.stringValue = String(cell.ordinal)
         self.onset.stringValue = formatTimestamp(timestamp: cell.onset)
         self.offset.stringValue = formatTimestamp(timestamp: cell.offset)
+        
+        self.argumentsCollectionView.delegate = self
+        self.argumentsCollectionView.dataSource = self
 
 //        print("CONFIGURED CELL \(self.onset) \(self.offset) \(self.cell) \(cell.ordinal) \(cell)")
     }
@@ -52,22 +55,16 @@ class CellViewUIKit: NSCollectionViewItem {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.argumentsCollectionView.register(ArgumentViewUIKit.self, forItemWithIdentifier: .init(ArgumentViewUIKit.identifier))
-        self.argumentsCollectionView.delegate = self
-        self.argumentsCollectionView.dataSource = self
-        
-        (self.onset.delegate as! OnsetCoordinator).configure(cell: cell)
-        (self.offset.delegate as! OffsetCoordinator).configure(cell: cell)
-        
-        self.ordinal.stringValue = String(cell.ordinal)
-        self.offset.stringValue = formatTimestamp(timestamp: cell.offset)
-        self.onset.stringValue = formatTimestamp(timestamp: cell.onset)
+        self.configureCell(self.cell)
     }
     
     override func prepareForReuse() {
-        print("PREPARING FOR REUSE")
-        self.cell = CellModel(column: ColumnModel(sheetModel: SheetModel(sheetName: "temp"), columnName: "temp"))
+        // Attach it to a dummy cell until that gets replaced
+        self.cell = CellModel(column: ColumnModel(sheetModel: SheetModel(sheetName: "dummy"), columnName: "dummy"))
         (self.onset.delegate as! OnsetCoordinator).configure(cell: cell)
         (self.offset.delegate as! OffsetCoordinator).configure(cell: cell)
+        self.argumentsCollectionView.delegate = nil
+        self.argumentsCollectionView.dataSource = nil
     }
         
 }
@@ -85,6 +82,7 @@ extension CellViewUIKit: NSCollectionViewDataSource {
     
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
         let item = collectionView.makeItem(withIdentifier: .init(ArgumentViewUIKit.identifier), for: indexPath) as! ArgumentViewUIKit
+        print("Cell \(cell.column.columnName) \(cell.ordinal) args: \(cell.arguments[0].value)")
         let argument = cell.arguments[indexPath.item]
         item.configureCell(with: argument)
         

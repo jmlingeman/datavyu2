@@ -12,9 +12,17 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
     @Published var sheetModel: SheetModel
     @Published var columnName: String
     @Published var cells: [CellModel]
-    @Published var arguments: [Argument] = [Argument(name: "test1"), Argument(name: "test2")]
+    @Published var arguments: [Argument]
     @Published var hidden: Bool = false
-
+    
+    init() {
+        self.sheetModel = SheetModel(sheetName: "dummy")
+        self.columnName = "dummy"
+        self.cells = []
+        self.arguments = []
+        addArgument()
+    }
+    
     static func == (lhs: ColumnModel, rhs: ColumnModel) -> Bool {
         return lhs.cells == rhs.cells
     }
@@ -24,11 +32,8 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
     }
         
     func addArgument() {
-        let newArg = Argument(name: "code\(arguments.count)")
-        arguments.append(newArg)
-        for cell in cells {
-            cell.arguments.append(newArg)
-        }
+        let newArg = Argument(name: "code\(arguments.count)", column: self)
+        addArgument(argument: newArg)
     }
     
     func getSortedCells() -> [CellModel] {
@@ -36,10 +41,11 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
     }
     
     func removeArgument() {
-        arguments.popLast()
+        let _ = arguments.popLast()
         for cell in cells {
-            cell.arguments.popLast()
+            let _ = cell.arguments.popLast()
         }
+        self.sheetModel.updates += 1
     }
     
     func addArgument(argument: Argument) {
@@ -47,6 +53,7 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         for cell in cells {
             cell.arguments.append(argument)
         }
+        self.sheetModel.updates += 1
     }
 
     func hash(into hasher: inout Hasher) {
@@ -56,14 +63,16 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
     init(sheetModel: SheetModel, columnName: String) {
         self.sheetModel = sheetModel
         self.columnName = columnName
-        cells = [CellModel]()
+        cells = []
+        self.arguments = []
+        addArgument()
     }
     
     init(sheetModel: SheetModel, columnName: String, arguments: [Argument]) {
         self.sheetModel = sheetModel
         self.columnName = columnName
         self.arguments = arguments
-        cells = [CellModel]()
+        cells = []
     }
     
     init(sheetModel: SheetModel, columnName: String, arguments: [Argument], hidden: Bool) {
@@ -71,7 +80,7 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         self.columnName = columnName
         self.arguments = arguments
         self.hidden = hidden
-        cells = [CellModel]()
+        cells = []
     }
 
     func addCell(cell: CellModel) -> CellModel {

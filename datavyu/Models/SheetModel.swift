@@ -28,6 +28,10 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
     static func == (lhs: SheetModel, rhs: SheetModel) -> Bool {
         return lhs.columns == rhs.columns
     }
+    
+    func addColumn(columnName: String) {
+        columns.append(ColumnModel(sheetModel: self, columnName: columnName))
+    }
 
     func addColumn(column: ColumnModel) {
         columns.append(column)
