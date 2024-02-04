@@ -33,6 +33,13 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
         return lhs.onset == rhs.onset && lhs.offset == rhs.offset && lhs.arguments == rhs.arguments && lhs.id == rhs.id
     }
     
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(onset)
+        hasher.combine(offset)
+        hasher.combine(arguments)
+        hasher.combine(id)
+    }
+    
     static func < (lhs: CellModel, rhs: CellModel) -> Bool {
         if lhs.onset == rhs.onset {
             return lhs.offset < rhs.offset
@@ -58,31 +65,41 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
     
     func setOnset(onset: Int) {
         self.onset = onset
+        updateSheet()
+    }
+    
+    func updateSheet() {
         self.column.sheetModel.updates += 1
     }
 
     func setOnset(onset: Double) {
         self.onset = Int(onset * 1000)
+        updateSheet()
     }
     
     func setOnset(onset: String) {
         self.onset = timestringToTimestamp(timestring: onset)
+        updateSheet()
     }
     
     func setOffset(offset: String) {
         self.offset = timestringToTimestamp(timestring: offset)
+        updateSheet()
     }
     
     func setOffset(offset: Int) {
         self.offset = offset
+        updateSheet()
     }
 
     func setOffset(offset: Double) {
         self.offset = Int(offset * 1000)
+        updateSheet()
     }
     
     func setArgumentValue(index: Int, value: String) {
         arguments[index].value = value
+        updateSheet()
     }
     
 //    static func == (lhs: CellModel, rhs: CellModel) -> Bool {
@@ -92,11 +109,7 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
 //        return false
 //    }
     
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(onset)
-        hasher.combine(offset)
-        hasher.combine(id)
-    }
+    
     
     enum CodingKeys: CodingKey {
         case onset
