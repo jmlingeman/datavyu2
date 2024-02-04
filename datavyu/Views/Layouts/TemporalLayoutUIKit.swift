@@ -146,7 +146,7 @@ struct TemporalLayoutCollection: NSViewRepresentable {
             item.configureCell(cell)
             
 //            print("CREATING CELL AT \(indexPath.section) \(indexPath.item) \(Unmanaged.passUnretained(cell).toOpaque())")
-            
+            print("Setting cell \(cell.column.columnName) \(cell.ordinal) \(cell.onset) \(cell.offset)")
             cellItemMap[cell] = item
             
             return item

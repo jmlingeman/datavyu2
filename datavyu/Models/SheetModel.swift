@@ -38,7 +38,7 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
         let column2 = ColumnModel(sheetModel: self, columnName: "Test2")
         addColumn(column: column)
         addColumn(column: column2)
-        for k in 1...1500 {
+        for _ in 1...150 {
             let _ = column.addCell()
         }
         let _ = column2.addCell()

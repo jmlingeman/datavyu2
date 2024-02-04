@@ -43,6 +43,9 @@ class CellViewUIKit: NSCollectionViewItem {
         (self.onset.delegate as! OnsetCoordinator).configure(cell: cell)
         (self.offset.delegate as! OffsetCoordinator).configure(cell: cell)
         self.ordinal.stringValue = String(cell.ordinal)
+        self.onset.stringValue = formatTimestamp(timestamp: cell.onset)
+        self.offset.stringValue = formatTimestamp(timestamp: cell.offset)
+
 //        print("CONFIGURED CELL \(self.onset) \(self.offset) \(self.cell) \(cell.ordinal) \(cell)")
     }
 
@@ -52,9 +55,19 @@ class CellViewUIKit: NSCollectionViewItem {
         self.argumentsCollectionView.delegate = self
         self.argumentsCollectionView.dataSource = self
         
+        (self.onset.delegate as! OnsetCoordinator).configure(cell: cell)
+        (self.offset.delegate as! OffsetCoordinator).configure(cell: cell)
+        
         self.ordinal.stringValue = String(cell.ordinal)
         self.offset.stringValue = formatTimestamp(timestamp: cell.offset)
         self.onset.stringValue = formatTimestamp(timestamp: cell.onset)
+    }
+    
+    override func prepareForReuse() {
+        print("PREPARING FOR REUSE")
+        self.cell = CellModel(column: ColumnModel(sheetModel: SheetModel(sheetName: "temp"), columnName: "temp"))
+        (self.onset.delegate as! OnsetCoordinator).configure(cell: cell)
+        (self.offset.delegate as! OffsetCoordinator).configure(cell: cell)
     }
         
 }
