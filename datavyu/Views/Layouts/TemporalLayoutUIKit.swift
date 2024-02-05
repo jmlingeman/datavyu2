@@ -86,7 +86,7 @@ struct Header: View {
         }
         .frame(width: Config().defaultCellWidth, height: Config().headerSize)
         .border(Color.black)
-        .background(Color.purple)
+        .background(Color.accentColor)
     }
 }
 

@@ -19,6 +19,8 @@ class CellViewUIKit: NSCollectionViewItem {
     var onsetCoordinator: OnsetCoordinator?
     var offsetCoordinator: OffsetCoordinator?
     
+    var argumentSizes: [IndexPath: NSSize]
+    
     @ObservedObject var cell: CellModel
     
     override init(nibName nibNameOrNil: NSNib.Name?, bundle nibBundleOrNil: Bundle?) {
@@ -27,6 +29,7 @@ class CellViewUIKit: NSCollectionViewItem {
         self.onset = NSTextField()
         self.offset = NSTextField()
         self.argumentsCollectionView = NSCollectionView()
+        self.argumentSizes = [IndexPath: NSSize]()
 
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
@@ -86,7 +89,24 @@ extension CellViewUIKit: NSCollectionViewDataSource {
         let argument = cell.arguments[indexPath.item]
         item.configureCell(with: argument)
         
+        // TODO: fix this
+        argumentSizes[indexPath] = NSSize(width: item.argumentValue.preferredMaxLayoutWidth, height: 50)
+        
         return item
+    }
+}
+
+extension CellViewUIKit: NSCollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
+//        let item = collectionView.makeItem(withIdentifier: .init(ArgumentViewUIKit.identifier), for: indexPath) as! ArgumentViewUIKit
+        print(argumentSizes)
+        let size = NSSize(
+            width: max(50, argumentSizes[indexPath]?.width ?? 0),
+            height: max(50, argumentSizes[indexPath]?.height ?? 0)
+        )
+        print(indexPath, size)
+        return size
     }
 }
 

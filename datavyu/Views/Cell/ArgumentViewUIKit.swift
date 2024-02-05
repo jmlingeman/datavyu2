@@ -20,10 +20,12 @@ class ArgumentViewUIKit: NSCollectionViewItem {
         self.argument = Argument()
         self.argumentLabel = NSTextField()
         self.argumentValue = NSTextField()
+
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
     func configureCell(with argument: Argument) {
+        
         self.argument = argument
         self.argumentLabel.stringValue = argument.name
         self.argumentValue.stringValue = argument.value
