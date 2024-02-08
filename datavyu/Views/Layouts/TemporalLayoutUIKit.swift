@@ -22,6 +22,7 @@ final class TemporalCollectionAppKitView: NSCollectionView {
         super.init(frame: .zero)
         let layout = TemporalCollectionViewLayout(sheetModel: sheetModel, scrollView: parentScrollView)
         self.collectionViewLayout = layout
+        self.isSelectable = true
     }
         
     override func setFrameSize(_ newSize: NSSize) {
@@ -36,17 +37,17 @@ final class TemporalCollectionAppKitView: NSCollectionView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setResponderChain() {
-        let currentIndex = IndexPath(item: 0, section: 0)
-        var indexSet = Set<IndexPath>()
-        let newIndex = IndexPath(item: currentIndex.item + 1, section: currentIndex.section)
-        indexSet.insert(newIndex)
-        self.animator().selectItems(at: indexSet, scrollPosition: NSCollectionView.ScrollPosition.top)
-    }
-    
+//    func setResponderChain() {
+//        let currentIndex = IndexPath(item: 0, section: 0)
+//        var indexSet = Set<IndexPath>()
+//        let newIndex = IndexPath(item: currentIndex.item + 1, section: currentIndex.section)
+//        indexSet.insert(newIndex)
+//        self.animator().selectItems(at: indexSet, scrollPosition: NSCollectionView.ScrollPosition.top)
+//    }
+//    
     override func keyDown(with event: NSEvent) {
         print("AAAA")
-        setResponderChain()
+//        setResponderChain()
     }
             
 }
@@ -134,7 +135,7 @@ struct TemporalLayoutCollection: NSViewRepresentable {
         func numberOfSections(in collectionView: NSCollectionView) -> Int {
             return sheetModel.columns.count
         }
-        
+                
         func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
             return sheetModel.columns[section].cells.count + 1
         }
@@ -143,10 +144,9 @@ struct TemporalLayoutCollection: NSViewRepresentable {
             let item = collectionView.makeItem(withIdentifier: .init(CellViewUIKit.identifier), for: indexPath) as! CellViewUIKit
             let cell = sheetModel.columns[indexPath.section].cells[indexPath.item]
 
-            item.configureCell(cell)
+            item.configureCell(cell, parentView: parent.scrollView.documentView as? TemporalCollectionAppKitView)
             
 //            print("CREATING CELL AT \(indexPath.section) \(indexPath.item) \(Unmanaged.passUnretained(cell).toOpaque())")
-            print("Setting cell \(cell.column.columnName) \(cell.ordinal) \(cell.onset) \(cell.offset) \(cell.arguments[0].value)")
             cellItemMap[cell] = item
             
             return item
@@ -174,6 +174,25 @@ struct TemporalLayoutCollection: NSViewRepresentable {
         func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
             return 100
         }
+        
+        func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
+//            print(#function)
+//            print(indexPaths)
+//            if indexPaths.count > 0 {
+//                let cell = collectionView.item(at: indexPaths.first!)!
+//                (cell as! CellViewUIKit).setSelected()
+//                collectionView.selectionIndexPaths = [indexPaths.first!]
+//            }
+        }
+        
+        func collectionView(_ collectionView: NSCollectionView, didDeselectItemsAt indexPaths: Set<IndexPath>) {
+//            if indexPaths.count > 0 {
+//                let cell = collectionView.item(at: indexPaths.first!)!
+//                (cell as! CellViewUIKit).setDeselected()
+//            }
+        }
+        
+        
     }
         
     
@@ -188,7 +207,7 @@ struct TemporalLayoutCollection: NSViewRepresentable {
         let collectionView = TemporalCollectionAppKitView(sheetModel: sheetModel, parentScrollView: scrollView)
         collectionView.delegate = context.coordinator
         collectionView.dataSource = context.coordinator
-        collectionView.allowsEmptySelection = false
+        collectionView.allowsEmptySelection = true
         collectionView.allowsMultipleSelection = true
         collectionView.isSelectable = true
         
@@ -203,11 +222,22 @@ struct TemporalLayoutCollection: NSViewRepresentable {
     
     func updateNSView(_ nsView: NSViewType, context: Context) {
         print("Trying to reload data...")
+
         if let collectionView = nsView.documentView as? TemporalCollectionAppKitView {
             context.coordinator.itemSize = itemSize
             print("RELOADING DATA")
+            let selectionIndexPath = collectionView.selectionIndexPaths.first
+            print("SELECTED INDEX PATH: \(selectionIndexPath)")
             collectionView.reloadData()
             print("RELOADED")
+            if selectionIndexPath != nil {
+                collectionView.selectItems(at: [selectionIndexPath!],
+                                                scrollPosition: .centeredVertically)
+                let item = collectionView.item(at: selectionIndexPath!) as! CellViewUIKit
+                item.setSelected()
+                item.resetFocus()
+                print("MAKE FIRST RESP")
+            }
         }
     }
 }

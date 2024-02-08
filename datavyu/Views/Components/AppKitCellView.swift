@@ -36,9 +36,9 @@ final class AppKitCellViewItem: NSCollectionViewItem {
         
     }
     
-    override func keyDown(with event: NSEvent) {
-        print("AA")
-    }
+//    override func keyDown(with event: NSEvent) {
+//        print("AA")
+//    }
     
 }
 

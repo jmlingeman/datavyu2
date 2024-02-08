@@ -29,7 +29,7 @@
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fpe-kJ-HL3">
+                <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fpe-kJ-HL3" customClass="CellTimeTextField" customModule="datavyu" customModuleProvider="target">
                     <rect key="frame" x="204" y="129" width="96" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="33J-GM-Cvl">
@@ -39,6 +39,7 @@
                     </textFieldCell>
                     <connections>
                         <outlet property="delegate" destination="Wl8-Ky-qj4" id="5Mv-vo-1BA"/>
+                        <outlet property="nextKeyView" destination="FkL-xF-ebC" id="nPr-4v-aLG"/>
                     </connections>
                 </textField>
                 <scrollView wantsLayer="YES" fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QUz-hs-gfX">
@@ -68,7 +69,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
-                <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4OB-Io-y4d">
+                <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4OB-Io-y4d" customClass="CellTimeTextField" customModule="datavyu" customModuleProvider="target">
                     <rect key="frame" x="102" y="129" width="96" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="QWk-5M-u2l">
@@ -78,9 +79,13 @@
                     </textFieldCell>
                     <connections>
                         <outlet property="delegate" destination="AcX-Hb-TPx" id="Web-Wt-Mqj"/>
+                        <outlet property="nextKeyView" destination="fpe-kJ-HL3" id="8NQ-7Y-HXs"/>
                     </connections>
                 </textField>
             </subviews>
+            <connections>
+                <outlet property="nextKeyView" destination="4OB-Io-y4d" id="eQR-aJ-NbE"/>
+            </connections>
             <point key="canvasLocation" x="-5" y="-70"/>
         </customView>
         <userDefaultsController representsSharedInstance="YES" id="VS1-Gi-cNN"/>

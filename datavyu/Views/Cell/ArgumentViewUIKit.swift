@@ -86,7 +86,6 @@ extension ArgumentCoordinator: NSTextFieldDelegate {
     func controlTextDidEndEditing(_ obj: Notification) {
         print(#function)
         if let textField = obj.object as? NSTextField {
-            print("Setting value")
             argument!.setValue(value: textField.stringValue)
         }
     }

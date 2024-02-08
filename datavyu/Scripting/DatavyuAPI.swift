@@ -42,7 +42,7 @@ class DatavyuAPIServer {
         // 1
         Task {
             do {
-                try app.start()
+                try await app.startup()
             } catch {
                 print("\(error)")
                 fatalError(error.localizedDescription)
