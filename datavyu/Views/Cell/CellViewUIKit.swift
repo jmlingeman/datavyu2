@@ -81,7 +81,6 @@ class CellViewUIKit: NSCollectionViewItem {
         super.viewDidAppear()
         if self.isSelected {
             self.setSelected()
-//            self.onset.becomeFirstResponder()
         } else {
             self.setDeselected()
         }
@@ -103,13 +102,15 @@ class CellViewUIKit: NSCollectionViewItem {
     }
     
     func setSelected() {
+        if let ip = self.parentView?.indexPath(for: self) {
+            self.parentView?.selectionIndexPaths = Set([ip])
+            (self.parentView?.delegate as! Coordinator).deselectAllCells()
+            (self.parentView?.delegate as! Coordinator).focusedIndexPath = ip
+        }
+        
         self.view.layer?.borderColor = CGColor(red: 255, green: 0, blue: 0, alpha: 255)
         self.view.layer?.borderWidth = 1
         self.isSelected = true
-        
-        if let ip = self.parentView?.indexPath(for: self) {
-            self.parentView?.selectionIndexPaths = Set([ip])
-        }
     }
     
     func setDeselected() {

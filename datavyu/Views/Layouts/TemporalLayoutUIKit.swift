@@ -164,6 +164,15 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         self.itemSize = itemSize
     }
     
+    func deselectAllCells() {
+        for (i, column) in sheetModel.columns.enumerated() {
+            for (j, _) in column.cells.enumerated() {
+                let curCellItem = (parent.scrollView.documentView as! TemporalCollectionAppKitView).item(at: IndexPath(item: j, section: i)) as? CellViewUIKit
+                curCellItem?.setDeselected()
+            }
+        }
+    }
+    
     func focusNextCell() {
         if focusedIndexPath == nil {
             focusedIndexPath = IndexPath(item: 0, section: 0)
@@ -171,10 +180,14 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         
         let collectionView = (self.parent.scrollView.documentView as! TemporalCollectionAppKitView)
         let newFocusedIndexPath = IndexPath(item: focusedIndexPath!.item + 1, section: focusedIndexPath!.section)
-        let cellItem = collectionView.item(at: newFocusedIndexPath) as? CellViewUIKit
+        let oldCellItem = collectionView.item(at: focusedIndexPath!) as? CellViewUIKit
+        let newCellItem = collectionView.item(at: newFocusedIndexPath) as? CellViewUIKit
         
-        cellItem?.setSelected()
-        collectionView.window?.makeFirstResponder(cellItem?.onset)
+        oldCellItem?.setDeselected()
+        newCellItem?.setSelected()
+        collectionView.window?.makeFirstResponder(newCellItem?.onset)
+        
+        focusedIndexPath = newFocusedIndexPath
     }
     
     func connectCellResponders() {
