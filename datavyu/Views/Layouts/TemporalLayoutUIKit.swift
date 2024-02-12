@@ -99,101 +99,7 @@ struct TemporalLayoutCollection: NSViewRepresentable {
     
     // MARK: - Coordinator for Delegate & Data Source & Flow Layout
     
-    class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout {
-        @ObservedObject var sheetModel: SheetModel
-        var parent: TemporalLayoutCollection
-        var itemSize: NSSize
-        var cellItemMap = [CellModel: NSCollectionViewItem]()
-        
-        init(sheetModel: SheetModel, parent: TemporalLayoutCollection, itemSize: NSSize) {
-            self.sheetModel = sheetModel
-            self.parent = parent
-            self.itemSize = itemSize
-        }
-        
-        //        func connectCellResponders() {
-        //            var prevCell: CellModel? = nil
-        //            for column in sheetModel.columns {
-        //                for cell in column.cells {
-        //                    if prevCell != nil {
-        //                        print(cellItemMap[prevCell!])
-        //                        let prevCellItem = cellItemMap[prevCell!]
-        //                        if prevCellItem != nil {
-        //                            for subview in prevCellItem!.view.subviews {
-        //                                subview.nextResponder = cellItemMap[cell]
-        //                            }
-        //                            cellItemMap[prevCell!]?.nextResponder = cellItemMap[cell]
-        //                            cellItemMap[prevCell!]?.view.nextResponder = cellItemMap[cell]?.view
-        //                        }
-        //
-        //                    }
-        //                    prevCell = cell
-        //                }
-        //            }
-        //        }
-        
-        func numberOfSections(in collectionView: NSCollectionView) -> Int {
-            return sheetModel.columns.count
-        }
-                
-        func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-            return sheetModel.columns[section].cells.count + 1
-        }
-        
-        func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-            let item = collectionView.makeItem(withIdentifier: .init(CellViewUIKit.identifier), for: indexPath) as! CellViewUIKit
-            let cell = sheetModel.columns[indexPath.section].cells[indexPath.item]
 
-            item.configureCell(cell, parentView: parent.scrollView.documentView as? TemporalCollectionAppKitView)
-            
-//            print("CREATING CELL AT \(indexPath.section) \(indexPath.item) \(Unmanaged.passUnretained(cell).toOpaque())")
-            cellItemMap[cell] = item
-            
-            return item
-        }
-        
-        func collectionView(_ collectionView: NSCollectionView, viewForSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind, at indexPath: IndexPath) -> NSView {
-            let item = collectionView.makeSupplementaryView(ofKind: kind, withIdentifier: .init(HeaderCell.identifier), for: indexPath) as! HeaderCell
-            item.setView(Header(columnModel: $sheetModel.columns[indexPath.section]))
-            
-            let floatingHeader = NSHostingView(rootView: Header(columnModel: $sheetModel.columns[indexPath.section]))
-            floatingHeader.frame = item.frame
-            parent.scrollView.addFloatingSubview(floatingHeader, for: .vertical)
-            
-            return item
-        }
-        
-        func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
-            return parent.itemSize
-        }
-        
-        func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-            return 100
-        }
-        
-        func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-            return 100
-        }
-        
-        func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
-//            print(#function)
-//            print(indexPaths)
-//            if indexPaths.count > 0 {
-//                let cell = collectionView.item(at: indexPaths.first!)!
-//                (cell as! CellViewUIKit).setSelected()
-//                collectionView.selectionIndexPaths = [indexPaths.first!]
-//            }
-        }
-        
-        func collectionView(_ collectionView: NSCollectionView, didDeselectItemsAt indexPaths: Set<IndexPath>) {
-//            if indexPaths.count > 0 {
-//                let cell = collectionView.item(at: indexPaths.first!)!
-//                (cell as! CellViewUIKit).setDeselected()
-//            }
-        }
-        
-        
-    }
         
     
     func makeCoordinator() -> Coordinator {
@@ -216,6 +122,8 @@ struct TemporalLayoutCollection: NSViewRepresentable {
                         
         scrollView.documentView = collectionView
         scrollView.hasHorizontalScroller = true
+        
+        context.coordinator.connectCellResponders()
                 
         return scrollView
     }
@@ -229,15 +137,128 @@ struct TemporalLayoutCollection: NSViewRepresentable {
             let selectionIndexPath = collectionView.selectionIndexPaths.first
             print("SELECTED INDEX PATH: \(selectionIndexPath)")
             collectionView.reloadData()
+            context.coordinator.connectCellResponders()
             print("RELOADED")
             if selectionIndexPath != nil {
                 collectionView.selectItems(at: [selectionIndexPath!],
                                                 scrollPosition: .centeredVertically)
                 let item = collectionView.item(at: selectionIndexPath!) as! CellViewUIKit
                 item.setSelected()
-                item.resetFocus()
-                print("MAKE FIRST RESP")
+                
             }
         }
     }
 }
+
+class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout {
+    @ObservedObject var sheetModel: SheetModel
+    var parent: TemporalLayoutCollection
+    var itemSize: NSSize
+    var cellItemMap = [CellModel: NSCollectionViewItem]()
+    var focusedCell: CellViewUIKit?
+    var focusedIndexPath: IndexPath?
+    
+    init(sheetModel: SheetModel, parent: TemporalLayoutCollection, itemSize: NSSize) {
+        self.sheetModel = sheetModel
+        self.parent = parent
+        self.itemSize = itemSize
+    }
+    
+    func focusNextCell() {
+        if focusedIndexPath == nil {
+            focusedIndexPath = IndexPath(item: 0, section: 0)
+        }
+        
+        let collectionView = (self.parent.scrollView.documentView as! TemporalCollectionAppKitView)
+        let newFocusedIndexPath = IndexPath(item: focusedIndexPath!.item + 1, section: focusedIndexPath!.section)
+        let cellItem = collectionView.item(at: newFocusedIndexPath) as? CellViewUIKit
+        
+        cellItem?.setSelected()
+        collectionView.window?.makeFirstResponder(cellItem?.onset)
+    }
+    
+    func connectCellResponders() {
+        var prevCell: CellModel? = nil
+        for (i, column) in sheetModel.columns.enumerated() {
+            for (j, cell) in column.cells.enumerated() {
+                if prevCell != nil {
+                    //                        let prevCellItem = cellItemMap[prevCell!]
+                    let prevCellItem = (parent.scrollView.documentView as! TemporalCollectionAppKitView).item(at: IndexPath(item: j-1, section: i)) as? CellViewUIKit
+                    let curCellItem = (parent.scrollView.documentView as! TemporalCollectionAppKitView).item(at: IndexPath(item: j, section: i)) as? CellViewUIKit
+                    
+                    if prevCellItem != nil {
+                        prevCellItem?.nextResponder = curCellItem
+                        //                            prevCellItem?.collectionView?.item(at: IndexPath(item: 0, section: 0))?.textField?.currentEditor()?.nextResponder = curCellItem?.onset
+                        //                            prevCellItem?.collectionView?.item(at: IndexPath(item: 0, section: 0))?.textField?.currentEditor()?.nextKeyView = curCellItem?.onset
+                        print(prevCellItem, prevCellItem?.collectionView?.item(at: IndexPath(item: 0, section: 0))?.nextResponder)
+                    }
+                    
+                }
+                prevCell = cell
+            }
+        }
+    }
+    
+    func numberOfSections(in collectionView: NSCollectionView) -> Int {
+        return sheetModel.columns.count
+    }
+    
+    func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
+        return sheetModel.columns[section].cells.count + 1
+    }
+    
+    func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
+        let item = collectionView.makeItem(withIdentifier: .init(CellViewUIKit.identifier), for: indexPath) as! CellViewUIKit
+        let cell = sheetModel.columns[indexPath.section].cells[indexPath.item]
+        
+        item.configureCell(cell, parentView: parent.scrollView.documentView as? TemporalCollectionAppKitView)
+        
+        //            print("CREATING CELL AT \(indexPath.section) \(indexPath.item) \(Unmanaged.passUnretained(cell).toOpaque())")
+        //            cellItemMap[cell] = item
+        
+        return item
+    }
+    
+    func collectionView(_ collectionView: NSCollectionView, viewForSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind, at indexPath: IndexPath) -> NSView {
+        let item = collectionView.makeSupplementaryView(ofKind: kind, withIdentifier: .init(HeaderCell.identifier), for: indexPath) as! HeaderCell
+        item.setView(Header(columnModel: $sheetModel.columns[indexPath.section]))
+        
+        let floatingHeader = NSHostingView(rootView: Header(columnModel: $sheetModel.columns[indexPath.section]))
+        floatingHeader.frame = item.frame
+        parent.scrollView.addFloatingSubview(floatingHeader, for: .vertical)
+        
+        return item
+    }
+    
+    func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
+        return parent.itemSize
+    }
+    
+    func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 100
+    }
+    
+    func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 100
+    }
+    
+    func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
+        print(#function)
+        print(indexPaths)
+        if indexPaths.count > 0 {
+            let cell = collectionView.item(at: indexPaths.first!) as! CellViewUIKit
+            cell.setSelected()
+            cell.onset.becomeFirstResponder()
+            collectionView.selectionIndexPaths = [indexPaths.first!]
+        }
+    }
+    
+    func collectionView(_ collectionView: NSCollectionView, didDeselectItemsAt indexPaths: Set<IndexPath>) {
+        if indexPaths.count > 0 {
+            let cell = collectionView.item(at: indexPaths.first!)!
+            (cell as! CellViewUIKit).setDeselected()
+        }
+    }
+    
+    
+    }

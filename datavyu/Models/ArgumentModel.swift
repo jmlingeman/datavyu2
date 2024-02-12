@@ -14,6 +14,7 @@ final class Argument: ObservableObject, Identifiable, Equatable, Hashable, Codab
     @Published var column: ColumnModel
     
     var id: UUID = UUID()
+    var isLastArgument: Bool = false
     
     static func == (lhs: Argument, rhs: Argument) -> Bool {
         lhs.name == rhs.name && lhs.value == rhs.value && lhs.id == rhs.id

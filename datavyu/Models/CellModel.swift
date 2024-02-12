@@ -61,11 +61,16 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
                 self.arguments.append(Argument(name: arg.name, column: arg.column))
             }
         }
+        self.arguments.last?.isLastArgument = true
     }
     
     func setOnset(onset: Int) {
-        self.onset = onset
-        updateSheet()
+        if onset != self.onset {
+            DispatchQueue.main.async {
+                self.onset = onset
+                self.updateSheet()
+            }
+        }
     }
     
     func updateSheet() {
@@ -88,8 +93,12 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
     }
     
     func setOffset(offset: Int) {
-        self.offset = offset
-        updateSheet()
+        if offset != self.offset {
+            DispatchQueue.main.async {
+                self.offset = offset
+                self.updateSheet()
+            }
+        }
     }
 
     func setOffset(offset: Double) {

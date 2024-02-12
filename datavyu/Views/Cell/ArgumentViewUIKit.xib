@@ -18,7 +18,7 @@
             <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES"/>
             <subviews>
-                <textField verticalHuggingPriority="750" id="F81-kK-MJH">
+                <textField focusRingType="none" verticalHuggingPriority="750" id="F81-kK-MJH" customClass="ArgumentTextField" customModule="datavyu" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="13" width="50" height="37"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES"/>
                     <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="LEn-u3-3pe">
@@ -30,7 +30,7 @@
                         <outlet property="delegate" destination="wVX-cf-szG" id="2al-0P-3dz"/>
                     </connections>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ne2-q8-cuk">
+                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ne2-q8-cuk">
                     <rect key="frame" x="7" y="0.0" width="37" height="16"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="XAg-kD-oLD">

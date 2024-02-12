@@ -81,12 +81,14 @@ class CellViewUIKit: NSCollectionViewItem {
         super.viewDidAppear()
         if self.isSelected {
             self.setSelected()
+//            self.onset.becomeFirstResponder()
         } else {
             self.setDeselected()
         }
         
         self.onset.nextResponder = self.offset
         self.offset.nextResponder = self.argumentsCollectionView
+        
     }
     
     override func prepareForReuse() {
@@ -114,6 +116,10 @@ class CellViewUIKit: NSCollectionViewItem {
         self.view.layer?.borderWidth = 0
         self.isSelected = false
     }
+    
+    override func keyDown(with event: NSEvent) {
+        print("CELL KEY GOT")
+    }
         
 }
 
@@ -133,6 +139,7 @@ extension CellViewUIKit: NSCollectionViewDataSource {
 //        print("Cell \(cell.column.columnName) \(cell.ordinal) args: \(cell.arguments[0].value)")
         let argument = cell.arguments[indexPath.item]
         item.configureCell(with: argument)
+        item.configureParentView(with: self)
         
         // TODO: fix this
         argumentSizes[indexPath] = NSSize(width: item.argumentValue.preferredMaxLayoutWidth, height: 50)
@@ -212,6 +219,7 @@ extension OnsetCoordinator: NSTextFieldDelegate {
                 cell!.setOnset(onset: timestamp)
             }
         }
+        self.view?.resignFirstResponder()
 //        self.view?.setDeselected()
     }
     
@@ -283,6 +291,7 @@ extension OffsetCoordinator: NSTextFieldDelegate {
                 cell!.setOffset(offset: timestamp)
             }
         }
+        self.view?.resignFirstResponder()
     }
     
     func controlTextDidChange(_ obj: Notification) {

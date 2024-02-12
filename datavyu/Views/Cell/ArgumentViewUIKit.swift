@@ -12,14 +12,15 @@ class ArgumentViewUIKit: NSCollectionViewItem {
     static let identifier: String = "ArgumentViewUIKit"
     
     @IBOutlet var argumentLabel: NSTextField!
-    @IBOutlet var argumentValue: NSTextField!
+    @IBOutlet var argumentValue: ArgumentTextField!
     
     @ObservedObject var argument: Argument
+    var parentView: CellViewUIKit?
     
     override init(nibName nibNameOrNil: NSNib.Name?, bundle nibBundleOrNil: Bundle?) {
         self.argument = Argument()
         self.argumentLabel = NSTextField()
-        self.argumentValue = NSTextField()
+        self.argumentValue = ArgumentTextField()
 
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
@@ -29,7 +30,13 @@ class ArgumentViewUIKit: NSCollectionViewItem {
         self.argument = argument
         self.argumentLabel.stringValue = argument.name
         self.argumentValue.stringValue = argument.value
-        (self.argumentValue.delegate as! ArgumentCoordinator).configure(argument: argument)
+        self.argumentValue.configure(argument: argument)
+//        (self.argumentValue.delegate as! ArgumentCoordinator).configure(argument: argument, view: self)
+    }
+    
+    func configureParentView(with parentView: CellViewUIKit) {
+        self.parentView = parentView
+        self.argumentValue.configureParentView(parentView: parentView)
     }
     
     required init?(coder: NSCoder) {
@@ -42,12 +49,17 @@ class ArgumentViewUIKit: NSCollectionViewItem {
         self.configureCell(with: self.argument)
     }
     
+    override func keyDown(with event: NSEvent) {
+        print("From Arg Cell View: \(event.keyCode)")
+    }
+    
     
     
 }
 
 @objc class ArgumentCoordinator: NSObject {
     var argument: Argument?
+    var view: ArgumentViewUIKit?
     
     override init() {
         super.init()
@@ -57,8 +69,9 @@ class ArgumentViewUIKit: NSCollectionViewItem {
         self.argument = argument
     }
     
-    func configure(argument: Argument) {
+    func configure(argument: Argument, view: ArgumentViewUIKit) {
         self.argument = argument
+        self.view = view
     }
 }
 
@@ -86,7 +99,7 @@ extension ArgumentCoordinator: NSTextFieldDelegate {
     func controlTextDidEndEditing(_ obj: Notification) {
         print(#function)
         if let textField = obj.object as? NSTextField {
-            argument!.setValue(value: textField.stringValue)
+//            argument!.setValue(value: textField.stringValue)
         }
     }
     
@@ -104,4 +117,6 @@ extension ArgumentCoordinator: NSTextFieldDelegate {
         print(#function)
         return true
     }
+    
+    
 }
