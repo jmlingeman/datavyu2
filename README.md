@@ -89,6 +89,3 @@ More details will be added as development continues.
 - File history saving (backups)
 - Hidden column handling
 - Project management UI prototyping
-
-- For selecting cells: override onkeydown on the last argument of each cell and set it to trigger an event in the environment space that then calls a method on the collectionview that selects the appropriate cell?
-https://stackoverflow.com/questions/65126268/how-to-manually-select-next-focused-index-path-in-collection-view

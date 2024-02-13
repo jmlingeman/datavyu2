@@ -15,20 +15,23 @@ class ArgumentTextField: NSTextField {
     func configure(argument: Argument) {
         self.argument = argument
         self.delegate = self
-        
-        print("CONFIGURED ARGUMENT")
     }
     
     func configureParentView(parentView: CellViewUIKit) {
         self.parentView = parentView
     }
     
-    override func keyDown(with event: NSEvent) {
-        print("From Arg Text View: \(event.keyCode)")
-    }
-    
-    override func resignFirstResponder() -> Bool {
-        print(#function)
+    override func becomeFirstResponder() -> Bool {
+        guard super.becomeFirstResponder() else {
+            return false
+        }
+        if let editor = self.currentEditor() {
+            editor.perform(#selector(selectAll(_:)), with: self, afterDelay: 0)
+        }
+        if parentView != nil {
+            parentView!.setSelected()
+        }
+        
         return true
     }
 }
