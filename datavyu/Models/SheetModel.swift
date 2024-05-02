@@ -19,10 +19,12 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
     let config = Config()
     
     
-    init(sheetName: String) {
+    init(sheetName: String, run_setup: Bool = false) {
         self.sheetName = sheetName
         columns = [ColumnModel]()
-        setup()
+        if run_setup {
+            setup()
+        }
     }
     
     static func == (lhs: SheetModel, rhs: SheetModel) -> Bool {
@@ -37,9 +39,22 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
         columns.append(column)
     }
     
+    func findCellIndexPath(cell_to_find: CellModel) -> IndexPath? {
+        print(#function)
+        for (i, column) in columns.enumerated() {
+            for (j, cell) in column.getSortedCells().enumerated() {
+                if cell == cell_to_find {
+                    print("Found cell at \(i) \(j)")
+                    return IndexPath(item: j, section: i)
+                }
+            }
+        }
+        return nil
+    }
+    
     func setup() {
-        let column = ColumnModel(sheetModel: self, columnName: "Test1")
-        let column2 = ColumnModel(sheetModel: self, columnName: "Test2")
+        let column = ColumnModel(sheetModel: self, columnName: "Test1", arguments: ["arg1", "arg2"])
+        let column2 = ColumnModel(sheetModel: self, columnName: "Test2", arguments: ["arg1", "arg2"])
         addColumn(column: column)
         addColumn(column: column2)
         for _ in 1...150 {

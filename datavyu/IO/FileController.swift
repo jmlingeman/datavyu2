@@ -50,7 +50,7 @@ private func generateColumnString(columnModel: ColumnModel) -> String {
     }
     s += argnames.joined(separator: ",") + "\n"
     
-    for cell in columnModel.cells {
+    for cell in columnModel.getSortedCells() {
         var args = [String]()
         for argument in cell.arguments {
             args.append(argument.value)

@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct sheettestApp: App {
     @StateObject var fileController: FileControllerModel = FileControllerModel(fileModels: [
-        FileModel(sheetModel: SheetModel(sheetName: "Test Sheet"),
+        FileModel(sheetModel: SheetModel(sheetName: "Test Sheet", run_setup: true),
                   videoModels: [
                     VideoModel(
                         videoFilePath: URL(fileURLWithPath: "/Users/jesse/Downloads/IMG_0822.MOV")),

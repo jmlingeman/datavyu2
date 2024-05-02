@@ -16,6 +16,7 @@ class ArgumentViewUIKit: NSCollectionViewItem {
     
     @ObservedObject var argument: Argument
     var parentView: CellViewUIKit?
+    var argSelected: Bool = false
     
     override init(nibName nibNameOrNil: NSNib.Name?, bundle nibBundleOrNil: Bundle?) {
         self.argument = Argument()
@@ -37,6 +38,7 @@ class ArgumentViewUIKit: NSCollectionViewItem {
     func configureParentView(with parentView: CellViewUIKit) {
         self.parentView = parentView
         self.argumentValue.configureParentView(parentView: parentView)
+        self.argumentValue.argumentView = self
     }
     
     required init?(coder: NSCoder) {
@@ -47,6 +49,10 @@ class ArgumentViewUIKit: NSCollectionViewItem {
         super.viewDidLoad()
         // Do view setup here.
         self.configureCell(with: self.argument)
+    }
+    
+    override func viewDidAppear() {
+
     }
     
     override func keyDown(with event: NSEvent) {
@@ -94,11 +100,14 @@ extension ArgumentCoordinator: NSTextFieldDelegate {
     
     func controlTextDidBeginEditing(_ obj: Notification) {
         print(#function)
+        self.view?.argSelected = true
     }
     
     func controlTextDidEndEditing(_ obj: Notification) {
         print(#function)
         if let textField = obj.object as? NSTextField {
+//            self.view?.parentView?.focusObject = textField
+            self.view?.argSelected = false
 //            argument!.setValue(value: textField.stringValue)
         }
     }

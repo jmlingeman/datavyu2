@@ -64,7 +64,7 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
         var headerLayouts = [Int : NSCollectionViewLayoutAttributes]()
         
         for (colIdx, column) in sheetModel.columns.enumerated() {
-            for (cellIdx, cell) in column.cells.enumerated() {
+            for (cellIdx, cell) in column.getSortedCells().enumerated() {
                 let cellInfo = CellInfo(model: cell, columnIdx: colIdx, cellIdx: cellIdx)
                 cellLayouts[cellInfo] = NSCollectionViewLayoutAttributes(forItemWith: IndexPath(item: cellIdx, section: colIdx))
             }

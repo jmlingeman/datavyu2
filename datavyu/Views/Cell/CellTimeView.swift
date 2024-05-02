@@ -12,6 +12,7 @@ class CellTimeTextField: NSTextField {
             editor.perform(#selector(selectAll(_:)), with: self, afterDelay: 0)
         }
         if parentView != nil {
+            (self.parentView!.parentView!.delegate as! Coordinator).focusedField = self
             parentView!.setSelected()
         }
         

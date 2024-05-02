@@ -1,6 +1,13 @@
 import SwiftUI
 import AppKit
 
+enum LastEditedField {
+    case none
+    case onset
+    case offset
+    case arguments
+}
+
 struct TemporalCollectionView: View {
     @EnvironmentObject var sheetModel: SheetModel
     var body: some View {
@@ -15,6 +22,7 @@ final class TemporalCollectionAppKitView: NSCollectionView {
     @ObservedObject var sheetModel: SheetModel
     var parentScrollView: NSScrollView
     private var rightClickIndex: Int = NSNotFound
+    var lastSelectedCellModel: CellModel? = nil
     
     init(sheetModel: SheetModel, parentScrollView: NSScrollView) {
         self.sheetModel = sheetModel
@@ -35,6 +43,15 @@ final class TemporalCollectionAppKitView: NSCollectionView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func deselectAllCells() {
+        for (i, column) in sheetModel.columns.enumerated() {
+            for (j, _) in column.getSortedCells().enumerated() {
+                let curCellItem = (parentScrollView.documentView as! TemporalCollectionAppKitView).item(at: IndexPath(item: j, section: i)) as? CellViewUIKit
+                curCellItem?.setDeselected()
+            }
+        }
     }
     
 //    func setResponderChain() {
@@ -72,8 +89,6 @@ final class HeaderCell: NSView, NSCollectionViewElement {
         view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         view.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         view.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        
-        
     }
 }
 
@@ -96,6 +111,7 @@ struct TemporalLayoutCollection: NSViewRepresentable {
     var itemSize: NSSize
     
     var scrollView: NSScrollView = NSScrollView()
+    
     
     // MARK: - Coordinator for Delegate & Data Source & Flow Layout
     
@@ -133,19 +149,65 @@ struct TemporalLayoutCollection: NSViewRepresentable {
 
         if let collectionView = nsView.documentView as? TemporalCollectionAppKitView {
             context.coordinator.itemSize = itemSize
-            print("RELOADING DATA")
-            let selectionIndexPath = collectionView.selectionIndexPaths.first
-            print("SELECTED INDEX PATH: \(selectionIndexPath)")
-            collectionView.reloadData()
-            context.coordinator.connectCellResponders()
-            print("RELOADED")
+            var selectionIndexPath = collectionView.selectionIndexPaths.first
+            
+            var argIndexPath: IndexPath? = nil
+            var lastEditedField: LastEditedField = LastEditedField.onset
             if selectionIndexPath != nil {
-                collectionView.selectItems(at: [selectionIndexPath!],
-                                                scrollPosition: .centeredVertically)
-                let item = collectionView.item(at: selectionIndexPath!) as! CellViewUIKit
-                item.setSelected()
-                
+                let curCellItem = context.coordinator.getCell(ip: selectionIndexPath!)
+                lastEditedField = curCellItem?.lastEditedField ?? LastEditedField.onset
+                let curArgIndex = curCellItem?.argumentsCollectionView.selectionIndexPaths.first
+                argIndexPath = IndexPath(item: (curArgIndex?.item ?? 0) + 1, section: curArgIndex?.section ?? 0)
             }
+            
+            // If the cell's onset or offset changes, we gotta find it again
+            // so we can re-highlight it.
+            let curCell = context.coordinator.getCell(ip: selectionIndexPath ?? IndexPath(item: 0, section: 0))
+            var curCellModel: CellModel? = curCell?.cell ?? nil
+            
+
+            // Do the actual reload, erasing all view cell data
+            collectionView.reloadData()
+            
+
+            
+            DispatchQueue.main.async {
+                // Figure out which view cell to select again
+                if collectionView.lastSelectedCellModel != nil {
+                    curCellModel = collectionView.lastSelectedCellModel
+                }
+                
+                var curCellIndexPath: IndexPath? = nil
+                if curCellModel != nil {
+                    curCellIndexPath = sheetModel.findCellIndexPath(cell_to_find: curCellModel!)
+                }
+                
+                // Figure out which field in the view cell to select
+                if curCellIndexPath != nil {
+                    if lastEditedField == LastEditedField.none {
+                        argIndexPath = IndexPath(item: -2, section: 0)
+                    } else if lastEditedField == LastEditedField.onset {
+                        argIndexPath = IndexPath(item: -1, section: 0)
+                    } else if lastEditedField == LastEditedField.offset {
+                        argIndexPath = IndexPath(item: 0, section: 0)
+                    }
+                    print("Focusing field: \(argIndexPath) for cell \(curCellIndexPath)")
+                    
+                    if argIndexPath!.item > curCellModel!.arguments.count - 1 {
+                        print("Focusing next cell")
+                        context.coordinator.focusNextCell(curCellIndexPath!)
+                        print("Done focusing next cell")
+                    } else {
+                        print("Focusing cell and args \(curCellIndexPath)")
+                        context.coordinator.focusCell(curCellIndexPath!)
+                        context.coordinator.focusField(argIndexPath)
+                        print("Done focusing arguments")
+                    }
+                } else {
+                    print("ERROR LOST FOCUSED CELL")
+                }
+            }
+            
         }
     }
 }
@@ -157,6 +219,8 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
     var cellItemMap = [CellModel: NSCollectionViewItem]()
     var focusedCell: CellViewUIKit?
     var focusedIndexPath: IndexPath?
+    var focusedField: NSView?
+        
     
     init(sheetModel: SheetModel, parent: TemporalLayoutCollection, itemSize: NSSize) {
         self.sheetModel = sheetModel
@@ -164,36 +228,127 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         self.itemSize = itemSize
     }
     
-    func deselectAllCells() {
-        for (i, column) in sheetModel.columns.enumerated() {
-            for (j, _) in column.cells.enumerated() {
-                let curCellItem = (parent.scrollView.documentView as! TemporalCollectionAppKitView).item(at: IndexPath(item: j, section: i)) as? CellViewUIKit
-                curCellItem?.setDeselected()
-            }
-        }
-    }
     
-    func focusNextCell() {
+    
+    func getCurrentCell() -> CellViewUIKit? {
+        print(#function)
         if focusedIndexPath == nil {
             focusedIndexPath = IndexPath(item: 0, section: 0)
         }
         
         let collectionView = (self.parent.scrollView.documentView as! TemporalCollectionAppKitView)
-        let newFocusedIndexPath = IndexPath(item: focusedIndexPath!.item + 1, section: focusedIndexPath!.section)
-        let oldCellItem = collectionView.item(at: focusedIndexPath!) as? CellViewUIKit
-        let newCellItem = collectionView.item(at: newFocusedIndexPath) as? CellViewUIKit
+        let focusedIndexPath = IndexPath(item: focusedIndexPath!.item, section: focusedIndexPath!.section)
+        let cellItem = collectionView.item(at: focusedIndexPath) as? CellViewUIKit
         
-        oldCellItem?.setDeselected()
-        newCellItem?.setSelected()
-        collectionView.window?.makeFirstResponder(newCellItem?.onset)
+        return cellItem
+    }
+    
+    func getCell(ip: IndexPath) -> CellViewUIKit? {
+        print(#function)
         
-        focusedIndexPath = newFocusedIndexPath
+        let collectionView = (self.parent.scrollView.documentView as! TemporalCollectionAppKitView)
+        let cellItem = collectionView.item(at: ip) as? CellViewUIKit
+        return cellItem
+    }
+    
+    func getCell(cellModel: CellModel) -> CellViewUIKit? {
+        print(#function)
+        
+        let collectionView = (self.parent.scrollView.documentView as! TemporalCollectionAppKitView)
+        let ip = sheetModel.findCellIndexPath(cell_to_find: cellModel)
+        
+        if ip != nil {
+            let cellItem = collectionView.item(at: ip!) as? CellViewUIKit
+            return cellItem
+        } else {
+            return nil
+        }
+    }
+    
+    func setCellSelected(cellModel: CellModel) {
+        let ip = sheetModel.findCellIndexPath(cell_to_find: cellModel)
+        if ip != nil {
+            let collectionView = (self.parent.scrollView.documentView as! TemporalCollectionAppKitView)
+            collectionView.lastSelectedCellModel = cellModel
+            collectionView.selectionIndexPaths = Set([ip!])
+        }
+    }
+    
+    func focusNextCell(_ currentCellIp: IndexPath) {
+        print(#function)
+        let nextCellIp = IndexPath(item: currentCellIp.item+1, section: currentCellIp.section)
+        focusCell(nextCellIp)
+    }
+    
+    func focusCell(_ ip: IndexPath) {
+        print(#function)
+        
+        let collectionView = (self.parent.scrollView.documentView as! TemporalCollectionAppKitView)
+        
+        var item = ip.item
+        var section = ip.section
+        
+        if item >= sheetModel.columns[section].cells.count {
+            print("Selecting next column")
+            item = 0
+            section = section + 1
+            if section >= sheetModel.columns.count {
+                section = 0
+            }
+        }
+        
+        let corrected_ip = IndexPath(item: item, section: section)
+        let cellItem = collectionView.item(at: corrected_ip) as? CellViewUIKit
+        
+        cellItem?.setSelected()
+        print("Focusing cell's onset \(collectionView.window) \(cellItem?.onset) \(corrected_ip)")
+        cellItem?.focusOnset()
+        
+        focusedCell = cellItem
+        focusedIndexPath = corrected_ip
+//        collectionView.window?.makeFirstResponder(cellItem?.onset)
+        collectionView.selectionIndexPaths = Set([corrected_ip])
+        collectionView.lastSelectedCellModel = cellItem?.cell
+
+        collectionView.scrollToItems(at: Set([corrected_ip]), scrollPosition: [.centeredVertically])
+    }
+    
+    func focusNextField() {
+        print(#function)
+        if focusedIndexPath == nil {
+            focusedIndexPath = IndexPath(item: 0, section: 0)
+        }
+        
+        let collectionView = (self.parent.scrollView.documentView as! TemporalCollectionAppKitView)
+        let cellItem = collectionView.item(at: focusedIndexPath!) as? CellViewUIKit
+        
+        cellItem?.focusNextArgument()
+    }
+    
+    func focusField(_ ip: IndexPath?) {
+        print(#function)
+        if ip == nil {
+            return
+        }
+        
+        let collectionView = (self.parent.scrollView.documentView as! TemporalCollectionAppKitView)
+        let cellItem = collectionView.item(at: focusedIndexPath!) as? CellViewUIKit
+        
+        cellItem?.setSelected()
+        
+        if ip?.item == -2 {
+            cellItem?.focusOnset()
+        } else if ip?.item == -1 {
+            cellItem?.focusOffset()
+        } else {
+            cellItem?.focusArgument(ip!)
+        }
     }
     
     func connectCellResponders() {
         var prevCell: CellModel? = nil
         for (i, column) in sheetModel.columns.enumerated() {
-            for (j, cell) in column.cells.enumerated() {
+            for (j, cell) in column.getSortedCells().enumerated() {
                 if prevCell != nil {
                     //                        let prevCellItem = cellItemMap[prevCell!]
                     let prevCellItem = (parent.scrollView.documentView as! TemporalCollectionAppKitView).item(at: IndexPath(item: j-1, section: i)) as? CellViewUIKit
@@ -217,12 +372,12 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
     }
     
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        return sheetModel.columns[section].cells.count + 1
+        return sheetModel.columns[section].getSortedCells().count + 1
     }
     
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
         let item = collectionView.makeItem(withIdentifier: .init(CellViewUIKit.identifier), for: indexPath) as! CellViewUIKit
-        let cell = sheetModel.columns[indexPath.section].cells[indexPath.item]
+        let cell = sheetModel.columns[indexPath.section].getSortedCells()[indexPath.item]
         
         item.configureCell(cell, parentView: parent.scrollView.documentView as? TemporalCollectionAppKitView)
         
@@ -261,17 +416,17 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         if indexPaths.count > 0 {
             let cell = collectionView.item(at: indexPaths.first!) as! CellViewUIKit
             cell.setSelected()
-            cell.onset.becomeFirstResponder()
-            collectionView.selectionIndexPaths = [indexPaths.first!]
+            collectionView.selectionIndexPaths = Set([indexPaths.first!])
         }
     }
     
     func collectionView(_ collectionView: NSCollectionView, didDeselectItemsAt indexPaths: Set<IndexPath>) {
         if indexPaths.count > 0 {
+            print("DESELECTING \(indexPaths.first!)")
             let cell = collectionView.item(at: indexPaths.first!)!
             (cell as! CellViewUIKit).setDeselected()
         }
     }
     
     
-    }
+}

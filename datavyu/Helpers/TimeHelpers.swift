@@ -33,10 +33,10 @@ func timestringToTimestamp(timestring: String) -> Int {
             milliseconds = Int(clock[3]) ?? 0
         }
         
-        
-        
         return (hours * 1000 * 60 * 60) + (minutes * 1000 * 60) + (seconds * 1000) + milliseconds
     } else {
-        return 0
+        // Its an integer, so treat it like one
+        let t: Int? = Int(timestring)
+        return t ?? 0
     }
 }

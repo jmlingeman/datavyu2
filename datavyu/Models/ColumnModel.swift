@@ -23,6 +23,40 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         addArgument()
     }
     
+    init(sheetModel: SheetModel, columnName: String) {
+        self.sheetModel = sheetModel
+        self.columnName = columnName
+        self.cells = []
+        self.arguments = []
+        addArgument()
+    }
+    
+    init(sheetModel: SheetModel, columnName: String, arguments: [Argument]) {
+        self.sheetModel = sheetModel
+        self.columnName = columnName
+        self.arguments = arguments
+        self.cells = []
+    }
+    
+    init(sheetModel: SheetModel, columnName: String, arguments: [String]) {
+        self.sheetModel = sheetModel
+        self.columnName = columnName
+        self.arguments = []
+        self.cells = []
+        
+        for argname in arguments {
+            self.arguments.append(Argument(name: argname, column: self))
+        }
+    }
+    
+    init(sheetModel: SheetModel, columnName: String, arguments: [Argument], hidden: Bool) {
+        self.sheetModel = sheetModel
+        self.columnName = columnName
+        self.arguments = arguments
+        self.hidden = hidden
+        self.cells = []
+    }
+    
     static func == (lhs: ColumnModel, rhs: ColumnModel) -> Bool {
         return lhs.cells == rhs.cells
     }
@@ -60,28 +94,7 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         hasher.combine(columnName)
     }
 
-    init(sheetModel: SheetModel, columnName: String) {
-        self.sheetModel = sheetModel
-        self.columnName = columnName
-        cells = []
-        self.arguments = []
-        addArgument()
-    }
     
-    init(sheetModel: SheetModel, columnName: String, arguments: [Argument]) {
-        self.sheetModel = sheetModel
-        self.columnName = columnName
-        self.arguments = arguments
-        cells = []
-    }
-    
-    init(sheetModel: SheetModel, columnName: String, arguments: [Argument], hidden: Bool) {
-        self.sheetModel = sheetModel
-        self.columnName = columnName
-        self.arguments = arguments
-        self.hidden = hidden
-        cells = []
-    }
 
     func addCell(cell: CellModel) -> CellModel {
         cell.ordinal = cells.count + 1

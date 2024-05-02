@@ -8,6 +8,7 @@
 import AppKit
 import SwiftUI
 
+
 class CellViewUIKit: NSCollectionViewItem {
     static let identifier: String = "CellViewUIKit"
     
@@ -24,11 +25,15 @@ class CellViewUIKit: NSCollectionViewItem {
     var parentView: TemporalCollectionAppKitView?
     
     var focusObject: NSView?
+    var focusPath: IndexPath?
+    
+    var lastEditedField: LastEditedField = LastEditedField.none
     
     @ObservedObject var cell: CellModel
+    let dummyCell = CellModel(column: ColumnModel(sheetModel: SheetModel(sheetName: "temp"), columnName: "temp"))
     
     override init(nibName nibNameOrNil: NSNib.Name?, bundle nibBundleOrNil: Bundle?) {
-        self.cell = CellModel(column: ColumnModel(sheetModel: SheetModel(sheetName: "temp"), columnName: "temp"))
+        self.cell = dummyCell
         self.ordinal = NSTextField()
         self.onset = CellTimeTextField()
         self.offset = CellTimeTextField()
@@ -47,8 +52,18 @@ class CellViewUIKit: NSCollectionViewItem {
     func resetFocus() {
         print("Resetting focus: \(focusObject)")
         if focusObject != nil {
-            focusObject?.window?.makeFirstResponder(focusObject?.nextResponder)
+//            focusObject?.window?.makeFirstResponder(focusObject?.nextResponder)
         }
+    }
+    
+    func numArguments() -> Int {
+        return self.cell.arguments.count
+    }
+    
+    func isLastArgument() -> Bool {
+        let selectedIndexPaths = self.argumentsCollectionView?.selectionIndexPaths
+        print(selectedIndexPaths?.first?.item, cell.arguments.count - 1, selectedIndexPaths?.first?.item == cell.arguments.count - 1)
+        return selectedIndexPaths?.first?.item == cell.arguments.count - 1
     }
     
     func configureCell(_ cell: CellModel, parentView: TemporalCollectionAppKitView?) {
@@ -85,43 +100,104 @@ class CellViewUIKit: NSCollectionViewItem {
             self.setDeselected()
         }
         
+        if self.isSelected {
+//            self.selectNextField()
+        }
+        
         self.onset.nextResponder = self.offset
         self.offset.nextResponder = self.argumentsCollectionView
-        
     }
     
     override func prepareForReuse() {
         // Attach it to a dummy cell until that gets replaced
-        self.cell = CellModel(column: ColumnModel(sheetModel: SheetModel(sheetName: "dummy"), columnName: "dummy"))
+        self.cell = dummyCell
         (self.onset.delegate as! OnsetCoordinator).configure(cell: cell, view: self)
         (self.offset.delegate as! OffsetCoordinator).configure(cell: cell, view: self)
         self.argumentsCollectionView.delegate = nil
         self.argumentsCollectionView.dataSource = nil
+        self.focusObject = nil
+        self.lastEditedField = LastEditedField.none
         
         self.setDeselected()
     }
     
     func setSelected() {
-        if let ip = self.parentView?.indexPath(for: self) {
-            self.parentView?.selectionIndexPaths = Set([ip])
-            (self.parentView?.delegate as! Coordinator).deselectAllCells()
-            (self.parentView?.delegate as! Coordinator).focusedIndexPath = ip
-        }
-        
+        self.parentView?.deselectAllCells()
         self.view.layer?.borderColor = CGColor(red: 255, green: 0, blue: 0, alpha: 255)
         self.view.layer?.borderWidth = 1
         self.isSelected = true
+        self.parentView?.lastSelectedCellModel = self.cell
+    }
+    
+    func selectFocusObject() {
+        print(#function)
+        if self.focusObject == nil {
+            self.focusObject = self.onset
+        }
+        print("Selecting focusObject")
+    }
+    
+    func selectNextField() {
+        print(#function)
+        if self.lastEditedField == LastEditedField.none {
+            self.parentView?.window?.makeFirstResponder(self.onset)
+        }
+        else if self.lastEditedField == LastEditedField.onset {
+            self.parentView?.window?.makeFirstResponder(self.offset)
+        }
+        else if self.lastEditedField == LastEditedField.offset {
+            self.parentView?.window?.makeFirstResponder(self.argumentsCollectionView.item(at: IndexPath(item: 0, section: 0)))
+        }
     }
     
     func setDeselected() {
         self.view.layer?.borderWidth = 0
         self.isSelected = false
+        
     }
     
     override func keyDown(with event: NSEvent) {
         print("CELL KEY GOT")
     }
+    
+    func focusArgument(_ ip: IndexPath) {
+        print(#function)
+        let nextArg = self.argumentsCollectionView?.item(at: ip) as! ArgumentViewUIKit
+        print("selecting arg \(nextArg)")
+        self.focusObject = nextArg.argumentValue
+        print(3)
+        self.parentView?.window?.makeFirstResponder(self.focusObject)
+
         
+        print(4)
+    }
+    
+    func focusOnset() {
+        print(#function)
+        self.parentView?.window?.makeFirstResponder(self.onset)
+    }
+    
+    func focusOffset() {
+        print(#function)
+        self.parentView?.window?.makeFirstResponder(self.offset)
+    }
+    
+    func focusNextArgument() {
+        print(#function)
+        let selectedIndexPaths = self.argumentsCollectionView?.selectionIndexPaths
+        print("Focus object: \(self.focusObject)")
+        if self.focusObject == nil {
+//        if selectedIndexPaths?.first == nil {
+            self.focusObject = self.onset
+        } else {
+            let newIndexPath = IndexPath(item: (selectedIndexPaths?.first?.item ?? 0) + 1, section: selectedIndexPaths?.first?.section ?? 0)
+            
+            let nextArg = self.argumentsCollectionView?.item(at: newIndexPath) as! ArgumentViewUIKit
+            self.focusObject = nextArg.argumentValue
+        }
+        print("Focus next arg")
+        self.parentView?.window?.makeFirstResponder(self.focusObject)
+    }
 }
 
 extension CellViewUIKit: NSCollectionViewDelegate {
@@ -206,7 +282,7 @@ extension OnsetCoordinator: NSTextFieldDelegate {
         
         onsetValue = view?.onset.stringValue
         view?.focusObject = view?.onset
-        
+                    
         print("Set focus object to: \(view?.onset)")
     }
     
@@ -216,11 +292,12 @@ extension OnsetCoordinator: NSTextFieldDelegate {
             if textField.stringValue != self.onsetValue {
                 let timestampStr = textField.stringValue
                 let timestamp = timestringToTimestamp(timestring: timestampStr)
+                self.view?.lastEditedField = LastEditedField.onset
                 print("SETTING ONSET TO \(timestamp)")
                 cell!.setOnset(onset: timestamp)
             }
         }
-        self.view?.resignFirstResponder()
+        self.parentView?.lastSelectedCellModel = self.cell
 //        self.view?.setDeselected()
     }
     
@@ -243,6 +320,7 @@ extension OnsetCoordinator: NSTextFieldDelegate {
 @objc class OffsetCoordinator: NSObject {
     var cell: CellModel?
     var view: CellViewUIKit?
+    var parentView: TemporalCollectionAppKitView?
     var offsetValue: String?
     
     override init() {
@@ -257,6 +335,7 @@ extension OnsetCoordinator: NSTextFieldDelegate {
     func configure(cell: CellModel, view: CellViewUIKit) {
         self.cell = cell
         self.view = view
+        self.parentView = view.parentView
     }
 }
 
@@ -279,20 +358,24 @@ extension OffsetCoordinator: NSTextFieldDelegate {
     
     func controlTextDidBeginEditing(_ obj: Notification) {
         print(#function)
+        view?.setSelected()
         view?.focusObject = view?.offset
+        self.parentView?.lastSelectedCellModel = self.cell
     }
     
     func controlTextDidEndEditing(_ obj: Notification) {
         print(#function)
         if let textField = obj.object as? NSTextField {
             if textField.stringValue != self.offsetValue {
+                self.view?.focusObject = textField
                 let timestampStr = textField.stringValue
                 let timestamp = timestringToTimestamp(timestring: timestampStr)
                 print("SETTING OFFSET TO \(timestamp)")
+                self.view?.lastEditedField = LastEditedField.offset
+                self.parentView?.lastSelectedCellModel = self.cell
                 cell!.setOffset(offset: timestamp)
             }
         }
-        self.view?.resignFirstResponder()
     }
     
     func controlTextDidChange(_ obj: Notification) {
