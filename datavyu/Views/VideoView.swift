@@ -14,22 +14,41 @@ struct VideoView: View {
     @ObservedObject var videoModel: VideoModel
 
     var body: some View {
-        VStack {
-            VideoPlayer(player: videoModel.player)
+        ZStack {
+            AVPlayerControllerRepresented(player: videoModel.player)
                 .onAppear {
                     videoModel.player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.01, preferredTimescale: 600), queue: nil) { time in
                         $videoModel.currentTime.wrappedValue = time.seconds
                         $videoModel.currentPos.wrappedValue = time.seconds / videoModel.player.getCurrentTrackDuration()
                     }
                 }
-                
         }
     }
 }
 
-struct VideoView_Previews: PreviewProvider {
-    static var previews: some View {
-        let vm = VideoModel(videoFilePath: URL(fileURLWithPath: "/Users/jesse/Downloads/IMG_0822.MOV"))
-        VideoView(videoModel: vm)
+struct AVPlayerControllerRepresented : NSViewRepresentable {
+    var player : AVPlayer
+    
+    func makeNSView(context: Context) -> AVPlayerView {
+        let view = AVPlayerView()
+        view.controlsStyle = .none
+        view.player = player
+        return view
+    }
+    
+    func updateNSView(_ nsView: AVPlayerView, context: Context) {
+        
+    }
+}
+
+extension View {
+    @discardableResult
+    func openInWindow(title: String, sender: Any?) -> NSWindow {
+        let controller = NSHostingController(rootView: self)
+        let win = NSWindow(contentViewController: controller)
+        win.contentViewController = controller
+        win.title = title
+        win.makeKeyAndOrderFront(sender)
+        return win
     }
 }
