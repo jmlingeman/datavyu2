@@ -115,6 +115,7 @@ extension ArgumentCoordinator: NSTextFieldDelegate {
     func controlTextDidChange(_ obj: Notification) {
         print(self)
         print(#function)
+        self.view?.argumentValue.invalidateIntrinsicContentSize()
     }
     
     func control(_ control: NSControl, textShouldBeginEditing fieldEditor: NSText) -> Bool {

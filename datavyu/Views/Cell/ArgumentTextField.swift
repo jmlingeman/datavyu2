@@ -13,6 +13,9 @@ class ArgumentTextField: NSTextField {
     var parentView: CellViewUIKit?
     var argumentView: ArgumentViewUIKit?
     
+    var lastIntrinsicSize = NSSize.zero
+    var hasLastIntrinsicSize = false
+    
     func configure(argument: Argument) {
         self.argument = argument
         self.delegate = self
@@ -30,13 +33,34 @@ class ArgumentTextField: NSTextField {
             editor.perform(#selector(selectAll(_:)), with: self, afterDelay: 0)
         }
         if parentView != nil {
-            (self.parentView!.parentView!.delegate as! Coordinator).focusedField = self
             parentView!.setSelected()
+            parentView?.parentView?.lastEditedArgument = argument
         }
                         
         return true
     }
     
+    override var intrinsicContentSize: NSSize {
+        get {
+            var intrinsicSize = lastIntrinsicSize
+            
+            if self.argumentView != nil && self.argumentView!.argSelected || !hasLastIntrinsicSize {
+                
+                intrinsicSize = super.intrinsicContentSize
+                
+                // If we’re being edited, get the shared NSTextView field editor, so we can get more info
+                if let textView = self.window?.fieldEditor(false, for: self) as? NSTextView, let textContainer = textView.textContainer, var usedRect = textView.textContainer?.layoutManager?.usedRect(for: textContainer) {
+                    usedRect.size.height += 5.0 // magic number! (the field editor TextView is offset within the NSTextField. It’s easy to get the space above (it’s origin), but it’s difficult to get the default spacing for the bottom, as we may be changing the height
+                    intrinsicSize.height = usedRect.size.height
+                }
+                
+                lastIntrinsicSize = intrinsicSize
+                hasLastIntrinsicSize = true
+            }
+            
+            return intrinsicSize
+        }
+    }
     
 }
 
@@ -60,6 +84,7 @@ extension ArgumentTextField: NSTextFieldDelegate, NSTextViewDelegate {
     func controlTextDidBeginEditing(_ obj: Notification) {
         print("ARGUMENT: \(#function)")
         self.argumentView?.argSelected = true
+        self.parentView?.parentView?.lastEditedArgument = self.argument
     }
     
     func controlTextDidEndEditing(_ obj: Notification) {
@@ -73,6 +98,7 @@ extension ArgumentTextField: NSTextFieldDelegate, NSTextViewDelegate {
                 argument!.setValue(value: textField.stringValue)
             }
         }
+        self.parentView?.parentView?.lastEditedArgument = self.argument
         self.argumentView?.argSelected = false
     }
         
@@ -86,6 +112,7 @@ extension ArgumentTextField: NSTextFieldDelegate, NSTextViewDelegate {
     func controlTextDidChange(_ obj: Notification) {
         print(self)
         print("ARGUMENT: \(#function)")
+        self.invalidateIntrinsicContentSize()
     }
     
     func control(_ control: NSControl, textShouldBeginEditing fieldEditor: NSText) -> Bool {

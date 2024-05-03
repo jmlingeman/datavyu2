@@ -88,10 +88,3 @@ struct DatavyuView: View {
     }
 }
 
-struct DatavyuView_Previews: PreviewProvider {
-    static var previews: some View {
-        let fileModel = FileModel(sheetModel: SheetModel(sheetName: "IMG_1234", run_setup: true), videoModels: [VideoModel(videoFilePath: URL(fileURLWithPath: "/Users/jesse/Downloads/IMG_0822.MOV"))])
-
-        DatavyuView(fileModel: fileModel)
-    }
-}

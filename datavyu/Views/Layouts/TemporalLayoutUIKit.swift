@@ -23,6 +23,8 @@ final class TemporalCollectionAppKitView: NSCollectionView {
     var parentScrollView: NSScrollView
     private var rightClickIndex: Int = NSNotFound
     var lastSelectedCellModel: CellModel? = nil
+    var lastEditedArgument: Argument? = nil
+
     
     init(sheetModel: SheetModel, parentScrollView: NSScrollView) {
         self.sheetModel = sheetModel
@@ -165,7 +167,6 @@ struct TemporalLayoutCollection: NSViewRepresentable {
             let curCell = context.coordinator.getCell(ip: selectionIndexPath ?? IndexPath(item: 0, section: 0))
             var curCellModel: CellModel? = curCell?.cell ?? nil
             
-
             // Do the actual reload, erasing all view cell data
             collectionView.reloadData()
             
@@ -190,6 +191,8 @@ struct TemporalLayoutCollection: NSViewRepresentable {
                         argIndexPath = IndexPath(item: -1, section: 0)
                     } else if lastEditedField == LastEditedField.offset {
                         argIndexPath = IndexPath(item: 0, section: 0)
+                    } else {
+                        argIndexPath = curCellModel?.getArgumentIndex(collectionView.lastEditedArgument)
                     }
                     print("Focusing field: \(argIndexPath) for cell \(curCellIndexPath)")
                     
@@ -296,7 +299,6 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
                 section = 0
             }
         }
-        
         let corrected_ip = IndexPath(item: item, section: section)
         let cellItem = collectionView.item(at: corrected_ip) as? CellViewUIKit
         
@@ -423,8 +425,10 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
     func collectionView(_ collectionView: NSCollectionView, didDeselectItemsAt indexPaths: Set<IndexPath>) {
         if indexPaths.count > 0 {
             print("DESELECTING \(indexPaths.first!)")
-            let cell = collectionView.item(at: indexPaths.first!)!
-            (cell as! CellViewUIKit).setDeselected()
+            let cell = collectionView.item(at: indexPaths.first!)
+            if cell != nil {
+                (cell! as! CellViewUIKit).setDeselected()
+            }
         }
     }
     

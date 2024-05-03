@@ -50,7 +50,6 @@ class CellViewUIKit: NSCollectionViewItem {
     }
     
     func resetFocus() {
-        print("Resetting focus: \(focusObject)")
         if focusObject != nil {
 //            focusObject?.window?.makeFirstResponder(focusObject?.nextResponder)
         }
@@ -62,7 +61,6 @@ class CellViewUIKit: NSCollectionViewItem {
     
     func isLastArgument() -> Bool {
         let selectedIndexPaths = self.argumentsCollectionView?.selectionIndexPaths
-        print(selectedIndexPaths?.first?.item, cell.arguments.count - 1, selectedIndexPaths?.first?.item == cell.arguments.count - 1)
         return selectedIndexPaths?.first?.item == cell.arguments.count - 1
     }
     
@@ -129,27 +127,6 @@ class CellViewUIKit: NSCollectionViewItem {
         self.parentView?.lastSelectedCellModel = self.cell
     }
     
-    func selectFocusObject() {
-        print(#function)
-        if self.focusObject == nil {
-            self.focusObject = self.onset
-        }
-        print("Selecting focusObject")
-    }
-    
-    func selectNextField() {
-        print(#function)
-        if self.lastEditedField == LastEditedField.none {
-            self.parentView?.window?.makeFirstResponder(self.onset)
-        }
-        else if self.lastEditedField == LastEditedField.onset {
-            self.parentView?.window?.makeFirstResponder(self.offset)
-        }
-        else if self.lastEditedField == LastEditedField.offset {
-            self.parentView?.window?.makeFirstResponder(self.argumentsCollectionView.item(at: IndexPath(item: 0, section: 0)))
-        }
-    }
-    
     func setDeselected() {
         self.view.layer?.borderWidth = 0
         self.isSelected = false
@@ -184,14 +161,17 @@ class CellViewUIKit: NSCollectionViewItem {
     
     func focusNextArgument() {
         print(#function)
-        let selectedIndexPaths = self.argumentsCollectionView?.selectionIndexPaths
-        print("Focus object: \(self.focusObject)")
+        let selectedIndexPath: IndexPath
+        if parentView != nil {
+            selectedIndexPath = cell.getArgumentIndex(parentView!.lastEditedArgument)
+        } else {
+            selectedIndexPath = IndexPath(item: 0, section: 0)
+        }
+        
         if self.focusObject == nil {
-//        if selectedIndexPaths?.first == nil {
             self.focusObject = self.onset
         } else {
-            let newIndexPath = IndexPath(item: (selectedIndexPaths?.first?.item ?? 0) + 1, section: selectedIndexPaths?.first?.section ?? 0)
-            
+            let newIndexPath = IndexPath(item: selectedIndexPath.item + 1, section: selectedIndexPath.section)
             let nextArg = self.argumentsCollectionView?.item(at: newIndexPath) as! ArgumentViewUIKit
             self.focusObject = nextArg.argumentValue
         }

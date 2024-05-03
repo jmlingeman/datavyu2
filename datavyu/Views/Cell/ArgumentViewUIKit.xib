@@ -20,7 +20,7 @@
             <subviews>
                 <textField focusRingType="none" verticalHuggingPriority="750" id="F81-kK-MJH" customClass="ArgumentTextField" customModule="datavyu" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="13" width="50" height="37"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="LEn-u3-3pe">
                         <font key="font" usesAppearanceFont="YES"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
