@@ -59,11 +59,7 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
     }
     
     static func == (lhs: ColumnModel, rhs: ColumnModel) -> Bool {
-        return lhs.cells == rhs.cells
-    }
-    
-    func setSelected(_ val: Bool) {
-        self.isSelected = val
+        return lhs.id == rhs.id
     }
     
     func setHidden(val: Bool) {

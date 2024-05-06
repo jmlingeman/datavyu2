@@ -32,11 +32,12 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
     }
     
     func setSelectedColumn(model: ColumnModel, suppress_update: Bool = false) {
+        print("Setting column \(model.columnName) to selected")
         for column in self.columns {
             if model == column {
-                column.setSelected(true)
+                column.isSelected = true
             } else {
-                column.setSelected(false)
+                column.isSelected = false
             }
         }
         if !suppress_update {
@@ -68,7 +69,6 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
     func findFocusedColumn() -> ColumnModel? {
         var model: ColumnModel?
         for column in self.columns {
-            print(column.isSelected)
             if column.isSelected {
                 print("Setting col in focus \(column)")
                 model = column

@@ -98,6 +98,7 @@ final class HeaderCell: NSView, NSCollectionViewElement {
 
 struct Header: View {
     @Binding var columnModel: ColumnModel
+    var selected: Bool
     static let reuseIdentifier: String = "header"
     
     var body: some View {
@@ -107,7 +108,7 @@ struct Header: View {
             }
             .frame(width: Config().defaultCellWidth, height: Config().headerSize)
             .border(Color.black)
-            .background($columnModel.isSelected.wrappedValue ? Color.teal : Color.accentColor)
+            .background(selected ? Color.teal : Color.accentColor)
         }.frame(width: Config().defaultCellWidth, height: Config().headerSize)
             .onTapGesture {
                 columnModel.sheetModel.setSelectedColumn(model: columnModel)
@@ -124,9 +125,6 @@ struct TemporalLayoutCollection: NSViewRepresentable {
     
     
     // MARK: - Coordinator for Delegate & Data Source & Flow Layout
-    
-
-        
     
     func makeCoordinator() -> Coordinator {
         return Coordinator(sheetModel: self.sheetModel, parent: self, itemSize: itemSize)
@@ -176,6 +174,7 @@ struct TemporalLayoutCollection: NSViewRepresentable {
             var curCellModel: CellModel? = curCell?.cell ?? nil
             
             // Do the actual reload, erasing all view cell data
+            print("Reloading")
             collectionView.reloadData()
             
             DispatchQueue.main.async {
@@ -184,10 +183,6 @@ struct TemporalLayoutCollection: NSViewRepresentable {
                     curCellModel = collectionView.lastSelectedCellModel
                 }
                 
-                let selectedColumn = sheetModel.findFocusedColumn()
-                if selectedColumn != nil {
-                    sheetModel.setSelectedColumn(model: sheetModel.findFocusedColumn()!, suppress_update: true)
-                }
                 
                 var curCellIndexPath: IndexPath? = nil
                 if curCellModel != nil {
@@ -400,10 +395,16 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
     }
     
     func collectionView(_ collectionView: NSCollectionView, viewForSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind, at indexPath: IndexPath) -> NSView {
+        print(#function)
         let item = collectionView.makeSupplementaryView(ofKind: kind, withIdentifier: .init(HeaderCell.identifier), for: indexPath) as! HeaderCell
-        item.setView(Header(columnModel: $sheetModel.columns[indexPath.section]))
         
-        let floatingHeader = NSHostingView(rootView: Header(columnModel: $sheetModel.columns[indexPath.section]))
+        let selected = sheetModel.findFocusedColumn()! == sheetModel.columns[indexPath.section]
+        print("SELECTED: \(sheetModel.columns[indexPath.section].columnName) \(selected)")
+
+        item.setView(Header(columnModel: $sheetModel.columns[indexPath.section], selected: selected))
+        
+        
+        let floatingHeader = NSHostingView(rootView: Header(columnModel: $sheetModel.columns[indexPath.section], selected: selected))
         floatingHeader.frame = item.frame
         parent.scrollView.addFloatingSubview(floatingHeader, for: .vertical)
         
