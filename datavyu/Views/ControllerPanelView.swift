@@ -57,17 +57,19 @@ struct ControllerPanelView: View {
     }
     
     func addColumn() {
-        let columnModel = ColumnModel(sheetModel: fileModel.sheetModel, columnName: "")
-        let _ = columnModel.addCell()
-        let _ = columnModel.addCell()
+        let columnModel = ColumnModel(sheetModel: fileModel.sheetModel, columnName: "Column\(fileModel.sheetModel.columns.count + 1)")
         fileModel.sheetModel.addColumn(column: columnModel)
         columnInFocus = columnModel
+        
+        fileModel.sheetModel.setSelectedColumn(model: columnModel)
         
         showingColumnNameDialog.toggle()
     }
     
     func addCell() {
-        let cell = columnInFocus?.addCell()
+        let model = fileModel.sheetModel.findFocusedColumn()
+        
+        let cell = model?.addCell()
         if cell != nil {
             cell?.setOnset(onset: fileModel.primaryVideo?.currentTime ?? 0)
         }

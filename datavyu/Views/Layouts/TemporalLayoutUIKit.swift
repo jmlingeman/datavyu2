@@ -76,9 +76,11 @@ final class HeaderCell: NSView, NSCollectionViewElement {
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
     }
+    
     @objc required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     func setView<Content>(_ newValue: Content) where Content: View {
         for view in self.subviews {
             view.removeFromSuperview()
@@ -99,12 +101,18 @@ struct Header: View {
     static let reuseIdentifier: String = "header"
     
     var body: some View {
-        HStack {
-            EditableLabel($columnModel.columnName)
-        }
-        .frame(width: Config().defaultCellWidth, height: Config().headerSize)
-        .border(Color.black)
-        .background(Color.accentColor)
+        GeometryReader { gr in
+            HStack {
+                EditableLabel($columnModel.columnName)
+            }
+            .frame(width: Config().defaultCellWidth, height: Config().headerSize)
+            .border(Color.black)
+            .background($columnModel.isSelected.wrappedValue ? Color.teal : Color.accentColor)
+        }.frame(width: Config().defaultCellWidth, height: Config().headerSize)
+            .onTapGesture {
+                columnModel.sheetModel.setSelectedColumn(model: columnModel)
+                print("Set selected")
+            }
     }
 }
 
@@ -170,12 +178,15 @@ struct TemporalLayoutCollection: NSViewRepresentable {
             // Do the actual reload, erasing all view cell data
             collectionView.reloadData()
             
-
-            
             DispatchQueue.main.async {
                 // Figure out which view cell to select again
                 if collectionView.lastSelectedCellModel != nil {
                     curCellModel = collectionView.lastSelectedCellModel
+                }
+                
+                let selectedColumn = sheetModel.findFocusedColumn()
+                if selectedColumn != nil {
+                    sheetModel.setSelectedColumn(model: sheetModel.findFocusedColumn()!, suppress_update: true)
                 }
                 
                 var curCellIndexPath: IndexPath? = nil
@@ -207,7 +218,7 @@ struct TemporalLayoutCollection: NSViewRepresentable {
                         print("Done focusing arguments")
                     }
                 } else {
-                    print("ERROR LOST FOCUSED CELL")
+                    print("WARNING: LOST FOCUSED CELL")
                 }
             }
             
@@ -223,7 +234,6 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
     var focusedCell: CellViewUIKit?
     var focusedIndexPath: IndexPath?
     var focusedField: NSView?
-        
     
     init(sheetModel: SheetModel, parent: TemporalLayoutCollection, itemSize: NSSize) {
         self.sheetModel = sheetModel
@@ -399,7 +409,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         
         return item
     }
-    
+        
     func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
         return parent.itemSize
     }

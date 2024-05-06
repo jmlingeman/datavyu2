@@ -26,7 +26,6 @@ struct Sheet: View {
         GeometryReader { sheetGr in
             VStack {
                 TemporalCollectionView().environmentObject(sheetModel)
-                
             }
         }
     }

@@ -18,8 +18,10 @@ class ArgumentViewUIKit: NSCollectionViewItem {
     var parentView: CellViewUIKit?
     var argSelected: Bool = false
     
+    let dummyArg = Argument()
+    
     override init(nibName nibNameOrNil: NSNib.Name?, bundle nibBundleOrNil: Bundle?) {
-        self.argument = Argument()
+        self.argument = dummyArg
         self.argumentLabel = NSTextField()
         self.argumentValue = ArgumentTextField()
 
@@ -31,8 +33,8 @@ class ArgumentViewUIKit: NSCollectionViewItem {
         self.argument = argument
         self.argumentLabel.stringValue = argument.name
         self.argumentValue.stringValue = argument.value
+        print("Configuring Arg: \(argument.name) \(argument.value)")
         self.argumentValue.configure(argument: argument)
-//        (self.argumentValue.delegate as! ArgumentCoordinator).configure(argument: argument, view: self)
     }
     
     func configureParentView(with parentView: CellViewUIKit) {
@@ -79,54 +81,4 @@ class ArgumentViewUIKit: NSCollectionViewItem {
         self.argument = argument
         self.view = view
     }
-}
-
-extension ArgumentCoordinator: NSTextFieldDelegate {
-    
-    func textField(_ textField: NSTextField, textView: NSTextView, candidatesForSelectedRange selectedRange: NSRange) -> [Any]? {
-        print(#function)
-        return nil
-    }
-    
-    func textField(_ textField: NSTextField, textView: NSTextView, candidates: [NSTextCheckingResult], forSelectedRange selectedRange: NSRange) -> [NSTextCheckingResult] {
-        print(#function)
-        return candidates
-    }
-    
-    func textField(_ textField: NSTextField, textView: NSTextView, shouldSelectCandidateAt index: Int) -> Bool {
-        print(#function)
-        return true
-    }
-    
-    func controlTextDidBeginEditing(_ obj: Notification) {
-        print(#function)
-        self.view?.argSelected = true
-    }
-    
-    func controlTextDidEndEditing(_ obj: Notification) {
-        print(#function)
-        if let textField = obj.object as? NSTextField {
-//            self.view?.parentView?.focusObject = textField
-            self.view?.argSelected = false
-//            argument!.setValue(value: textField.stringValue)
-        }
-    }
-    
-    func controlTextDidChange(_ obj: Notification) {
-        print(self)
-        print(#function)
-        self.view?.argumentValue.invalidateIntrinsicContentSize()
-    }
-    
-    func control(_ control: NSControl, textShouldBeginEditing fieldEditor: NSText) -> Bool {
-        print(#function)
-        return true
-    }
-    
-    func control(_ control: NSControl, textShouldEndEditing fieldEditor: NSText) -> Bool {
-        print(#function)
-        return true
-    }
-    
-    
 }

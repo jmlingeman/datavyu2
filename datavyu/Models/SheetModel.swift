@@ -31,6 +31,19 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
         return lhs.columns == rhs.columns
     }
     
+    func setSelectedColumn(model: ColumnModel, suppress_update: Bool = false) {
+        for column in self.columns {
+            if model == column {
+                column.setSelected(true)
+            } else {
+                column.setSelected(false)
+            }
+        }
+        if !suppress_update {
+            self.updates += 1
+        }
+    }
+    
     func addColumn(columnName: String) {
         columns.append(ColumnModel(sheetModel: self, columnName: columnName))
     }
@@ -52,9 +65,21 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
         return nil
     }
     
+    func findFocusedColumn() -> ColumnModel? {
+        var model: ColumnModel?
+        for column in self.columns {
+            print(column.isSelected)
+            if column.isSelected {
+                print("Setting col in focus \(column)")
+                model = column
+            }
+        }
+        return model
+    }
+    
     func setup() {
-        let column = ColumnModel(sheetModel: self, columnName: "Test1", arguments: ["arg1", "arg2"])
-        let column2 = ColumnModel(sheetModel: self, columnName: "Test2", arguments: ["arg1", "arg2"])
+        let column = ColumnModel(sheetModel: self, columnName: "Test1")
+        let column2 = ColumnModel(sheetModel: self, columnName: "Test2")
         addColumn(column: column)
         addColumn(column: column2)
         for _ in 1...150 {

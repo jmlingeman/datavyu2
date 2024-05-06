@@ -14,6 +14,7 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
     @Published var cells: [CellModel]
     @Published var arguments: [Argument]
     @Published var hidden: Bool = false
+    @Published var isSelected: Bool = false
     
     init() {
         self.sheetModel = SheetModel(sheetName: "dummy")
@@ -45,7 +46,7 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         self.cells = []
         
         for argname in arguments {
-            self.arguments.append(Argument(name: argname, column: self))
+            addArgument(argument: Argument(name: argname, column: self))
         }
     }
     
@@ -61,6 +62,10 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         return lhs.cells == rhs.cells
     }
     
+    func setSelected(_ val: Bool) {
+        self.isSelected = val
+    }
+    
     func setHidden(val: Bool) {
         self.hidden = val
     }
@@ -68,6 +73,14 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
     func addArgument() {
         let newArg = Argument(name: "code\(arguments.count)", column: self)
         addArgument(argument: newArg)
+    }
+    
+    func addArgument(argument: Argument) {
+        arguments.append(argument)
+        for cell in cells {
+            cell.arguments.append(argument)
+        }
+        self.sheetModel.updates += 1
     }
     
     func getSortedCells() -> [CellModel] {
@@ -82,13 +95,7 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         self.sheetModel.updates += 1
     }
     
-    func addArgument(argument: Argument) {
-        arguments.append(argument)
-        for cell in cells {
-            cell.arguments.append(argument)
-        }
-        self.sheetModel.updates += 1
-    }
+    
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(columnName)

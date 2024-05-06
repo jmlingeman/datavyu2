@@ -14,7 +14,10 @@ struct CodeEditorRow: View {
         HStack {
             EditableLabel($column.columnName)
             ForEach($column.arguments) { $argument in
-                TextField(argument.name, text: $argument.name).frame(maxWidth: 100).padding().border(Color.black, width: 5)
+                TextField(argument.name, text: $argument.name)
+                    .frame(maxWidth: 100)
+                    .padding()
+                    .border(Color.black, width: 5)
             }
             CodeEditorAddCodeButton(column: column)
             CodeEditorRemoveCodeButton(column: column)
