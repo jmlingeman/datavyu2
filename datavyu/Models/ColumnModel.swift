@@ -69,13 +69,18 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
     func addArgument() {
         let newArg = Argument(name: "code\(arguments.count)", column: self)
         addArgument(argument: newArg)
+        
     }
     
     func addArgument(argument: Argument) {
+        self.arguments.last?.isLastArgument = false
+
         arguments.append(argument)
         for cell in cells {
             cell.arguments.append(argument)
         }
+        self.arguments.last?.isLastArgument = true
+
         self.sheetModel.updates += 1
     }
     

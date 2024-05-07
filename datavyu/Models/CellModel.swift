@@ -124,6 +124,16 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
         }
     }
     
+    func getNextArgumentIndex(_ argument: Argument?) -> IndexPath {
+        if argument != nil {
+            let idx = self.arguments.firstIndex(of: argument!) ?? 0
+            if idx < self.arguments.count {
+                return IndexPath(item: idx, section: 0)
+            }
+        }
+        return IndexPath(item: 0, section: 0)
+    }
+    
 //    static func == (lhs: CellModel, rhs: CellModel) -> Bool {
 //        if lhs.id == rhs.id {
 //            return true

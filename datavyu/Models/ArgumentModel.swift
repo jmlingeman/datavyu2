@@ -13,11 +13,11 @@ final class Argument: ObservableObject, Identifiable, Equatable, Hashable, Codab
     @Published var value: String
     @Published var column: ColumnModel
     
+    @Published var isLastArgument: Bool = false
     var id: UUID = UUID()
-    var isLastArgument: Bool = false
     
     static func == (lhs: Argument, rhs: Argument) -> Bool {
-        lhs.name == rhs.name && lhs.value == rhs.value && lhs.id == rhs.id
+        lhs.id == rhs.id
     }
     
     func hash(into hasher: inout Hasher) {
@@ -44,7 +44,6 @@ final class Argument: ObservableObject, Identifiable, Equatable, Hashable, Codab
     
     func setValue(value: String) {
         self.value = value
-        print("Updating \(self.column.sheetModel.updates)")
         self.column.sheetModel.updates += 1
     }
     
@@ -71,7 +70,5 @@ final class Argument: ObservableObject, Identifiable, Equatable, Hashable, Codab
         try container.encode(value, forKey: .value)
         try container.encode(column, forKey: .column)
     }
-
-
     
 }
