@@ -45,6 +45,14 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
         }
     }
     
+    func updateArgumentNames() {
+        for column in columns {
+            for cell in column.cells {
+                cell.updateArgumentNames()
+            }
+        }
+    }
+    
     func addColumn(columnName: String) {
         columns.append(ColumnModel(sheetModel: self, columnName: columnName))
     }

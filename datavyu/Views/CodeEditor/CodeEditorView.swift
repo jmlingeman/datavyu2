@@ -20,6 +20,7 @@ struct CodeEditorView: View {
             }
             Button("Close") {
                 dismiss()
+                fileModel.sheetModel.updateArgumentNames()
                 fileModel.sheetModel.updates += 1 // Force sheet update when we close
             }.padding()
         }

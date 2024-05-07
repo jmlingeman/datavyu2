@@ -40,6 +40,14 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
         hasher.combine(id)
     }
     
+    func updateArgumentNames() {
+        for (idx, argument) in arguments.enumerated() {
+            if argument.name != column.arguments[idx].name {
+                argument.name = column.arguments[idx].name
+            }
+        }
+    }
+    
     static func < (lhs: CellModel, rhs: CellModel) -> Bool {
         if lhs.onset == rhs.onset {
             return lhs.offset < rhs.offset
