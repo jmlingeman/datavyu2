@@ -198,7 +198,7 @@ struct TemporalLayoutCollection: NSViewRepresentable {
                     } else if lastEditedField == LastEditedField.offset {
                         argIndexPath = IndexPath(item: 0, section: 0)
                     } else {
-                        argIndexPath = curCellModel?.getArgumentIndex(collectionView.lastEditedArgument)
+                        argIndexPath = curCellModel?.getArgumentIndex(collectionView.lastEditedArgument!)
                     }
                     print("Focusing field: \(argIndexPath) for cell \(curCellIndexPath)")
                     
@@ -318,18 +318,6 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         collectionView.lastSelectedCellModel = cellItem?.cell
 
         collectionView.scrollToItems(at: Set([corrected_ip]), scrollPosition: [.centeredVertically])
-    }
-    
-    func focusNextField() {
-        print(#function)
-        if focusedIndexPath == nil {
-            focusedIndexPath = IndexPath(item: 0, section: 0)
-        }
-        
-        let collectionView = (self.parent.scrollView.documentView as! TemporalCollectionAppKitView)
-        let cellItem = collectionView.item(at: focusedIndexPath!) as? CellViewUIKit
-        
-        cellItem?.focusNextArgument()
     }
     
     func focusField(_ ip: IndexPath?) {

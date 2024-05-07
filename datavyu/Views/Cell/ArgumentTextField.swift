@@ -131,7 +131,8 @@ extension ArgumentTextField: NSTextFieldDelegate, NSTextViewDelegate {
             
             print("TABBING OUT OF ARGUMENT")
             self.parentView!.lastEditedField = LastEditedField.arguments
-            if argument != nil && argument!.isLastArgument {
+            self.parentView!.parentView!.lastEditedArgument = self.argument
+            if argument != nil && parentView?.cell.arguments.last == argument {
                 print("Trying to select next cell")
                 let ip = self.parentView!.parentView!.sheetModel.findCellIndexPath(cell_to_find: self.parentView!.cell)
                 if ip != nil {
@@ -140,11 +141,11 @@ extension ArgumentTextField: NSTextFieldDelegate, NSTextViewDelegate {
 //                self.resignFirstResponder()
                 return true
             } 
-//            else if argument != nil && !argument!.isLastArgument {
-//                (self.parentView! as! CellViewUIKit).focusNextArgument()
-//                self.resignFirstResponder()
-//                return true
-//            }
+            else if argument != nil && parentView?.cell.arguments.last != argument {
+                self.parentView!.focusNextArgument(argument!)
+                self.resignFirstResponder()
+                return true
+            }
             
         }
 

@@ -159,11 +159,11 @@ class CellViewUIKit: NSCollectionViewItem {
         self.parentView?.window?.makeFirstResponder(self.offset)
     }
     
-    func focusNextArgument() {
+    func focusNextArgument(_ argument: Argument) {
         print(#function)
         let selectedIndexPath: IndexPath
         if parentView != nil {
-            selectedIndexPath = cell.getArgumentIndex(parentView!.lastEditedArgument)
+            selectedIndexPath = cell.getNextArgumentIndex(argument)
         } else {
             selectedIndexPath = IndexPath(item: 0, section: 0)
         }
@@ -171,7 +171,7 @@ class CellViewUIKit: NSCollectionViewItem {
         if self.focusObject == nil {
             self.focusObject = self.onset
         } else {
-            let newIndexPath = IndexPath(item: selectedIndexPath.item + 1, section: selectedIndexPath.section)
+            let newIndexPath = IndexPath(item: selectedIndexPath.item, section: selectedIndexPath.section)
             let nextArg = self.argumentsCollectionView?.item(at: newIndexPath) as! ArgumentViewUIKit
             self.focusObject = nextArg.argumentValue
         }
