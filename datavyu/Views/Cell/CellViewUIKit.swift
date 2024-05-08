@@ -24,9 +24,6 @@ class CellViewUIKit: NSCollectionViewItem {
     
     var parentView: TemporalCollectionAppKitView?
     
-    var focusObject: NSView?
-    var focusPath: IndexPath?
-    
     var lastEditedField: LastEditedField = LastEditedField.none
     
     @ObservedObject var cell: CellModel
@@ -47,12 +44,6 @@ class CellViewUIKit: NSCollectionViewItem {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    func resetFocus() {
-        if focusObject != nil {
-//            focusObject?.window?.makeFirstResponder(focusObject?.nextResponder)
-        }
     }
     
     func numArguments() -> Int {
@@ -113,7 +104,6 @@ class CellViewUIKit: NSCollectionViewItem {
         (self.offset.delegate as! OffsetCoordinator).configure(cell: cell, view: self)
         self.argumentsCollectionView.delegate = nil
         self.argumentsCollectionView.dataSource = nil
-        self.focusObject = nil
         self.lastEditedField = LastEditedField.none
         
         self.setDeselected()
@@ -133,20 +123,12 @@ class CellViewUIKit: NSCollectionViewItem {
         
     }
     
-    override func keyDown(with event: NSEvent) {
-        print("CELL KEY GOT")
-    }
-    
     func focusArgument(_ ip: IndexPath) {
         print(#function)
         let nextArg = self.argumentsCollectionView?.item(at: ip) as! ArgumentViewUIKit
         print("selecting arg \(nextArg)")
-        self.focusObject = nextArg.argumentValue
-        print(3)
-        self.parentView?.window?.makeFirstResponder(self.focusObject)
-
-        
-        print(4)
+        self.parentView?.lastEditedArgument = nextArg.argument
+        self.parentView?.window?.makeFirstResponder(nextArg.argumentValue)
     }
     
     func focusOnset() {
@@ -168,15 +150,19 @@ class CellViewUIKit: NSCollectionViewItem {
             selectedIndexPath = IndexPath(item: 0, section: 0)
         }
         
-        if self.focusObject == nil {
-            self.focusObject = self.onset
+        var focusObject: NSView? = nil
+        if lastEditedField == LastEditedField.none {
+            focusObject = self.onset
+            
+        } else if lastEditedField == LastEditedField.onset {
+            focusObject = self.offset
         } else {
             let newIndexPath = IndexPath(item: selectedIndexPath.item, section: selectedIndexPath.section)
             let nextArg = self.argumentsCollectionView?.item(at: newIndexPath) as! ArgumentViewUIKit
-            self.focusObject = nextArg.argumentValue
+            focusObject = nextArg.argumentValue
         }
         print("Focus next arg")
-        self.parentView?.window?.makeFirstResponder(self.focusObject)
+        self.parentView?.window?.makeFirstResponder(focusObject)
     }
 }
 
@@ -261,7 +247,9 @@ extension OnsetCoordinator: NSTextFieldDelegate {
         self.view?.setSelected()
         
         onsetValue = view?.onset.stringValue
-        view?.focusObject = view?.onset
+        
+        self.view?.lastEditedField = LastEditedField.onset
+        self.parentView?.lastSelectedCellModel = cell
                     
         print("Set focus object to: \(view?.onset)")
     }
@@ -284,6 +272,8 @@ extension OnsetCoordinator: NSTextFieldDelegate {
     func controlTextDidChange(_ obj: Notification) {
         print(self)
         print(#function)
+        self.view?.lastEditedField = LastEditedField.onset
+        self.parentView?.lastSelectedCellModel = cell
     }
     
     func control(_ control: NSControl, textShouldBeginEditing fieldEditor: NSText) -> Bool {
@@ -339,15 +329,14 @@ extension OffsetCoordinator: NSTextFieldDelegate {
     func controlTextDidBeginEditing(_ obj: Notification) {
         print(#function)
         view?.setSelected()
-        view?.focusObject = view?.offset
-        self.parentView?.lastSelectedCellModel = self.cell
+        self.view?.lastEditedField = LastEditedField.offset
+        self.parentView?.lastSelectedCellModel = cell
     }
     
     func controlTextDidEndEditing(_ obj: Notification) {
         print(#function)
         if let textField = obj.object as? NSTextField {
             if textField.stringValue != self.offsetValue {
-                self.view?.focusObject = textField
                 let timestampStr = textField.stringValue
                 let timestamp = timestringToTimestamp(timestring: timestampStr)
                 print("SETTING OFFSET TO \(timestamp)")

@@ -164,8 +164,6 @@ struct TemporalLayoutCollection: NSViewRepresentable {
             if selectionIndexPath != nil {
                 let curCellItem = context.coordinator.getCell(ip: selectionIndexPath!)
                 lastEditedField = curCellItem?.lastEditedField ?? LastEditedField.onset
-                let curArgIndex = curCellItem?.argumentsCollectionView.selectionIndexPaths.first
-                argIndexPath = IndexPath(item: (curArgIndex?.item ?? 0) + 1, section: curArgIndex?.section ?? 0)
             }
             
             // If the cell's onset or offset changes, we gotta find it again
@@ -177,7 +175,7 @@ struct TemporalLayoutCollection: NSViewRepresentable {
             print("Reloading")
             collectionView.reloadData()
             
-            DispatchQueue.main.async {
+//            DispatchQueue.main.async {
                 // Figure out which view cell to select again
                 if collectionView.lastSelectedCellModel != nil {
                     curCellModel = collectionView.lastSelectedCellModel
@@ -215,7 +213,7 @@ struct TemporalLayoutCollection: NSViewRepresentable {
                 } else {
                     print("WARNING: LOST FOCUSED CELL")
                 }
-            }
+//            }
             
         }
     }
@@ -226,9 +224,6 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
     var parent: TemporalLayoutCollection
     var itemSize: NSSize
     var cellItemMap = [CellModel: NSCollectionViewItem]()
-    var focusedCell: CellViewUIKit?
-    var focusedIndexPath: IndexPath?
-    var focusedField: NSView?
     
     init(sheetModel: SheetModel, parent: TemporalLayoutCollection, itemSize: NSSize) {
         self.sheetModel = sheetModel
@@ -240,13 +235,14 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
     
     func getCurrentCell() -> CellViewUIKit? {
         print(#function)
-        if focusedIndexPath == nil {
-            focusedIndexPath = IndexPath(item: 0, section: 0)
-        }
         
         let collectionView = (self.parent.scrollView.documentView as! TemporalCollectionAppKitView)
-        let focusedIndexPath = IndexPath(item: focusedIndexPath!.item, section: focusedIndexPath!.section)
-        let cellItem = collectionView.item(at: focusedIndexPath) as? CellViewUIKit
+        
+        var ip: IndexPath? = IndexPath(item: 0, section: 0)
+        if collectionView.lastSelectedCellModel != nil {
+            ip = sheetModel.findCellIndexPath(cell_to_find: collectionView.lastSelectedCellModel!) ?? IndexPath(item: 0, section: 0)
+        }
+        let cellItem = collectionView.item(at: ip!) as? CellViewUIKit
         
         return cellItem
     }
@@ -308,26 +304,31 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         let cellItem = collectionView.item(at: corrected_ip) as? CellViewUIKit
         
         cellItem?.setSelected()
-        print("Focusing cell's onset \(collectionView.window) \(cellItem?.onset) \(corrected_ip)")
-        cellItem?.focusOnset()
         
-        focusedCell = cellItem
-        focusedIndexPath = corrected_ip
+        if cellItem != nil {
+            collectionView.lastSelectedCellModel = cellItem?.cell
+        }
 //        collectionView.window?.makeFirstResponder(cellItem?.onset)
         collectionView.selectionIndexPaths = Set([corrected_ip])
-        collectionView.lastSelectedCellModel = cellItem?.cell
+        
+//        print("Focusing cell's onset \(collectionView.window) \(cellItem?.onset) \(corrected_ip)")
+        cellItem?.focusOnset()
 
         collectionView.scrollToItems(at: Set([corrected_ip]), scrollPosition: [.centeredVertically])
     }
     
     func focusField(_ ip: IndexPath?) {
         print(#function)
-        if ip == nil {
+        let collectionView = (self.parent.scrollView.documentView as! TemporalCollectionAppKitView)
+
+        if ip == nil || collectionView.lastSelectedCellModel == nil {
             return
         }
         
-        let collectionView = (self.parent.scrollView.documentView as! TemporalCollectionAppKitView)
-        let cellItem = collectionView.item(at: focusedIndexPath!) as? CellViewUIKit
+        print("Focusing field \(ip?.item)")
+        
+        let cellIp = sheetModel.findCellIndexPath(cell_to_find: collectionView.lastSelectedCellModel!)
+        let cellItem = collectionView.item(at: cellIp!) as? CellViewUIKit
         
         cellItem?.setSelected()
         

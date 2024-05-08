@@ -84,21 +84,19 @@ extension ArgumentTextField: NSTextFieldDelegate, NSTextViewDelegate {
     func controlTextDidBeginEditing(_ obj: Notification) {
         print("ARGUMENT: \(#function)")
         self.argumentView?.argSelected = true
+        self.parentView!.lastEditedField = LastEditedField.arguments
         self.parentView?.parentView?.lastEditedArgument = self.argument
     }
     
     func controlTextDidEndEditing(_ obj: Notification) {
         print("ARGUMENT: \(#function)")
-        self.parentView?.focusObject = self
         self.parentView!.lastEditedField = LastEditedField.arguments
+        self.parentView?.parentView?.lastEditedArgument = self.argument
         if let textField = obj.object as? NSTextField {
             if textField.stringValue != argument!.value {
-                print("SETTING FOCUS OB")
-                self.parentView?.focusObject = self
                 argument!.setValue(value: textField.stringValue)
             }
         }
-        self.parentView?.parentView?.lastEditedArgument = self.argument
         self.argumentView?.argSelected = false
     }
         
@@ -112,6 +110,8 @@ extension ArgumentTextField: NSTextFieldDelegate, NSTextViewDelegate {
     func controlTextDidChange(_ obj: Notification) {
         print(self)
         print("ARGUMENT: \(#function)")
+        self.parentView!.lastEditedField = LastEditedField.arguments
+        self.parentView?.parentView?.lastEditedArgument = self.argument
         self.invalidateIntrinsicContentSize()
     }
     
@@ -141,11 +141,11 @@ extension ArgumentTextField: NSTextFieldDelegate, NSTextViewDelegate {
 //                self.resignFirstResponder()
                 return true
             } 
-            else if argument != nil && parentView?.cell.arguments.last != argument {
-                self.parentView!.focusNextArgument(argument!)
-                self.resignFirstResponder()
-                return true
-            }
+//            else if argument != nil && parentView?.cell.arguments.last != argument {
+//                self.parentView!.focusNextArgument(argument!)
+//                self.resignFirstResponder()
+//                return true
+//            }
             
         }
 
