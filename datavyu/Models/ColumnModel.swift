@@ -86,7 +86,11 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
     }
     
     func getSortedCells() -> [CellModel] {
-        return cells.sorted()
+        let sortedCells = cells.sorted()
+        for (i, c) in sortedCells.enumerated() {
+            c.ordinal = i + 1
+        }
+        return sortedCells
     }
     
     func removeArgument() {
