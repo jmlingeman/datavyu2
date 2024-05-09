@@ -182,7 +182,7 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
                 }
                 
                 if prevCell != nil && onset - prevCell!.model.offset == 1 {
-                    sizes[prevCell!]!.height =  cellTopY - sizes[prevCell!]!.height
+                    sizes[prevCell!]!.height = cellTopY - sizes[prevCell!]!.height
                     offsetToPos[offset] = max(offsetToPos[offset] ?? 0, cellTopY)
                 }
                 
@@ -194,6 +194,8 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
                 
                 // Update local onset map
                 onsetMapLocal[onset] = onsetMapLocal[onset]! + cellHeight
+                
+                
                 
                 // Only do if we're not setting overlap
                 if curCell.model.onset < curCell.model.offset {

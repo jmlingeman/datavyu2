@@ -15,6 +15,7 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
     @Published var arguments: [Argument]
     @Published var hidden: Bool = false
     @Published var isSelected: Bool = false
+    @Published var isFinished: Bool = false
     
     init() {
         self.sheetModel = SheetModel(sheetName: "dummy")
@@ -81,7 +82,7 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         }
         self.arguments.last?.isLastArgument = true
 
-        self.sheetModel.updates += 1
+        update()
     }
     
     func getSortedCells() -> [CellModel] {
@@ -93,6 +94,11 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         for cell in cells {
             let _ = cell.arguments.popLast()
         }
+        update()
+    }
+    
+    func update() {
+        print("Updating")
         self.sheetModel.updates += 1
     }
     
@@ -101,20 +107,24 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
     func hash(into hasher: inout Hasher) {
         hasher.combine(columnName)
     }
-
     
+    func toggleFinished() {
+        self.isFinished = !self.isFinished
+        update()
+    }
 
-    func addCell(cell: CellModel) -> CellModel {
-        cell.ordinal = cells.count + 1
-        cells.append(cell)
-        return cell
+    func addCell(cell: CellModel, force: Bool = false) -> CellModel? {
+        if !isFinished || force {
+            cell.ordinal = cells.count + 1
+            cells.append(cell)
+            return cell
+        }
+        return nil
     }
     
-    func addCell() -> CellModel {
+    func addCell(force: Bool = false) -> CellModel? {
         let cell = CellModel(column: self)
-        cell.ordinal = cells.count + 1
-        cells.append(cell)
-        return cell
+        return addCell(cell: cell, force: force)
     }
     
     enum CodingKeys: CodingKey {

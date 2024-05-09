@@ -71,6 +71,14 @@ class CellViewUIKit: NSCollectionViewItem {
         self.argumentsCollectionView.dataSource = self
         
         self.parentView = parentView
+        
+        if cell.column.isFinished {
+            self.onset.isEnabled = false
+            self.offset.isEnabled = false
+        } else {
+            self.onset.isEnabled = true
+            self.offset.isEnabled = true
+        }
 
 //        print("CONFIGURED CELL \(self.onset) \(self.offset) \(self.cell) \(cell.ordinal) \(cell)")
     }
@@ -105,6 +113,9 @@ class CellViewUIKit: NSCollectionViewItem {
         self.argumentsCollectionView.delegate = nil
         self.argumentsCollectionView.dataSource = nil
         self.lastEditedField = LastEditedField.none
+        
+        self.onset.isEnabled = true
+        self.offset.isEnabled = true
         
         self.setDeselected()
     }

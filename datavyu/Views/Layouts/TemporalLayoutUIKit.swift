@@ -104,11 +104,18 @@ struct Header: View {
     var body: some View {
         GeometryReader { gr in
             HStack {
-                EditableLabel($columnModel.columnName)
+                VStack {
+                    EditableLabel($columnModel.columnName)
+                    Toggle(isOn: $columnModel.isFinished, label: {
+                        Text("Finished")
+                    }).onChange(of: $columnModel.isFinished.wrappedValue) {
+                        columnModel.update()
+                    }.toggleStyle(CheckboxToggleStyle()).frame(maxWidth: .infinity, alignment: .topTrailing)
+                }
             }
             .frame(width: Config().defaultCellWidth, height: Config().headerSize)
             .border(Color.black)
-            .background(selected ? Color.teal : Color.accentColor)
+            .background(selected ? Color.teal : columnModel.isFinished ? Color.green : Color.accentColor)
         }.frame(width: Config().defaultCellWidth, height: Config().headerSize)
             .onTapGesture {
                 columnModel.sheetModel.setSelectedColumn(model: columnModel)

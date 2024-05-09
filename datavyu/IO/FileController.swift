@@ -245,17 +245,19 @@ func parseDbLine(sheetModel: SheetModel, line: Substring, fileLoad: inout FileLo
         let lineStripParens = String(line.replacing("(", with: "", maxReplacements: 1)).replacingLastOccurrenceOfString(")", with: "", caseInsensitive: false)
 
         let values = [String]()
-        let cell = fileLoad.currentColumn.addCell()
-        cell.setOnset(onset: String(onset))
-        cell.setOffset(offset: String(offset))
-
-        var index = 0
-        for value in lineStripParens.split(separator: ",")[2...] {
-            cell.setArgumentValue(index: index, value: String(value))
-            index += 1
+        let cell = fileLoad.currentColumn.addCell(force: true)
+        if cell != nil {
+            cell!.setOnset(onset: String(onset))
+            cell!.setOffset(offset: String(offset))
+            
+            var index = 0
+            for value in lineStripParens.split(separator: ",")[2...] {
+                cell!.setArgumentValue(index: index, value: String(value))
+                index += 1
+            }
+            
+            print("Adding cell \(onset) with values \(values)")
         }
-
-        print("Adding cell \(onset) with values \(values)")
     } else {
         print("ERROR LINE DID NOT MATCH")
     }

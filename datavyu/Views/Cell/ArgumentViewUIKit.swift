@@ -35,6 +35,20 @@ class ArgumentViewUIKit: NSCollectionViewItem {
         self.argumentValue.stringValue = argument.value
         print("Configuring Arg: \(argument.name) \(argument.value)")
         self.argumentValue.configure(argument: argument)
+        
+        if argument.column.isFinished {
+            self.argumentValue.isEnabled = false
+        } else {
+            self.argumentValue.isEnabled = true
+        }
+    }
+    
+    override func prepareForReuse() {
+        // Attach it to a dummy cell until that gets replaced
+        self.argument = dummyArg
+        self.argumentLabel.stringValue = ""
+        self.argumentValue.stringValue = ""
+        self.argumentValue.isEnabled = true
     }
     
     func configureParentView(with parentView: CellViewUIKit) {
