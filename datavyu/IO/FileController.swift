@@ -23,9 +23,11 @@ func saveOpfFile(fileModel: FileModel, outputFilename: URL) -> Data {
             (position: Int64, size) -> Data in
             return data.subdata(in: Data.Index(position)..<Int(position)+size)
         })
+        
+        guard let projectData = project.data(using: .utf8) else { return Data() }
         try archive.addEntry(with: "project", type: .file, uncompressedSize: Int64(project.count), provider: {
             (position: Int64, size) -> Data in
-            return data.subdata(in: Data.Index(position)..<Int(position)+size)
+            return projectData.subdata(in: Data.Index(position)..<Int(position)+size)
         })
         
         return data
