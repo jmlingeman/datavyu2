@@ -65,7 +65,7 @@ public struct WaveformViewDV: View {
                 let image = try await waveformDrawer.waveformImage(fromAudioAt: url, with: configuration.with(size: self.size), renderer: renderer)
                 await MainActor.run { waveformImage = image }
             } catch {
-                assertionFailure(error.localizedDescription)
+//                assertionFailure(error.localizedDescription)
             }
         }
     }

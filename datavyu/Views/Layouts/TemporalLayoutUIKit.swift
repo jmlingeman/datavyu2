@@ -394,7 +394,12 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         print(#function)
         let item = collectionView.makeSupplementaryView(ofKind: kind, withIdentifier: .init(HeaderCell.identifier), for: indexPath) as! HeaderCell
         
-        let selected = sheetModel.findFocusedColumn()! == sheetModel.columns[indexPath.section]
+        var focusedColumn = sheetModel.findFocusedColumn()
+        if focusedColumn == nil {
+            focusedColumn = sheetModel.columns[0]
+        }
+        
+        let selected = focusedColumn == sheetModel.columns[indexPath.section]
         print("SELECTED: \(sheetModel.columns[indexPath.section].columnName) \(selected)")
 
         item.setView(Header(columnModel: $sheetModel.columns[indexPath.section], selected: selected))

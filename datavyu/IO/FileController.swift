@@ -99,6 +99,7 @@ func saveProject(fileModel: FileModel) -> String {
                                plugin: "db3fc496-58a7-3706-8538-3f61278b5bec",
                                settingsId: "1",
                                trackSettings: video.trackSettings != nil ? video.trackSettings! : TrackSetting(), version: 2)
+        viewerSettings.append(vs)
     }
     var project = ProjectFile(dbFile: fileModel.sheetModel.sheetName,
                               name: fileModel.sheetModel.sheetName,
@@ -119,26 +120,27 @@ func saveLegacyFiles(fileModel: FileModel) {
 }
 
 func loadOpfFile(inputFilename: URL) -> FileModel {
-    let workingDirectory = NSTemporaryDirectory() + "/" + UUID().uuidString + "/"
+    let workingDirectory = URL(filePath: NSTemporaryDirectory() + UUID().uuidString)
     var db = FileModel()
     var media: [VideoModel] = []
     do {
-        try FileManager.default.unzipItem(at: inputFilename, to: URL(filePath: workingDirectory))
+        try FileManager.default.createDirectory(at: workingDirectory, withIntermediateDirectories: false)
+        try FileManager.default.unzipItem(at: inputFilename, to: workingDirectory)
         var items: [String]
         do {
-            items = try FileManager.default.contentsOfDirectory(atPath: workingDirectory)
+            items = try FileManager.default.contentsOfDirectory(atPath: workingDirectory.path)
         } catch {
             print("Error reading zip file contents: \(error)")
             items = []
         }
-        
         for item in items {
+            let itemPath = URL(filePath: "\(workingDirectory.path())/\(item)")
             switch item {
                 case "db":
-                    db = parseDbFile(sheetName: inputFilename.lastPathComponent, fileUrl: URL(filePath: "\(workingDirectory)/\(item)"))
+                db = parseDbFile(sheetName: inputFilename.lastPathComponent, fileUrl: itemPath)
                 case "project":
                     print("Loading project")
-                    media = parseProjectFile(fileUrl: URL(filePath: "\(workingDirectory)/\(item)"))
+                    media = parseProjectFile(fileUrl: itemPath)
                     
                 case let s where s.matchFirst(/^[0-9]+$/):
                     print(item)
@@ -186,8 +188,9 @@ func parseProjectFile(fileUrl: URL) -> [VideoModel] {
         let project = try YAMLDecoder().decode(ProjectFile.self, from: text)
                 
         for vs in project.viewerSettings {
-            let videoPath = vs.feed
-            let videoModel = VideoModel(videoFilePath: URL(fileURLWithPath: videoPath))
+            let videoPath = vs.feed.replacingOccurrences(of: "file://", with: "")
+            let videoURL = URL(fileURLWithPath: videoPath)
+            let videoModel = VideoModel(videoFilePath: videoURL)
             videoModels.append(videoModel)
         }
         
@@ -197,6 +200,7 @@ func parseProjectFile(fileUrl: URL) -> [VideoModel] {
     
     return videoModels
 }
+
 
 func parseDbFile(sheetName: String, fileUrl: URL) -> FileModel {
     let sheet = SheetModel(sheetName: sheetName)

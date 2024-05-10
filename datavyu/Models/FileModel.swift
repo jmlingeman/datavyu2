@@ -9,7 +9,11 @@ import Foundation
 import SwiftUI
 import UniformTypeIdentifiers
 
-class FileModel: ReferenceFileDocument, ObservableObject, Identifiable {
+class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, Equatable {
+    static func == (lhs: FileModel, rhs: FileModel) -> Bool {
+        lhs.id == rhs.id
+    }
+    
     func snapshot(contentType: UTType) throws -> FileModel {
         return self.copy()
     }
@@ -144,7 +148,6 @@ class FileModel: ReferenceFileDocument, ObservableObject, Identifiable {
     
     func addVideo(videoUrl: URL) {
         let vm = VideoModel(videoFilePath: videoUrl)
-        print(videoUrl.absoluteString)
         self.addVideo(videoModel: vm)
     }
     
