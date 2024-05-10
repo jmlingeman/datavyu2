@@ -66,12 +66,15 @@ struct sheettestApp: App {
         }.commands {
             CommandGroup(replacing: CommandGroupPlacement.newItem) {
                 Button("New Sheet", action: fileController.newFileDefault)
+                    .keyboardShortcut(KeyEquivalent("n"))
                 Button("Open Sheet",
                        action: {showingOpenDialog.toggle()})
+                .keyboardShortcut(KeyEquivalent("o"))
             }
             
             CommandGroup(replacing: CommandGroupPlacement.saveItem) {
                 Button("Save Sheet", action: {showingSaveDialog.toggle()})
+                    .keyboardShortcut(KeyEquivalent("s"))
             }
         }
     }
