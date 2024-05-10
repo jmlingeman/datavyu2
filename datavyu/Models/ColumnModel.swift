@@ -17,12 +17,16 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
     @Published var isSelected: Bool = false
     @Published var isFinished: Bool = false
     
+    var undoManager: UndoManager?
+    
     init() {
         self.sheetModel = SheetModel(sheetName: "dummy")
         self.columnName = "dummy"
         self.cells = []
         self.arguments = []
         addArgument()
+        
+        self.undoManager = sheetModel.undoManager
     }
     
     init(sheetModel: SheetModel, columnName: String) {
@@ -31,6 +35,8 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         self.cells = []
         self.arguments = []
         addArgument()
+        
+        self.undoManager = sheetModel.undoManager
     }
     
     init(sheetModel: SheetModel, columnName: String, arguments: [Argument]) {
@@ -38,6 +44,8 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         self.columnName = columnName
         self.arguments = arguments
         self.cells = []
+        
+        self.undoManager = sheetModel.undoManager
     }
     
     init(sheetModel: SheetModel, columnName: String, arguments: [String]) {
@@ -49,6 +57,8 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         for argname in arguments {
             addArgument(argument: Argument(name: argname, column: self))
         }
+        
+        self.undoManager = sheetModel.undoManager
     }
     
     init(sheetModel: SheetModel, columnName: String, arguments: [Argument], hidden: Bool) {
@@ -57,10 +67,20 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         self.arguments = arguments
         self.hidden = hidden
         self.cells = []
+        
+        self.undoManager = sheetModel.undoManager
     }
     
     static func == (lhs: ColumnModel, rhs: ColumnModel) -> Bool {
         return lhs.id == rhs.id
+    }
+    
+    func setUndoManager(undoManager: UndoManager) {
+        self.undoManager = undoManager
+        
+        for cell in cells {
+            cell.setUndoManager(undoManager: undoManager)
+        }
     }
     
     func setHidden(val: Bool) {
@@ -70,7 +90,6 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
     func addArgument() {
         let newArg = Argument(name: "code\(arguments.count)", column: self)
         addArgument(argument: newArg)
-        
     }
     
     func addArgument(argument: Argument) {
@@ -79,7 +98,14 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         arguments.append(argument)
         for cell in cells {
             cell.arguments.append(argument)
+            self.undoManager?.registerUndo(withTarget: self, handler: { _ in
+                cell.arguments.removeAll { a in
+                    a == argument
+                }
+                self.update()
+            })
         }
+        
         self.arguments.last?.isLastArgument = true
 
         update()
@@ -91,6 +117,21 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
             c.ordinal = i + 1
         }
         return sortedCells
+    }
+    
+    func copy(sheetModelCopy: SheetModel) -> ColumnModel {
+        let newColumnModel = ColumnModel(sheetModel: sheetModelCopy, 
+                                         columnName: self.columnName)
+        
+        newColumnModel.arguments = self.arguments.map({ a in
+            a.copy(columnModelCopy: newColumnModel)
+        })
+        
+        newColumnModel.cells = self.cells.map({ c in
+            c.copy(columnModelCopy: newColumnModel)
+        })
+        
+        return newColumnModel
     }
     
     func removeArgument() {
@@ -121,6 +162,14 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         if !isFinished || force {
             cell.ordinal = cells.count + 1
             cells.append(cell)
+            
+            self.undoManager?.registerUndo(withTarget: self, handler: { _ in
+                self.cells.removeAll { c in
+                    c == cell
+                }
+                self.update()
+            })
+            
             return cell
         }
         return nil

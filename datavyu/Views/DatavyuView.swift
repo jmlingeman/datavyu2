@@ -19,11 +19,15 @@ struct DatavyuView: View {
 
     
     @EnvironmentObject var fileController: FileControllerModel
+    @Environment(\.undoManager) var undoManager
 
     var body: some View {
         ZStack {
             GeometryReader { gr in
                 ControllerView(fileModel: fileModel, temporalLayout: $temporalLayout, hideController: $hideController)
+                    .onAppear(perform: {
+                        fileModel.sheetModel.setUndoManager(undoManager: undoManager!)
+                    })
                     .environmentObject(fileModel.sheetModel)
                     .toolbar {
                         ToolbarItemGroup {

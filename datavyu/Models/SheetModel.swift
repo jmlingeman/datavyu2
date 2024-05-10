@@ -17,6 +17,7 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
     @Published var updated: Bool = false
     
     let config = Config()
+    var undoManager: UndoManager?
     
     
     init(sheetName: String, run_setup: Bool = false) {
@@ -31,6 +32,14 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
         return lhs.columns == rhs.columns
     }
     
+    func setUndoManager(undoManager: UndoManager) {
+        self.undoManager = undoManager
+        
+        for column in columns {
+            column.setUndoManager(undoManager: undoManager)
+        }
+    }
+    
     func setSelectedColumn(model: ColumnModel, suppress_update: Bool = false) {
         print("Setting column \(model.columnName) to selected")
         for column in self.columns {
@@ -43,6 +52,16 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
         if !suppress_update {
             self.updates += 1
         }
+    }
+    
+    func copy() -> SheetModel {
+        let newSheetModel = SheetModel(sheetName: self.sheetName)
+        newSheetModel.columns = self.columns.map({ c in
+            c.copy(sheetModelCopy: newSheetModel)
+        })
+        newSheetModel.updates = self.updates
+        
+        return newSheetModel
     }
     
     func updateArgumentNames() {

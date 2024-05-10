@@ -46,6 +46,23 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
         self.trackSettings = trackSettings
     }
     
+    func copy() -> VideoModel {
+        let newVideoModel = VideoModel(videoFilePath: self.videoFileURL)
+        
+        newVideoModel.duration = self.duration
+        newVideoModel.player = self.player
+        newVideoModel.currentTime = self.currentTime
+        newVideoModel.trackSettings = self.trackSettings
+        newVideoModel.currentPos = self.currentPos
+        newVideoModel.selectedMarker = self.selectedMarker
+        newVideoModel.markers = self.markers
+        newVideoModel.ready = self.ready
+        newVideoModel.syncMarker = self.syncMarker
+        newVideoModel.syncOffset = self.syncOffset
+        
+        return newVideoModel
+    }
+    
     
     func play() {
         player.play()

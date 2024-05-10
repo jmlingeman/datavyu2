@@ -34,17 +34,23 @@ class FileControllerModel: ObservableObject, Identifiable {
         self.activeFileModel = fileModel
     }
     
-    func newFile() {
-        var fileModel = FileModel()
+    func newFile() -> FileModel {
+        let fileModel = FileModel()
         self.fileModels.append(fileModel)
         self.activeFileModel = fileModel
+        
+        return fileModel
+    }
+    
+    func newFileDefault() -> Void {
+        let _ = newFile()
     }
     
     func closeFile() {
         
     }
     
-    func saveFile() {
-        
+    func saveFile(outputFilename: URL) {
+        saveOpfFile(fileModel: activeFileModel, outputFilename: outputFilename)
     }
 }

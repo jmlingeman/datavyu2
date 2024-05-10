@@ -7,8 +7,43 @@
 
 import Foundation
 import SwiftUI
+import UniformTypeIdentifiers
 
-class FileModel: ObservableObject, Identifiable {
+class FileModel: ReferenceFileDocument, ObservableObject, Identifiable {
+    func snapshot(contentType: UTType) throws -> FileModel {
+        return self.copy()
+    }
+    
+    func fileWrapper(snapshot: FileModel, configuration: WriteConfiguration) throws -> FileWrapper {
+        if configuration.existingFile != nil {
+            let data = saveOpfFile(fileModel: snapshot, outputFilename: configuration.existingFile!.symbolicLinkDestinationURL!)
+            return FileWrapper(regularFileWithContents: data)
+        } else {
+            return FileWrapper()
+        }
+    }
+    
+    typealias Snapshot = FileModel
+    
+    required init(configuration: ReadConfiguration) throws {
+        let url = configuration.file.symbolicLinkDestinationURL
+        
+        let model = loadOpfFile(inputFilename: url!)
+                
+        self.videoModels = model.videoModels
+        self.sheetModel = model.sheetModel
+        self.primaryVideo = model.primaryVideo
+        self.longestDuration = model.longestDuration
+        self.primaryMarker = model.primaryMarker
+        self.updates = model.updates
+        
+        self.currentShuttleSpeedIdx = model.currentShuttleSpeedIdx
+        self.videoObservers = model.videoObservers
+    }
+    
+    static var readableContentTypes: [UTType] = [UTType.opf]
+    
+    
     var version = "#4"
     
     @Published var videoModels: [VideoModel]
@@ -20,7 +55,7 @@ class FileModel: ObservableObject, Identifiable {
     
     var videoObservers: [NSKeyValueObservation] = []
     
-    var currentShuttleSpeedIdx: Int
+    var currentShuttleSpeedIdx: Int = 0
     var legacyProjectSettings: ProjectFile?
     
     let config = Config()
@@ -63,6 +98,20 @@ class FileModel: ObservableObject, Identifiable {
             })
             videoObservers.append(observer)
         }
+    }
+    
+    func copy() -> FileModel {
+        let newFileModel = FileModel()
+        newFileModel.sheetModel = self.sheetModel.copy()
+        newFileModel.videoModels = self.videoModels.map({ vm in
+            vm.copy()
+        })
+        newFileModel.updates = self.updates
+        newFileModel.primaryVideo = self.primaryVideo
+        newFileModel.longestDuration = self.longestDuration
+        newFileModel.primaryMarker = self.primaryMarker
+        
+        return newFileModel
     }
     
     convenience init(sheetModel: SheetModel, videoModels: [VideoModel], legacyProjectSettings: ProjectFile) {

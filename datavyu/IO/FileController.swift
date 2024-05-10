@@ -11,24 +11,29 @@ import Yams
 
 
 
-func saveOpfFile(fileModel: FileModel, outputFilename: URL) {
+func saveOpfFile(fileModel: FileModel, outputFilename: URL) -> Data {
     let db = saveDB(fileModel: fileModel)
     let project = saveProject(fileModel: fileModel)
     
-    let fileManager = FileManager()
+    do {
+        let archive = try Archive(url: outputFilename, accessMode: .create)
+        
+        guard let data = db.data(using: .utf8) else { return Data() }
+        try? archive.addEntry(with: "db", type: .file, uncompressedSize: Int64(db.count), bufferSize: 4, provider: {
+            (position: Int64, size) -> Data in
+            return data.subdata(in: Data.Index(position)..<Int(position)+size)
+        })
+        try archive.addEntry(with: "project", type: .file, uncompressedSize: Int64(project.count), provider: {
+            (position: Int64, size) -> Data in
+            return data.subdata(in: Data.Index(position)..<Int(position)+size)
+        })
+        
+        return data
+    } catch {
+        print("ERROR WRITING ZIP FILE: \(error)")
+    }
     
-//    let archive = Archive(url: outputFilename, accessMode: .create)
-//    
-//    do {
-//        try archive?.addEntry(with: "db", type: .file, uncompressedSize: UInt32(db.count), provider: { (position, size) -> Data in
-//            return db.data(using: .utf8)!.subdata(in: position..<position+size)
-//        })
-//        try archive?.addEntry(with: "project", type: .file, uncompressedSize: UInt32(project.count), provider: { (position, size) -> Data in
-//            return project.data(using: .utf8)!.subdata(in: position..<position+size)
-//        })
-//    } catch {
-//        print("ERROR WRITING ZIP FILE: \(error)")
-//    }
+    return Data()
 }
 
 func saveDB(fileModel: FileModel) -> String {

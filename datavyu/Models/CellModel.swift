@@ -18,14 +18,19 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
     @Published var arguments: [Argument] = []
     @Published var onsetPosition: Double = 0
     @Published var offsetPosition: Double = 0
+    
+    var undoManager: UndoManager?
+
         
     init() {
         self.column = ColumnModel(sheetModel: SheetModel(sheetName: "dummy"), columnName: "dummy")
+        self.undoManager = column.sheetModel.undoManager
         syncArguments()
     }
     
     init(column: ColumnModel) {
         self.column = column
+        self.undoManager = column.sheetModel.undoManager
         syncArguments()
     }
     
@@ -43,9 +48,28 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
     func updateArgumentNames() {
         for (idx, argument) in arguments.enumerated() {
             if argument.name != column.arguments[idx].name {
-                argument.name = column.arguments[idx].name
+                argument.setName(name: column.arguments[idx].name)
             }
         }
+    }
+    
+    func setUndoManager(undoManager: UndoManager) {
+        self.undoManager = undoManager
+        
+        for arg in arguments {
+            arg.setUndoManager(undoManager: undoManager)
+        }
+    }
+    
+    func copy(columnModelCopy: ColumnModel) -> CellModel {
+        let newCellModel = CellModel(column: columnModelCopy)
+        newCellModel.onset = self.onset
+        newCellModel.offset = self.offset
+        newCellModel.arguments = self.arguments.map({ a in
+            a.copy(columnModelCopy: columnModelCopy)
+        })
+        newCellModel.ordinal = self.ordinal
+        return newCellModel
     }
     
     static func < (lhs: CellModel, rhs: CellModel) -> Bool {
@@ -76,7 +100,14 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
         print(#function)
         if onset != self.onset {
             DispatchQueue.main.async {
+                let oldOnset = self.onset
                 self.onset = onset
+                self.undoManager?.beginUndoGrouping()
+                self.undoManager?.registerUndo(withTarget: self, handler: { _ in
+                    self.onset = oldOnset
+                    self.updateSheet()
+                })
+                self.undoManager?.endUndoGrouping()
                 self.updateSheet()
             }
         }
@@ -88,40 +119,42 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
 
     func setOnset(onset: Double) {
         print(#function)
-        self.onset = Int(onset * 1000)
-        updateSheet()
+        setOnset(onset: Int(onset * 1000))
     }
     
     func setOnset(onset: String) {
         print(#function)
-        self.onset = timestringToTimestamp(timestring: onset)
-        updateSheet()
+        setOnset(onset: timestringToTimestamp(timestring: onset))
     }
     
     func setOffset(offset: String) {
         print(#function)
-        self.offset = timestringToTimestamp(timestring: offset)
-        updateSheet()
+        setOffset(offset: timestringToTimestamp(timestring: offset))
     }
     
     func setOffset(offset: Int) {
         print(#function)
         if offset != self.offset {
             DispatchQueue.main.async {
+                let oldOffset = self.offset
                 self.offset = offset
+                self.undoManager?.beginUndoGrouping()
+                self.undoManager?.registerUndo(withTarget: self, handler: { _ in
+                    self.offset = oldOffset
+                    self.updateSheet()
+                })
+                self.undoManager?.endUndoGrouping()
                 self.updateSheet()
             }
         }
     }
 
     func setOffset(offset: Double) {
-        self.offset = Int(offset * 1000)
-        updateSheet()
+        setOffset(offset: Int(offset * 1000))
     }
     
     func setArgumentValue(index: Int, value: String) {
-        arguments[index].value = value
-        updateSheet()
+        arguments[index].setValue(value: value)
     }
     
     func getArgumentIndex(_ argument: Argument?) -> IndexPath {

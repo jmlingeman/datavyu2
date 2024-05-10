@@ -25,6 +25,7 @@ struct sheettestApp: App {
     @State private var showingOpenDialog = false
     @State private var showingAlert = false
     @State private var errorMsg = ""
+    @State private var showingSaveDialog = false
     
     var body: some Scene {
         WindowGroup {
@@ -47,17 +48,30 @@ struct sheettestApp: App {
                 }
             })
             .alert(isPresented: $showingAlert) {
-                Alert(title: Text("Error: Unable to open file"), message: Text(errorMsg))
+                Alert(title: Text("Error: File error"), message: Text(errorMsg))
             }
+            .fileExporter(isPresented: $showingSaveDialog,
+                          document: fileController.activeFileModel,
+                          contentType: UTType.opf,
+                          defaultFilename: "\(fileController.activeFileModel.sheetModel.sheetName).opf",
+                          onCompletion: { result in
+                switch result {
+                case .success(let url):
+                    fileController.saveFile(outputFilename: url)
+                case .failure(let error):
+                    errorMsg = "\(error)"
+                    showingAlert.toggle()
+                }
+            })
         }.commands {
             CommandGroup(replacing: CommandGroupPlacement.newItem) {
-                Button("New Sheet", action: fileController.newFile)
+                Button("New Sheet", action: fileController.newFileDefault)
                 Button("Open Sheet",
                        action: {showingOpenDialog.toggle()})
             }
             
             CommandGroup(replacing: CommandGroupPlacement.saveItem) {
-                Button("Save Sheet", action: fileController.saveFile)
+                Button("Save Sheet", action: {showingSaveDialog.toggle()})
             }
         }
     }

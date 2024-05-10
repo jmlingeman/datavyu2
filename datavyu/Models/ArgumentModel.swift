@@ -14,6 +14,8 @@ final class Argument: ObservableObject, Identifiable, Equatable, Hashable, Codab
     @Published var column: ColumnModel
     
     @Published var isLastArgument: Bool = false
+    
+    var undoManager: UndoManager?
     var id: UUID = UUID()
     
     static func == (lhs: Argument, rhs: Argument) -> Bool {
@@ -28,22 +30,53 @@ final class Argument: ObservableObject, Identifiable, Equatable, Hashable, Codab
         self.name = ""
         self.value = ""
         self.column = ColumnModel()
+        self.undoManager = column.sheetModel.undoManager
     }
     
     init(name: String, column: ColumnModel) {
         self.name = name
         self.value = ""
         self.column = column
+        self.undoManager = column.sheetModel.undoManager
     }
     
     init(name: String, value: String, column: ColumnModel) {
         self.name = name
         self.value = value
         self.column = column
+        self.undoManager = column.sheetModel.undoManager
+    }
+    
+    func copy(columnModelCopy: ColumnModel) -> Argument {
+        let newArgument = Argument(name: self.name, value: self.value, column: columnModelCopy)
+        return newArgument
+    }
+    
+    func setUndoManager(undoManager: UndoManager) {
+        self.undoManager = undoManager
     }
     
     func setValue(value: String) {
+        let oldValue = self.value
         self.value = value
+        self.undoManager?.registerUndo(withTarget: self, handler: { _ in
+            self.value = oldValue
+            self.update()
+        })
+        update()
+    }
+    
+    func setName(name: String) {
+        let oldName = self.name
+        self.name = name
+        self.undoManager?.registerUndo(withTarget: self, handler: { _ in
+            self.name = name
+            self.update()
+        })
+        update()
+    }
+    
+    func update() {
         self.column.sheetModel.updates += 1
     }
     
