@@ -16,6 +16,7 @@ struct DatavyuView: View {
     @State private var temporalLayout = false
     @State private var hideLabel = "Hide Controller"
     @State private var hideController = false
+
     
     @EnvironmentObject var fileController: FileControllerModel
 

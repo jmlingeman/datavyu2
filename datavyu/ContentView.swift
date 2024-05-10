@@ -8,12 +8,12 @@
 import SwiftUI
 import WrappingHStack
 
+
 struct ContentView: View {
     @EnvironmentObject var fileController: FileControllerModel
-                                                                                                    
+
     
     var body: some View {
-        
         TabView {
             ForEach($fileController.fileModels) { $fileModel in
                 DatavyuView(fileModel: fileModel).tabItem { Text(fileModel.sheetModel.sheetName) }
@@ -24,5 +24,6 @@ struct ContentView: View {
             let server = DatavyuAPIServer(fileController: fileController, port: 1312)
             server.start()
         }
+        
     }
 }

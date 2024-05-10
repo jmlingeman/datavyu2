@@ -34,6 +34,12 @@ class FileControllerModel: ObservableObject, Identifiable {
         self.activeFileModel = fileModel
     }
     
+    func newFile() {
+        var fileModel = FileModel()
+        self.fileModels.append(fileModel)
+        self.activeFileModel = fileModel
+    }
+    
     func closeFile() {
         
     }
