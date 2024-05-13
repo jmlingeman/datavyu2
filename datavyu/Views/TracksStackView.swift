@@ -25,7 +25,7 @@ struct TracksStackView: View {
     
     func addVideo() {
         let panel = NSOpenPanel()
-        panel.allowedContentTypes = [.video, .quickTimeMovie, .mpeg]
+        panel.allowedContentTypes = [.video, .quickTimeMovie, .mpeg, .mpeg4Movie, .mp3, .mpeg2Video, .mpeg2TransportStream]
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = false
         if panel.runModal() == .OK {
