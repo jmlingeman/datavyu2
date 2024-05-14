@@ -11,6 +11,7 @@ import UniformTypeIdentifiers
 
 @main
 struct sheettestApp: App {
+//    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject var fileController: FileControllerModel = FileControllerModel(fileModels: [
         FileModel(sheetModel: SheetModel(sheetName: "Test Sheet", run_setup: false),
                   videoModels: [
@@ -28,6 +29,7 @@ struct sheettestApp: App {
     @State private var showingSaveDialog = false
     
     var body: some Scene {
+        
         WindowGroup {
             ContentView().environmentObject(fileController).onAppear {
                 ValueTransformer.setValueTransformer(TimestampTransformer(), forName: .classNameTransformerName)
@@ -79,3 +81,51 @@ struct sheettestApp: App {
         }
     }
 }
+
+//class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
+//    
+//    func applicationDidFinishLaunching(_ notification: Notification) {
+//        // Set window delegate so we get close notifications
+//        NSApp.windows.first?.delegate = self
+//        // Restore last window frame
+//        if let frameDescription = UserDefaults.standard.string(forKey: "MainWindowFrame") {
+//            // To prevent the window from jumping we hide it
+//            mainWindow.orderOut(self)
+//            Task { @MainActor in
+//                // Setting the frame only works after a short delay
+//                try? await Task.sleep(for: .seconds(0.5))
+//                mainWindow.setFrame(from: frameDescription)
+//                // Show the window
+//                mainWindow.makeKeyAndOrderFront(nil)
+//            }
+//        }
+//    }
+//    
+//    func windowShouldClose(_ sender: NSWindow) -> Bool {
+//        if let mainWindow = NSApp.windows.first {
+//            UserDefaults.standard.set(mainWindow.frameDescriptor, forKey: "MainWindowFrame")
+//        }
+//        return true
+//    }
+//    
+//    func applicationWillTerminate(_ notification: Notification) {
+//        if let mainWindow = NSApp.windows.first {
+//            UserDefaults.standard.set(mainWindow.frameDescriptor, forKey: "MainWindowFrame")
+//        }
+//    }
+//    
+//    func applicationDidFinishLaunching(_ notification: Notification) {
+//        let mainWindow = NSApp.windows.first
+//        mainWindow?.delegate = self
+//    }
+//    
+//    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+//        let mainWindow = NSApp.windows.first
+//        if flag {
+//            mainWindow?.orderFront(nil)
+//        } else {
+//            mainWindow?.makeKeyAndOrderFront(nil)
+//        }
+//        return true
+//    }
+//}

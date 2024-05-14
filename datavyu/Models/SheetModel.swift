@@ -13,6 +13,7 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
     
     @Published var sheetName: String
     @Published var columns: [ColumnModel]
+    @Published var visibleColumns: [ColumnModel]
     @Published var updates: Int = 0
     @Published var updated: Bool = false
     
@@ -23,6 +24,7 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
     init(sheetName: String, run_setup: Bool = false) {
         self.sheetName = sheetName
         columns = [ColumnModel]()
+        visibleColumns = [ColumnModel]()
         if run_setup {
             setup()
         }
@@ -37,6 +39,12 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
         
         for column in columns {
             column.setUndoManager(undoManager: undoManager)
+        }
+    }
+    
+    func setVisibleColumns() {
+        self.visibleColumns = self.columns.filter { c in
+            !c.hidden
         }
     }
     
@@ -73,11 +81,12 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
     }
     
     func addColumn(columnName: String) {
-        columns.append(ColumnModel(sheetModel: self, columnName: columnName))
+        addColumn(column: ColumnModel(sheetModel: self, columnName: columnName))
     }
 
     func addColumn(column: ColumnModel) {
         columns.append(column)
+        setVisibleColumns()
     }
     
     func findCellIndexPath(cell_to_find: CellModel) -> IndexPath? {
@@ -134,17 +143,20 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
     enum CodingKeys: CodingKey {
         case sheetName
         case columns
+        case visibleColumns
     }
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         sheetName = try container.decode(String.self, forKey: .sheetName)
         columns = try container.decode(Array<ColumnModel>.self, forKey: .columns)
+        visibleColumns = try container.decode(Array<ColumnModel>.self, forKey: .visibleColumns)
     }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(sheetName, forKey: .sheetName)
         try container.encode(columns, forKey: .columns)
+        try container.encode(visibleColumns, forKey: .visibleColumns)
     }
 }

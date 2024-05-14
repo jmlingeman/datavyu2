@@ -48,7 +48,7 @@ final class TemporalCollectionAppKitView: NSCollectionView {
     }
     
     func deselectAllCells() {
-        for (i, column) in sheetModel.columns.enumerated() {
+        for (i, column) in sheetModel.visibleColumns.enumerated() {
             for (j, _) in column.getSortedCells().enumerated() {
                 let curCellItem = (parentScrollView.documentView as! TemporalCollectionAppKitView).item(at: IndexPath(item: j, section: i)) as? CellViewUIKit
                 curCellItem?.setDeselected()
@@ -299,11 +299,13 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         var item = ip.item
         var section = ip.section
         
-        if item >= sheetModel.columns[section].cells.count {
+        
+        
+        if sheetModel.visibleColumns.count > 0 && item >= sheetModel.visibleColumns[section].cells.count {
             print("Selecting next column")
             item = 0
             section = section + 1
-            if section >= sheetModel.columns.count {
+            if section >= sheetModel.visibleColumns.count {
                 section = 0
             }
         }
@@ -350,7 +352,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
     
     func connectCellResponders() {
         var prevCell: CellModel? = nil
-        for (i, column) in sheetModel.columns.enumerated() {
+        for (i, column) in sheetModel.visibleColumns.enumerated() {
             for (j, cell) in column.getSortedCells().enumerated() {
                 if prevCell != nil {
                     //                        let prevCellItem = cellItemMap[prevCell!]
@@ -371,16 +373,16 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
     }
     
     func numberOfSections(in collectionView: NSCollectionView) -> Int {
-        return sheetModel.columns.count
+        return sheetModel.visibleColumns.count
     }
     
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        return sheetModel.columns[section].getSortedCells().count + 1
+        return sheetModel.visibleColumns[section].getSortedCells().count + 1
     }
     
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
         let item = collectionView.makeItem(withIdentifier: .init(CellViewUIKit.identifier), for: indexPath) as! CellViewUIKit
-        let cell = sheetModel.columns[indexPath.section].getSortedCells()[indexPath.item]
+        let cell = sheetModel.visibleColumns[indexPath.section].getSortedCells()[indexPath.item]
         
         item.configureCell(cell, parentView: parent.scrollView.documentView as? TemporalCollectionAppKitView)
         
@@ -396,16 +398,16 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         
         var focusedColumn = sheetModel.findFocusedColumn()
         if focusedColumn == nil {
-            focusedColumn = sheetModel.columns[0]
+            focusedColumn = sheetModel.visibleColumns[0]
         }
         
-        let selected = focusedColumn == sheetModel.columns[indexPath.section]
-        print("SELECTED: \(sheetModel.columns[indexPath.section].columnName) \(selected)")
+        let selected = focusedColumn == sheetModel.visibleColumns[indexPath.section]
+        print("SELECTED: \(sheetModel.visibleColumns[indexPath.section].columnName) \(selected)")
 
-        item.setView(Header(columnModel: $sheetModel.columns[indexPath.section], selected: selected))
+        item.setView(Header(columnModel: $sheetModel.visibleColumns[indexPath.section], selected: selected))
         
         
-        let floatingHeader = NSHostingView(rootView: Header(columnModel: $sheetModel.columns[indexPath.section], selected: selected))
+        let floatingHeader = NSHostingView(rootView: Header(columnModel: $sheetModel.visibleColumns[indexPath.section], selected: selected))
         floatingHeader.frame = item.frame
         parent.scrollView.addFloatingSubview(floatingHeader, for: .vertical)
         

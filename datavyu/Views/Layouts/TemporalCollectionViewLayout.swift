@@ -63,7 +63,7 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
         var cellLayouts = [CellInfo: NSCollectionViewLayoutAttributes]()
         var headerLayouts = [Int : NSCollectionViewLayoutAttributes]()
         
-        for (colIdx, column) in sheetModel.columns.enumerated() {
+        for (colIdx, column) in sheetModel.visibleColumns.enumerated() {
             for (cellIdx, cell) in column.getSortedCells().enumerated() {
                 let cellInfo = CellInfo(model: cell, columnIdx: colIdx, cellIdx: cellIdx)
                 cellLayouts[cellInfo] = NSCollectionViewLayoutAttributes(forItemWith: IndexPath(item: cellIdx, section: colIdx))
@@ -237,7 +237,7 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
         
         cache.indexToLayout = indexToLayout
         cache.cellLayouts = cellLayouts
-        cache.maxWidth = Double(sheetModel.columns.count) * columnSize
+        cache.maxWidth = Double(sheetModel.visibleColumns.count) * columnSize
         cache.headerLayouts = headerLayouts
     }
     

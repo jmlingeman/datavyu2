@@ -23,6 +23,7 @@ struct ColumnListView: View {
             if colModel != nil {
                 colModel!.setHidden(val: true)
             }
+            sheetModel.setVisibleColumns()
             sheetModel.updates += 1
         }
     }
@@ -35,6 +36,7 @@ struct ColumnListView: View {
             if colModel != nil {
                 colModel!.setHidden(val: false)
             }
+            sheetModel.setVisibleColumns()
             sheetModel.updates += 1
         }
     }

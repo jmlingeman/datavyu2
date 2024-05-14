@@ -1,7 +1,7 @@
 import SwiftUI
 import AVFoundation
 
-class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
+class VideoModel: ObservableObject, Identifiable, Equatable, Hashable, Codable {
     @Published var videoFileURL: URL
     @Published var currentTime: Double
     @Published var currentPos: Double
@@ -9,6 +9,7 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
     @Published var markers: [Marker]
     @Published var selectedMarker: Marker?
     @Published var updates = 0
+    @Published var filename: String
     
     var trackSettings: TrackSetting? = nil
 
@@ -39,6 +40,8 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
         player = AVPlayer(url: videoFilePath)
         markers = []
         duration = 0.0
+        
+        filename = videoFilePath.lastPathComponent
     }
     
     convenience init(videoFilePath: URL, trackSettings: TrackSetting) {
@@ -138,6 +141,36 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable {
     func updateTimes() {
         currentTime = player.currentTime().seconds + syncOffset
         currentPos = currentTime / getDuration()
+    }
+    
+    enum CodingKeys: CodingKey {
+        case videoFileUrl
+        case currentTime
+        case currentPos
+        case duration
+        case markers
+        case filename
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let fileUrl = try container.decode(URL.self, forKey: .videoFileUrl)
+        videoFileURL = fileUrl
+        currentTime = try container.decode(Double.self, forKey: .currentTime)
+        currentPos = try container.decode(Double.self, forKey: .currentPos)
+        duration = try container.decode(Double.self, forKey: .duration)
+        markers = try container.decode(Array<Marker>.self, forKey: .currentTime)
+        filename = try container.decode(String.self, forKey: .filename)
+        player = AVPlayer(url: fileUrl)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(videoFileURL, forKey: .videoFileUrl)
+        try container.encode(currentTime, forKey: .currentTime)
+        try container.encode(currentPos, forKey: .currentPos)
+        try container.encode(duration, forKey: .duration)
+        try container.encode(markers, forKey: .markers)
     }
 }
 

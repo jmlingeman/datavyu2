@@ -22,6 +22,17 @@ struct VideoView: View {
                         $videoModel.currentPos.wrappedValue = time.seconds / videoModel.player.getCurrentTrackDuration()
                     }
                 }
+                .frame(minWidth: 250,
+                        idealWidth: videoModel.player.currentItem?.presentationSize.width ?? 250,
+                        maxWidth: .infinity,
+                        minHeight: 250,
+                        idealHeight: videoModel.player.currentItem?.presentationSize.height ?? 250,
+                        maxHeight: .infinity,
+                        alignment: .center)
+            
+//            Button("Open in Window") {
+//                self.openInWindow(title: "Win View", sender: self)
+//            }
         }
     }
 }
@@ -38,17 +49,5 @@ struct AVPlayerControllerRepresented : NSViewRepresentable {
     
     func updateNSView(_ nsView: AVPlayerView, context: Context) {
         
-    }
-}
-
-extension View {
-    @discardableResult
-    func openInWindow(title: String, sender: Any?) -> NSWindow {
-        let controller = NSHostingController(rootView: self)
-        let win = NSWindow(contentViewController: controller)
-        win.contentViewController = controller
-        win.title = title
-        win.makeKeyAndOrderFront(sender)
-        return win
     }
 }

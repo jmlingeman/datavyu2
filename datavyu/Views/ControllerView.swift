@@ -16,37 +16,29 @@ struct ControllerView: View {
     @State private var showingColumnNameDialog = false
 
     var body: some View {
-            VStack {
-                HSplitView {
-                    if !hideController {
-                        GeometryReader { gr in
-                            Grid {
-                                ForEach(fileModel.videoModels) { videoModel in
-                                    GridRow {
-                                        VideoView(videoModel: videoModel)
-                                    }
-                                }
-                                GridRow {
-                                    TracksStackView(fileModel: fileModel)
-                                }
-                                GridRow {
-                                    ControllerPanelView(fileModel: fileModel, gr: gr, columnInFocus: _columnInFocus, cellInFocus: _cellInFocus)
-                                }
-                                
-                            }.padding().frame(minWidth: 300)
-                        }.layoutPriority(2)
+        VStack {
+            GeometryReader { gr in
+                ZStack {
+                    ForEach(fileModel.videoModels) { videoModel in
+                        ZStack {}.onAppear(perform: {
+                            VideoView(videoModel: videoModel).openInWindow(title: videoModel.filename, sender: self, frameName: videoModel.filename)
+                        })
                     }
-                    Sheet(columnInFocus: _columnInFocus,
-                          cellInFocus: _cellInFocus,
-                          temporalLayout: $temporalLayout,
-                          argumentFocusModel: ArgumentFocusModel(sheetModel: fileModel.sheetModel))
-                    .frame(minWidth: 600)
-                    .layoutPriority(1)
-                    .environmentObject(fileModel.sheetModel)
-                }
-            
+                }.onAppear(perform: {
+                    HStack {
+                        ControllerPanelView(fileModel: fileModel, gr: gr, columnInFocus: _columnInFocus, cellInFocus: _cellInFocus)
+                        TracksStackView(fileModel: fileModel)
+                    }.openInWindow(title: "Controller", sender: self, frameName: "controller")
+                })
             }
+
+            Sheet(columnInFocus: _columnInFocus,
+                  cellInFocus: _cellInFocus,
+                  temporalLayout: $temporalLayout,
+                  argumentFocusModel: ArgumentFocusModel(sheetModel: fileModel.sheetModel))
+                .frame(minWidth: 600)
+                .layoutPriority(1)
+                .environmentObject(fileModel.sheetModel)
+        }
     }
 }
-
-

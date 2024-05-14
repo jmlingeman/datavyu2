@@ -30,6 +30,7 @@
 		881A3A002A2BE73B00B4782D /* ControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39FF2A2BE73B00B4782D /* ControllerView.swift */; };
 		881A3A022A2C0B6500B4782D /* VideoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A3A012A2C0B6500B4782D /* VideoModel.swift */; };
 		882D71AE2BEDAC0200538D51 /* FileExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882D71AD2BEDAC0200538D51 /* FileExtensions.swift */; };
+		882D71B02BF2AB6600538D51 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882D71AF2BF2AB6600538D51 /* ViewExtensions.swift */; };
 		8837C56D2A2D29AF00F29182 /* EditableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8837C56C2A2D29AF00F29182 /* EditableLabel.swift */; };
 		884B0DF52A4F792A00D16304 /* RubyGateway in Frameworks */ = {isa = PBXBuildFile; productRef = 884B0DF42A4F792A00D16304 /* RubyGateway */; };
 		884B0DF72A50BE6B00D16304 /* DatavyuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884B0DF62A50BE6B00D16304 /* DatavyuView.swift */; };
@@ -132,6 +133,7 @@
 		881A3A012A2C0B6500B4782D /* VideoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoModel.swift; sourceTree = "<group>"; };
 		882D71A92BED9CE600538D51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		882D71AD2BEDAC0200538D51 /* FileExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileExtensions.swift; sourceTree = "<group>"; };
+		882D71AF2BF2AB6600538D51 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		8837C56C2A2D29AF00F29182 /* EditableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableLabel.swift; sourceTree = "<group>"; };
 		884B0DF62A50BE6B00D16304 /* DatavyuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatavyuView.swift; sourceTree = "<group>"; };
 		884B0DF82A50CB1B00D16304 /* CodeEditorAddCodeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorAddCodeButton.swift; sourceTree = "<group>"; };
@@ -378,6 +380,7 @@
 			children = (
 				88F62E972A58B05500DC5B60 /* StringExtensions.swift */,
 				882D71AD2BEDAC0200538D51 /* FileExtensions.swift */,
+				882D71AF2BF2AB6600538D51 /* ViewExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -691,6 +694,7 @@
 				88EF5AC22A9ED19400D1EADA /* AudioSpectrogram.swift in Sources */,
 				88F8A9322A993954001EEB21 /* ControllerButton.swift in Sources */,
 				88E094752B69B5AB00A93660 /* CellViewUIKit.swift in Sources */,
+				882D71B02BF2AB6600538D51 /* ViewExtensions.swift in Sources */,
 				885411852B463924006A86C0 /* WrappedHStack.swift in Sources */,
 				88D3FE372A4DE12A0094F953 /* TrackPositionIndicator.swift in Sources */,
 				88F8A9342A9A56FB001EEB21 /* ControllerPanelView.swift in Sources */,
