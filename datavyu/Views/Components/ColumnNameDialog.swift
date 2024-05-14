@@ -31,6 +31,7 @@ struct ColumnNameDialog: View {
             HStack {
                 Button("OK") {
                     dismiss()
+                    column.update()
                 }
             }.padding()
         }.padding()

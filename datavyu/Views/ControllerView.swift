@@ -17,20 +17,18 @@ struct ControllerView: View {
 
     var body: some View {
         VStack {
-            GeometryReader { gr in
-                ZStack {
-                    ForEach(fileModel.videoModels) { videoModel in
-                        ZStack {}.onAppear(perform: {
-                            VideoView(videoModel: videoModel).openInWindow(title: videoModel.filename, sender: self, frameName: videoModel.filename)
-                        })
-                    }
-                }.onAppear(perform: {
-                    HStack {
-                        ControllerPanelView(fileModel: fileModel, gr: gr, columnInFocus: _columnInFocus, cellInFocus: _cellInFocus)
-                        TracksStackView(fileModel: fileModel)
-                    }.openInWindow(title: "Controller", sender: self, frameName: "controller")
-                })
-            }
+            ZStack {
+                ForEach(fileModel.videoModels) { videoModel in
+                    ZStack {}.onAppear(perform: {
+                        VideoView(videoModel: videoModel).openInWindow(title: videoModel.filename, sender: self, frameName: videoModel.filename)
+                    })
+                }
+            }.onAppear(perform: {
+                HStack {
+                    ControllerPanelView(fileModel: fileModel, columnInFocus: _columnInFocus, cellInFocus: _cellInFocus).frame(alignment: .topLeading)
+                    TracksStackView(fileModel: fileModel)
+                }.openInWindow(title: "Controller", sender: self, frameName: "controller")
+            })
 
             Sheet(columnInFocus: _columnInFocus,
                   cellInFocus: _cellInFocus,

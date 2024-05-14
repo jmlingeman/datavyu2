@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ControllerPanelView: View {
     @ObservedObject var fileModel: FileModel
-    var gr: GeometryProxy
     @FocusState var columnInFocus: ColumnModel?
     @FocusState var cellInFocus: CellModel?
 
@@ -94,55 +93,48 @@ struct ControllerPanelView: View {
     }
 
     var body: some View {
-        Grid {
-            GridRow {
-                HStack {
-                    ControllerButton(buttonName: "Set\nOnset", action: setOnset, gr: gr)
+            Grid(alignment: .topLeading, horizontalSpacing: 2, verticalSpacing: 2) {
+                GridRow {
+                    ControllerButton(buttonName: "Set\nOnset", action: setOnset)
                         .keyboardShortcut("7", modifiers: .numericPad)
                         .keyboardShortcut("[")
-                    ControllerButton(buttonName: "Play", action: play, gr: gr)
+                    ControllerButton(buttonName: "Play", action: play)
                         .keyboardShortcut("8", modifiers: .numericPad)
                         .keyboardShortcut(",")
-                    ControllerButton(buttonName: "Set\nOffset", action: setOffset, gr: gr)
+                    ControllerButton(buttonName: "Set\nOffset", action: setOffset)
                         .keyboardShortcut("9", modifiers: .numericPad)
                         .keyboardShortcut("]")
                 }
-            }
-            GridRow {
-                HStack {
-                    ControllerButton(buttonName: "Shuttle <", action: shuttleStepDown, gr: gr)
+                GridRow {
+                    ControllerButton(buttonName: "Shuttle <", action: shuttleStepDown)
                         .keyboardShortcut("4", modifiers: .numericPad)
                         .keyboardShortcut(";")
-                    ControllerButton(buttonName: "Stop", action: stop, gr: gr)
+                    ControllerButton(buttonName: "Stop", action: stop)
                         .keyboardShortcut("5", modifiers: .numericPad)
                         .keyboardShortcut(".")
-                    ControllerButton(buttonName: "Shuttle >", action: shuttleStepUp, gr: gr)
+                    ControllerButton(buttonName: "Shuttle >", action: shuttleStepUp)
                         .keyboardShortcut("6", modifiers: .numericPad)
                         .keyboardShortcut("'")
                 }
-            }
-            GridRow {
-                HStack {
-                    ControllerButton(buttonName: "Prev", action: prevFrame, gr: gr)
+                GridRow {
+                    ControllerButton(buttonName: "Prev", action: prevFrame)
                         .keyboardShortcut("1", modifiers: .numericPad)
                         .keyboardShortcut("-")
-                    ControllerButton(buttonName: "Pause", action: pause, gr: gr)
+                    ControllerButton(buttonName: "Pause", action: pause)
                         .keyboardShortcut("2", modifiers: .numericPad)
                         .keyboardShortcut("/")
-                    ControllerButton(buttonName: "Next", action: nextFrame, gr: gr)
+                    ControllerButton(buttonName: "Next", action: nextFrame)
                         .keyboardShortcut("3", modifiers: .numericPad)
                         .keyboardShortcut("=")
                 }
-            }
-            GridRow {
-                HStack {
-                    ControllerButton(buttonName: "Add\nCell", action: addCell, gr: gr)
+                GridRow {
+                    ControllerButton(buttonName: "Add\nCell", action: addCell)
                         .keyboardShortcut("0", modifiers: .numericPad)
                         .keyboardShortcut("c")
-                    ControllerButton(buttonName: "Set\nOffset\n+ Add", action: setOffsetAndAddNewCell, gr: gr)
+                    ControllerButton(buttonName: "Set\nOffset\n+ Add", action: setOffsetAndAddNewCell)
                         .keyboardShortcut(".", modifiers: .numericPad)
                         .keyboardShortcut("v")
-                    ControllerButton(buttonName: "Add\nCol", action: addColumn, gr: gr)
+                    ControllerButton(buttonName: "Add\nCol", action: addColumn)
                         .keyboardShortcut(KeyEquivalent.return, modifiers: .numericPad)
                         .keyboardShortcut("g")
                         .sheet(isPresented: $showingColumnNameDialog) {
@@ -150,6 +142,6 @@ struct ControllerPanelView: View {
                         }
                 }
             }
-        }
+        
     }
 }
