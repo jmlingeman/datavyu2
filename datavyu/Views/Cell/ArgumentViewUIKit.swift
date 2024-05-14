@@ -1,5 +1,5 @@
 //
-//  ArgumentView.swift
+//  ArgumentViewUIKit.swift
 //  datavyu
 //
 //  Created by Jesse Lingeman on 1/30/24.
@@ -10,87 +10,82 @@ import SwiftUI
 
 class ArgumentViewUIKit: NSCollectionViewItem {
     static let identifier: String = "ArgumentViewUIKit"
-    
+
     @IBOutlet var argumentLabel: NSTextField!
     @IBOutlet var argumentValue: ArgumentTextField!
-    
+
     @ObservedObject var argument: Argument
     var parentView: CellViewUIKit?
     var argSelected: Bool = false
-    
+
     let dummyArg = Argument()
-    
+
     override init(nibName nibNameOrNil: NSNib.Name?, bundle nibBundleOrNil: Bundle?) {
-        self.argument = dummyArg
-        self.argumentLabel = NSTextField()
-        self.argumentValue = ArgumentTextField()
+        argument = dummyArg
+        argumentLabel = NSTextField()
+        argumentValue = ArgumentTextField()
 
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
-    
+
     func configureCell(with argument: Argument) {
-        
         self.argument = argument
-        self.argumentLabel.stringValue = argument.name
-        self.argumentValue.stringValue = argument.value
+        argumentLabel.stringValue = argument.name
+        argumentValue.stringValue = argument.value
         print("Configuring Arg: \(argument.name) \(argument.value)")
-        self.argumentValue.configure(argument: argument)
-        
+        argumentValue.configure(argument: argument)
+
         if argument.column.isFinished {
-            self.argumentValue.isEnabled = false
+            argumentValue.isEnabled = false
         } else {
-            self.argumentValue.isEnabled = true
+            argumentValue.isEnabled = true
         }
     }
-    
+
     override func prepareForReuse() {
         // Attach it to a dummy cell until that gets replaced
-        self.argument = dummyArg
-        self.argumentLabel.stringValue = ""
-        self.argumentValue.stringValue = ""
-        self.argumentValue.isEnabled = true
+        argument = dummyArg
+        argumentLabel.stringValue = ""
+        argumentValue.stringValue = ""
+        argumentValue.isEnabled = true
     }
-    
+
     func configureParentView(with parentView: CellViewUIKit) {
         self.parentView = parentView
-        self.argumentValue.configureParentView(parentView: parentView)
-        self.argumentValue.argumentView = self
+        argumentValue.configureParentView(parentView: parentView)
+        argumentValue.argumentView = self
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
-        self.configureCell(with: self.argument)
+        configureCell(with: argument)
     }
-    
-    override func viewDidAppear() {
 
-    }
-    
+    override func viewDidAppear() {}
+
     override func keyDown(with event: NSEvent) {
         print("From Arg Cell View: \(event.keyCode)")
     }
-    
-    
-    
 }
 
 @objc class ArgumentCoordinator: NSObject {
     var argument: Argument?
     var view: ArgumentViewUIKit?
-    
+
     override init() {
         super.init()
     }
-    
+
     init(argument: Argument) {
         self.argument = argument
     }
-    
+
     func configure(argument: Argument, view: ArgumentViewUIKit) {
         self.argument = argument
         self.view = view

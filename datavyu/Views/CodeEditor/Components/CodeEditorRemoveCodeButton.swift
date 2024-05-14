@@ -9,11 +9,11 @@ import SwiftUI
 
 struct CodeEditorRemoveCodeButton: View {
     @ObservedObject var column: ColumnModel
-    
+
     func removeCode() {
         column.removeArgument()
     }
-    
+
     var body: some View {
         Button("-", action: removeCode)
     }

@@ -11,7 +11,7 @@ import WrappingHStack
 struct CodeEditorView: View {
     @ObservedObject var fileModel: FileModel
     @Environment(\.dismiss) var dismiss
-    
+
     var body: some View {
         ScrollView(.vertical) {
             Text("Code Editor").font(.system(size: 30)).frame(alignment: .topLeading).padding()

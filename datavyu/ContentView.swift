@@ -8,11 +8,10 @@
 import SwiftUI
 import WrappingHStack
 
-
 struct ContentView: View {
     @EnvironmentObject var fileController: FileControllerModel
     @State var selectedTab = 0
-    
+
     @State private var showingCodeEditor = false
     @State private var showingOptions = false
     @State private var showingColumnList = false
@@ -21,7 +20,6 @@ struct ContentView: View {
     @State private var hideLabel = "Hide Controller"
     @State private var hideController = false
 
-    
     var body: some View {
         GeometryReader { gr in
             TabView(selection: $selectedTab) {
@@ -34,7 +32,7 @@ struct ContentView: View {
                 let server = DatavyuAPIServer(fileController: fileController, port: 1312)
                 server.start()
             }
-            .onChange(of: fileController.activeFileModel) { oldValue, newValue in
+            .onChange(of: fileController.activeFileModel) { _, newValue in
                 let newTabIdx = fileController.fileModels.firstIndex(of: newValue)
                 selectedTab = newTabIdx ?? 0
             }
@@ -58,8 +56,7 @@ struct ContentView: View {
                     .sheet(isPresented: $showingColumnList) {
                         ColumnListView(sheetModel: fileController.activeFileModel.sheetModel).frame(width: gr.size.width / 2, height: gr.size.height / 2)
                     }
-                    Button("Open File")
-                    {
+                    Button("Open File") {
                         let panel = NSOpenPanel()
                         panel.allowsMultipleSelection = false
                         panel.canChooseDirectories = false
@@ -67,8 +64,7 @@ struct ContentView: View {
                             fileController.openFile(inputFilename: panel.url!)
                         }
                     }
-                    Button("Save File")
-                    {
+                    Button("Save File") {
                         let panel = NSSavePanel()
                         if panel.runModal() == .OK {
                             let _ = saveOpfFile(fileModel: fileController.activeFileModel, outputFilename: panel.url!)
@@ -97,6 +93,5 @@ struct ContentView: View {
                 }
             }
         }
-        
     }
 }

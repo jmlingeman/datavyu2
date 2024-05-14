@@ -1,40 +1,38 @@
 //
-//  SaveController.swift
+//  FileController.swift
 //  datavyu
 //
 //  Created by Jesse Lingeman on 6/18/23.
 //
 
 import Foundation
-import ZIPFoundation
 import Yams
-
-
+import ZIPFoundation
 
 func saveOpfFile(fileModel: FileModel, outputFilename: URL) -> Data {
     let db = saveDB(fileModel: fileModel)
     let project = saveProject(fileModel: fileModel)
-    
+
     do {
         let archive = try Archive(url: outputFilename, accessMode: .create)
-        
+
         guard let data = db.data(using: .utf8) else { return Data() }
         try? archive.addEntry(with: "db", type: .file, uncompressedSize: Int64(db.count), bufferSize: 4, provider: {
             (position: Int64, size) -> Data in
-            return data.subdata(in: Data.Index(position)..<Int(position)+size)
+            data.subdata(in: Data.Index(position) ..< Int(position) + size)
         })
-        
+
         guard let projectData = project.data(using: .utf8) else { return Data() }
         try archive.addEntry(with: "project", type: .file, uncompressedSize: Int64(project.count), provider: {
             (position: Int64, size) -> Data in
-            return projectData.subdata(in: Data.Index(position)..<Int(position)+size)
+            projectData.subdata(in: Data.Index(position) ..< Int(position) + size)
         })
-        
+
         return data
     } catch {
         print("ERROR WRITING ZIP FILE: \(error)")
     }
-    
+
     return Data()
 }
 
@@ -44,19 +42,19 @@ func saveDB(fileModel: FileModel) -> String {
         let colstr = generateColumnString(columnModel: column)
         dbString += colstr
     }
-    
+
     return dbString
 }
 
 private func generateColumnString(columnModel: ColumnModel) -> String {
     var s = "\(columnModel.columnName) (MATRIX,\(columnModel.hidden),)-"
-    
+
     var argnames = [String]()
     for argument in columnModel.arguments {
         argnames.append("\(argument.name)|NOMINAL")
     }
     s += argnames.joined(separator: ",") + "\n"
-    
+
     for cell in columnModel.getSortedCells() {
         var args = [String]()
         for argument in cell.arguments {
@@ -64,10 +62,10 @@ private func generateColumnString(columnModel: ColumnModel) -> String {
         }
         let argstr = "(\(args.joined(separator: ",")))"
         let cellstr = "\(formatTimestamp(timestamp: cell.onset)),\(formatTimestamp(timestamp: cell.offset))," + argstr + "\n"
-        
+
         s += cellstr
     }
-    
+
     return s
 }
 
@@ -91,7 +89,7 @@ func saveProject(fileModel: FileModel) -> String {
      version: 2
      version: 3
      */
-    
+
     var viewerSettings = [ViewerSetting]()
     for video in fileModel.videoModels {
         let vs = ViewerSetting(classifier: "datavyu.video",
@@ -105,7 +103,7 @@ func saveProject(fileModel: FileModel) -> String {
                               name: fileModel.sheetModel.sheetName,
                               origpath: "", version: 5,
                               viewerSettings: viewerSettings)
-    
+
     do {
         let encodedYaml = try YAMLEncoder().encode(project)
         return encodedYaml
@@ -115,9 +113,7 @@ func saveProject(fileModel: FileModel) -> String {
     return ""
 }
 
-func saveLegacyFiles(fileModel: FileModel) {
-    
-}
+func saveLegacyFiles(fileModel _: FileModel) {}
 
 func loadOpfFile(inputFilename: URL) -> FileModel {
     let workingDirectory = URL(filePath: NSTemporaryDirectory() + UUID().uuidString)
@@ -136,22 +132,22 @@ func loadOpfFile(inputFilename: URL) -> FileModel {
         for item in items {
             let itemPath = URL(filePath: "\(workingDirectory.path())/\(item)")
             switch item {
-                case "db":
+            case "db":
                 db = parseDbFile(sheetName: inputFilename.lastPathComponent, fileUrl: itemPath)
-                case "project":
-                    print("Loading project")
-                    media = parseProjectFile(fileUrl: itemPath)
-                    
-                case let s where s.matchFirst(/^[0-9]+$/):
-                    print(item)
-                default:
-                    print("Went beyond index of assumed files")
+            case "project":
+                print("Loading project")
+                media = parseProjectFile(fileUrl: itemPath)
+
+            case let s where s.matchFirst(/^[0-9]+$/):
+                print(item)
+            default:
+                print("Went beyond index of assumed files")
             }
         }
     } catch {
         print("Error opening opf file: \(error) for \(inputFilename.absoluteString)")
     }
-    
+
     if !media.isEmpty {
         for vm in media {
             db.addVideo(videoModel: vm)
@@ -160,7 +156,6 @@ func loadOpfFile(inputFilename: URL) -> FileModel {
 
     return db
 }
-
 
 func parseProjectFile(fileUrl: URL) -> [VideoModel] {
     /*
@@ -186,21 +181,20 @@ func parseProjectFile(fileUrl: URL) -> [VideoModel] {
     do {
         let text = try String(contentsOf: fileUrl, encoding: .utf8)
         let project = try YAMLDecoder().decode(ProjectFile.self, from: text)
-                
+
         for vs in project.viewerSettings {
             let videoPath = vs.feed.replacingOccurrences(of: "file://", with: "")
             let videoURL = URL(fileURLWithPath: videoPath)
             let videoModel = VideoModel(videoFilePath: videoURL)
             videoModels.append(videoModel)
         }
-        
+
     } catch { /* error handling here */
         print("ERROR \(error)")
     }
-    
+
     return videoModels
 }
-
 
 func parseDbFile(sheetName: String, fileUrl: URL) -> FileModel {
     let sheet = SheetModel(sheetName: sheetName)
@@ -260,13 +254,13 @@ func parseDbLine(sheetModel: SheetModel, line: Substring, fileLoad: inout FileLo
         if cell != nil {
             cell!.setOnset(onset: String(onset))
             cell!.setOffset(offset: String(offset))
-            
+
             var index = 0
             for value in lineStripParens.split(separator: ",")[2...] {
                 cell!.setArgumentValue(index: index, value: String(value))
                 index += 1
             }
-            
+
             print("Adding cell \(onset) with values \(values)")
         }
     } else {

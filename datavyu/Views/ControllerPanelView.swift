@@ -12,23 +12,23 @@ struct ControllerPanelView: View {
     var gr: GeometryProxy
     @FocusState var columnInFocus: ColumnModel?
     @FocusState var cellInFocus: CellModel?
-    
+
     @State var showingColumnNameDialog = false
-    
+
     func play() {
         for videoModel in fileModel.videoModels {
             videoModel.play()
         }
     }
-    
+
     func shuttleStepUp() {
         fileModel.changeShuttleSpeed(step: 1)
     }
-    
+
     func shuttleStepDown() {
         fileModel.changeShuttleSpeed(step: -1)
     }
-    
+
     func stop() {
         for videoModel in fileModel.videoModels {
             videoModel.stop()
@@ -36,63 +36,63 @@ struct ControllerPanelView: View {
         fileModel.syncVideos()
         fileModel.resetShuttleSpeed()
     }
-    
+
     func pause() {
         for videoModel in fileModel.videoModels {
             videoModel.stop()
         }
         fileModel.syncVideos()
     }
-    
+
     func nextFrame() {
         for videoModel in fileModel.videoModels {
             videoModel.nextFrame()
         }
     }
-    
+
     func prevFrame() {
         for videoModel in fileModel.videoModels {
             videoModel.prevFrame()
         }
     }
-    
+
     func addColumn() {
         let columnModel = ColumnModel(sheetModel: fileModel.sheetModel, columnName: "Column\(fileModel.sheetModel.columns.count + 1)")
         fileModel.sheetModel.addColumn(column: columnModel)
         columnInFocus = columnModel
-        
+
         fileModel.sheetModel.setSelectedColumn(model: columnModel)
-        
+
         showingColumnNameDialog.toggle()
     }
-    
+
     func addCell() {
         let model = fileModel.sheetModel.findFocusedColumn()
-        
+
         let cell = model?.addCell()
         if cell != nil {
             cell?.setOnset(onset: fileModel.primaryVideo?.currentTime ?? 0)
         }
         fileModel.sheetModel.updates += 1 // Force sheetmodel updates of nested objects
     }
-    
+
     func setOnset() {
         cellInFocus?.setOnset(onset: fileModel.currentTime())
     }
-    
+
     func setOffset() {
         cellInFocus?.setOffset(offset: fileModel.currentTime())
     }
-    
+
     func setOffsetAndAddNewCell() {
         cellInFocus?.setOffset(offset: fileModel.currentTime())
         let cell = columnInFocus?.addCell()
         cell?.setOnset(onset: fileModel.currentTime() + 1)
         cellInFocus = cell
-        
+
         fileModel.sheetModel.updates += 1
     }
-    
+
     var body: some View {
         Grid {
             GridRow {

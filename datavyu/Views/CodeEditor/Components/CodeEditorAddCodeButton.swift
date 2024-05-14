@@ -9,11 +9,11 @@ import SwiftUI
 
 struct CodeEditorAddCodeButton: View {
     @ObservedObject var column: ColumnModel
-    
+
     func addCode() {
         column.addArgument()
     }
-    
+
     var body: some View {
         Button("+", action: addCode)
     }

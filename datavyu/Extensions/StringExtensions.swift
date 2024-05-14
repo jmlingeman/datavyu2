@@ -7,8 +7,7 @@
 
 import Foundation
 
-extension String
-{
+extension String {
     func replacingLastOccurrenceOfString(_ searchString: String,
                                          with replacementString: String,
                                          caseInsensitive: Bool = true) -> String
@@ -19,13 +18,13 @@ extension String
         } else {
             options = [.backwards]
         }
-        
-        if let range = self.range(of: searchString,
-                                  options: options,
-                                  range: nil,
-                                  locale: nil) {
-            
-            return self.replacingCharacters(in: range, with: replacementString)
+
+        if let range = range(of: searchString,
+                             options: options,
+                             range: nil,
+                             locale: nil)
+        {
+            return replacingCharacters(in: range, with: replacementString)
         }
         return self
     }

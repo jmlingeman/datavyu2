@@ -5,19 +5,19 @@ import SwiftUI
 /// Renders and displays a waveform for the audio at `audioURL`.
 public struct WaveformViewDV: View {
     public static let defaultConfiguration = Waveform.Configuration(damping: .init(percentage: 0.125, sides: .both))
-    
+
     private let audioURL: URL
     private let configuration: Waveform.Configuration
     private let renderer: WaveformRenderer
     private let priority: TaskPriority
     private let size: CGSize
-    
+
     @StateObject private var waveformDrawer = WaveformImageDrawer()
-    @State private var waveformImage: DSImage = DSImage()
-    
+    @State private var waveformImage: DSImage = .init()
+
     /**
      Creates a new WaveformView which displays a waveform for the audio at `audioURL`.
-     
+
      - Parameters:
      - audioURL: The `URL` of the audio asset to be rendered.
      - configuration: The `Waveform.Configuration` to be used for rendering.
@@ -37,7 +37,7 @@ public struct WaveformViewDV: View {
         self.priority = priority
         self.size = size
     }
-    
+
     public var body: some View {
         GeometryReader { geometry in
             image
@@ -50,15 +50,15 @@ public struct WaveformViewDV: View {
                 .onChange(of: configuration) { update(size: geometry.size, url: audioURL, configuration: $0) }
         }
     }
-    
+
     private var image: some View {
-#if os(macOS)
-        Image(nsImage: waveformImage).resizable()
-#else
-        Image(uiImage: waveformImage).resizable()
-#endif
+        #if os(macOS)
+            Image(nsImage: waveformImage).resizable()
+        #else
+            Image(uiImage: waveformImage).resizable()
+        #endif
     }
-    
+
     private func update(size: CGSize, url: URL, configuration: Waveform.Configuration) {
         Task(priority: priority) {
             do {
@@ -71,7 +71,4 @@ public struct WaveformViewDV: View {
     }
 }
 
-
-extension DSImage: @unchecked Sendable {
-    
-}
+extension DSImage: @unchecked Sendable {}

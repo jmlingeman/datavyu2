@@ -7,7 +7,7 @@ struct TracksStackView: View {
     @ObservedObject var fileModel: FileModel
 
     func syncVideos() {
-        if fileModel.primaryVideo != nil && fileModel.videoModels.count > 1 && fileModel.primaryVideo!.selectedMarker != nil {
+        if fileModel.primaryVideo != nil, fileModel.videoModels.count > 1, fileModel.primaryVideo!.selectedMarker != nil {
             fileModel.primaryVideo!.syncMarker = fileModel.primaryVideo!.selectedMarker
             fileModel.primaryMarker = fileModel.primaryVideo!.syncMarker
             for videoModel in fileModel.videoModels {
@@ -22,7 +22,7 @@ struct TracksStackView: View {
             fileModel.seekAllVideos(to: fileModel.primaryMarker!.time)
         }
     }
-    
+
     func addVideo() {
         let panel = NSOpenPanel()
         panel.allowedContentTypes = [.video, .quickTimeMovie, .mpeg, .mpeg4Movie, .mp3, .mpeg2Video, .mpeg2TransportStream]
@@ -33,15 +33,15 @@ struct TracksStackView: View {
             fileModel.updates += 1
         }
     }
-    
+
     func getTrackWidthProportion(videoModel: VideoModel) -> Double {
-        return videoModel.duration / fileModel.longestDuration
+        videoModel.duration / fileModel.longestDuration
     }
 
     var body: some View {
         Grid {
             GridRow {
-                GeometryReader { gr in
+                GeometryReader { _ in
                     Grid {
                         ForEach(fileModel.videoModels) { videoModel in
                             GridRow {
@@ -49,16 +49,15 @@ struct TracksStackView: View {
                                     Text(videoModel.videoFileURL.lastPathComponent).frame(width: 150)
                                     TrackView(videoModel: videoModel,
                                               fileModel: fileModel,
-                                              primaryMarker: $fileModel.primaryMarker
-                                    )
-                                    .onTapGesture {
-                                        fileModel.updates += 1
-                                        videoModel.updates += 1
-                                    }.overlay {
-                                        if fileModel.videoModels.count > 0 {
-                                            TrackPositionIndicator(fileModel: fileModel, videoModel: fileModel.primaryVideo!)
+                                              primaryMarker: $fileModel.primaryMarker)
+                                        .onTapGesture {
+                                            fileModel.updates += 1
+                                            videoModel.updates += 1
+                                        }.overlay {
+                                            if fileModel.videoModels.count > 0 {
+                                                TrackPositionIndicator(fileModel: fileModel, videoModel: fileModel.primaryVideo!)
+                                            }
                                         }
-                                    }
                                 }
                             }.frame(height: 30)
                         }
@@ -70,7 +69,7 @@ struct TracksStackView: View {
                     ClockView(videoModel: fileModel.primaryVideo!)
                 }
             }
-            
+
         }.overlay(alignment: .bottomTrailing) {
             overlayButtons
         }

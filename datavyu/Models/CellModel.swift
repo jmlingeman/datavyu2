@@ -1,5 +1,5 @@
 //
-//  Cell.swift
+//  CellModel.swift
 //  sheettest
 //
 //  Created by Jesse Lingeman on 6/2/23.
@@ -9,7 +9,6 @@ import Foundation
 import Vapor
 
 final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Codable, Content, Comparable {
-        
     @Published var column: ColumnModel
     @Published var onset: Int = 0
     @Published var offset: Int = 0
@@ -18,33 +17,32 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
     @Published var arguments: [Argument] = []
     @Published var onsetPosition: Double = 0
     @Published var offsetPosition: Double = 0
-    
+
     var undoManager: UndoManager?
 
-        
     init() {
-        self.column = ColumnModel(sheetModel: SheetModel(sheetName: "dummy"), columnName: "dummy")
-        self.undoManager = column.sheetModel.undoManager
+        column = ColumnModel(sheetModel: SheetModel(sheetName: "dummy"), columnName: "dummy")
+        undoManager = column.sheetModel.undoManager
         syncArguments()
     }
-    
+
     init(column: ColumnModel) {
         self.column = column
-        self.undoManager = column.sheetModel.undoManager
+        undoManager = column.sheetModel.undoManager
         syncArguments()
     }
-    
+
     static func == (lhs: CellModel, rhs: CellModel) -> Bool {
-        return lhs.onset == rhs.onset && lhs.offset == rhs.offset && lhs.arguments == rhs.arguments && lhs.id == rhs.id
+        lhs.onset == rhs.onset && lhs.offset == rhs.offset && lhs.arguments == rhs.arguments && lhs.id == rhs.id
     }
-    
+
     func hash(into hasher: inout Hasher) {
         hasher.combine(onset)
         hasher.combine(offset)
         hasher.combine(arguments)
         hasher.combine(id)
     }
-    
+
     func updateArgumentNames() {
         for (idx, argument) in arguments.enumerated() {
             if argument.name != column.arguments[idx].name {
@@ -52,26 +50,26 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
             }
         }
     }
-    
+
     func setUndoManager(undoManager: UndoManager) {
         self.undoManager = undoManager
-        
+
         for arg in arguments {
             arg.setUndoManager(undoManager: undoManager)
         }
     }
-    
+
     func copy(columnModelCopy: ColumnModel) -> CellModel {
         let newCellModel = CellModel(column: columnModelCopy)
-        newCellModel.onset = self.onset
-        newCellModel.offset = self.offset
-        newCellModel.arguments = self.arguments.map({ a in
+        newCellModel.onset = onset
+        newCellModel.offset = offset
+        newCellModel.arguments = arguments.map { a in
             a.copy(columnModelCopy: columnModelCopy)
-        })
-        newCellModel.ordinal = self.ordinal
+        }
+        newCellModel.ordinal = ordinal
         return newCellModel
     }
-    
+
     static func < (lhs: CellModel, rhs: CellModel) -> Bool {
         if lhs.onset == rhs.onset {
             return lhs.offset < rhs.offset
@@ -79,23 +77,23 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
             return lhs.onset < rhs.onset
         }
     }
-    
+
     func syncArguments() {
         let args = column.arguments
         for arg in args {
             var found = false
-            for x in self.arguments {
+            for x in arguments {
                 if arg.name == x.name {
                     found = true
                 }
             }
             if !found {
-                self.arguments.append(Argument(name: arg.name, column: arg.column))
+                arguments.append(Argument(name: arg.name, column: arg.column))
             }
         }
-        self.arguments.last?.isLastArgument = true
+        arguments.last?.isLastArgument = true
     }
-    
+
     func setOnset(onset: Int) {
         print(#function)
         if onset != self.onset {
@@ -112,26 +110,26 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
             }
         }
     }
-    
+
     func updateSheet() {
-        self.column.sheetModel.updates += 1
+        column.sheetModel.updates += 1
     }
 
     func setOnset(onset: Double) {
         print(#function)
         setOnset(onset: Int(onset * 1000))
     }
-    
+
     func setOnset(onset: String) {
         print(#function)
         setOnset(onset: timestringToTimestamp(timestring: onset))
     }
-    
+
     func setOffset(offset: String) {
         print(#function)
         setOffset(offset: timestringToTimestamp(timestring: offset))
     }
-    
+
     func setOffset(offset: Int) {
         print(#function)
         if offset != self.offset {
@@ -152,33 +150,31 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
     func setOffset(offset: Double) {
         setOffset(offset: Int(offset * 1000))
     }
-    
+
     func setArgumentValue(index: Int, value: String) {
         arguments[index].setValue(value: value)
     }
-    
+
     func getArgumentIndex(_ argument: Argument?) -> IndexPath {
         if argument != nil {
-            return IndexPath(item: self.arguments.firstIndex(of: argument!) ?? 0, section: 0)
+            return IndexPath(item: arguments.firstIndex(of: argument!) ?? 0, section: 0)
         } else {
             return IndexPath(item: 0, section: 0)
         }
     }
-    
+
     func getNextArgumentIndex(_ argument: Argument) -> IndexPath {
-        let idx = (self.arguments.firstIndex(of: argument) ?? 0) + 1
+        let idx = (arguments.firstIndex(of: argument) ?? 0) + 1
         return IndexPath(item: idx, section: 0)
     }
-    
+
 //    static func == (lhs: CellModel, rhs: CellModel) -> Bool {
 //        if lhs.id == rhs.id {
 //            return true
 //        }
 //        return false
 //    }
-    
-    
-    
+
     enum CodingKeys: CodingKey {
         case onset
         case offset
@@ -186,16 +182,16 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
         case arguments
         case column
     }
-    
+
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         onset = try container.decode(Int.self, forKey: .onset)
         offset = try container.decode(Int.self, forKey: .offset)
         comment = try container.decode(String.self, forKey: .comment)
-        arguments = try container.decode(Array<Argument>.self, forKey: .arguments)
+        arguments = try container.decode([Argument].self, forKey: .arguments)
         column = try container.decode(ColumnModel.self, forKey: .column)
     }
-    
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(onset, forKey: .onset)

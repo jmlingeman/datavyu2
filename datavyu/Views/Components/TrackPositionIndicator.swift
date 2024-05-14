@@ -10,7 +10,7 @@ import SwiftUI
 struct TrackPositionIndicator: View {
     @ObservedObject var fileModel: FileModel
     @ObservedObject var videoModel: VideoModel
-    
+
     var body: some View {
         GeometryReader { gr in
             Rectangle().frame(width: 5).foregroundColor(Color.red)

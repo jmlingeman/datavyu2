@@ -1,5 +1,5 @@
 //
-//  OptionsView.swift
+//  ColumnListView.swift
 //  datavyu
 //
 //  Created by Jesse Lingeman on 7/2/23.
@@ -9,15 +9,15 @@ import SwiftUI
 
 struct ColumnListView: View {
     @ObservedObject var sheetModel: SheetModel
-    
+
     @Environment(\.dismiss) var dismiss
-    
+
     @State private var selectedColumns = Set<ColumnModel.ID>()
     let config = Config()
-    
+
     func hideColumns() {
         for colId in selectedColumns {
-            let colModel = sheetModel.columns.first(where: {cm in
+            let colModel = sheetModel.columns.first(where: { cm in
                 cm.id == colId
             })
             if colModel != nil {
@@ -27,10 +27,10 @@ struct ColumnListView: View {
             sheetModel.updates += 1
         }
     }
-    
+
     func showColumns() {
         for colId in selectedColumns {
-            let colModel = sheetModel.columns.first(where: {cm in
+            let colModel = sheetModel.columns.first(where: { cm in
                 cm.id == colId
             })
             if colModel != nil {
@@ -40,7 +40,7 @@ struct ColumnListView: View {
             sheetModel.updates += 1
         }
     }
-    
+
     var body: some View {
         VStack(alignment: .center) {
             Text("Columns").font(.system(size: 30))
@@ -63,7 +63,5 @@ struct ColumnListView: View {
                 dismiss()
             }.padding()
         }.padding()
-        
-        
     }
 }

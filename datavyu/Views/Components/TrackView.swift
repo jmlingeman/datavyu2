@@ -5,17 +5,17 @@
 //  Created by Jesse Lingeman on 6/18/23.
 //
 
-import SwiftUI
 import DSWaveformImage
 import DSWaveformImageViews
+import SwiftUI
 
 struct TrackView: View {
     @ObservedObject var videoModel: VideoModel
     @ObservedObject var fileModel: FileModel
     @Binding var primaryMarker: Marker?
     @State var selectedMarker: Marker?
-    
-    @State var configuration: Waveform.Configuration = Waveform.Configuration(
+
+    @State var configuration: Waveform.Configuration = .init(
         style: .outlined(.blue, 3),
         verticalScalingFactor: 1.0
     )
@@ -23,13 +23,13 @@ struct TrackView: View {
     func addMarker() {
         videoModel.addMarker(time: videoModel.currentTime)
     }
-    
+
     func deleteMarker() {
         if selectedMarker != nil {
             videoModel.deleteMarker(time: selectedMarker!.time)
         }
     }
-    
+
     func removeVideo() {
         fileModel.removeVideoModel(videoModel: videoModel)
     }
@@ -43,8 +43,7 @@ struct TrackView: View {
                 ForEach(videoModel.markers) { marker in
                     Rectangle().frame(width: 5).foregroundColor(marker == selectedMarker ? Color.purple : Color.green)
                         .position(x: marker.time / videoModel.getDuration() * calcWidth,
-                                  y: gr.size.height / 2
-                        ).onTapGesture {
+                                  y: gr.size.height / 2).onTapGesture {
                             if selectedMarker == marker {
                                 selectedMarker = nil
                                 videoModel.selectedMarker = nil
@@ -61,7 +60,7 @@ struct TrackView: View {
             .offset(x: alignMarkers(primaryMarker: fileModel.primaryMarker, secondaryMarker: videoModel.syncMarker, primaryWidth: gr.size.width, secondaryWidth: calcWidth))
         }
     }
-    
+
     func alignMarkers(primaryMarker: Marker?, secondaryMarker: Marker?, primaryWidth: Double, secondaryWidth: Double) -> Double {
         if primaryMarker == nil || secondaryMarker == nil {
             return 0
@@ -72,7 +71,6 @@ struct TrackView: View {
         return -(secX - priX)
     }
 
-
     var trackOverlay: some View {
         HStack(alignment: .bottom) {
             Spacer()
@@ -82,8 +80,8 @@ struct TrackView: View {
     }
 }
 
-//struct TrackView_Previews: PreviewProvider {
+// struct TrackView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        TrackView(videoModel: VideoModel(videoFilePath: "IMG_1234"), primarySyncTime: 0.0)
 //    }
-//}
+// }

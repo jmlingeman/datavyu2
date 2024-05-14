@@ -23,13 +23,13 @@ struct VideoView: View {
                     }
                 }
                 .frame(minWidth: 250,
-                        idealWidth: videoModel.player.currentItem?.presentationSize.width ?? 250,
-                        maxWidth: .infinity,
-                        minHeight: 250,
-                        idealHeight: videoModel.player.currentItem?.presentationSize.height ?? 250,
-                        maxHeight: .infinity,
-                        alignment: .center)
-            
+                       idealWidth: videoModel.player.currentItem?.presentationSize.width ?? 250,
+                       maxWidth: .infinity,
+                       minHeight: 250,
+                       idealHeight: videoModel.player.currentItem?.presentationSize.height ?? 250,
+                       maxHeight: .infinity,
+                       alignment: .center)
+
 //            Button("Open in Window") {
 //                self.openInWindow(title: "Win View", sender: self)
 //            }
@@ -37,17 +37,15 @@ struct VideoView: View {
     }
 }
 
-struct AVPlayerControllerRepresented : NSViewRepresentable {
-    var player : AVPlayer
-    
-    func makeNSView(context: Context) -> AVPlayerView {
+struct AVPlayerControllerRepresented: NSViewRepresentable {
+    var player: AVPlayer
+
+    func makeNSView(context _: Context) -> AVPlayerView {
         let view = AVPlayerView()
         view.controlsStyle = .none
         view.player = player
         return view
     }
-    
-    func updateNSView(_ nsView: AVPlayerView, context: Context) {
-        
-    }
+
+    func updateNSView(_: AVPlayerView, context _: Context) {}
 }

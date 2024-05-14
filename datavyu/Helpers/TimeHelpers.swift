@@ -12,7 +12,7 @@ func formatTimestamp(timestamp: Int) -> String {
     let minutes = Int(floor(Double(timestamp / 1000 % 3600 / 60)))
     let seconds = Int(floor(Double(timestamp / 1000 % 60)))
     let milliseconds = timestamp % 1000
-    
+
     return "\(hours):\(minutes):\(seconds):\(milliseconds)"
 }
 
@@ -32,7 +32,7 @@ func timestringToTimestamp(timestring: String) -> Int {
         if clock.count >= 4 {
             milliseconds = Int(clock[3]) ?? 0
         }
-        
+
         return (hours * 1000 * 60 * 60) + (minutes * 1000 * 60) + (seconds * 1000) + milliseconds
     } else {
         // Its an integer, so treat it like one

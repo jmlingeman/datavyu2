@@ -7,8 +7,7 @@
 
 import Foundation
 import RubyGateway
+
 // https://johnfairh.github.io/RubyGateway/
 
-class RubyEngine {
-    
-}
+class RubyEngine {}

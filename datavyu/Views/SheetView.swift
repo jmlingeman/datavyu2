@@ -17,13 +17,13 @@ struct Sheet: View {
     @State private var offset: CGPoint = .zero
     @FocusState private var isFocused: Bool
     @Binding var temporalLayout: Bool
-    
+
     @State var argumentFocusModel: ArgumentFocusModel
-    
+
     let config = Config()
 
     var body: some View {
-        GeometryReader { sheetGr in
+        GeometryReader { _ in
             VStack {
                 TemporalCollectionView().environmentObject(sheetModel)
             }

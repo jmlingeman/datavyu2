@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CodeEditorRow: View {
     @ObservedObject var column: ColumnModel
-    
+
     var body: some View {
         HStack {
             EditableLabel($column.columnName)

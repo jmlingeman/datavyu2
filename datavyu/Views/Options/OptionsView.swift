@@ -7,16 +7,13 @@
 
 import SwiftUI
 
-
-
 struct OptionsView: View {
     @Environment(\.dismiss) var dismiss
-    
+
     @AppStorage("colorscheme") private var colorscheme: String = "auto"
-    
-    
+
     let config = Config()
-    
+
     var body: some View {
         ScrollView(.vertical) {
             Text("Options").font(.system(size: 30)).frame(alignment: .topLeading).padding()
@@ -31,7 +28,6 @@ struct OptionsView: View {
                 dismiss()
             }.padding()
         }
-        
     }
 }
 

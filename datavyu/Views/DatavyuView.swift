@@ -12,13 +12,13 @@ struct DatavyuView: View {
 
     @Binding var temporalLayout: Bool
     @Binding var hideController: Bool
-    
+
     @EnvironmentObject var fileController: FileControllerModel
     @Environment(\.undoManager) var undoManager
 
     var body: some View {
         ZStack {
-            GeometryReader { gr in
+            GeometryReader { _ in
                 ControllerView(fileModel: fileModel, temporalLayout: $temporalLayout, hideController: $hideController)
                     .onAppear(perform: {
                         fileModel.sheetModel.setUndoManager(undoManager: undoManager!)
@@ -26,7 +26,5 @@ struct DatavyuView: View {
                     .environmentObject(fileModel.sheetModel)
             }
         }
-        
     }
 }
-

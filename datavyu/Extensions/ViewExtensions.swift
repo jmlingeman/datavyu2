@@ -8,7 +8,6 @@
 import Foundation
 import SwiftUI
 
-
 extension View {
     @discardableResult
     func openInWindow(title: String, sender: Any?, frameName: String?) -> NSWindow {
@@ -18,17 +17,17 @@ extension View {
         win.title = title
         win.makeKeyAndOrderFront(sender)
         win.tabbingMode = .disallowed
-        
+
         win.setFrame(NSRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 500, height: 500)), display: true)
-        
+
         if frameName != nil {
             let _ = win.setFrameUsingName(frameName!)
             win.setFrameAutosaveName(frameName!)
         }
-        
+
         return win
     }
-    
+
     func closeWindow() {
         NSApplication.shared.keyWindow?.close()
     }
