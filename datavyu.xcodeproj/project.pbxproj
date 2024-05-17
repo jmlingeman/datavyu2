@@ -31,6 +31,10 @@
 		881A3A022A2C0B6500B4782D /* VideoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A3A012A2C0B6500B4782D /* VideoModel.swift */; };
 		882D71AE2BEDAC0200538D51 /* FileExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882D71AD2BEDAC0200538D51 /* FileExtensions.swift */; };
 		882D71B02BF2AB6600538D51 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882D71AF2BF2AB6600538D51 /* ViewExtensions.swift */; };
+		882D71B42BF422A000538D51 /* SpectrogramController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882D71B32BF422A000538D51 /* SpectrogramController.swift */; };
+		882D72112BF5368000538D51 /* AVPlayer+ACBHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 882D720D2BF5368000538D51 /* AVPlayer+ACBHelper.m */; };
+		882D72122BF5368000538D51 /* ACBAudioProcessHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 882D720F2BF5368000538D51 /* ACBAudioProcessHelper.m */; };
+		882D72132BF5368000538D51 /* MYAudioTapProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 882D72102BF5368000538D51 /* MYAudioTapProcessor.m */; };
 		8837C56D2A2D29AF00F29182 /* EditableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8837C56C2A2D29AF00F29182 /* EditableLabel.swift */; };
 		884B0DF52A4F792A00D16304 /* RubyGateway in Frameworks */ = {isa = PBXBuildFile; productRef = 884B0DF42A4F792A00D16304 /* RubyGateway */; };
 		884B0DF72A50BE6B00D16304 /* DatavyuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884B0DF62A50BE6B00D16304 /* DatavyuView.swift */; };
@@ -42,6 +46,7 @@
 		884CBB552A6DF8F600D5DBA8 /* ColumnNameDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884CBB542A6DF8F600D5DBA8 /* ColumnNameDialog.swift */; };
 		885411852B463924006A86C0 /* WrappedHStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885411842B463924006A86C0 /* WrappedHStack.swift */; };
 		886540862B76DE5A00D2BF0A /* ArgumentTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 886540852B76DE5A00D2BF0A /* ArgumentTextField.swift */; };
+		886F73962BF54982006383BE /* SpectrogramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 886F73952BF54982006383BE /* SpectrogramView.swift */; };
 		8878A60E2A2D698900A2658C /* CodeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A60D2A2D698900A2658C /* CodeEditorView.swift */; };
 		8878A6102A2FBC8700A2658C /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A60F2A2FBC8700A2658C /* Config.swift */; };
 		8878A6132A3026E100A2658C /* RubyScriptEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6122A3026E100A2658C /* RubyScriptEngine.swift */; };
@@ -134,6 +139,15 @@
 		882D71A92BED9CE600538D51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		882D71AD2BEDAC0200538D51 /* FileExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileExtensions.swift; sourceTree = "<group>"; };
 		882D71AF2BF2AB6600538D51 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
+		882D71B32BF422A000538D51 /* SpectrogramController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrogramController.swift; sourceTree = "<group>"; };
+		882D72052BF5352700538D51 /* ACBAVPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ACBAVPlayer.framework; path = ../ACBAVPlayer.framework; sourceTree = "<group>"; };
+		882D720A2BF5367F00538D51 /* datavyu-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "datavyu-Bridging-Header.h"; sourceTree = "<group>"; };
+		882D720B2BF5368000538D51 /* ACBAudioProcessHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ACBAudioProcessHelper.h; path = carthage/ACBAVPlayerExtension/ACBAVPlayerExtension/Classes/AudioProcessing/ACBAudioProcessHelper.h; sourceTree = SOURCE_ROOT; };
+		882D720C2BF5368000538D51 /* AVPlayer+ACBHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "AVPlayer+ACBHelper.h"; path = "carthage/ACBAVPlayerExtension/ACBAVPlayerExtension/Classes/AudioProcessing/AVPlayer+ACBHelper.h"; sourceTree = SOURCE_ROOT; };
+		882D720D2BF5368000538D51 /* AVPlayer+ACBHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "AVPlayer+ACBHelper.m"; path = "carthage/ACBAVPlayerExtension/ACBAVPlayerExtension/Classes/AudioProcessing/AVPlayer+ACBHelper.m"; sourceTree = SOURCE_ROOT; };
+		882D720E2BF5368000538D51 /* MYAudioTapProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MYAudioTapProcessor.h; path = carthage/ACBAVPlayerExtension/ACBAVPlayerExtension/Classes/AudioProcessing/MYAudioTapProcessor.h; sourceTree = SOURCE_ROOT; };
+		882D720F2BF5368000538D51 /* ACBAudioProcessHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ACBAudioProcessHelper.m; path = carthage/ACBAVPlayerExtension/ACBAVPlayerExtension/Classes/AudioProcessing/ACBAudioProcessHelper.m; sourceTree = SOURCE_ROOT; };
+		882D72102BF5368000538D51 /* MYAudioTapProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MYAudioTapProcessor.m; path = carthage/ACBAVPlayerExtension/ACBAVPlayerExtension/Classes/AudioProcessing/MYAudioTapProcessor.m; sourceTree = SOURCE_ROOT; };
 		8837C56C2A2D29AF00F29182 /* EditableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableLabel.swift; sourceTree = "<group>"; };
 		884B0DF62A50BE6B00D16304 /* DatavyuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatavyuView.swift; sourceTree = "<group>"; };
 		884B0DF82A50CB1B00D16304 /* CodeEditorAddCodeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorAddCodeButton.swift; sourceTree = "<group>"; };
@@ -144,6 +158,7 @@
 		884CBB542A6DF8F600D5DBA8 /* ColumnNameDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnNameDialog.swift; sourceTree = "<group>"; };
 		885411842B463924006A86C0 /* WrappedHStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedHStack.swift; sourceTree = "<group>"; };
 		886540852B76DE5A00D2BF0A /* ArgumentTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentTextField.swift; sourceTree = "<group>"; };
+		886F73952BF54982006383BE /* SpectrogramView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrogramView.swift; sourceTree = "<group>"; };
 		8878A60D2A2D698900A2658C /* CodeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorView.swift; sourceTree = "<group>"; };
 		8878A60F2A2FBC8700A2658C /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		8878A6122A3026E100A2658C /* RubyScriptEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RubyScriptEngine.swift; sourceTree = "<group>"; };
@@ -235,6 +250,7 @@
 				881A39B92A242D4700B4782D /* sheettestTests */,
 				881A39C32A242D4700B4782D /* sheettestUITests */,
 				881A39A62A242D4600B4782D /* Products */,
+				882D72042BF5352700538D51 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -351,6 +367,28 @@
 			path = IO;
 			sourceTree = "<group>";
 		};
+		882D72042BF5352700538D51 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				882D72052BF5352700538D51 /* ACBAVPlayer.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		882D72092BF5366C00538D51 /* AudioTap */ = {
+			isa = PBXGroup;
+			children = (
+				882D720B2BF5368000538D51 /* ACBAudioProcessHelper.h */,
+				882D720F2BF5368000538D51 /* ACBAudioProcessHelper.m */,
+				882D720C2BF5368000538D51 /* AVPlayer+ACBHelper.h */,
+				882D720D2BF5368000538D51 /* AVPlayer+ACBHelper.m */,
+				882D720E2BF5368000538D51 /* MYAudioTapProcessor.h */,
+				882D72102BF5368000538D51 /* MYAudioTapProcessor.m */,
+				882D720A2BF5367F00538D51 /* datavyu-Bridging-Header.h */,
+			);
+			path = AudioTap;
+			sourceTree = "<group>";
+		};
 		8837C56B2A2D299B00F29182 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -421,6 +459,7 @@
 		8878A62E2A3FFCB600A2658C /* Audio */ = {
 			isa = PBXGroup;
 			children = (
+				886F73952BF54982006383BE /* SpectrogramView.swift */,
 			);
 			path = Audio;
 			sourceTree = "<group>";
@@ -437,8 +476,10 @@
 		88BFE42E2A9D264300B37DC3 /* Visualizations */ = {
 			isa = PBXGroup;
 			children = (
+				882D72092BF5366C00538D51 /* AudioTap */,
 				88EF5AB92A9ED17200D1EADA /* Spectrogram */,
 				88BFE42C2A9D25CB00B37DC3 /* WaveformViewDV.swift */,
+				882D71B32BF422A000538D51 /* SpectrogramController.swift */,
 			);
 			path = Visualizations;
 			sourceTree = "<group>";
@@ -564,6 +605,7 @@
 				TargetAttributes = {
 					881A39A42A242D4600B4782D = {
 						CreatedOnToolsVersion = 14.3;
+						LastSwiftMigration = 1500;
 					};
 					881A39B52A242D4700B4782D = {
 						CreatedOnToolsVersion = 14.3;
@@ -667,6 +709,7 @@
 				881A39AB2A242D4600B4782D /* ContentView.swift in Sources */,
 				88BFE4252A9BE78F00B37DC3 /* CodeEditorRemoveCodeButton.swift in Sources */,
 				8878A60E2A2D698900A2658C /* CodeEditorView.swift in Sources */,
+				882D72122BF5368000538D51 /* ACBAudioProcessHelper.m in Sources */,
 				881A39EF2A2A88AB00B4782D /* CellView.swift in Sources */,
 				881A39F52A2A917E00B4782D /* ArgumentModel.swift in Sources */,
 				8878A61F2A38D99100A2658C /* WeakTemporalLayout.swift in Sources */,
@@ -686,6 +729,7 @@
 				881A39F12A2A8D6200B4782D /* SheetModel.swift in Sources */,
 				880CBD132B3FB61500D7701F /* TemporalCollectionViewLayout.swift in Sources */,
 				881A39F72A2A9D5900B4782D /* SheetView.swift in Sources */,
+				882D72132BF5368000538D51 /* MYAudioTapProcessor.m in Sources */,
 				88BFE42D2A9D25CB00B37DC3 /* WaveformViewDV.swift in Sources */,
 				880CBC8B2B3B699D00D7701F /* TemporalLayoutUIKit.swift in Sources */,
 				88CE94532AA25E69000E8DFB /* FileControllerModel.swift in Sources */,
@@ -694,12 +738,15 @@
 				88EF5AC22A9ED19400D1EADA /* AudioSpectrogram.swift in Sources */,
 				88F8A9322A993954001EEB21 /* ControllerButton.swift in Sources */,
 				88E094752B69B5AB00A93660 /* CellViewUIKit.swift in Sources */,
+				882D72112BF5368000538D51 /* AVPlayer+ACBHelper.m in Sources */,
 				882D71B02BF2AB6600538D51 /* ViewExtensions.swift in Sources */,
 				885411852B463924006A86C0 /* WrappedHStack.swift in Sources */,
 				88D3FE372A4DE12A0094F953 /* TrackPositionIndicator.swift in Sources */,
 				88F8A9342A9A56FB001EEB21 /* ControllerPanelView.swift in Sources */,
 				884CBB512A6CA4EF00D5DBA8 /* OrdinalLayout.swift in Sources */,
+				886F73962BF54982006383BE /* SpectrogramView.swift in Sources */,
 				884B0DF92A50CB1B00D16304 /* CodeEditorAddCodeButton.swift in Sources */,
+				882D71B42BF422A000538D51 /* SpectrogramController.swift in Sources */,
 				881A3A002A2BE73B00B4782D /* ControllerView.swift in Sources */,
 				884CBB552A6DF8F600D5DBA8 /* ColumnNameDialog.swift in Sources */,
 			);
@@ -864,6 +911,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = datavyu/datavyu.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -887,6 +935,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.jesseisageek.datavyu2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "datavyu/Visualizations/AudioTap/datavyu-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TVOS_DEPLOYMENT_TARGET = 15.0;
 			};
@@ -897,6 +947,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = datavyu/datavyu.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -920,6 +971,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.jesseisageek.datavyu2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "datavyu/Visualizations/AudioTap/datavyu-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TVOS_DEPLOYMENT_TARGET = 15.0;
 			};

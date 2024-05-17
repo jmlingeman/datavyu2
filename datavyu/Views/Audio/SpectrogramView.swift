@@ -8,11 +8,23 @@
 import SwiftUI
 
 struct SpectrogramView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+    @ObservedObject var videoModel: VideoModel
+    @StateObject private var spectrogramController: SpectrogramController
+    
+    init(videoModel: VideoModel) {
+        self.videoModel = videoModel
+        _spectrogramController = StateObject(wrappedValue: SpectrogramController(player: videoModel.player))
     }
-}
-
-#Preview {
-    SpectrogramView()
+    
+    var body: some View {
+        ZStack {
+            Text("\(spectrogramController.updates)")
+            Image(nsImage: spectrogramController.outputImage)
+                .frame(width: 500, height: 500)
+            
+            //            Button("Open in Window") {
+            //                self.openInWindow(title: "Win View", sender: self)
+            //            }
+        }
+    }
 }

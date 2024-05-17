@@ -30,9 +30,9 @@ class AudioSpectrogram: NSObject, ObservableObject {
     override init() {
         super.init()
 
-        configureCaptureSession()
-        audioOutput.setSampleBufferDelegate(self,
-                                            queue: captureQueue)
+//        configureMicrophoneCaptureSession()
+//        audioOutput.setSampleBufferDelegate(self,
+//                                            queue: captureQueue)
     }
 
     @available(*, unavailable)
@@ -198,8 +198,169 @@ class AudioSpectrogram: NSObject, ObservableObject {
             rgbImageBuffer.interleave(
                 planarSourceBuffers: [redBuffer, greenBuffer, blueBuffer])
         }
+        
+        let image = rgbImageBuffer.makeCGImage(cgImageFormat: rgbImageFormat)
 
-        return rgbImageBuffer.makeCGImage(cgImageFormat: rgbImageFormat) ?? AudioSpectrogram.emptyCGImage
+        return image ?? AudioSpectrogram.emptyCGImage
+    }
+    
+    
+    static func configureSampleBuffer(pcmBuffer: AVAudioPCMBuffer) -> CMSampleBuffer? {
+        let audioBufferList = pcmBuffer.mutableAudioBufferList
+        let asbd = pcmBuffer.format.streamDescription
+        
+        var sampleBuffer: CMSampleBuffer? = nil
+        var format: CMFormatDescription? = nil
+        
+        var status = CMAudioFormatDescriptionCreate(allocator: kCFAllocatorDefault,
+                                                    asbd: asbd,
+                                                    layoutSize: 0,
+                                                    layout: nil,
+                                                    magicCookieSize: 0,
+                                                    magicCookie: nil,
+                                                    extensions: nil,
+                                                    formatDescriptionOut: &format);
+        if (status != noErr) { return nil; }
+        
+        var timing: CMSampleTimingInfo = CMSampleTimingInfo(duration: CMTime(value: 1, timescale: Int32(asbd.pointee.mSampleRate)),
+                                                            presentationTimeStamp: CMClockGetTime(CMClockGetHostTimeClock()),
+                                                            decodeTimeStamp: CMTime.invalid)
+        status = CMSampleBufferCreate(allocator: kCFAllocatorDefault,
+                                      dataBuffer: nil,
+                                      dataReady: false,
+                                      makeDataReadyCallback: nil,
+                                      refcon: nil,
+                                      formatDescription: format,
+                                      sampleCount: CMItemCount(pcmBuffer.frameLength),
+                                      sampleTimingEntryCount: 1,
+                                      sampleTimingArray: &timing,
+                                      sampleSizeEntryCount: 0,
+                                      sampleSizeArray: nil,
+                                      sampleBufferOut: &sampleBuffer);
+        if (status != noErr) { NSLog("CMSampleBufferCreate returned error: \(status)"); return nil }
+        
+        status = CMSampleBufferSetDataBufferFromAudioBufferList(sampleBuffer!,
+                                                                blockBufferAllocator: kCFAllocatorDefault,
+                                                                blockBufferMemoryAllocator: kCFAllocatorDefault,
+                                                                flags: 0,
+                                                                bufferList: audioBufferList);
+        if (status != noErr) { NSLog("CMSampleBufferSetDataBufferFromAudioBufferList returned error: \(status)"); return nil; }
+        
+        return sampleBuffer
+    }
+    
+    var converter: AVAudioConverter? = nil
+    var convertBuffer: AVAudioPCMBuffer? = nil
+
+    public func convertPCMFloatToPCMInt16(buffer: AVAudioPCMBuffer) -> AVAudioPCMBuffer? {
+        let targetFormat = AVAudioFormat(commonFormat: AVAudioCommonFormat.pcmFormatInt16, sampleRate: 16000, channels: 1, interleaved: false)
+
+        if converter == nil {
+            convertBuffer = AVAudioPCMBuffer(pcmFormat: targetFormat!, frameCapacity: buffer.frameCapacity)
+            convertBuffer?.frameLength = convertBuffer!.frameCapacity
+            converter = AVAudioConverter(from: buffer.format, to: convertBuffer!.format)
+            converter?.sampleRateConverterAlgorithm = AVSampleRateConverterAlgorithm_Normal
+            converter?.sampleRateConverterQuality = .max
+        }
+        
+        guard let convertBuffer = convertBuffer else { return nil }
+        
+        print("Converter: \(self.converter!)")
+        print("Converter buffer: \(self.convertBuffer!)")
+        print("Converter buffer format: \(self.convertBuffer!.format)")
+        print("Source buffer: \(buffer)")
+        print("Source buffer format: \(buffer.format)")
+        
+        let inputBlock: AVAudioConverterInputBlock = { inNumPackets, outStatus in
+            outStatus.pointee = AVAudioConverterInputStatus.haveData
+            return buffer
+        }
+        
+        var error: NSError? = nil
+        let status: AVAudioConverterOutputStatus = converter!.convert(to: convertBuffer, error: &error, withInputFrom: inputBlock)
+        // TODO: check status
+        print("CONVERSION STATUS: \(status)")
+
+        return convertBuffer
+    }
+    
+    public func processBuffer(pcmBuffer: AVAudioPCMBuffer)
+    {
+        let pcmBufferInt16 = convertPCMFloatToPCMInt16(buffer: pcmBuffer)
+        var sampleBuffer = AudioSpectrogram.configureSampleBuffer(pcmBuffer: pcmBufferInt16!)!
+        
+        print(pcmBuffer.int16ChannelData)
+        print(pcmBuffer.int32ChannelData)
+        print(pcmBuffer.floatChannelData)
+        // this line also creates AudioBufferList instance.
+
+        
+        let audioBufferList = pcmBufferInt16!.mutableAudioBufferList
+
+        var blockBuffer: CMBlockBuffer?
+
+//        var abl = AudioBufferList(mNumberBuffers: 1, mBuffers: (AudioBuffer(mNumberChannels: 1, mDataByteSize: UInt32(sampleBuffer.numSamples), mData: &blockBuffer)))
+//        var audioBufferList = AudioBufferList(mNumberBuffers: <#T##UInt32#>, mBuffers: <#T##(AudioBuffer)#>)
+//        var blockBuffer: CMBlockBuffer?
+        
+        let v = CMSampleBufferGetAudioBufferListWithRetainedBlockBuffer(
+            sampleBuffer,
+            bufferListSizeNeededOut: nil,
+            bufferListOut: audioBufferList,
+            bufferListSize: MemoryLayout.stride(ofValue: audioBufferList),
+            blockBufferAllocator: nil,
+            blockBufferMemoryAllocator: nil,
+            flags: kCMSampleBufferFlag_AudioBufferList_Assure16ByteAlignment,
+            blockBufferOut: &blockBuffer
+        )
+        let error = NSError(domain: NSOSStatusErrorDomain, code: Int(v), userInfo: nil)
+        print("AudioBufferList: \(v) \(error)")
+        
+        guard let data = audioBufferList.pointee.mBuffers.mData else {
+            print("No buffer data")
+            return
+        }
+        
+        /// The _Nyquist frequency_ is the highest frequency that a sampled system can properly
+        /// reproduce and is half the sampling rate of such a system. Although  this app doesn't use
+        /// `nyquistFrequency`,  you may find this code useful to add an overlay to the user interface.
+        if nyquistFrequency == nil {
+            let duration = Float(CMSampleBufferGetDuration(sampleBuffer).value)
+            let timescale = Float(CMSampleBufferGetDuration(sampleBuffer).timescale)
+            let numsamples = Float(CMSampleBufferGetNumSamples(sampleBuffer))
+            nyquistFrequency = 0.5 / (duration / timescale / numsamples)
+        }
+        
+        /// Because the audio spectrogram code requires exactly `sampleCount` (which the app defines
+        /// as 1024) samples, but audio sample buffers from AVFoundation may not always contain exactly
+        /// 1024 samples, the app adds the contents of each audio sample buffer to `rawAudioData`.
+        ///
+        /// The following code creates an array from `data` and appends it to  `rawAudioData`:
+        if rawAudioData.count < AudioSpectrogram.sampleCount * 2 {
+            let actualSampleCount = CMSampleBufferGetNumSamples(sampleBuffer)
+            
+            let pointer = data.bindMemory(to: Int16.self,
+                                          capacity: actualSampleCount)
+            let buffer = UnsafeBufferPointer(start: pointer,
+                                             count: actualSampleCount)
+            
+            rawAudioData.append(contentsOf: Array(buffer))
+        }
+        
+        /// The following code app passes the first `sampleCount`elements of raw audio data to the
+        /// `processData(values:)` function, and removes the first `hopCount` elements from
+        /// `rawAudioData`.
+        ///
+        /// By removing fewer elements than each step processes, the rendered frames of data overlap,
+        /// ensuring no loss of audio data.
+        while rawAudioData.count >= AudioSpectrogram.sampleCount {
+            let dataToProcess = Array(rawAudioData[0 ..< AudioSpectrogram.sampleCount])
+            rawAudioData.removeFirst(AudioSpectrogram.hopCount)
+            processData(values: dataToProcess)
+        }
+        
+        outputImage = makeAudioSpectrogramImage()
+        
     }
 }
 

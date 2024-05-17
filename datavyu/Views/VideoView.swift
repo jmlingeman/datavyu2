@@ -14,7 +14,7 @@ struct VideoView: View {
     @ObservedObject var videoModel: VideoModel
 
     var body: some View {
-        ZStack {
+        VStack {
             AVPlayerControllerRepresented(player: videoModel.player)
                 .onAppear {
                     videoModel.player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.01, preferredTimescale: 600), queue: nil) { time in
@@ -33,6 +33,7 @@ struct VideoView: View {
 //            Button("Open in Window") {
 //                self.openInWindow(title: "Win View", sender: self)
 //            }
+            SpectrogramView(videoModel: videoModel)
         }
     }
 }

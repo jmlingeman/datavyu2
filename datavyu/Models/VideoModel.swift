@@ -62,12 +62,15 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable, Codable {
         newVideoModel.ready = ready
         newVideoModel.syncMarker = syncMarker
         newVideoModel.syncOffset = syncOffset
+        
+        
 
         return newVideoModel
     }
 
     func play() {
         player.play()
+        
     }
 
     func stop() {
