@@ -276,23 +276,27 @@ public class SpectrogramVideoBuilder: ObservableObject {
     
     func fillPixelBufferFromImage(_ image: UIImage, pixelBuffer: CVPixelBuffer) {
         CVPixelBufferLockBaseAddress(pixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
-        
+
         let ciimage = CIImage(cgImage: image.cgImage!)
+        let rotatedImage = ciimage.oriented(.right)
+
         
         let pixelData = CVPixelBufferGetBaseAddress(pixelBuffer)
         let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
         let context = CGContext(
             data: pixelData,
-            width: Int(image.size.width),
-            height: Int(image.size.height),
+            width: Int(image.size.height),
+            height: Int(image.size.width),
             bitsPerComponent: 8,
             bytesPerRow: AudioSpectrogram.sampleCount * MemoryLayout<Float>.stride,
             space: rgbColorSpace,
             bitmapInfo: CGImageAlphaInfo.premultipliedFirst.rawValue
         )
         
+
+        
         let cicontext = CIContext(cgContext: context!)
-        cicontext.render(ciimage, to: pixelBuffer)
+        cicontext.render(rotatedImage, to: pixelBuffer)
 
                 
 //        context?.clear(CGRect(x: 0, y: 0, width: CVPixelBufferGetWidth(pixelBuffer), height: CVPixelBufferGetHeight(pixelBuffer)))
@@ -311,5 +315,6 @@ extension NSImage {
                        context: nil,
                        hints: nil)
     }
+
 }
 #endif
