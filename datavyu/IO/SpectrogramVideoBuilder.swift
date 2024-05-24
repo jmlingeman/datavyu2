@@ -2,6 +2,7 @@
 
 import AVFoundation
 import CoreImage
+import SwiftUI
 
 #if os(macOS)
 import Cocoa
@@ -47,14 +48,25 @@ class SpectrogramDelegate: SpectrogramVideoBuilderDelegate {
 }
 
 
-public class SpectrogramVideoBuilder {
+public class SpectrogramVideoBuilder: ObservableObject {
+    @Published var progress = 0.0
+    
     public var delegate: SpectrogramVideoBuilderDelegate
     
     var videoWriter: AVAssetWriter?
     
-    public init(delegate: SpectrogramVideoBuilderDelegate) {
-        
-        self.delegate = delegate
+    public init(delegate: SpectrogramVideoBuilderDelegate?) {
+        if delegate == nil {
+            self.delegate = SpectrogramDelegate { progress in
+                
+            } finished: { url in
+                
+            } failed: { error in
+                print(error)
+            }
+        } else {
+            self.delegate = delegate!
+        }
     }
     
     public func build(with player: AVPlayer, atFrameRate framesPerSecond: Int32, type: AVFileType, toOutputPath: String) {
@@ -62,6 +74,8 @@ public class SpectrogramVideoBuilder {
         do {
             if player.currentItem != nil {
                 let asset = player.currentItem!.asset
+                
+                let totalTime = asset.duration.seconds
                 
                 let assetReader = try AVAssetReader(asset: asset)
                 
@@ -138,7 +152,6 @@ public class SpectrogramVideoBuilder {
                     
                     
                     var frameCount: Int64 = 0
-                    var currentProgress: Progress = Progress(totalUnitCount: 1000 /* TODO: Make number of frames from FR/LEN on player */)
                         
                     
                     
@@ -152,14 +165,11 @@ public class SpectrogramVideoBuilder {
                             while videoWriterInput.isReadyForMoreMediaData {
 //                                let presentationTime = CMTimeMake(value: frameCount, timescale: framesPerSecond)
                                 
-                                currentProgress.completedUnitCount = frameCount
-                                self.delegate.timeLapseBuilder(self, didMakeProgress: currentProgress)
                                 let sample = assetReaderAudioOutput.copyNextSampleBuffer()
 
 
                                 if sample != nil {
                                     let presentationTime = CMSampleBufferGetPresentationTimeStamp(sample!)
-                                    print("Presentation Time: \(presentationTime)")
                                     let image = spectrogram.processBuffer(sampleBuffer: sample!)
                                     let nsImage = spectrogramController.formatImage(image: image!)
                                     if !self.appendPixelBufferForNSImage(nsImage, pixelBufferAdaptor: pixelBufferAdaptor, presentationTime: presentationTime) {
@@ -172,8 +182,10 @@ public class SpectrogramVideoBuilder {
                                         break
                                     }
                                     
+                                    self.progress = presentationTime.seconds / totalTime
+                                    print("PROGRESS: \(self.progress)")
+                                    
                                     frameCount += 1
-                                    print("FRAME: \(frameCount), \(assetReader.status) \(assetReader.error)")
 
                                 } else {
                                     videoWriterInput.markAsFinished()

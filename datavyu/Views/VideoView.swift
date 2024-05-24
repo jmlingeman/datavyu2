@@ -12,6 +12,8 @@ import SwiftUI
 
 struct VideoView: View {
     @ObservedObject var videoModel: VideoModel
+    
+    @StateObject var spectrogramBuilder = SpectrogramVideoBuilder(delegate: nil)
 
     var body: some View {
         VStack {
@@ -21,17 +23,8 @@ struct VideoView: View {
                         $videoModel.currentTime.wrappedValue = time.seconds
                         $videoModel.currentPos.wrappedValue = time.seconds / videoModel.player.getCurrentTrackDuration()
                     }
-                    let delegate = SpectrogramDelegate { progress in
-
-                    } finished: { url in
-                         
-                    } failed: { error in
-                         print(error)
-                    }
-
-                    DispatchQueue.main.async {
-                        SpectrogramVideoBuilder(delegate: delegate).build(with: videoModel.player, atFrameRate: 30, type: .mov, toOutputPath: "/Users/jesse/Downloads/\(videoModel.filename).mov")
-                    }
+                    
+                    
                 }
                 .frame(minWidth: 250,
                        idealWidth: videoModel.player.currentItem?.presentationSize.width ?? 250,
@@ -41,9 +34,20 @@ struct VideoView: View {
                        maxHeight: .infinity,
                        alignment: .center)
 
-//            Button("Open in Window") {
-//                self.openInWindow(title: "Win View", sender: self)
-//            }
+            Button("Generate Spectrogram") {
+                let delegate = SpectrogramDelegate { progress in
+                    
+                } finished: { url in
+                    
+                } failed: { error in
+                    print(error)
+                }
+	
+                DispatchQueue.main.async {
+                    spectrogramBuilder.build(with: videoModel.player, atFrameRate: 30, type: .mov, toOutputPath: "/Users/jesse/Downloads/\(videoModel.filename).mov")
+                }
+            }
+            ProgressView(value: spectrogramBuilder.progress)
             SpectrogramView(videoModel: videoModel)
         }
     }
