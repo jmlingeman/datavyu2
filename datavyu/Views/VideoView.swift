@@ -33,22 +33,6 @@ struct VideoView: View {
                        idealHeight: videoModel.player.currentItem?.presentationSize.height ?? 250,
                        maxHeight: .infinity,
                        alignment: .center)
-
-            Button("Generate Spectrogram") {
-                let delegate = SpectrogramDelegate { progress in
-                    
-                } finished: { url in
-                    
-                } failed: { error in
-                    print(error)
-                }
-	
-                DispatchQueue.main.async {
-                    spectrogramBuilder.build(with: videoModel.player, atFrameRate: 30, type: .mov, toOutputPath: "/Users/jesse/Downloads/\(videoModel.filename).mov")
-                }
-            }
-            ProgressView(value: spectrogramBuilder.progress)
-            SpectrogramView(videoModel: videoModel)
         }
     }
 }

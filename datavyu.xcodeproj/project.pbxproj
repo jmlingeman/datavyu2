@@ -46,9 +46,9 @@
 		884CBB532A6CA58F00D5DBA8 /* LayoutKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884CBB522A6CA58F00D5DBA8 /* LayoutKeys.swift */; };
 		884CBB552A6DF8F600D5DBA8 /* ColumnNameDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884CBB542A6DF8F600D5DBA8 /* ColumnNameDialog.swift */; };
 		885411852B463924006A86C0 /* WrappedHStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885411842B463924006A86C0 /* WrappedHStack.swift */; };
-		8861C4122BFA54FC00DD180D /* SpectrogramVideoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8861C4112BFA54FC00DD180D /* SpectrogramVideoController.swift */; };
 		8861C4142BFA586E00DD180D /* SpectrogramVideoBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8861C4132BFA586E00DD180D /* SpectrogramVideoBuilder.swift */; };
 		8861C4162BFA5DC900DD180D /* AVAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8861C4152BFA5DC900DD180D /* AVAsset.swift */; };
+		8861C4182C014A3500DD180D /* SpectrogramProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8861C4172C014A3500DD180D /* SpectrogramProgressView.swift */; };
 		886540862B76DE5A00D2BF0A /* ArgumentTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 886540852B76DE5A00D2BF0A /* ArgumentTextField.swift */; };
 		886F73962BF54982006383BE /* SpectrogramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 886F73952BF54982006383BE /* SpectrogramView.swift */; };
 		8878A60E2A2D698900A2658C /* CodeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A60D2A2D698900A2658C /* CodeEditorView.swift */; };
@@ -162,9 +162,9 @@
 		884CBB522A6CA58F00D5DBA8 /* LayoutKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutKeys.swift; sourceTree = "<group>"; };
 		884CBB542A6DF8F600D5DBA8 /* ColumnNameDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnNameDialog.swift; sourceTree = "<group>"; };
 		885411842B463924006A86C0 /* WrappedHStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedHStack.swift; sourceTree = "<group>"; };
-		8861C4112BFA54FC00DD180D /* SpectrogramVideoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrogramVideoController.swift; sourceTree = "<group>"; };
 		8861C4132BFA586E00DD180D /* SpectrogramVideoBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrogramVideoBuilder.swift; sourceTree = "<group>"; };
 		8861C4152BFA5DC900DD180D /* AVAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVAsset.swift; sourceTree = "<group>"; };
+		8861C4172C014A3500DD180D /* SpectrogramProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrogramProgressView.swift; sourceTree = "<group>"; };
 		886540852B76DE5A00D2BF0A /* ArgumentTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentTextField.swift; sourceTree = "<group>"; };
 		886F73952BF54982006383BE /* SpectrogramView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrogramView.swift; sourceTree = "<group>"; };
 		8878A60D2A2D698900A2658C /* CodeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorView.swift; sourceTree = "<group>"; };
@@ -471,6 +471,7 @@
 			isa = PBXGroup;
 			children = (
 				886F73952BF54982006383BE /* SpectrogramView.swift */,
+				8861C4172C014A3500DD180D /* SpectrogramProgressView.swift */,
 			);
 			path = Audio;
 			sourceTree = "<group>";
@@ -522,7 +523,6 @@
 				88EF5ABD2A9ED19400D1EADA /* AudioSpectrogram.swift */,
 				88EF5ABC2A9ED19400D1EADA /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift */,
 				88EF5ABA2A9ED19400D1EADA /* MelSpectrogram.swift */,
-				8861C4112BFA54FC00DD180D /* SpectrogramVideoController.swift */,
 			);
 			path = Spectrogram;
 			sourceTree = "<group>";
@@ -720,6 +720,7 @@
 				88CE94562AA81359000E8DFB /* ColumnListView.swift in Sources */,
 				88E0947C2B69D8FA00A93660 /* TimestampTransformer.swift in Sources */,
 				881A39AB2A242D4600B4782D /* ContentView.swift in Sources */,
+				8861C4182C014A3500DD180D /* SpectrogramProgressView.swift in Sources */,
 				88BFE4252A9BE78F00B37DC3 /* CodeEditorRemoveCodeButton.swift in Sources */,
 				8878A60E2A2D698900A2658C /* CodeEditorView.swift in Sources */,
 				882D72122BF5368000538D51 /* ACBAudioProcessHelper.m in Sources */,
@@ -757,7 +758,6 @@
 				88D3FE372A4DE12A0094F953 /* TrackPositionIndicator.swift in Sources */,
 				88F8A9342A9A56FB001EEB21 /* ControllerPanelView.swift in Sources */,
 				884CBB512A6CA4EF00D5DBA8 /* OrdinalLayout.swift in Sources */,
-				8861C4122BFA54FC00DD180D /* SpectrogramVideoController.swift in Sources */,
 				886F73962BF54982006383BE /* SpectrogramView.swift in Sources */,
 				884B0DF92A50CB1B00D16304 /* CodeEditorAddCodeButton.swift in Sources */,
 				882D71B42BF422A000538D51 /* SpectrogramController.swift in Sources */,

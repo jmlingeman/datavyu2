@@ -50,6 +50,7 @@ class SpectrogramDelegate: SpectrogramVideoBuilderDelegate {
 
 public class SpectrogramVideoBuilder: ObservableObject {
     @Published var progress = 0.0
+    @Published var isFinished = false
     
     public var delegate: SpectrogramVideoBuilderDelegate
     
@@ -69,7 +70,7 @@ public class SpectrogramVideoBuilder: ObservableObject {
         }
     }
     
-    public func build(with player: AVPlayer, atFrameRate framesPerSecond: Int32, type: AVFileType, toOutputPath: String) {
+    public func build(with player: AVPlayer, type: AVFileType, toOutputPath: URL) {
         // Output video dimensions are inferred from the first image asset
         do {
             if player.currentItem != nil {
@@ -106,7 +107,7 @@ public class SpectrogramVideoBuilder: ObservableObject {
                 let canvasSize = AudioSpectrogram.canvasSize
         
                 var error: NSError?
-                let videoOutputURL = URL(fileURLWithPath: toOutputPath)
+                let videoOutputURL = toOutputPath
         
                 do {
                     try FileManager.default.removeItem(at: videoOutputURL)
@@ -199,6 +200,7 @@ public class SpectrogramVideoBuilder: ObservableObject {
                                         self.videoWriter = nil
                                     }
                                     assetReader.cancelReading()
+                                    self.isFinished = true
                                     break
                                 }
                             }
@@ -225,6 +227,7 @@ public class SpectrogramVideoBuilder: ObservableObject {
         } catch {
             print("\(error)")
         }
+        
     }
     
     func dimensionsOfImage(url: URL) -> CGSize? {

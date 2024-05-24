@@ -5,6 +5,8 @@ import UniformTypeIdentifiers
 
 struct TracksStackView: View {
     @ObservedObject var fileModel: FileModel
+    @State private var showingSaveDialog = false
+
 
     func syncVideos() {
         if fileModel.primaryVideo != nil, fileModel.videoModels.count > 1, fileModel.primaryVideo!.selectedMarker != nil {
@@ -47,6 +49,21 @@ struct TracksStackView: View {
                             GridRow {
                                 HStack {
                                     Text(videoModel.videoFileURL.lastPathComponent).frame(width: 150)
+                                    Menu(content: {
+                                        Button("Generate Spectrogram") {
+                                            let savePanel = NSSavePanel()
+                                            savePanel.allowedContentTypes = [UTType.mpeg4Movie, UTType.quickTimeMovie, UTType.video]
+                                            savePanel.directoryURL = videoModel.videoFileURL.deletingLastPathComponent()
+                                            savePanel.nameFieldStringValue = "\(videoModel.videoFileURL.lastPathComponent)-spectrogram.mov"
+                                            if savePanel.runModal() == .OK {
+                                                SpectrogramProgressView(outputPath: savePanel.url!, videoModel: videoModel).openInWindow(title: "Spectrogram Generation: \(videoModel.videoFileURL.lastPathComponent)", sender: self, frameName: nil)
+                                            }
+                                            
+                                        }
+                                    }, label: {
+                                        Image(systemName: "ellipsis.circle.fill")
+                                    }).menuIndicator(.hidden).buttonBorderShape(.capsule).frame(width: 30)
+                                    
                                     TrackView(videoModel: videoModel,
                                               fileModel: fileModel,
                                               primaryMarker: $fileModel.primaryMarker)

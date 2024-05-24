@@ -212,31 +212,7 @@ class AudioSpectrogram: NSObject, ObservableObject {
                 planarSourceBuffers: [redBuffer, greenBuffer, blueBuffer])
         }
         
-        var image = rgbImageBuffer.makeCGImage(cgImageFormat: AudioSpectrogram.rgbImageFormat)
-        
-//        let converter = vImageConverter_CreateWithCGImageFormat(&AudioSpectrogram.rgbImageFormat, &AudioSpectrogram.outputImageFormat, nil, vImage_Flags(kvImagePrintDiagnosticsToConsole), nil).takeRetainedValue()
-//        
-        // https://stackoverflow.com/questions/63243981/how-to-remove-alpha-channel-from-cvpixelbuffer-and-get-its-data-in-swift
-
-
-//        do {
-//            var inputBuffer = try vImage_Buffer(cgImage: image!)
-//            
-//            var bgcolor = CGFloat(0)
-//            
-//            var bgraBuffer  = vImage_Buffer()
-//            let bufferError = vImageBuffer_InitWithCGImage(&bgraBuffer, &AudioSpectrogram.outputImageFormat, &bgcolor, image!, vImage_Flags(kvImagePrintDiagnosticsToConsole))
-//            print(bufferError)
-//            
-//            let convertError = vImageConvert_AnyToAny(converter, &inputBuffer, &bgraBuffer, nil, vImage_Flags(kvImagePrintDiagnosticsToConsole))
-//            print(convertError)
-//            
-//            let bgraImage = try bgraBuffer.createCGImage(format: AudioSpectrogram.outputImageFormat)
-//            
-//            image = bgraImage
-//        } catch {
-//            
-//        }
+        let image = rgbImageBuffer.makeCGImage(cgImageFormat: AudioSpectrogram.rgbImageFormat)
 
         return image ?? AudioSpectrogram.emptyCGImage
     }
