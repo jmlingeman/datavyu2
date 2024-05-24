@@ -3,8 +3,20 @@ import AppKit
 import AVFoundation
 import MediaToolbox
 
+/*
+ TODO: Set this up as its own AVPlayer that is slightly ahead of the video
+ then put the images into a queue with the timestamp attached, pull them
+ as the video plays.
+ 
+ */
+
 protocol VideoMediaInputDelegate: AnyObject {
     func videoFrameRefresh(sampleBuffer: CMSampleBuffer) //could be audio or video
+}
+
+struct SpectrogramData {
+    var time: CMTime
+    var image: NSImage
 }
 
 class SpectrogramController: NSResponder, NSApplicationDelegate, ObservableObject {
@@ -22,20 +34,25 @@ class SpectrogramController: NSResponder, NSApplicationDelegate, ObservableObjec
         super.init()
         self.player.isMeteringEnabled = true
         
-        player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1 / 5, preferredTimescale: CMTimeScale(600)), queue: .main) { time in
-            player.audioPCMBufferFetched { pcmBuffer, fetched in
-                DispatchQueue.main.async {
-                    if pcmBuffer != nil {
-                        self.spectrogram.processBuffer(pcmBuffer: pcmBuffer!)
-                        self.outputImage = self.formatImage(image: self.spectrogram.outputImage)
-                        print("Created image: \(self.outputImage.size)")
-                        self.updates += 1
-                    }
-                }
-            }
-        }
+//        player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.01, preferredTimescale: CMTimeScale(600)), queue: nil) { time in
+//            player.audioPCMBufferFetched { pcmBuffer, fetched in
+//                DispatchQueue.main.async {
+//                    if pcmBuffer != nil {
+//                        self.spectrogram.processBuffer(pcmBuffer: pcmBuffer!)
+//                        self.outputImage = self.formatImage(image: self.spectrogram.outputImage)
+//                                                
+//                        print("Created image: \(self.outputImage.size)")
+//                        self.updates += 1
+//                    }
+//                }
+//            }
+//        }
         
 
+        
+    }
+    
+    func createVideoFile() {
         
     }
     
@@ -44,6 +61,7 @@ class SpectrogramController: NSResponder, NSApplicationDelegate, ObservableObjec
     }
     
     func formatImage(image: CGImage) -> NSImage {
+//        print(image.dataProvider?.data)
         let size = NSSize(width: image.width, height: image.height)
         return NSImage(cgImage: image, size: size)
     }

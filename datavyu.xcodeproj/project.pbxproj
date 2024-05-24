@@ -36,6 +36,7 @@
 		882D72122BF5368000538D51 /* ACBAudioProcessHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 882D720F2BF5368000538D51 /* ACBAudioProcessHelper.m */; };
 		882D72132BF5368000538D51 /* MYAudioTapProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 882D72102BF5368000538D51 /* MYAudioTapProcessor.m */; };
 		8837C56D2A2D29AF00F29182 /* EditableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8837C56C2A2D29AF00F29182 /* EditableLabel.swift */; };
+		8838DB0B2BF95E74001A25F2 /* RingBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8838DB0A2BF95E74001A25F2 /* RingBuffer.swift */; };
 		884B0DF52A4F792A00D16304 /* RubyGateway in Frameworks */ = {isa = PBXBuildFile; productRef = 884B0DF42A4F792A00D16304 /* RubyGateway */; };
 		884B0DF72A50BE6B00D16304 /* DatavyuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884B0DF62A50BE6B00D16304 /* DatavyuView.swift */; };
 		884B0DF92A50CB1B00D16304 /* CodeEditorAddCodeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884B0DF82A50CB1B00D16304 /* CodeEditorAddCodeButton.swift */; };
@@ -45,6 +46,9 @@
 		884CBB532A6CA58F00D5DBA8 /* LayoutKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884CBB522A6CA58F00D5DBA8 /* LayoutKeys.swift */; };
 		884CBB552A6DF8F600D5DBA8 /* ColumnNameDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884CBB542A6DF8F600D5DBA8 /* ColumnNameDialog.swift */; };
 		885411852B463924006A86C0 /* WrappedHStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885411842B463924006A86C0 /* WrappedHStack.swift */; };
+		8861C4122BFA54FC00DD180D /* SpectrogramVideoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8861C4112BFA54FC00DD180D /* SpectrogramVideoController.swift */; };
+		8861C4142BFA586E00DD180D /* SpectrogramVideoBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8861C4132BFA586E00DD180D /* SpectrogramVideoBuilder.swift */; };
+		8861C4162BFA5DC900DD180D /* AVAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8861C4152BFA5DC900DD180D /* AVAsset.swift */; };
 		886540862B76DE5A00D2BF0A /* ArgumentTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 886540852B76DE5A00D2BF0A /* ArgumentTextField.swift */; };
 		886F73962BF54982006383BE /* SpectrogramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 886F73952BF54982006383BE /* SpectrogramView.swift */; };
 		8878A60E2A2D698900A2658C /* CodeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A60D2A2D698900A2658C /* CodeEditorView.swift */; };
@@ -149,6 +153,7 @@
 		882D720F2BF5368000538D51 /* ACBAudioProcessHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ACBAudioProcessHelper.m; path = carthage/ACBAVPlayerExtension/ACBAVPlayerExtension/Classes/AudioProcessing/ACBAudioProcessHelper.m; sourceTree = SOURCE_ROOT; };
 		882D72102BF5368000538D51 /* MYAudioTapProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MYAudioTapProcessor.m; path = carthage/ACBAVPlayerExtension/ACBAVPlayerExtension/Classes/AudioProcessing/MYAudioTapProcessor.m; sourceTree = SOURCE_ROOT; };
 		8837C56C2A2D29AF00F29182 /* EditableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableLabel.swift; sourceTree = "<group>"; };
+		8838DB0A2BF95E74001A25F2 /* RingBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingBuffer.swift; sourceTree = "<group>"; };
 		884B0DF62A50BE6B00D16304 /* DatavyuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatavyuView.swift; sourceTree = "<group>"; };
 		884B0DF82A50CB1B00D16304 /* CodeEditorAddCodeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorAddCodeButton.swift; sourceTree = "<group>"; };
 		884B0DFB2A50CC3900D16304 /* CodeEditorRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorRow.swift; sourceTree = "<group>"; };
@@ -157,6 +162,9 @@
 		884CBB522A6CA58F00D5DBA8 /* LayoutKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutKeys.swift; sourceTree = "<group>"; };
 		884CBB542A6DF8F600D5DBA8 /* ColumnNameDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnNameDialog.swift; sourceTree = "<group>"; };
 		885411842B463924006A86C0 /* WrappedHStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedHStack.swift; sourceTree = "<group>"; };
+		8861C4112BFA54FC00DD180D /* SpectrogramVideoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrogramVideoController.swift; sourceTree = "<group>"; };
+		8861C4132BFA586E00DD180D /* SpectrogramVideoBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrogramVideoBuilder.swift; sourceTree = "<group>"; };
+		8861C4152BFA5DC900DD180D /* AVAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVAsset.swift; sourceTree = "<group>"; };
 		886540852B76DE5A00D2BF0A /* ArgumentTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentTextField.swift; sourceTree = "<group>"; };
 		886F73952BF54982006383BE /* SpectrogramView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrogramView.swift; sourceTree = "<group>"; };
 		8878A60D2A2D698900A2658C /* CodeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorView.swift; sourceTree = "<group>"; };
@@ -363,6 +371,7 @@
 			isa = PBXGroup;
 			children = (
 				8878A6262A3FE93700A2658C /* FileController.swift */,
+				8861C4132BFA586E00DD180D /* SpectrogramVideoBuilder.swift */,
 			);
 			path = IO;
 			sourceTree = "<group>";
@@ -419,6 +428,7 @@
 				88F62E972A58B05500DC5B60 /* StringExtensions.swift */,
 				882D71AD2BEDAC0200538D51 /* FileExtensions.swift */,
 				882D71AF2BF2AB6600538D51 /* ViewExtensions.swift */,
+				8861C4152BFA5DC900DD180D /* AVAsset.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -452,6 +462,7 @@
 				8878A6242A3FE75200A2658C /* VideoHelpers.swift */,
 				88F62EA42A5A041200DC5B60 /* TimeHelpers.swift */,
 				88E0947B2B69D8FA00A93660 /* TimestampTransformer.swift */,
+				8838DB0A2BF95E74001A25F2 /* RingBuffer.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -511,6 +522,7 @@
 				88EF5ABD2A9ED19400D1EADA /* AudioSpectrogram.swift */,
 				88EF5ABC2A9ED19400D1EADA /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift */,
 				88EF5ABA2A9ED19400D1EADA /* MelSpectrogram.swift */,
+				8861C4112BFA54FC00DD180D /* SpectrogramVideoController.swift */,
 			);
 			path = Spectrogram;
 			sourceTree = "<group>";
@@ -701,6 +713,7 @@
 				884CBB532A6CA58F00D5DBA8 /* LayoutKeys.swift in Sources */,
 				8878A6102A2FBC8700A2658C /* Config.swift in Sources */,
 				8878A61A2A3027F500A2658C /* DatavyuAPI.swift in Sources */,
+				8838DB0B2BF95E74001A25F2 /* RingBuffer.swift in Sources */,
 				8878A6272A3FE93700A2658C /* FileController.swift in Sources */,
 				881A3A022A2C0B6500B4782D /* VideoModel.swift in Sources */,
 				8878A61C2A352A5200A2658C /* MillisTimeFormatter.swift in Sources */,
@@ -744,11 +757,14 @@
 				88D3FE372A4DE12A0094F953 /* TrackPositionIndicator.swift in Sources */,
 				88F8A9342A9A56FB001EEB21 /* ControllerPanelView.swift in Sources */,
 				884CBB512A6CA4EF00D5DBA8 /* OrdinalLayout.swift in Sources */,
+				8861C4122BFA54FC00DD180D /* SpectrogramVideoController.swift in Sources */,
 				886F73962BF54982006383BE /* SpectrogramView.swift in Sources */,
 				884B0DF92A50CB1B00D16304 /* CodeEditorAddCodeButton.swift in Sources */,
 				882D71B42BF422A000538D51 /* SpectrogramController.swift in Sources */,
+				8861C4142BFA586E00DD180D /* SpectrogramVideoBuilder.swift in Sources */,
 				881A3A002A2BE73B00B4782D /* ControllerView.swift in Sources */,
 				884CBB552A6DF8F600D5DBA8 /* ColumnNameDialog.swift in Sources */,
+				8861C4162BFA5DC900DD180D /* AVAsset.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

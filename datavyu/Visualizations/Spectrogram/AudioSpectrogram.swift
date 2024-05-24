@@ -24,6 +24,8 @@ class AudioSpectrogram: NSObject, ObservableObject {
     @Published var zeroReference: Double = 1000
 
     @Published var outputImage = AudioSpectrogram.emptyCGImage
+    
+    
 
     // MARK: Initialization
 
@@ -52,6 +54,8 @@ class AudioSpectrogram: NSObject, ObservableObject {
 
     /// Determines the overlap between frames.
     static let hopCount = 512
+    
+    static let canvasSize: CGSize = CGSizeMake(CGFloat(bufferCount), CGFloat(sampleCount))
 
     let captureSession = AVCaptureSession()
     let audioOutput = AVCaptureAudioDataOutput()
@@ -87,7 +91,7 @@ class AudioSpectrogram: NSObject, ObservableObject {
     var frequencyDomainValues = [Float](repeating: 0,
                                         count: bufferCount * sampleCount)
 
-    var rgbImageFormat = vImage_CGImageFormat(
+    static var rgbImageFormat = vImage_CGImageFormat(
         bitsPerComponent: 32,
         bitsPerPixel: 32 * 3,
         colorSpace: CGColorSpaceCreateDeviceRGB(),
@@ -95,6 +99,15 @@ class AudioSpectrogram: NSObject, ObservableObject {
             rawValue: kCGBitmapByteOrder32Host.rawValue |
                 CGBitmapInfo.floatComponents.rawValue |
                 CGImageAlphaInfo.none.rawValue)
+    )!
+    
+    static var outputImageFormat = vImage_CGImageFormat(
+        bitsPerComponent: 8,
+        bitsPerPixel: 8 * 4,
+        colorSpace: CGColorSpaceCreateDeviceRGB(),
+        bitmapInfo: CGBitmapInfo(
+            rawValue:
+            CGImageAlphaInfo.noneSkipLast.rawValue)
     )!
 
     /// RGB vImage buffer that contains a vertical representation of the audio spectrogram.
@@ -199,7 +212,31 @@ class AudioSpectrogram: NSObject, ObservableObject {
                 planarSourceBuffers: [redBuffer, greenBuffer, blueBuffer])
         }
         
-        let image = rgbImageBuffer.makeCGImage(cgImageFormat: rgbImageFormat)
+        var image = rgbImageBuffer.makeCGImage(cgImageFormat: AudioSpectrogram.rgbImageFormat)
+        
+        let converter = vImageConverter_CreateWithCGImageFormat(&AudioSpectrogram.rgbImageFormat, &AudioSpectrogram.outputImageFormat, nil, vImage_Flags(kvImagePrintDiagnosticsToConsole), nil).takeRetainedValue()
+        
+        // https://stackoverflow.com/questions/63243981/how-to-remove-alpha-channel-from-cvpixelbuffer-and-get-its-data-in-swift
+
+
+        do {
+            var inputBuffer = try vImage_Buffer(cgImage: image!)
+            
+            var bgcolor = CGFloat(0)
+            
+            var bgraBuffer  = vImage_Buffer()
+            let bufferError = vImageBuffer_InitWithCGImage(&bgraBuffer, &AudioSpectrogram.outputImageFormat, &bgcolor, image!, vImage_Flags(kvImagePrintDiagnosticsToConsole))
+            print(bufferError)
+            
+            let convertError = vImageConvert_AnyToAny(converter, &inputBuffer, &bgraBuffer, nil, vImage_Flags(kvImagePrintDiagnosticsToConsole))
+            print(convertError)
+            
+            let bgraImage = try bgraBuffer.createCGImage(format: AudioSpectrogram.outputImageFormat)
+            
+            image = bgraImage
+        } catch {
+            
+        }
 
         return image ?? AudioSpectrogram.emptyCGImage
     }
@@ -208,6 +245,7 @@ class AudioSpectrogram: NSObject, ObservableObject {
     static func configureSampleBuffer(pcmBuffer: AVAudioPCMBuffer) -> CMSampleBuffer? {
         let audioBufferList = pcmBuffer.mutableAudioBufferList
         let asbd = pcmBuffer.format.streamDescription
+
         
         var sampleBuffer: CMSampleBuffer? = nil
         var format: CMFormatDescription? = nil
@@ -242,7 +280,7 @@ class AudioSpectrogram: NSObject, ObservableObject {
         status = CMSampleBufferSetDataBufferFromAudioBufferList(sampleBuffer!,
                                                                 blockBufferAllocator: kCFAllocatorDefault,
                                                                 blockBufferMemoryAllocator: kCFAllocatorDefault,
-                                                                flags: 0,
+                                                                flags: kCMSampleBufferFlag_AudioBufferList_Assure16ByteAlignment,
                                                                 bufferList: audioBufferList);
         if (status != noErr) { NSLog("CMSampleBufferSetDataBufferFromAudioBufferList returned error: \(status)"); return nil; }
         
@@ -252,8 +290,10 @@ class AudioSpectrogram: NSObject, ObservableObject {
     var converter: AVAudioConverter? = nil
     var convertBuffer: AVAudioPCMBuffer? = nil
 
-    public func convertPCMFloatToPCMInt16(buffer: AVAudioPCMBuffer) -> AVAudioPCMBuffer? {
-        let targetFormat = AVAudioFormat(commonFormat: AVAudioCommonFormat.pcmFormatInt16, sampleRate: 16000, channels: 1, interleaved: false)
+    public func convertPCMToPCMInt16(buffer: AVAudioPCMBuffer) -> AVAudioPCMBuffer? {
+        // https://stackoverflow.com/questions/42660859/avaudioconverter-float32-48khz-int16-16khz-conversion-failure
+        let targetFormat = AVAudioFormat(commonFormat: AVAudioCommonFormat.pcmFormatInt16, sampleRate: 22050, channels: 1, interleaved: false)
+
 
         if converter == nil {
             convertBuffer = AVAudioPCMBuffer(pcmFormat: targetFormat!, frameCapacity: buffer.frameCapacity)
@@ -261,6 +301,9 @@ class AudioSpectrogram: NSObject, ObservableObject {
             converter = AVAudioConverter(from: buffer.format, to: convertBuffer!.format)
             converter?.sampleRateConverterAlgorithm = AVSampleRateConverterAlgorithm_Normal
             converter?.sampleRateConverterQuality = .max
+            
+            print(buffer.format)
+            print(convertBuffer!.format)
         }
         
         guard let convertBuffer = convertBuffer else { return nil }
@@ -284,41 +327,33 @@ class AudioSpectrogram: NSObject, ObservableObject {
         return convertBuffer
     }
     
-    public func processBuffer(pcmBuffer: AVAudioPCMBuffer)
-    {
-        let pcmBufferInt16 = convertPCMFloatToPCMInt16(buffer: pcmBuffer)
-        var sampleBuffer = AudioSpectrogram.configureSampleBuffer(pcmBuffer: pcmBufferInt16!)!
+    public func processBuffer(sampleBuffer: CMSampleBuffer) -> CGImage? {       
+        var asbd = CMSampleBufferGetFormatDescription(sampleBuffer)!.audioStreamBasicDescription!
+        var audioBufferList = AudioBufferList()
+        var blockBuffer : CMBlockBuffer?
         
-        print(pcmBuffer.int16ChannelData)
-        print(pcmBuffer.int32ChannelData)
-        print(pcmBuffer.floatChannelData)
-        // this line also creates AudioBufferList instance.
-
-        
-        let audioBufferList = pcmBufferInt16!.mutableAudioBufferList
-
-        var blockBuffer: CMBlockBuffer?
-
-//        var abl = AudioBufferList(mNumberBuffers: 1, mBuffers: (AudioBuffer(mNumberChannels: 1, mDataByteSize: UInt32(sampleBuffer.numSamples), mData: &blockBuffer)))
-//        var audioBufferList = AudioBufferList(mNumberBuffers: <#T##UInt32#>, mBuffers: <#T##(AudioBuffer)#>)
-//        var blockBuffer: CMBlockBuffer?
-        
-        let v = CMSampleBufferGetAudioBufferListWithRetainedBlockBuffer(
+        let error = CMSampleBufferGetAudioBufferListWithRetainedBlockBuffer(
             sampleBuffer,
             bufferListSizeNeededOut: nil,
-            bufferListOut: audioBufferList,
-            bufferListSize: MemoryLayout.stride(ofValue: audioBufferList),
+            bufferListOut: &audioBufferList,
+            bufferListSize: MemoryLayout<AudioBufferList>.size,
             blockBufferAllocator: nil,
             blockBufferMemoryAllocator: nil,
             flags: kCMSampleBufferFlag_AudioBufferList_Assure16ByteAlignment,
             blockBufferOut: &blockBuffer
         )
-        let error = NSError(domain: NSOSStatusErrorDomain, code: Int(v), userInfo: nil)
-        print("AudioBufferList: \(v) \(error)")
         
-        guard let data = audioBufferList.pointee.mBuffers.mData else {
+        print("CONVERSION ERROR: \(error)")
+        
+        return processBuffer(sampleBuffer: sampleBuffer, audioBufferList: audioBufferList)
+    }
+    
+    public func processBuffer(sampleBuffer: CMSampleBuffer, audioBufferList: AudioBufferList) -> CGImage? {
+    
+        
+        guard let data = audioBufferList.mBuffers.mData else {
             print("No buffer data")
-            return
+            return nil
         }
         
         /// The _Nyquist frequency_ is the highest frequency that a sampled system can properly
@@ -359,8 +394,35 @@ class AudioSpectrogram: NSObject, ObservableObject {
             processData(values: dataToProcess)
         }
         
-        outputImage = makeAudioSpectrogramImage()
+        let outputImage = makeAudioSpectrogramImage()
+        self.outputImage = outputImage
         
+        return outputImage
+    }
+    
+    public func processBuffer(pcmBuffer: AVAudioPCMBuffer) -> CGImage?
+    {
+        let pcmBufferInt16 = convertPCMToPCMInt16(buffer: pcmBuffer)
+        let sampleBuffer = AudioSpectrogram.configureSampleBuffer(pcmBuffer: pcmBufferInt16!)!
+        
+        let audioBufferList = pcmBufferInt16!.mutableAudioBufferList
+
+        var blockBuffer: CMBlockBuffer?
+        
+        let v = CMSampleBufferGetAudioBufferListWithRetainedBlockBuffer(
+            sampleBuffer,
+            bufferListSizeNeededOut: nil,
+            bufferListOut: audioBufferList,
+            bufferListSize: MemoryLayout.stride(ofValue: audioBufferList),
+            blockBufferAllocator: nil,
+            blockBufferMemoryAllocator: nil,
+            flags: kCMSampleBufferFlag_AudioBufferList_Assure16ByteAlignment,
+            blockBufferOut: &blockBuffer
+        )
+        let error = NSError(domain: NSOSStatusErrorDomain, code: Int(v), userInfo: nil)
+        print("AudioBufferList: \(v) \(error)")
+        
+        return processBuffer(sampleBuffer: sampleBuffer, audioBufferList: audioBufferList.pointee)
     }
 }
 
