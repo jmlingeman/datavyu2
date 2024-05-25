@@ -18,7 +18,7 @@ class AudioSpectrogram: NSObject, ObservableObject {
         var id: Self { self }
     }
 
-    @Published var mode = Mode.linear
+    @Published var mode = Mode.mel
 
     @Published var gain: Double = 0.025
     @Published var zeroReference: Double = 1000

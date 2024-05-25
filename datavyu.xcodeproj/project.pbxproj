@@ -49,6 +49,7 @@
 		8861C41F2C0155C900DD180D /* AVPlayer+ACBHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8861C41B2C0155C800DD180D /* AVPlayer+ACBHelper.m */; };
 		8861C4202C0155C900DD180D /* MYAudioTapProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 8861C41C2C0155C800DD180D /* MYAudioTapProcessor.m */; };
 		8861C4212C0155C900DD180D /* ACBAudioProcessHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8861C41E2C0155C900DD180D /* ACBAudioProcessHelper.m */; };
+		8861C4232C02939200DD180D /* CMSampleBufferFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8861C4222C02939200DD180D /* CMSampleBufferFactory.swift */; };
 		886540862B76DE5A00D2BF0A /* ArgumentTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 886540852B76DE5A00D2BF0A /* ArgumentTextField.swift */; };
 		886F73962BF54982006383BE /* SpectrogramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 886F73952BF54982006383BE /* SpectrogramView.swift */; };
 		8878A60E2A2D698900A2658C /* CodeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A60D2A2D698900A2658C /* CodeEditorView.swift */; };
@@ -165,6 +166,7 @@
 		8861C41C2C0155C800DD180D /* MYAudioTapProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYAudioTapProcessor.m; sourceTree = "<group>"; };
 		8861C41D2C0155C800DD180D /* ACBAudioProcessHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACBAudioProcessHelper.h; sourceTree = "<group>"; };
 		8861C41E2C0155C900DD180D /* ACBAudioProcessHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACBAudioProcessHelper.m; sourceTree = "<group>"; };
+		8861C4222C02939200DD180D /* CMSampleBufferFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CMSampleBufferFactory.swift; sourceTree = "<group>"; };
 		886540852B76DE5A00D2BF0A /* ArgumentTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentTextField.swift; sourceTree = "<group>"; };
 		886F73952BF54982006383BE /* SpectrogramView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrogramView.swift; sourceTree = "<group>"; };
 		8878A60D2A2D698900A2658C /* CodeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorView.swift; sourceTree = "<group>"; };
@@ -463,6 +465,7 @@
 				88F62EA42A5A041200DC5B60 /* TimeHelpers.swift */,
 				88E0947B2B69D8FA00A93660 /* TimestampTransformer.swift */,
 				8838DB0A2BF95E74001A25F2 /* RingBuffer.swift */,
+				8861C4222C02939200DD180D /* CMSampleBufferFactory.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -723,6 +726,7 @@
 				8861C4182C014A3500DD180D /* SpectrogramProgressView.swift in Sources */,
 				88BFE4252A9BE78F00B37DC3 /* CodeEditorRemoveCodeButton.swift in Sources */,
 				8878A60E2A2D698900A2658C /* CodeEditorView.swift in Sources */,
+				8861C4232C02939200DD180D /* CMSampleBufferFactory.swift in Sources */,
 				881A39EF2A2A88AB00B4782D /* CellView.swift in Sources */,
 				881A39F52A2A917E00B4782D /* ArgumentModel.swift in Sources */,
 				8878A61F2A38D99100A2658C /* WeakTemporalLayout.swift in Sources */,

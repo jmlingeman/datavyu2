@@ -76,6 +76,10 @@ public class SpectrogramVideoBuilder: ObservableObject {
         }
     }
     
+    public func processSample(sample: CMSampleBuffer) {
+        
+    }
+    
     public func build(with player: AVPlayer, type: AVFileType, toOutputPath: URL) {
         // Output video dimensions are inferred from the first image asset
         do {
@@ -162,6 +166,8 @@ public class SpectrogramVideoBuilder: ObservableObject {
                     
                     
                     var frameCount: Int64 = 0
+                    
+                    let silentSampleGenerator = CMSampleBufferFactory()
                         
                     
                     
@@ -171,6 +177,9 @@ public class SpectrogramVideoBuilder: ObservableObject {
                 
                         let media_queue = DispatchQueue(label: "mediaInputQueue")
                         var offsetPresentationTime: CMTime?
+                        var prevPresentationTime: CMTime?
+                        var oneFramePresentationTimeDiff: CMTime?
+                        var prevSample: CMSampleBuffer?
                 
                         videoWriterInput.requestMediaDataWhenReady(on: media_queue) {
                             while videoWriterInput.isReadyForMoreMediaData {
@@ -183,8 +192,11 @@ public class SpectrogramVideoBuilder: ObservableObject {
                                  we get to a presentation timestamp at the centerline,
                                  then start writing the video and subtract off that time
                                  */
-
+                                
                                 if sample != nil {
+                                    if silentSampleGenerator.asbd == nil {
+                                        silentSampleGenerator.setASBD(asbd: CMSampleBufferGetFormatDescription(sample!)!.audioStreamBasicDescription!)
+                                    }
                                     let presentationTime = CMSampleBufferGetPresentationTimeStamp(sample!)
                                     let image = spectrogram.processBuffer(sampleBuffer: sample!)
                                     let nsImage = spectrogramController.formatImage(image: image!)
@@ -209,8 +221,38 @@ public class SpectrogramVideoBuilder: ObservableObject {
                                     }
                                     
                                     frameCount += 1
+                                    if prevPresentationTime != nil {
+                                        oneFramePresentationTimeDiff = presentationTime - prevPresentationTime!
+                                    }
+                                    prevPresentationTime = presentationTime
+                                    prevSample = sample
 
                                 } else {
+                                    for _ in 0 ... self.framesToCenterLine {
+                                        
+                                        let presentationTime = prevPresentationTime! + oneFramePresentationTimeDiff!
+                                        CMBlockBufferFillDataBytes(with: 0, blockBuffer: prevSample!.dataBuffer!, offsetIntoDestination: 0, dataLength: prevSample!.dataBuffer!.dataLength)
+                                        let image = spectrogram.processBuffer(sampleBuffer: prevSample!)
+                                        let nsImage = spectrogramController.formatImage(image: image!)
+                                        if frameCount >= self.framesToCenterLine {
+                                            if !self.appendPixelBufferForNSImage(nsImage, pixelBufferAdaptor: pixelBufferAdaptor, presentationTime: presentationTime) {
+                                                error = NSError(
+                                                    domain: kErrorDomain,
+                                                    code: kFailedToAppendPixelBufferError,
+                                                    userInfo: ["description": "AVAssetWriterInputPixelBufferAdapter failed to append pixel buffer"]
+                                                )
+                                                
+                                                break
+                                            }
+                                        }
+                                        
+                                        DispatchQueue.main.async {
+                                            self.progress = presentationTime.seconds / totalTime
+                                        }
+                                        
+                                        prevPresentationTime = presentationTime
+                                        frameCount += 1
+                                    }
                                     videoWriterInput.markAsFinished()
                                     videoWriter.finishWriting {
                                         if let error = error {
