@@ -56,6 +56,8 @@ public class SpectrogramVideoBuilder: ObservableObject {
     
     var videoWriter: AVAssetWriter?
     
+    var outputCanvasSize: CGSize?
+    
     public init(delegate: SpectrogramVideoBuilderDelegate?) {
         if delegate == nil {
             self.delegate = SpectrogramDelegate { progress in
@@ -105,6 +107,8 @@ public class SpectrogramVideoBuilder: ObservableObject {
                 }
                 
                 let canvasSize = AudioSpectrogram.canvasSize
+                // The output will be rotate 90 degrees
+                self.outputCanvasSize = CGSize(width: canvasSize.height, height: canvasSize.width)
         
                 var error: NSError?
                 let videoOutputURL = toOutputPath
@@ -123,21 +127,22 @@ public class SpectrogramVideoBuilder: ObservableObject {
                 if let videoWriter = videoWriter {
                     let videoSettings: [String: AnyObject] = [
                         AVVideoCodecKey: AVVideoCodecType.h264 as AnyObject,
-                        AVVideoWidthKey: canvasSize.width as AnyObject,
-                        AVVideoHeightKey: canvasSize.height as AnyObject,
-                        //        AVVideoCompressionPropertiesKey : [
-                        //          AVVideoAverageBitRateKey : NSInteger(1000000),
-                        //          AVVideoMaxKeyFrameIntervalKey : NSInteger(16),
-                        //          AVVideoProfileLevelKey : AVVideoProfileLevelH264BaselineAutoLevel
-                        //        ]
+                        AVVideoWidthKey: outputCanvasSize!.width as AnyObject,
+                        AVVideoHeightKey: outputCanvasSize!.height as AnyObject,
+                        AVVideoCompressionPropertiesKey : [
+                            AVVideoExpectedSourceFrameRateKey : 60 as AnyObject,
+                //          AVVideoAverageBitRateKey : NSInteger(1000000),
+                //          AVVideoMaxKeyFrameIntervalKey : NSInteger(16),
+                //          AVVideoProfileLevelKey : AVVideoProfileLevelH264BaselineAutoLevel
+                        ] as AnyObject
                     ]
             
                     let videoWriterInput = AVAssetWriterInput(mediaType: AVMediaType.video, outputSettings: videoSettings)
             
                     let sourceBufferAttributes = [
                         kCVPixelBufferPixelFormatTypeKey as String: Int(kCVPixelFormatType_32ARGB),
-                        kCVPixelBufferWidthKey as String: Float(canvasSize.width),
-                        kCVPixelBufferHeightKey as String: Float(canvasSize.height),
+                        kCVPixelBufferWidthKey as String: Float(outputCanvasSize!.width),
+                        kCVPixelBufferHeightKey as String: Float(outputCanvasSize!.height),
                         kCVPixelBufferCGImageCompatibilityKey as String: true,
                         kCVPixelBufferCGBitmapContextCompatibilityKey as String: true
                     ] as [String: Any]
@@ -183,8 +188,9 @@ public class SpectrogramVideoBuilder: ObservableObject {
                                         break
                                     }
                                     
-                                    self.progress = presentationTime.seconds / totalTime
-                                    print("PROGRESS: \(self.progress)")
+                                    DispatchQueue.main.async {
+                                        self.progress = presentationTime.seconds / totalTime
+                                    }
                                     
                                     frameCount += 1
 
@@ -200,7 +206,9 @@ public class SpectrogramVideoBuilder: ObservableObject {
                                         self.videoWriter = nil
                                     }
                                     assetReader.cancelReading()
-                                    self.isFinished = true
+                                    DispatchQueue.main.async {
+                                        self.isFinished = true
+                                    }
                                     break
                                 }
                             }
@@ -280,27 +288,44 @@ public class SpectrogramVideoBuilder: ObservableObject {
     func fillPixelBufferFromImage(_ image: UIImage, pixelBuffer: CVPixelBuffer) {
         CVPixelBufferLockBaseAddress(pixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
 
-        let ciimage = CIImage(cgImage: image.cgImage!)
-        let rotatedImage = ciimage.oriented(.right)
-
+        let resizedImage = image.resized(to: NSSize(width: outputCanvasSize!.width, height: outputCanvasSize!.height))!
+        resizedImage.drawHorizontalCenterLine()
         
+        let ciimage = CIImage(cgImage: resizedImage.cgImage!)
+        let rotatedImage = ciimage.oriented(.rightMirrored)
+        
+        let resizeFilter = CIFilter(name:"CILanczosScaleTransform")!
+        
+        // Desired output size
+        let targetSize = NSSize(width: outputCanvasSize!.width, height: outputCanvasSize!.height)
+        
+        // Compute scale and corrective aspect ratio
+        let scale = targetSize.height / rotatedImage.extent.height
+        let aspectRatio = targetSize.width/(rotatedImage.extent.width * scale)
+        
+        // Apply resizing
+        resizeFilter.setValue(rotatedImage, forKey: kCIInputImageKey)
+        resizeFilter.setValue(scale, forKey: kCIInputScaleKey)
+        resizeFilter.setValue(aspectRatio, forKey: kCIInputAspectRatioKey)
+        
+        let outputImage = resizeFilter.outputImage!
+                
         let pixelData = CVPixelBufferGetBaseAddress(pixelBuffer)
         let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
         let context = CGContext(
             data: pixelData,
-            width: Int(image.size.height),
-            height: Int(image.size.width),
+            width: Int(outputCanvasSize!.width),
+            height: Int(outputCanvasSize!.height),
             bitsPerComponent: 8,
-            bytesPerRow: AudioSpectrogram.sampleCount * MemoryLayout<Float>.stride,
+            bytesPerRow: AudioSpectrogram.sampleCount * MemoryLayout<Int32>.stride,
             space: rgbColorSpace,
             bitmapInfo: CGImageAlphaInfo.premultipliedFirst.rawValue
         )
         
-
-        
         let cicontext = CIContext(cgContext: context!)
-        cicontext.render(rotatedImage, to: pixelBuffer)
-
+//        cicontext.render(rotatedImage, to: pixelBuffer)
+        
+        cicontext.render(outputImage, to: pixelBuffer, bounds: ciimage.extent, colorSpace: rgbColorSpace)
                 
 //        context?.clear(CGRect(x: 0, y: 0, width: CVPixelBufferGetWidth(pixelBuffer), height: CVPixelBufferGetHeight(pixelBuffer)))
 //        context?.draw(image.cgImage!, in: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
@@ -310,6 +335,7 @@ public class SpectrogramVideoBuilder: ObservableObject {
 }
 
 #if os(macOS)
+
 extension NSImage {
     var cgImage: CGImage? {
         var proposedRect = CGRect(origin: .zero, size: size)
@@ -317,6 +343,38 @@ extension NSImage {
         return cgImage(forProposedRect: &proposedRect,
                        context: nil,
                        hints: nil)
+    }
+    
+    // Draw a line down the center so we know where to sync it
+    func drawHorizontalCenterLine() {
+        self.lockFocus()
+        let path = NSBezierPath()
+        path.lineWidth = 4
+        path.move(to: NSPoint(x: 0, y: self.size.height/2))
+        path.line(to: NSPoint(x: self.size.width, y: self.size.height/2))
+        NSColor.red.setStroke()
+        path.stroke()
+        self.unlockFocus()
+    }
+    
+    func resized(to newSize: NSSize) -> NSImage? {
+        if let bitmapRep = NSBitmapImageRep(
+            bitmapDataPlanes: nil, pixelsWide: Int(newSize.width), pixelsHigh: Int(newSize.height),
+            bitsPerSample: 8, samplesPerPixel: 4, hasAlpha: true, isPlanar: false,
+            colorSpaceName: .calibratedRGB, bytesPerRow: 0, bitsPerPixel: 0
+        ) {
+            bitmapRep.size = newSize
+            NSGraphicsContext.saveGraphicsState()
+            NSGraphicsContext.current = NSGraphicsContext(bitmapImageRep: bitmapRep)
+            draw(in: NSRect(x: 0, y: 0, width: newSize.width, height: newSize.height), from: .zero, operation: .copy, fraction: 1.0)
+            NSGraphicsContext.restoreGraphicsState()
+            
+            let resizedImage = NSImage(size: newSize)
+            resizedImage.addRepresentation(bitmapRep)
+            return resizedImage
+        }
+        
+        return nil
     }
 
 }

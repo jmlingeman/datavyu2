@@ -268,7 +268,7 @@ class AudioSpectrogram: NSObject, ObservableObject {
 
     public func convertPCMToPCMInt16(buffer: AVAudioPCMBuffer) -> AVAudioPCMBuffer? {
         // https://stackoverflow.com/questions/42660859/avaudioconverter-float32-48khz-int16-16khz-conversion-failure
-        let targetFormat = AVAudioFormat(commonFormat: AVAudioCommonFormat.pcmFormatInt16, sampleRate: 22050, channels: 1, interleaved: false)
+        let targetFormat = AVAudioFormat(commonFormat: AVAudioCommonFormat.pcmFormatInt16, sampleRate: 44100, channels: 1, interleaved: false)
 
 
         if converter == nil {
