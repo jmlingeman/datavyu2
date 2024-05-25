@@ -19,6 +19,41 @@ struct ControllerPanelView: View {
             videoModel.play()
         }
     }
+    
+    func stepFrame(reverse: Bool = false) {
+        var highestFps: Float = -1.0
+        var highestFpsVideo: VideoModel?
+        
+        for videoModel in fileModel.videoModels {
+            let fps = videoModel.getFps()
+            if fps > highestFps {
+                highestFps = fps
+                highestFpsVideo = videoModel
+            }
+        }
+        
+        if !reverse {
+            highestFpsVideo?.nextFrame()
+        } else {
+            highestFpsVideo?.prevFrame()
+        }
+        
+        for videoModel in fileModel.videoModels {
+            if videoModel == highestFpsVideo {
+                continue
+            }
+            
+            videoModel.seek(to: highestFpsVideo!.currentTime)
+        }
+    }
+    
+    func nextFrame() {
+        stepFrame()
+    }
+    
+    func prevFrame() {
+        stepFrame(reverse: true)
+    }
 
     func shuttleStepUp() {
         fileModel.changeShuttleSpeed(step: 1)
@@ -41,18 +76,6 @@ struct ControllerPanelView: View {
             videoModel.stop()
         }
         fileModel.syncVideos()
-    }
-
-    func nextFrame() {
-        for videoModel in fileModel.videoModels {
-            videoModel.nextFrame()
-        }
-    }
-
-    func prevFrame() {
-        for videoModel in fileModel.videoModels {
-            videoModel.prevFrame()
-        }
     }
 
     func addColumn() {

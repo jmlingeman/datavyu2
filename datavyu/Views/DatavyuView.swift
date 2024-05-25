@@ -24,6 +24,7 @@ struct DatavyuView: View {
                         fileModel.sheetModel.setUndoManager(undoManager: undoManager!)
                     })
                     .environmentObject(fileModel.sheetModel)
+                    .environmentObject(fileModel)
             }
         }
     }

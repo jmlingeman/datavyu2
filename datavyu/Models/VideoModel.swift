@@ -48,6 +48,19 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable, Codable {
         self.init(videoFilePath: videoFilePath)
         self.trackSettings = trackSettings
     }
+    
+    func getFps() -> Float {
+        let asset = player.currentItem?.asset
+        
+        if asset != nil {
+            let tracks = asset!.tracks(withMediaType: .video)
+            let fps = tracks.first?.nominalFrameRate
+            if fps != nil {
+                return fps!
+            }
+        }
+        return 0
+    }
 
     func copy() -> VideoModel {
         let newVideoModel = VideoModel(videoFilePath: videoFileURL)

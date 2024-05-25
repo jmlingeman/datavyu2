@@ -52,6 +52,10 @@ public class SpectrogramVideoBuilder: ObservableObject {
     @Published var progress = 0.0
     @Published var isFinished = false
     
+    // Number of frames before the spectrogram reeaches the center line
+    // We will ditch this many frames so that the audio that is playing is centered
+    let framesToCenterLine = 23
+    
     public var delegate: SpectrogramVideoBuilderDelegate
     
     var videoWriter: AVAssetWriter?
@@ -166,6 +170,7 @@ public class SpectrogramVideoBuilder: ObservableObject {
                         assert(pixelBufferAdaptor.pixelBufferPool != nil)
                 
                         let media_queue = DispatchQueue(label: "mediaInputQueue")
+                        var offsetPresentationTime: CMTime?
                 
                         videoWriterInput.requestMediaDataWhenReady(on: media_queue) {
                             while videoWriterInput.isReadyForMoreMediaData {
@@ -173,19 +178,30 @@ public class SpectrogramVideoBuilder: ObservableObject {
                                 
                                 let sample = assetReaderAudioOutput.copyNextSampleBuffer()
 
+                                /*
+                                 TODO: Don't write the first 23 images until
+                                 we get to a presentation timestamp at the centerline,
+                                 then start writing the video and subtract off that time
+                                 */
 
                                 if sample != nil {
                                     let presentationTime = CMSampleBufferGetPresentationTimeStamp(sample!)
                                     let image = spectrogram.processBuffer(sampleBuffer: sample!)
                                     let nsImage = spectrogramController.formatImage(image: image!)
-                                    if !self.appendPixelBufferForNSImage(nsImage, pixelBufferAdaptor: pixelBufferAdaptor, presentationTime: presentationTime) {
-                                        error = NSError(
-                                            domain: kErrorDomain,
-                                            code: kFailedToAppendPixelBufferError,
-                                            userInfo: ["description": "AVAssetWriterInputPixelBufferAdapter failed to append pixel buffer"]
-                                        )
-
-                                        break
+                                    if frameCount == self.framesToCenterLine {
+                                        offsetPresentationTime = presentationTime
+                                    }
+                                    if frameCount >= self.framesToCenterLine {
+                                        let centeredPresentationTime = presentationTime - offsetPresentationTime!
+                                        if !self.appendPixelBufferForNSImage(nsImage, pixelBufferAdaptor: pixelBufferAdaptor, presentationTime: centeredPresentationTime) {
+                                            error = NSError(
+                                                domain: kErrorDomain,
+                                                code: kFailedToAppendPixelBufferError,
+                                                userInfo: ["description": "AVAssetWriterInputPixelBufferAdapter failed to append pixel buffer"]
+                                            )
+                                            
+                                            break
+                                        }
                                     }
                                     
                                     DispatchQueue.main.async {

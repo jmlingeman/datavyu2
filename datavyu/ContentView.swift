@@ -25,7 +25,8 @@ struct ContentView: View {
             TabView(selection: $selectedTab) {
                 ForEach(Array(zip(fileController.fileModels.indices, $fileController.fileModels)), id: \.0) { idx, $fileModel in
                     DatavyuView(fileModel: fileModel, temporalLayout: $temporalLayout, hideController: $hideController).tabItem { Text(fileModel.sheetModel.sheetName) }
-                        .environmentObject(fileModel.sheetModel).tag(idx)
+                        .environmentObject(fileModel.sheetModel)
+                        .environmentObject(fileModel).tag(idx)
                 }
             }
             .onAppear {

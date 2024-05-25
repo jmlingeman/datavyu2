@@ -10,14 +10,16 @@ import SwiftUI
 struct SpectrogramProgressView: View {
     let outputPath: URL
     let videoModel: VideoModel
+    let fileModel: FileModel
     @Environment(\.dismiss) var dismiss
 
     
     @StateObject var spectrogramBuilder = SpectrogramVideoBuilder(delegate: nil)
     
-    init(outputPath: URL, videoModel: VideoModel) {
+    init(outputPath: URL, videoModel: VideoModel, fileModel: FileModel) {
         self.outputPath = outputPath
         self.videoModel = videoModel
+        self.fileModel = fileModel
     }
 
     var body: some View {
@@ -27,9 +29,10 @@ struct SpectrogramProgressView: View {
             }
         }
         Button {
+            fileModel.addVideo(videoUrl: outputPath)
             dismiss()
         } label: {
-            Text("Close")
+            Text("Add to Project and Close")
         }.disabled(!spectrogramBuilder.isFinished)
     }
 }

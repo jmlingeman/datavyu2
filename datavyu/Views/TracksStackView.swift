@@ -56,7 +56,7 @@ struct TracksStackView: View {
                                             savePanel.directoryURL = videoModel.videoFileURL.deletingLastPathComponent()
                                             savePanel.nameFieldStringValue = "\(videoModel.videoFileURL.lastPathComponent)-spectrogram.mov"
                                             if savePanel.runModal() == .OK {
-                                                SpectrogramProgressView(outputPath: savePanel.url!, videoModel: videoModel).openInWindow(title: "Spectrogram Generation: \(videoModel.videoFileURL.lastPathComponent)", sender: self, frameName: nil)
+                                                SpectrogramProgressView(outputPath: savePanel.url!, videoModel: videoModel, fileModel: fileModel).openInWindow(title: "Spectrogram Generation: \(videoModel.videoFileURL.lastPathComponent)", sender: self, frameName: nil)
                                             }
                                             
                                         }
