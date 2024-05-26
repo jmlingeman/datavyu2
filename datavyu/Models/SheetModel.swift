@@ -77,13 +77,14 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
         }
     }
 
-    func addColumn(columnName: String) {
-        addColumn(column: ColumnModel(sheetModel: self, columnName: columnName))
+    func addColumn(columnName: String) -> ColumnModel {
+        return addColumn(column: ColumnModel(sheetModel: self, columnName: columnName))
     }
 
-    func addColumn(column: ColumnModel) {
+    func addColumn(column: ColumnModel) -> ColumnModel {
         columns.append(column)
         setVisibleColumns()
+        return column
     }
 
     func findCellIndexPath(cell_to_find: CellModel) -> IndexPath? {

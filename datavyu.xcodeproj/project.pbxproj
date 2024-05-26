@@ -50,6 +50,8 @@
 		8861C4202C0155C900DD180D /* MYAudioTapProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 8861C41C2C0155C800DD180D /* MYAudioTapProcessor.m */; };
 		8861C4212C0155C900DD180D /* ACBAudioProcessHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8861C41E2C0155C900DD180D /* ACBAudioProcessHelper.m */; };
 		8861C4232C02939200DD180D /* CMSampleBufferFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8861C4222C02939200DD180D /* CMSampleBufferFactory.swift */; };
+		8861C4252C02A4C900DD180D /* SpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8861C4242C02A4C900DD180D /* SpeechRecognizer.swift */; };
+		8861C4282C02B76F00DD180D /* WhisperKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8861C4272C02B76F00DD180D /* WhisperKit */; };
 		886540862B76DE5A00D2BF0A /* ArgumentTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 886540852B76DE5A00D2BF0A /* ArgumentTextField.swift */; };
 		886F73962BF54982006383BE /* SpectrogramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 886F73952BF54982006383BE /* SpectrogramView.swift */; };
 		8878A60E2A2D698900A2658C /* CodeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A60D2A2D698900A2658C /* CodeEditorView.swift */; };
@@ -167,6 +169,7 @@
 		8861C41D2C0155C800DD180D /* ACBAudioProcessHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACBAudioProcessHelper.h; sourceTree = "<group>"; };
 		8861C41E2C0155C900DD180D /* ACBAudioProcessHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACBAudioProcessHelper.m; sourceTree = "<group>"; };
 		8861C4222C02939200DD180D /* CMSampleBufferFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CMSampleBufferFactory.swift; sourceTree = "<group>"; };
+		8861C4242C02A4C900DD180D /* SpeechRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognizer.swift; sourceTree = "<group>"; };
 		886540852B76DE5A00D2BF0A /* ArgumentTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentTextField.swift; sourceTree = "<group>"; };
 		886F73952BF54982006383BE /* SpectrogramView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrogramView.swift; sourceTree = "<group>"; };
 		8878A60D2A2D698900A2658C /* CodeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorView.swift; sourceTree = "<group>"; };
@@ -213,6 +216,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				88BFE4292A9D13FC00B37DC3 /* DSWaveformImage in Frameworks */,
+				8861C4282C02B76F00DD180D /* WhisperKit in Frameworks */,
 				88140FC82A5214F90095DB5A /* SwiftUIReorderableForEach in Frameworks */,
 				88F62EA12A58D51600DC5B60 /* Yams in Frameworks */,
 				887B1A3F2B49D149004068FA /* SwiftUIIntrospect-Dynamic in Frameworks */,
@@ -495,6 +499,7 @@
 				88EF5AB92A9ED17200D1EADA /* Spectrogram */,
 				88BFE42C2A9D25CB00B37DC3 /* WaveformViewDV.swift */,
 				882D71B32BF422A000538D51 /* SpectrogramController.swift */,
+				8861C4242C02A4C900DD180D /* SpeechRecognizer.swift */,
 			);
 			path = Visualizations;
 			sourceTree = "<group>";
@@ -567,6 +572,7 @@
 				887B1A3B2B49CA59004068FA /* HierarchyResponder */,
 				887B1A3E2B49D149004068FA /* SwiftUIIntrospect-Dynamic */,
 				88E094632B670CAD00A93660 /* MbSwiftUIFirstResponder */,
+				8861C4272C02B76F00DD180D /* WhisperKit */,
 			);
 			productName = sheettest;
 			productReference = 881A39A52A242D4600B4782D /* datavyu.app */;
@@ -653,6 +659,7 @@
 				887B1A3A2B49CA59004068FA /* XCRemoteSwiftPackageReference "HierarchyResponder" */,
 				887B1A3D2B49D149004068FA /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				88E094622B670CAD00A93660 /* XCRemoteSwiftPackageReference "MbSwiftUIFirstResponder" */,
+				8861C4262C02B76F00DD180D /* XCRemoteSwiftPackageReference "whisperkit" */,
 			);
 			productRefGroup = 881A39A62A242D4600B4782D /* Products */;
 			projectDirPath = "";
@@ -735,6 +742,7 @@
 				88EF5AC12A9ED19400D1EADA /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift in Sources */,
 				884B0DFC2A50CC3900D16304 /* CodeEditorRow.swift in Sources */,
 				88140FCD2A5218100095DB5A /* OptionsView.swift in Sources */,
+				8861C4252C02A4C900DD180D /* SpeechRecognizer.swift in Sources */,
 				8878A6252A3FE75200A2658C /* VideoHelpers.swift in Sources */,
 				881A39A92A242D4600B4782D /* sheettestApp.swift in Sources */,
 				88F62E9B2A58BDD700DC5B60 /* DatavyuErrors.swift in Sources */,
@@ -1135,6 +1143,14 @@
 				kind = branch;
 			};
 		};
+		8861C4262C02B76F00DD180D /* XCRemoteSwiftPackageReference "whisperkit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/argmaxinc/whisperkit";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		887B1A3A2B49CA59004068FA /* XCRemoteSwiftPackageReference "HierarchyResponder" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/EmilioPelaez/HierarchyResponder";
@@ -1216,6 +1232,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 884B0DF32A4F792A00D16304 /* XCRemoteSwiftPackageReference "RubyGateway" */;
 			productName = RubyGateway;
+		};
+		8861C4272C02B76F00DD180D /* WhisperKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8861C4262C02B76F00DD180D /* XCRemoteSwiftPackageReference "whisperkit" */;
+			productName = WhisperKit;
 		};
 		887B1A3B2B49CA59004068FA /* HierarchyResponder */ = {
 			isa = XCSwiftPackageProductDependency;
