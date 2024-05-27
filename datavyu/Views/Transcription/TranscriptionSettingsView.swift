@@ -76,12 +76,15 @@ struct TranscriptionSettingsView: View {
             Button("Start Transcription") {
                 let targetColumn = selectedColumn
                 running = true
-                speech.run(selectedModel: selectedModel, videoModel: videoModel, sheetModel: sheetModel, targetColumn: targetColumn)
+                speech.run(selectedModel: selectedModel, videoModel: videoModel, sheetModel: sheetModel, targetColumn: selectedColumn, targetArgument: selectedArgument)
             }.disabled(running || selectedColumn.columnName.count == 0 || selectedArgument.name.count == 0)
             
             Text(String(format: "%.2f%% transcribed", transcriptionProgress * 100))
             ProgressView(value: transcriptionProgress).onReceive(timer) { _ in
                 transcriptionProgress = speech.whisperKit!.progress.fractionCompleted
+                if transcriptionProgress == 1.0 {
+                    running = false
+                }
             }
             
             Button("Cancel") {

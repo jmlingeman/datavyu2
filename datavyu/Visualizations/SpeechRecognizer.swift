@@ -17,6 +17,7 @@ public class SpeechRecognizer: ObservableObject {
     var videoModel: VideoModel?
     var sheetModel: SheetModel?
     var targetColumn: ColumnModel?
+    var targetArgument: Argument?
     let locale: Locale = .current
         
     @Published var transcriptionError: Bool = false
@@ -78,26 +79,21 @@ public class SpeechRecognizer: ObservableObject {
         }
     }
     
-    func run(selectedModel: String, videoModel: VideoModel, sheetModel: SheetModel?, targetColumn: ColumnModel?) {
+    func run(selectedModel: String, videoModel: VideoModel, sheetModel: SheetModel?, targetColumn: ColumnModel?, targetArgument: Argument?) {
         self.videoModel = videoModel
         self.sheetModel = sheetModel
         self.targetColumn = targetColumn
-//        Task {
-//            selectedModel = "large-v3"
-//            do {
-//                try await loadModel("large-v3")
-//            }
-//            transcribeFile(path: videoModel.videoFileURL.path)
-//        }
+        self.targetArgument = targetArgument
+
             Task {
                 do {
                     print("started")
-                    // try await print(WhisperKit.fetchAvailableModels())
                     
                     if whisperKit == nil {
                         whisperKit = try await WhisperKitProgress(model: selectedModel, logLevel: Logging.LogLevel.debug)
                     }
                     
+                    let argIdx = targetColumn!.getArgumentIndex(targetArgument)!
                     let result = try await whisperKit!.transcribe(audioPath: videoModel.videoFileURL.path)
                     
                     await MainActor.run {
@@ -114,9 +110,8 @@ public class SpeechRecognizer: ObservableObject {
                                     let cell = targetColumn?.addCell()
                                     cell?.setOnset(onset: Int(onset * 1000))
                                     cell?.setOffset(offset: Int(offset * 1000))
-                                    cell?.setArgumentValue(index: 0, value: textTagsRemoved)
+                                    cell?.setArgumentValue(index: argIdx, value: textTagsRemoved)
                                 }
-                                
                             }
                         }
                     }
@@ -124,42 +119,6 @@ public class SpeechRecognizer: ObservableObject {
                     print(error.localizedDescription)
                 }
             }
-        
-        
-//        SFSpeechRecognizer.requestAuthorization { authStatus in
-//            if authStatus == SFSpeechRecognizerAuthorizationStatus.authorized {
-//                // Create a speech recognizer associated with the user's default language.
-//                guard let myRecognizer = SFSpeechRecognizer() else {
-//                    // The system doesn't support the user's default language.
-//                    return
-//                }
-//
-//                guard myRecognizer.isAvailable else {
-//                    // The recognizer isn't available.
-//                    return
-//                }
-//
-//                // Create and execute a speech recognition request for the audio file at the URL.
-//                let request = SFSpeechURLRecognitionRequest(url: self.videoModel.videoFileURL)
-//                request.requiresOnDeviceRecognition = true
-//                myRecognizer.recognitionTask(with: request) { (result, error) in
-//                    guard let result else {
-//                        // Recognition failed, so check the error for details and handle it.
-//                        if error != nil {
-//                            self.transcriptionError = true
-//                            self.transcriptionErrorDesc = "\(error!)"
-//                        }
-//                        return
-//                    }
-//
-//                    // Print the speech transcription with the highest confidence that the
-//                    // system recognized.
-//                    if result.isFinal {
-//                        print(result.bestTranscription.formattedString)
-//                    }
-//                }
-//            }
-//        }
     }
 }
 

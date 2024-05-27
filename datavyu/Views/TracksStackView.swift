@@ -85,11 +85,6 @@ struct TracksStackView: View {
                     }
                 }
             }
-            GridRow {
-                if fileModel.primaryVideo != nil {
-                    ClockView(videoModel: fileModel.primaryVideo!)
-                }
-            }
 
         }.overlay(alignment: .bottomTrailing) {
             overlayButtons

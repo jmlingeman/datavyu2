@@ -62,13 +62,13 @@ struct ControllerPanelView: View {
     
     func findOnset() {
         if fileModel.sheetModel.selectedCell != nil {
-            find(value: millisToDouble(millis: fileModel.sheetModel.selectedCell!.onset))
+            find(value: millisToSeconds(millis: fileModel.sheetModel.selectedCell!.onset))
         }
     }
     
     func findOffset() {
         if fileModel.sheetModel.selectedCell != nil {
-            find(value: millisToDouble(millis: fileModel.sheetModel.selectedCell!.offset))
+            find(value: millisToSeconds(millis: fileModel.sheetModel.selectedCell!.offset))
         }
     }
     
@@ -137,7 +137,16 @@ struct ControllerPanelView: View {
     }
 
     var body: some View {
+        VStack {
+            HStack(alignment: .center) {
+                if fileModel.primaryVideo != nil {
+                    VStack(alignment: .center) {
+                        ClockView(videoModel: fileModel.primaryVideo!)
+                    }
+                }
+            }
             Grid(alignment: .topLeading, horizontalSpacing: 2, verticalSpacing: 2) {
+                
                 GridRow {
                     ControllerButton(buttonName: "Set\nOnset", action: setOnset)
                         .keyboardShortcut("7", modifiers: .numericPad)
@@ -150,7 +159,6 @@ struct ControllerPanelView: View {
                         .keyboardShortcut("]")
                     ControllerButton(buttonName: "Jump", action: jump)
                         .keyboardShortcut("-", modifiers: .numericPad)
-                    TextField("Jump by", text: $jumpValue).frame(width: 100)
                 }
                 GridRow {
                     ControllerButton(buttonName: "Shuttle <", action: shuttleStepDown)
@@ -175,6 +183,7 @@ struct ControllerPanelView: View {
                     ControllerButton(buttonName: "Next", action: nextFrame)
                         .keyboardShortcut("3", modifiers: .numericPad)
                         .keyboardShortcut("=")
+                    TextField("Jump by", text: $jumpValue).frame(width: 100)
                 }
                 GridRow {
                     ControllerButton(buttonName: "Add\nCell", action: addCell)
@@ -191,6 +200,7 @@ struct ControllerPanelView: View {
                         }
                 }
             }
+        }
         
     }
 }

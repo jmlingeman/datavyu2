@@ -141,6 +141,14 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         }
         update()
     }
+    
+    func getArgumentIndex(_ argument: Argument?) -> Int? {
+        if argument != nil {
+            return arguments.firstIndex(of: argument!)
+        } else {
+            return nil
+        }
+    }
 
     func update() {
         print("Updating")

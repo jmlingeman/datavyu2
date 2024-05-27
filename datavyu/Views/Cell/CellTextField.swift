@@ -137,8 +137,10 @@ class CellTextField: NSTextField {
         let extents = cellTextController!.getExtentOfArgument(idx: idx)
         print("Selecting \(idx)")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.currentEditor()!.selectedRange = NSRange(location: extents.start, length: extents.end - extents.start)
-            self.currentArgumentIndex = idx
+            if self.currentEditor() != nil {
+                self.currentEditor()?.selectedRange = NSRange(location: extents.start, length: extents.end - extents.start)
+                self.currentArgumentIndex = idx
+            }
         }
     }
     
