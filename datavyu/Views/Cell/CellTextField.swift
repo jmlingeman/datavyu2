@@ -128,7 +128,6 @@ class CellTextField: NSTextField {
         
         if parentView != nil {
             parentView!.setSelected()
-//            parentView?.parentView?.lastEditedArgument = argument
         }
         
         self.selectArgument(idx: 0)
@@ -137,7 +136,6 @@ class CellTextField: NSTextField {
         keyEventHandler = NSEvent.addLocalMonitorForEvents(matching: NSEvent.EventTypeMask.keyDown) { event in
             let s = event.characters
             if s!.contains(",") {
-                print("Intercepted comma")
                 return nil
             }
             return event

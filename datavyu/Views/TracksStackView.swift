@@ -60,6 +60,10 @@ struct TracksStackView: View {
                                             }
                                             
                                         }
+                                        Button("Transcribe Video") {
+                                            let transcribePanel = TranscriptionSettingsView(sheetModel: fileModel.sheetModel, videoModel: videoModel)
+                                            transcribePanel.openInWindow(title: "Transcription Settings", sender: self, frameName: nil)
+                                        }
                                     }, label: {
                                         Image(systemName: "ellipsis.circle.fill")
                                     }).menuIndicator(.hidden).buttonBorderShape(.capsule).frame(width: 30)

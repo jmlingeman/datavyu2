@@ -15,7 +15,7 @@ struct VideoView: View {
     var sheetModel: SheetModel
     
     @StateObject var spectrogramBuilder = SpectrogramVideoBuilder(delegate: nil)
-    @StateObject var speech = SpeechRecognizer()
+    
 
     var body: some View {
         VStack {
@@ -35,11 +35,7 @@ struct VideoView: View {
                        idealHeight: videoModel.player.currentItem?.presentationSize.height ?? 250,
                        maxHeight: .infinity,
                        alignment: .center)
-            Button("Transcribe") {
-                let targetColumn = sheetModel.addColumn(columnName: "Transcription")
-                speech.run(videoModel: videoModel, sheetModel: sheetModel, targetColumn: targetColumn)
-            }
-            ProgressView(value: speech.loadingProgressValue)
+            
         }
     }
 }
