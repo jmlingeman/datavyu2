@@ -284,6 +284,12 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         let nextCellIp = IndexPath(item: currentCellIp.item + 1, section: currentCellIp.section)
         focusCell(nextCellIp)
     }
+    
+    func focusPrevCell(_ currentCellIp: IndexPath) {
+        print(#function)
+        let nextCellIp = IndexPath(item: currentCellIp.item - 1, section: currentCellIp.section)
+        focusCell(nextCellIp)
+    }
 
     func focusCell(_ ip: IndexPath) {
         print(#function)

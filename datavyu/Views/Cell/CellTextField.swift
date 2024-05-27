@@ -79,6 +79,7 @@ class CellTextField: NSTextField {
         self.delegate = self
         self.cellTextController = CellTextController(cell: cellModel)
         self.updateStringValue(cellTextController!.argumentString())
+        
         (self.formatter as! CellTextFormatter).configure(cellTextController: self.cellTextController!, cell: self.cellModel!)
     }
     
@@ -94,13 +95,29 @@ class CellTextField: NSTextField {
     
     func selectArgument(idx: Int) {
         let extents = cellTextController!.getExtentOfArgument(idx: idx)
-        self.currentEditor()!.selectedRange = NSRange(location: extents.start, length: extents.end - extents.start)
-        self.currentArgumentIndex = idx
+        print("Selecting \(idx)")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.currentEditor()!.selectedRange = NSRange(location: extents.start, length: extents.end - extents.start)
+            self.currentArgumentIndex = idx
+        }
     }
     
-//    override func mouseDown(with event: NSEvent) {
-//        self.sele
-//    }
+    override func mouseDown(with event: NSEvent)
+    {
+        super.mouseDown(with: event)
+        
+        let cEditor = self.currentEditor() as? NSTextView
+        let localPos = convert (event.locationInWindow, to: nil)
+        let insertionPoint = cEditor?.characterIndexForInsertion(at: localPos)
+        let location = cEditor?.selectedRange().location
+        
+        if cEditor?.string.count == insertionPoint {
+            selectArgument(idx: 0)
+        } else {
+            let argIdx = cellTextController?.getArgIdxForIdx(idx: insertionPoint!)
+            selectArgument(idx: argIdx!)
+        }
+    }
     
     
     
@@ -114,9 +131,8 @@ class CellTextField: NSTextField {
 //            parentView?.parentView?.lastEditedArgument = argument
         }
         
-        DispatchQueue.main.async {
-            self.selectArgument(idx: 0)
-        }
+        self.selectArgument(idx: 0)
+        
         
         keyEventHandler = NSEvent.addLocalMonitorForEvents(matching: NSEvent.EventTypeMask.keyDown) { event in
             let s = event.characters
@@ -188,6 +204,12 @@ extension CellTextField: NSTextFieldDelegate, NSTextViewDelegate {
 //                argument!.setValue(value: textField.stringValue)
 //            }
 //        }
+        guard
+            let textField = obj.object as? NSTextField,
+            !textField.isFocused
+        else {
+            return
+        }
         cellTextController?.parseUpdates(newValue: self.stringValue)
         self.updateStringValue(cellTextController!.argumentString())
     }
@@ -230,29 +252,44 @@ extension CellTextField: NSTextFieldDelegate, NSTextViewDelegate {
     func textView(_: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
         print(#function)
         if commandSelector == #selector(insertTab) {
-            print("TABBING OUT OF ARGUMENT")
             if self.currentArgumentIndex + 1 < self.cellModel!.arguments.count {
                 self.selectArgument(idx: self.currentArgumentIndex + 1)
                 return true
+            } else {
+                let ip = self.parentView!.parentView!.sheetModel.findCellIndexPath(cell_to_find: self.parentView!.cell)
+                if ip != nil {
+                    (self.parentView!.parentView!.delegate as! Coordinator).focusNextCell(ip!)
+                }
+                self.resignFirstResponder()
+                return true
             }
-//            self.parentView!.lastEditedField = LastEditedField.arguments
-            
-//            if argument != nil, parentView?.cell.arguments.last == argument {
-//                print("Trying to select next cell")
-//                let ip = self.parentView!.parentView!.sheetModel.findCellIndexPath(cell_to_find: self.parentView!.cell)
-//                if ip != nil {
-//                    (self.parentView!.parentView!.delegate as! Coordinator).focusNextCell(ip!)
-//                }
-//                //                self.resignFirstResponder()
-//                return true
-//            }
-            //            else if argument != nil && parentView?.cell.arguments.last != argument {
-            //                self.parentView!.focusNextArgument(argument!)
-            //                self.resignFirstResponder()
-            //                return true
-            //            }
+        }
+        else if commandSelector == #selector(insertBacktab) {
+            if self.currentArgumentIndex - 1 >= 0 {
+                self.selectArgument(idx: self.currentArgumentIndex - 1)
+                return true
+            } else {
+                self.parentView!.focusOffset()
+                self.resignFirstResponder()
+                return true
+            }
         }
         
+        return false
+    }
+}
+
+public extension NSTextField
+{
+    var isFocused:Bool {
+        if
+            window?.firstResponder is NSTextView,
+            let fieldEditor = window?.fieldEditor(false, for: nil),
+            let delegate = fieldEditor.delegate as? NSTextField,
+            self == delegate
+        {
+            return true
+        }
         return false
     }
 }

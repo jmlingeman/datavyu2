@@ -38,6 +38,16 @@ class CellTextController {
         return SelectionExtent()
     }
     
+    func getArgIdxForIdx(idx: Int) -> Int {
+        for i in currentExtents.keys {
+            let extent = currentExtents[i]!
+            if idx >= extent.start && idx <= extent.end {
+                return i
+            }
+        }
+        return 0
+    }
+    
     func parseUpdates(newValue: String) -> String {
         let args = newValue.split(by: CellTextController.argumentSeperator, behavior: .removed)
         var startIdx = 0

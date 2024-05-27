@@ -71,6 +71,7 @@ class CellViewUIKit: NSCollectionViewItem {
         offset.parentView = self
         
         self.cellTextField.configure(cellModel: cell)
+        cellTextField.configureParentView(parentView: self)
 
 //        argumentsCollectionView.delegate = self
 //        argumentsCollectionView.dataSource = self
