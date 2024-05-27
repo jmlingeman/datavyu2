@@ -14,7 +14,8 @@ class CellViewUIKit: NSCollectionViewItem {
     @IBOutlet var onset: CellTimeTextField!
     @IBOutlet var offset: CellTimeTextField!
     @IBOutlet var ordinal: NSTextField!
-    @IBOutlet var argumentsCollectionView: NSCollectionView!
+//    @IBOutlet var argumentsCollectionView: NSCollectionView!
+    @IBOutlet var cellTextField: CellTextField!
 
     var onsetCoordinator: OnsetCoordinator?
     var offsetCoordinator: OffsetCoordinator?
@@ -33,7 +34,8 @@ class CellViewUIKit: NSCollectionViewItem {
         ordinal = NSTextField()
         onset = CellTimeTextField()
         offset = CellTimeTextField()
-        argumentsCollectionView = NSCollectionView()
+        cellTextField = CellTextField()
+    
         argumentSizes = [IndexPath: NSSize]()
 
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -51,8 +53,9 @@ class CellViewUIKit: NSCollectionViewItem {
     }
 
     func isLastArgument() -> Bool {
-        let selectedIndexPaths = argumentsCollectionView?.selectionIndexPaths
-        return selectedIndexPaths?.first?.item == cell.arguments.count - 1
+//        let selectedIndexPaths = argumentsCollectionView?.selectionIndexPaths
+//        return selectedIndexPaths?.first?.item == cell.arguments.count - 1
+        return false
     }
 
     func configureCell(_ cell: CellModel, parentView: TemporalCollectionAppKitView?) {
@@ -66,9 +69,11 @@ class CellViewUIKit: NSCollectionViewItem {
 
         onset.parentView = self
         offset.parentView = self
+        
+        self.cellTextField.configure(cellModel: cell)
 
-        argumentsCollectionView.delegate = self
-        argumentsCollectionView.dataSource = self
+//        argumentsCollectionView.delegate = self
+//        argumentsCollectionView.dataSource = self
 
         self.parentView = parentView
 
@@ -85,7 +90,7 @@ class CellViewUIKit: NSCollectionViewItem {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        argumentsCollectionView.register(ArgumentViewUIKit.self, forItemWithIdentifier: .init(ArgumentViewUIKit.identifier))
+//        argumentsCollectionView.register(ArgumentViewUIKit.self, forItemWithIdentifier: .init(ArgumentViewUIKit.identifier))
         configureCell(cell, parentView: parentView)
     }
 
@@ -102,7 +107,6 @@ class CellViewUIKit: NSCollectionViewItem {
         }
 
         onset.nextResponder = offset
-        offset.nextResponder = argumentsCollectionView
     }
 
     override func prepareForReuse() {
@@ -110,12 +114,12 @@ class CellViewUIKit: NSCollectionViewItem {
         cell = dummyCell
         (onset.delegate as! OnsetCoordinator).configure(cell: cell, view: self)
         (offset.delegate as! OffsetCoordinator).configure(cell: cell, view: self)
-        argumentsCollectionView.delegate = nil
-        argumentsCollectionView.dataSource = nil
+        cellTextField.configure(cellModel: cell)
         lastEditedField = LastEditedField.none
 
         onset.isEnabled = true
         offset.isEnabled = true
+        cellTextField.isEnabled = true
 
         setDeselected()
     }
@@ -135,10 +139,10 @@ class CellViewUIKit: NSCollectionViewItem {
 
     func focusArgument(_ ip: IndexPath) {
         print(#function)
-        let nextArg = argumentsCollectionView?.item(at: ip) as! ArgumentViewUIKit
-        print("selecting arg \(nextArg)")
-        parentView?.lastEditedArgument = nextArg.argument
-        parentView?.window?.makeFirstResponder(nextArg.argumentValue)
+//        let nextArg = argumentsCollectionView?.item(at: ip) as! ArgumentViewUIKit
+//        print("selecting arg \(nextArg)")
+//        parentView?.lastEditedArgument = nextArg.argument
+//        parentView?.window?.makeFirstResponder(nextArg.argumentValue)
     }
 
     func focusOnset() {
@@ -168,49 +172,14 @@ class CellViewUIKit: NSCollectionViewItem {
             focusObject = offset
         } else {
             let newIndexPath = IndexPath(item: selectedIndexPath.item, section: selectedIndexPath.section)
-            let nextArg = argumentsCollectionView?.item(at: newIndexPath) as! ArgumentViewUIKit
-            focusObject = nextArg.argumentValue
+//            let nextArg = argumentsCollectionView?.item(at: newIndexPath) as! ArgumentViewUIKit
+//            focusObject = nextArg.argumentValue
         }
         print("Focus next arg")
         parentView?.window?.makeFirstResponder(focusObject)
     }
 }
 
-extension CellViewUIKit: NSCollectionViewDelegate {
-    func collectionView(_: NSCollectionView, didSelectItemsAt _: Set<IndexPath>) {
-        print("Arg Clicked")
-    }
-}
-
-extension CellViewUIKit: NSCollectionViewDataSource {
-    func collectionView(_: NSCollectionView, numberOfItemsInSection _: Int) -> Int {
-        cell.arguments.count
-    }
-
-    func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-        let item = collectionView.makeItem(withIdentifier: .init(ArgumentViewUIKit.identifier), for: indexPath) as! ArgumentViewUIKit
-//        print("Cell \(cell.column.columnName) \(cell.ordinal) args: \(cell.arguments[0].value)")
-        let argument = cell.arguments[indexPath.item]
-        item.configureCell(with: argument)
-        item.configureParentView(with: self)
-
-        // TODO: fix this
-        argumentSizes[indexPath] = NSSize(width: item.argumentValue.preferredMaxLayoutWidth, height: 50)
-
-        return item
-    }
-}
-
-extension CellViewUIKit: NSCollectionViewDelegateFlowLayout {
-    func collectionView(_: NSCollectionView, layout _: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
-//        let item = collectionView.makeItem(withIdentifier: .init(ArgumentViewUIKit.identifier), for: indexPath) as! ArgumentViewUIKit
-        let size = NSSize(
-            width: max(50, argumentSizes[indexPath]?.width ?? 0),
-            height: max(50, argumentSizes[indexPath]?.height ?? 0)
-        )
-        return size
-    }
-}
 
 @objc class OnsetCoordinator: NSObject {
     var cell: CellModel?

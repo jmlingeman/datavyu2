@@ -71,6 +71,8 @@
 		8878A63A2A427C6000A2658C /* MarkerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6392A427C6000A2658C /* MarkerModel.swift */; };
 		887B1A3C2B49CA59004068FA /* HierarchyResponder in Frameworks */ = {isa = PBXBuildFile; productRef = 887B1A3B2B49CA59004068FA /* HierarchyResponder */; };
 		887B1A3F2B49D149004068FA /* SwiftUIIntrospect-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 887B1A3E2B49D149004068FA /* SwiftUIIntrospect-Dynamic */; };
+		888C04102C03C24200EFFDEE /* CellTextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888C040F2C03C24200EFFDEE /* CellTextController.swift */; };
+		888C04142C03DC3D00EFFDEE /* CellTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888C04132C03DC3D00EFFDEE /* CellTextField.swift */; };
 		88BFE4252A9BE78F00B37DC3 /* CodeEditorRemoveCodeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BFE4242A9BE78F00B37DC3 /* CodeEditorRemoveCodeButton.swift */; };
 		88BFE4292A9D13FC00B37DC3 /* DSWaveformImage in Frameworks */ = {isa = PBXBuildFile; productRef = 88BFE4282A9D13FC00B37DC3 /* DSWaveformImage */; };
 		88BFE42B2A9D13FC00B37DC3 /* DSWaveformImageViews in Frameworks */ = {isa = PBXBuildFile; productRef = 88BFE42A2A9D13FC00B37DC3 /* DSWaveformImageViews */; };
@@ -187,6 +189,8 @@
 		8878A6352A411F9B00A2658C /* FileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileModel.swift; sourceTree = "<group>"; };
 		8878A6372A41305E00A2658C /* ClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockView.swift; sourceTree = "<group>"; };
 		8878A6392A427C6000A2658C /* MarkerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkerModel.swift; sourceTree = "<group>"; };
+		888C040F2C03C24200EFFDEE /* CellTextController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellTextController.swift; sourceTree = "<group>"; };
+		888C04132C03DC3D00EFFDEE /* CellTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellTextField.swift; sourceTree = "<group>"; };
 		88BFE4242A9BE78F00B37DC3 /* CodeEditorRemoveCodeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorRemoveCodeButton.swift; sourceTree = "<group>"; };
 		88BFE42C2A9D25CB00B37DC3 /* WaveformViewDV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformViewDV.swift; sourceTree = "<group>"; };
 		88BFE4312A9E9E8700B37DC3 /* ArgumentFocusModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentFocusModel.swift; sourceTree = "<group>"; };
@@ -378,6 +382,7 @@
 			children = (
 				8878A6262A3FE93700A2658C /* FileController.swift */,
 				8861C4132BFA586E00DD180D /* SpectrogramVideoBuilder.swift */,
+				888C040F2C03C24200EFFDEE /* CellTextController.swift */,
 			);
 			path = IO;
 			sourceTree = "<group>";
@@ -521,6 +526,7 @@
 				88E094782B69B81A00A93660 /* ArgumentViewUIKit.xib */,
 				88E0947E2B6AAD5600A93660 /* CellTimeView.swift */,
 				886540852B76DE5A00D2BF0A /* ArgumentTextField.swift */,
+				888C04132C03DC3D00EFFDEE /* CellTextField.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -742,6 +748,7 @@
 				88EF5AC12A9ED19400D1EADA /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift in Sources */,
 				884B0DFC2A50CC3900D16304 /* CodeEditorRow.swift in Sources */,
 				88140FCD2A5218100095DB5A /* OptionsView.swift in Sources */,
+				888C04102C03C24200EFFDEE /* CellTextController.swift in Sources */,
 				8861C4252C02A4C900DD180D /* SpeechRecognizer.swift in Sources */,
 				8878A6252A3FE75200A2658C /* VideoHelpers.swift in Sources */,
 				881A39A92A242D4600B4782D /* sheettestApp.swift in Sources */,
@@ -753,6 +760,7 @@
 				8878A6382A41305E00A2658C /* ClockView.swift in Sources */,
 				8878A6362A411F9B00A2658C /* FileModel.swift in Sources */,
 				881A39F12A2A8D6200B4782D /* SheetModel.swift in Sources */,
+				888C04142C03DC3D00EFFDEE /* CellTextField.swift in Sources */,
 				880CBD132B3FB61500D7701F /* TemporalCollectionViewLayout.swift in Sources */,
 				8861C4212C0155C900DD180D /* ACBAudioProcessHelper.m in Sources */,
 				881A39F72A2A9D5900B4782D /* SheetView.swift in Sources */,

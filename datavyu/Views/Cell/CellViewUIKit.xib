@@ -2,13 +2,12 @@
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="22152" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22152"/>
-        <capability name="System colors introduced in macOS 10.14" minToolsVersion="10.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="CellViewUIKit" customModule="datavyu" customModuleProvider="target">
             <connections>
-                <outlet property="argumentsCollectionView" destination="FkL-xF-ebC" id="Dk2-MV-EAg"/>
+                <outlet property="cellTextField" destination="d6a-G0-R74" id="P9d-vW-xyx"/>
                 <outlet property="offset" destination="fpe-kJ-HL3" id="WED-LL-kXs"/>
                 <outlet property="onset" destination="4OB-Io-y4d" id="prc-K5-9OS"/>
                 <outlet property="ordinal" destination="GsG-gp-xUO" id="cki-C5-SNn"/>
@@ -17,6 +16,11 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <userDefaultsController representsSharedInstance="YES" id="VS1-Gi-cNN"/>
+        <customObject id="AcX-Hb-TPx" customClass="OnsetCoordinator" customModule="datavyu" customModuleProvider="target"/>
+        <customObject id="Wl8-Ky-qj4" customClass="OffsetCoordinator" customModule="datavyu" customModuleProvider="target"/>
+        <customObject id="8Pv-9n-3Cl" customClass="CellTextFormatter" customModule="datavyu" customModuleProvider="target"/>
+        <customObject id="3As-Hu-oUh" customClass="CellTextField" customModule="datavyu" customModuleProvider="target"/>
         <customView translatesAutoresizingMaskIntoConstraints="NO" id="Hz6-mo-xeY">
             <rect key="frame" x="0.0" y="0.0" width="300" height="150"/>
             <subviews>
@@ -39,36 +43,9 @@
                     </textFieldCell>
                     <connections>
                         <outlet property="delegate" destination="Wl8-Ky-qj4" id="5Mv-vo-1BA"/>
-                        <outlet property="nextKeyView" destination="FkL-xF-ebC" id="nPr-4v-aLG"/>
+                        <outlet property="nextKeyView" destination="d6a-G0-R74" id="3GL-Uu-RMG"/>
                     </connections>
                 </textField>
-                <scrollView wantsLayer="YES" fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QUz-hs-gfX">
-                    <rect key="frame" x="0.0" y="0.0" width="300" height="126"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES"/>
-                    <clipView key="contentView" id="veI-IV-tbX">
-                        <rect key="frame" x="1" y="1" width="298" height="124"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <collectionView id="FkL-xF-ebC">
-                                <rect key="frame" x="0.0" y="0.0" width="298" height="124"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="sTm-dT-gbi">
-                                    <size key="itemSize" width="100" height="100"/>
-                                </collectionViewFlowLayout>
-                                <color key="primaryBackgroundColor" name="windowBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                <color key="secondaryBackgroundColor" name="alternatingContentBackgroundColor" catalog="System" colorSpace="catalog"/>
-                            </collectionView>
-                        </subviews>
-                    </clipView>
-                    <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="kMh-Nu-bhD">
-                        <rect key="frame" x="-100" y="-100" width="247" height="16"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </scroller>
-                    <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="Pcp-xf-8Wn">
-                        <rect key="frame" x="284" y="1" width="15" height="124"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </scroller>
-                </scrollView>
                 <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4OB-Io-y4d" customClass="CellTimeTextField" customModule="datavyu" customModuleProvider="target">
                     <rect key="frame" x="102" y="129" width="96" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -82,14 +59,24 @@
                         <outlet property="nextKeyView" destination="fpe-kJ-HL3" id="8NQ-7Y-HXs"/>
                     </connections>
                 </textField>
+                <textField focusRingType="none" verticalHuggingPriority="750" id="d6a-G0-R74" customClass="CellTextField" customModule="datavyu" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="-5" width="300" height="124"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" id="FfD-2Z-PKM">
+                        <font key="font" usesAppearanceFont="YES"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <outlet property="delegate" destination="3As-Hu-oUh" id="sd2-B8-rBy"/>
+                        <outlet property="formatter" destination="8Pv-9n-3Cl" id="BpI-QC-zMS"/>
+                    </connections>
+                </textField>
             </subviews>
             <connections>
                 <outlet property="nextKeyView" destination="4OB-Io-y4d" id="eQR-aJ-NbE"/>
             </connections>
             <point key="canvasLocation" x="-5" y="-70"/>
         </customView>
-        <userDefaultsController representsSharedInstance="YES" id="VS1-Gi-cNN"/>
-        <customObject id="AcX-Hb-TPx" customClass="OnsetCoordinator" customModule="datavyu" customModuleProvider="target"/>
-        <customObject id="Wl8-Ky-qj4" customClass="OffsetCoordinator" customModule="datavyu" customModuleProvider="target"/>
     </objects>
 </document>

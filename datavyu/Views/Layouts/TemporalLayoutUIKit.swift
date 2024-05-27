@@ -377,7 +377,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
 
         item.configureCell(cell, parentView: parent.scrollView.documentView as? TemporalCollectionAppKitView)
 
-        //            print("CREATING CELL AT \(indexPath.section) \(indexPath.item) \(Unmanaged.passUnretained(cell).toOpaque())")
+                    print("CREATING CELL AT \(indexPath.section) \(indexPath.item) \(Unmanaged.passUnretained(cell).toOpaque())")
         //            cellItemMap[cell] = item
 
         return item

@@ -19,6 +19,8 @@ class ArgumentTextField: NSTextField {
     func configure(argument: Argument) {
         self.argument = argument
         delegate = self
+        self.cell?.wraps = false
+        self.autoresizingMask = [.height, .width]
     }
 
     func configureParentView(parentView: CellViewUIKit) {
@@ -40,23 +42,50 @@ class ArgumentTextField: NSTextField {
         return true
     }
 
+//    override var intrinsicContentSize: NSSize {
+//        var intrinsicSize = lastIntrinsicSize
+//
+//        print("Trying to set new size")
+//        if argumentView != nil && argumentView!.argSelected {
+//            intrinsicSize = super.intrinsicContentSize
+//
+//            // If we’re being edited, get the shared NSTextView field editor, so we can get more info
+//            if let textView = window?.fieldEditor(false, for: self) as? NSTextView, let textContainer = textView.textContainer, var usedRect = textView.textContainer?.layoutManager?.usedRect(for: textContainer) {
+//                usedRect.size.height += 5.0 // magic number! (the field editor TextView is offset within the NSTextField. It’s easy to get the space above (it’s origin), but it’s difficult to get the default spacing for the bottom, as we may be changing the height
+//                intrinsicSize.height = usedRect.size.height
+//            }
+//
+//            lastIntrinsicSize = intrinsicSize
+//            print(lastIntrinsicSize)
+//            hasLastIntrinsicSize = true
+//            frame = CGRect(origin: frame.origin, size: intrinsicSize)
+//        }
+//
+//        return intrinsicSize
+//    }
+    
     override var intrinsicContentSize: NSSize {
-        var intrinsicSize = lastIntrinsicSize
+        // Guard the cell exists and wraps
+        print("setting intrin")
 
-        if argumentView != nil && argumentView!.argSelected || !hasLastIntrinsicSize {
-            intrinsicSize = super.intrinsicContentSize
-
-            // If we’re being edited, get the shared NSTextView field editor, so we can get more info
-            if let textView = window?.fieldEditor(false, for: self) as? NSTextView, let textContainer = textView.textContainer, var usedRect = textView.textContainer?.layoutManager?.usedRect(for: textContainer) {
-                usedRect.size.height += 5.0 // magic number! (the field editor TextView is offset within the NSTextField. It’s easy to get the space above (it’s origin), but it’s difficult to get the default spacing for the bottom, as we may be changing the height
-                intrinsicSize.height = usedRect.size.height
-            }
-
-            lastIntrinsicSize = intrinsicSize
-            hasLastIntrinsicSize = true
-        }
-
-        return intrinsicSize
+        guard let cell = self.cell else {return super.intrinsicContentSize}
+        
+        // Use intrinsic width to jive with autolayout
+        let width = super.intrinsicContentSize.width
+        
+        // Set the frame height to a reasonable number
+        self.frame.size.height = 750.0
+        
+        // Calcuate height
+        let height = cell.cellSize(forBounds: self.frame).height
+        
+        return NSMakeSize(width, height);
+    }
+    
+    override func textDidChange(_ notification: Notification) {
+        super.textDidChange(notification)
+        print("invalidate intrin")
+        super.invalidateIntrinsicContentSize()
     }
 }
 
