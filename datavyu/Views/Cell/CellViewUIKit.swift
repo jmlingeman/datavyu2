@@ -39,6 +39,7 @@ class CellViewUIKit: NSCollectionViewItem {
         argumentSizes = [IndexPath: NSSize]()
 
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        
 
         ValueTransformer.setValueTransformer(TimestampTransformer(), forName: .classNameTransformerName)
     }
@@ -60,6 +61,7 @@ class CellViewUIKit: NSCollectionViewItem {
 
     func configureCell(_ cell: CellModel, parentView: TemporalCollectionAppKitView?) {
 //        print("CONFIGURING CELL")
+
         self.cell = cell
         (onset.delegate as! OnsetCoordinator).configure(cell: cell, view: self)
         (offset.delegate as! OffsetCoordinator).configure(cell: cell, view: self)
@@ -85,7 +87,7 @@ class CellViewUIKit: NSCollectionViewItem {
             onset.isEnabled = true
             offset.isEnabled = true
         }
-
+        
 //        print("CONFIGURED CELL \(self.onset) \(self.offset) \(self.cell) \(cell.ordinal) \(cell)")
     }
 
@@ -108,6 +110,7 @@ class CellViewUIKit: NSCollectionViewItem {
         }
 
         onset.nextResponder = offset
+        cellTextField.updateToolTips()
     }
 
     override func prepareForReuse() {
@@ -317,7 +320,6 @@ extension OffsetCoordinator: NSTextFieldDelegate {
             if textField.stringValue != offsetValue {
                 let timestampStr = textField.stringValue
                 let timestamp = timestringToTimestamp(timestring: timestampStr)
-                print("SETTING OFFSET TO \(timestamp)")
                 view?.lastEditedField = LastEditedField.offset
                 parentView?.lastSelectedCellModel = cell
                 cell!.setOffset(offset: timestamp)

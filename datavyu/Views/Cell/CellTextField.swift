@@ -81,11 +81,50 @@ class CellTextField: NSTextField {
         self.updateStringValue(cellTextController!.argumentString())
         
         (self.formatter as! CellTextFormatter).configure(cellTextController: self.cellTextController!, cell: self.cellModel!)
+        
     }
     
     func updateStringValue(_ s: String) {
         DispatchQueue.main.async {
             self.stringValue = s
+        }
+    }
+        
+    func updateToolTips() {
+        guard let textFieldCell = self.cell,
+              let textFieldCellBounds = textFieldCell.controlView?.bounds else{
+            return
+        }
+        let textBounds = textFieldCell.titleRect(forBounds: textFieldCellBounds)
+        let textContainer = NSTextContainer()
+        let layoutManager = NSLayoutManager()
+        let textStorage = NSTextStorage()
+        
+        layoutManager.addTextContainer(textContainer)
+        textStorage.addLayoutManager(layoutManager)
+        
+        layoutManager.typesetterBehavior = NSLayoutManager.TypesetterBehavior.behavior_10_2_WithCompatibility
+        
+        textContainer.containerSize = textBounds.size
+        textStorage.beginEditing()
+        textStorage.setAttributedString(textFieldCell.attributedStringValue)
+        textStorage.endEditing()
+        
+        for arg in cellModel!.arguments {
+            let rangeCharacters = (textFieldCell.stringValue as NSString).range(of: arg.getDisplayString())
+            
+            var count = 0
+            let rects: NSRectArray = layoutManager.rectArray(forCharacterRange: rangeCharacters,
+                                                             withinSelectedCharacterRange: rangeCharacters,
+                                                             in: textContainer,
+                                                             rectCount: &count)!
+            
+            for i in 0...count {
+                var rect = NSOffsetRect(rects[i], textBounds.origin.x, textBounds.origin.y)
+                rect = self.convert(rect, to: self)
+                // do something with rect
+                self.addToolTip(rect, owner: arg.name, userData: nil)
+            }
         }
     }
     
@@ -141,6 +180,8 @@ class CellTextField: NSTextField {
             return event
         }
         
+        self.updateToolTips()
+        
         
         return true
     }
@@ -186,7 +227,7 @@ extension CellTextField: NSTextFieldDelegate, NSTextViewDelegate {
         print("ARGUMENT: \(#function)")
         return true
     }
-    
+        
     func controlTextDidBeginEditing(_: Notification) {
         print("ARGUMENT: \(#function)")
         self.isEditing = true
@@ -225,6 +266,7 @@ extension CellTextField: NSTextFieldDelegate, NSTextViewDelegate {
 //        parentView!.lastEditedField = LastEditedField.arguments
         cellTextController?.parseUpdates(newValue: self.stringValue)
         self.updateStringValue(cellTextController!.argumentString())
+        self.updateToolTips()
 //        invalidateIntrinsicContentSize()
     }
     
