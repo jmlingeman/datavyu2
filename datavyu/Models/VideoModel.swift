@@ -1,7 +1,7 @@
 import AVFoundation
 import SwiftUI
 
-class VideoModel: ObservableObject, Identifiable, Equatable, Hashable, Codable {
+public class VideoModel: ObservableObject, Identifiable, Equatable, Hashable, Codable {
     @Published var videoFileURL: URL
     @Published var currentTime: Double
     @Published var currentPos: Double
@@ -10,6 +10,8 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable, Codable {
     @Published var selectedMarker: Marker?
     @Published var updates = 0
     @Published var filename: String
+    
+    @Published var fps: Float = 0
 
     var trackSettings: TrackSetting? = nil
 
@@ -22,14 +24,14 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable, Codable {
 
     var ready: Bool = false
 
-    static func == (lhs: VideoModel, rhs: VideoModel) -> Bool {
+    public static func == (lhs: VideoModel, rhs: VideoModel) -> Bool {
         if lhs.videoFileURL == rhs.videoFileURL {
             return true
         }
         return false
     }
 
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(videoFileURL)
     }
 
@@ -42,6 +44,10 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable, Codable {
         duration = 0.0
 
         filename = videoFilePath.lastPathComponent
+        
+        Task {
+            try await populateMetadata()
+        }
     }
 
     convenience init(videoFilePath: URL, trackSettings: TrackSetting) {
@@ -50,16 +56,21 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable, Codable {
     }
     
     func getFps() -> Float {
+        return fps
+    }
+    
+    func populateMetadata() async throws {
         let asset = player.currentItem?.asset
         
         if asset != nil {
-            let tracks = asset!.tracks(withMediaType: .video)
-            let fps = tracks.first?.nominalFrameRate
-            if fps != nil {
-                return fps!
+            let tracks = try await asset!.loadTracks(withMediaType: .video)
+            //                let tracks = asset!.tracks(withMediaType: .video)
+            if tracks.count > 0 {
+                self.fps = try await tracks.first!.load(.nominalFrameRate) as Float
+                let durTime = try await asset!.load(.duration) as CMTime
+                self.duration = durTime.seconds
             }
         }
-        return 0
     }
 
     func copy() -> VideoModel {
@@ -166,7 +177,7 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable, Codable {
         case filename
     }
 
-    required init(from decoder: Decoder) throws {
+    public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let fileUrl = try container.decode(URL.self, forKey: .videoFileUrl)
         videoFileURL = fileUrl
@@ -178,7 +189,7 @@ class VideoModel: ObservableObject, Identifiable, Equatable, Hashable, Codable {
         player = AVPlayer(url: fileUrl)
     }
 
-    func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(videoFileURL, forKey: .videoFileUrl)
         try container.encode(currentTime, forKey: .currentTime)

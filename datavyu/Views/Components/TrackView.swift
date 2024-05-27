@@ -14,6 +14,7 @@ struct TrackView: View {
     @ObservedObject var fileModel: FileModel
     @Binding var primaryMarker: Marker?
     @State var selectedMarker: Marker?
+    @State var calcWidth: Double = 0
 
     @State var configuration: Waveform.Configuration = .init(
         style: .outlined(.blue, 3),
@@ -39,7 +40,7 @@ struct TrackView: View {
             let calcWidth = gr.size.width * (fileModel.longestDuration > 0 ? (videoModel.duration / fileModel.longestDuration) : 1) + 1
             ZStack {
                 Rectangle().frame(maxWidth: .infinity).foregroundColor(Color.blue)
-                WaveformViewDV(audioURL: videoModel.videoFileURL, size: CGSize(width: calcWidth, height: gr.size.height), configuration: configuration).frame(maxWidth: .infinity)
+                WaveformViewDV(audioURL: videoModel.videoFileURL, videoModel: videoModel, fileModel: fileModel, geometryReader: gr, configuration: configuration).frame(maxWidth: .infinity)
                 ForEach(videoModel.markers) { marker in
                     Rectangle().frame(width: 5).foregroundColor(marker == selectedMarker ? Color.purple : Color.green)
                         .position(x: marker.time / videoModel.getDuration() * calcWidth,

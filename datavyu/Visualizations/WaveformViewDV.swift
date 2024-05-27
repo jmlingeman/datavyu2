@@ -10,10 +10,14 @@ public struct WaveformViewDV: View {
     private let configuration: Waveform.Configuration
     private let renderer: WaveformRenderer
     private let priority: TaskPriority
-    private let size: CGSize
+    @State private var size: CGSize = CGSize()
 
     @StateObject private var waveformDrawer = WaveformImageDrawer()
     @State private var waveformImage: DSImage = .init()
+    
+    @ObservedObject var fileModel: FileModel
+    @ObservedObject var videoModel: VideoModel
+    var geometryReader: GeometryProxy
 
     /**
      Creates a new WaveformView which displays a waveform for the audio at `audioURL`.
@@ -26,16 +30,26 @@ public struct WaveformViewDV: View {
      */
     public init(
         audioURL: URL,
-        size: CGSize,
+        videoModel: VideoModel,
+        fileModel: FileModel,
+        geometryReader: GeometryProxy,
         configuration: Waveform.Configuration = defaultConfiguration,
         renderer: WaveformRenderer = LinearWaveformRenderer(),
         priority: TaskPriority = .userInitiated
     ) {
+        
         self.audioURL = audioURL
         self.configuration = configuration
         self.renderer = renderer
         self.priority = priority
-        self.size = size
+        self.geometryReader = geometryReader
+        self.fileModel = fileModel
+        self.videoModel = videoModel
+        
+        let width = geometryReader.size.width * (fileModel.longestDuration > 0 ? (videoModel.duration / fileModel.longestDuration) : 1) + 1
+        let height = geometryReader.size.height
+        
+        self.size = CGSize(width: width, height: height)
     }
 
     public var body: some View {
@@ -43,12 +57,30 @@ public struct WaveformViewDV: View {
             image
                 .onAppear {
                     guard waveformImage.size == .zero else { return }
-                    update(size: geometry.size, url: audioURL, configuration: configuration)
+                    updateSize()
+                    update(size: self.size, url: audioURL, configuration: configuration)
                 }
-                .onChange(of: geometry.size) { update(size: $0, url: audioURL, configuration: configuration) }
-                .onChange(of: audioURL) { update(size: geometry.size, url: $0, configuration: configuration) }
-                .onChange(of: configuration) { update(size: geometry.size, url: audioURL, configuration: $0) }
+                .onChange(of: geometry.size) { updateSize() }
+                .onChange(of: audioURL) { update(size: self.size, url: $0, configuration: configuration) }
+                .onChange(of: configuration) {
+                    update(size: self.size, url: audioURL, configuration: $0)
+                }
+                .onChange(of: fileModel.longestDuration) {
+                    updateSize()
+                    update(size: self.size, url: audioURL, configuration: configuration)
+                }
+                .onChange(of: geometryReader.size) { oldValue, newValue in
+                    updateSize()
+                    update(size: self.size, url: audioURL, configuration: configuration)
+                }
         }
+    }
+    
+    func updateSize() {
+        let width = geometryReader.size.width * (fileModel.longestDuration > 0 ? (videoModel.duration / fileModel.longestDuration) : 1) + 1
+        let height = geometryReader.size.height
+        
+        self.size = CGSize(width: width, height: height)
     }
 
     private var image: some View {

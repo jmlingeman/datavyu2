@@ -9,16 +9,16 @@ import Foundation
 import SwiftUI
 import UniformTypeIdentifiers
 
-class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, Equatable {
-    static func == (lhs: FileModel, rhs: FileModel) -> Bool {
+public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, Equatable {
+    public static func == (lhs: FileModel, rhs: FileModel) -> Bool {
         lhs.id == rhs.id
     }
 
-    func snapshot(contentType _: UTType) throws -> FileModel {
+    public func snapshot(contentType _: UTType) throws -> FileModel {
         copy()
     }
 
-    func fileWrapper(snapshot: FileModel, configuration: WriteConfiguration) throws -> FileWrapper {
+    public func fileWrapper(snapshot: FileModel, configuration: WriteConfiguration) throws -> FileWrapper {
         if configuration.existingFile != nil {
             let data = saveOpfFile(fileModel: snapshot, outputFilename: configuration.existingFile!.symbolicLinkDestinationURL!)
             return FileWrapper(regularFileWithContents: data)
@@ -27,9 +27,9 @@ class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, Equatabl
         }
     }
 
-    typealias Snapshot = FileModel
+    public typealias Snapshot = FileModel
 
-    required init(configuration: ReadConfiguration) throws {
+    public required init(configuration: ReadConfiguration) throws {
         let url = configuration.file.symbolicLinkDestinationURL
 
         let model = loadOpfFile(inputFilename: url!)
@@ -45,7 +45,7 @@ class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, Equatabl
         videoObservers = model.videoObservers
     }
 
-    static var readableContentTypes: [UTType] = [UTType.opf]
+    public static var readableContentTypes: [UTType] = [UTType.opf]
 
     var version = "#4"
 
@@ -139,6 +139,7 @@ class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, Equatabl
         if videoModels.count > 0 {
             primaryVideo = videoModels[0]
         }
+        updateLongestDuration()
     }
 
     func resetShuttleSpeed() {
@@ -156,10 +157,20 @@ class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, Equatabl
         if videoModels.count == 1 {
             primaryVideo = videoModels[0]
         }
-
-        if videoModel.duration > longestDuration {
-            longestDuration = videoModel.duration
-            primaryVideo = videoModel
+        
+        Task {
+            try await videoModel.populateMetadata()
+            updateLongestDuration()
+        }
+    }
+    
+    func updateLongestDuration() {
+        longestDuration = 0
+        for videoModel in videoModels {
+            if videoModel.duration > longestDuration {
+                longestDuration = videoModel.duration
+                primaryVideo = videoModel
+            }
         }
     }
 
