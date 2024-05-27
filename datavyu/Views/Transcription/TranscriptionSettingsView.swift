@@ -77,7 +77,7 @@ struct TranscriptionSettingsView: View {
                 let targetColumn = selectedColumn
                 running = true
                 speech.run(selectedModel: selectedModel, videoModel: videoModel, sheetModel: sheetModel, targetColumn: targetColumn)
-            }.disabled(running)
+            }.disabled(running || selectedColumn.columnName.count == 0 || selectedArgument.name.count == 0)
             
             Text(String(format: "%.2f%% transcribed", transcriptionProgress * 100))
             ProgressView(value: transcriptionProgress).onReceive(timer) { _ in

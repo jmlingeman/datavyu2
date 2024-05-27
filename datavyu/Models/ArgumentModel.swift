@@ -70,6 +70,7 @@ final class Argument: ObservableObject, Identifiable, Equatable, Hashable, Codab
 
     func setValue(value: String) {
         let oldValue = self.value
+        let valueWithoutSep = value.replacingOccurrences(of: CellTextController.argumentSeperator, with: "")
         self.value = value
         undoManager?.registerUndo(withTarget: self, handler: { _ in
             self.value = oldValue

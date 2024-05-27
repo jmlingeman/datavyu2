@@ -114,15 +114,16 @@ class CellTextField: NSTextField {
             let rangeCharacters = (textFieldCell.stringValue as NSString).range(of: arg.getDisplayString())
             
             var count = 0
-            let rects: NSRectArray = layoutManager.rectArray(forCharacterRange: rangeCharacters,
+            guard let rects: NSRectArray = layoutManager.rectArray(forCharacterRange: rangeCharacters,
                                                              withinSelectedCharacterRange: rangeCharacters,
                                                              in: textContainer,
-                                                             rectCount: &count)!
+                                                                   rectCount: &count) else {
+                return
+            }
             
             for i in 0...count {
                 var rect = NSOffsetRect(rects[i], textBounds.origin.x, textBounds.origin.y)
                 rect = self.convert(rect, to: self)
-                // do something with rect
                 self.addToolTip(rect, owner: arg.name, userData: nil)
             }
         }
@@ -174,7 +175,7 @@ class CellTextField: NSTextField {
         
         keyEventHandler = NSEvent.addLocalMonitorForEvents(matching: NSEvent.EventTypeMask.keyDown) { event in
             let s = event.characters
-            if s!.contains(",") {
+            if s!.contains(CellTextController.argumentSeperator) {
                 return nil
             }
             return event

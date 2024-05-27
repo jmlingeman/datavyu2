@@ -21,7 +21,7 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
 
     init() {
         sheetModel = SheetModel(sheetName: "dummy")
-        columnName = "dummy"
+        columnName = ""
         cells = []
         arguments = []
         addArgument()

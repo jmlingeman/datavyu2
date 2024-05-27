@@ -55,7 +55,7 @@ class CellTextController {
         for (i, arg) in args.enumerated() {
             if cell.arguments.count > i {
                 if cell.arguments[i].value != arg {
-                    cell.arguments[i].value = arg
+                    cell.arguments[i].setValue(value: arg)
                 }
                 
                 endIdx = startIdx + cell.arguments[i].getDisplayString().count
