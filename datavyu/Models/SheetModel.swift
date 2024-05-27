@@ -14,6 +14,7 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
     @Published var visibleColumns: [ColumnModel]
     @Published var updates: Int = 0
     @Published var updated: Bool = false
+    var selectedCell: CellModel?
 
     let config = Config()
     var undoManager: UndoManager?

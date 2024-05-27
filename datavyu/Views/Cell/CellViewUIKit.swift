@@ -131,6 +131,7 @@ class CellViewUIKit: NSCollectionViewItem {
         view.layer?.borderWidth = 1
         isSelected = true
         parentView?.lastSelectedCellModel = cell
+        self.cell.column.sheetModel.selectedCell = self.cell
     }
 
     func setDeselected() {

@@ -13,6 +13,7 @@ struct ControllerPanelView: View {
     @FocusState var cellInFocus: CellModel?
 
     @State var showingColumnNameDialog = false
+    @State var jumpValue: String = "00:00:05:000"
 
     func play() {
         for videoModel in fileModel.videoModels {
@@ -53,6 +54,26 @@ struct ControllerPanelView: View {
     
     func prevFrame() {
         stepFrame(reverse: true)
+    }
+    
+    func jump() {
+        fileModel.seekAllVideos(to: fileModel.currentTime() + Double(timestringToSecondsDouble(timestring: jumpValue)))
+    }
+    
+    func findOnset() {
+        if fileModel.sheetModel.selectedCell != nil {
+            find(value: millisToDouble(millis: fileModel.sheetModel.selectedCell!.onset))
+        }
+    }
+    
+    func findOffset() {
+        if fileModel.sheetModel.selectedCell != nil {
+            find(value: millisToDouble(millis: fileModel.sheetModel.selectedCell!.offset))
+        }
+    }
+    
+    func find(value: Double) {
+        fileModel.seekAllVideos(to: value)
     }
 
     func shuttleStepUp() {
@@ -127,6 +148,9 @@ struct ControllerPanelView: View {
                     ControllerButton(buttonName: "Set\nOffset", action: setOffset)
                         .keyboardShortcut("9", modifiers: .numericPad)
                         .keyboardShortcut("]")
+                    ControllerButton(buttonName: "Jump", action: jump)
+                        .keyboardShortcut("-", modifiers: .numericPad)
+                    TextField("Jump by", text: $jumpValue).frame(width: 100)
                 }
                 GridRow {
                     ControllerButton(buttonName: "Shuttle <", action: shuttleStepDown)
@@ -138,6 +162,8 @@ struct ControllerPanelView: View {
                     ControllerButton(buttonName: "Shuttle >", action: shuttleStepUp)
                         .keyboardShortcut("6", modifiers: .numericPad)
                         .keyboardShortcut("'")
+                    ControllerButton(buttonName: "Find", action: findOnset)
+                        .keyboardShortcut("+", modifiers: .numericPad)
                 }
                 GridRow {
                     ControllerButton(buttonName: "Prev", action: prevFrame)

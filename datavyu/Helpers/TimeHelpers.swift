@@ -40,3 +40,11 @@ func timestringToTimestamp(timestring: String) -> Int {
         return t ?? 0
     }
 }
+
+func timestringToSecondsDouble(timestring: String) -> Double {
+    return Double(timestringToTimestamp(timestring: timestring)) / 1000.0
+}
+
+func millisToDouble(millis: Int) -> Double {
+    return Double(millis) / 1000.0
+}
