@@ -31,12 +31,12 @@ struct SheetCollectionView: View {
     @EnvironmentObject var sheetModel: SheetModel
     @State var layout: LayoutChoice = LayoutChoice()
     var body: some View {
-        VStack {
+        ZStack {
             SheetLayoutCollection(sheetModel: sheetModel, layout: layout, itemSize: NSSize(width: 100, height: 100))
             Button("Change Layout") {
                 layout.swapLayout()
                 sheetModel.updates += 1
-            }.keyboardShortcut(KeyboardShortcut("t", modifiers: .command))
+            }.keyboardShortcut(KeyboardShortcut("t", modifiers: .command)).hidden()
         }
     }
 }
