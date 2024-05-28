@@ -75,6 +75,8 @@ struct sheettestApp: App {
                 Button("Open Sheet",
                        action: { showingOpenDialog.toggle() })
                     .keyboardShortcut(KeyEquivalent("o"))
+                
+                // TODO: Previously opened files
             }
 
             CommandGroup(replacing: CommandGroupPlacement.saveItem) {
@@ -83,10 +85,60 @@ struct sheettestApp: App {
             }
             
             CommandGroup(after: CommandGroupPlacement.windowList) {
+                Divider()
                 Button("Open Controller Window") {
                     appState.controllerWindow?.makeKeyAndOrderFront(self)
                 }
+                Divider()
             }
+            
+            CommandMenu("Spreadsheet") {
+                Button("Add Column") {
+                    
+                }
+                Button("Delete Column") {
+                    
+                }
+                Divider()
+                Button("Add Cell") {
+                    
+                }
+                Button("Delete Cell") {
+                    
+                }
+                Divider()
+                Button("Edit Arguments") {
+                    
+                }
+                Divider()
+                Button("Ordinal Layout") {
+                    
+                }
+                Button("Temporal Layout") {
+                    
+                }
+                Divider()
+                Button("Hide Column") {
+                    
+                }
+                Button("Hide/Show Columns") {
+                    
+                }
+            }
+            
+            CommandMenu("Scripting") {
+                Button("Run Script") {
+                    
+                }
+                
+                // TODO: Previously run files
+            }
+            
+//            CommandMenu("History") {
+//                Button("Show ") {
+//
+//                }
+//            }
             
             
         }
