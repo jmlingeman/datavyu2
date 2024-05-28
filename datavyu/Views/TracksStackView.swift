@@ -79,7 +79,7 @@ struct TracksStackView: View {
                                                 TrackPositionIndicator(fileModel: fileModel, videoModel: fileModel.primaryVideo!)
                                             }
                                         }
-                                }
+                                }.padding(.trailing, 5)
                             }.frame(height: 30)
                         }
                     }

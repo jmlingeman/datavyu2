@@ -38,27 +38,30 @@ struct TrackView: View {
     var body: some View {
         GeometryReader { gr in
             let calcWidth = gr.size.width * (fileModel.longestDuration > 0 ? (videoModel.duration / fileModel.longestDuration) : 1) + 1
-            ZStack {
-                Rectangle().frame(maxWidth: .infinity).foregroundColor(Color.blue)
-                WaveformViewDV(audioURL: videoModel.videoFileURL, videoModel: videoModel, fileModel: fileModel, geometryReader: gr, configuration: configuration).frame(maxWidth: .infinity)
-                ForEach(videoModel.markers) { marker in
-                    Rectangle().frame(width: 5).foregroundColor(marker == selectedMarker ? Color.purple : Color.green)
-                        .position(x: marker.time / videoModel.getDuration() * calcWidth,
-                                  y: gr.size.height / 2).onTapGesture {
-                            if selectedMarker == marker {
-                                selectedMarker = nil
-                                videoModel.selectedMarker = nil
-                            } else {
-                                selectedMarker = marker
-                                videoModel.selectedMarker = marker
+            HStack {
+                ZStack {
+                    Rectangle().frame(maxWidth: .infinity).foregroundColor(Color.blue)
+                    WaveformViewDV(audioURL: videoModel.videoFileURL, videoModel: videoModel, fileModel: fileModel, geometryReader: gr, configuration: configuration).frame(maxWidth: .infinity)
+                    ForEach(videoModel.markers) { marker in
+                        Rectangle().frame(width: 5).foregroundColor(marker == selectedMarker ? Color.purple : Color.green)
+                            .position(x: marker.time / videoModel.getDuration() * calcWidth,
+                                      y: gr.size.height / 2).onTapGesture {
+                                if selectedMarker == marker {
+                                    selectedMarker = nil
+                                    videoModel.selectedMarker = nil
+                                } else {
+                                    selectedMarker = marker
+                                    videoModel.selectedMarker = marker
+                                }
                             }
-                        }
+                    }
                 }
-            }.overlay(alignment: .bottomTrailing) {
+                .frame(width: calcWidth)
+                .offset(x: alignMarkers(primaryMarker: fileModel.primaryMarker, secondaryMarker: videoModel.syncMarker, primaryWidth: gr.size.width, secondaryWidth: calcWidth))
+                Spacer()
+            }.frame(width: gr.size.width).overlay(alignment: .bottomTrailing) {
                 trackOverlay
             }
-            .frame(width: calcWidth)
-            .offset(x: alignMarkers(primaryMarker: fileModel.primaryMarker, secondaryMarker: videoModel.syncMarker, primaryWidth: gr.size.width, secondaryWidth: calcWidth))
         }
     }
 
