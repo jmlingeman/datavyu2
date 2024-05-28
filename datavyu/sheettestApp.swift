@@ -24,10 +24,17 @@ struct sheettestApp: App {
     @State private var showingAlert = false
     @State private var errorMsg = ""
     @State private var showingSaveDialog = false
+    
+    @StateObject var appState = AppState()
+    
+    @Environment(\.openWindow) private var openWindow
 
     var body: some Scene {
         WindowGroup {
-            ContentView().environmentObject(fileController).onAppear {
+            ContentView()
+                .environmentObject(fileController)
+                .environmentObject(appState)
+                .onAppear {
                 ValueTransformer.setValueTransformer(TimestampTransformer(), forName: .classNameTransformerName)
             }
             .fileImporter(isPresented: $showingOpenDialog,
@@ -74,6 +81,14 @@ struct sheettestApp: App {
                 Button("Save Sheet", action: { showingSaveDialog.toggle() })
                     .keyboardShortcut(KeyEquivalent("s"))
             }
+            
+            CommandGroup(after: CommandGroupPlacement.windowList) {
+                Button("Open Controller Window") {
+                    appState.controllerWindow?.makeKeyAndOrderFront(self)
+                }
+            }
+            
+            
         }
     }
 }

@@ -14,20 +14,23 @@ struct ControllerView: View {
     @FocusState private var cellInFocus: CellModel?
     @Binding var hideController: Bool
     @State private var showingColumnNameDialog = false
+    
+    @EnvironmentObject private var appState: AppState
 
     var body: some View {
         VStack {
             ZStack {
                 ForEach(fileModel.videoModels) { videoModel in
                     ZStack {}.onAppear(perform: {
-                        VideoView(videoModel: videoModel, sheetModel: fileModel.sheetModel).openInWindow(title: videoModel.filename, sender: self, frameName: videoModel.filename)
+                        VideoView(videoModel: videoModel, sheetModel: fileModel.sheetModel)
+                            .openInWindow(title: videoModel.filename, appState: appState, sender: self, frameName: videoModel.filename)
                     })
                 }
             }.onAppear(perform: {
                 HStack {
                     ControllerPanelView(fileModel: fileModel, columnInFocus: _columnInFocus, cellInFocus: _cellInFocus).frame(alignment: .topLeading)
                     TracksStackView(fileModel: fileModel)
-                }.openInWindow(title: "Controller", sender: self, frameName: "controller")
+                }.openInWindow(title: "Controller", appState: appState, sender: self, frameName: "controller")
             })
 
             Sheet(columnInFocus: _columnInFocus,

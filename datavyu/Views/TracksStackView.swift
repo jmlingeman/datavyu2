@@ -6,6 +6,7 @@ import UniformTypeIdentifiers
 struct TracksStackView: View {
     @ObservedObject var fileModel: FileModel
     @State private var showingSaveDialog = false
+    @EnvironmentObject private var appState: AppState
 
 
     func syncVideos() {
@@ -56,13 +57,14 @@ struct TracksStackView: View {
                                             savePanel.directoryURL = videoModel.videoFileURL.deletingLastPathComponent()
                                             savePanel.nameFieldStringValue = "\(videoModel.videoFileURL.lastPathComponent)-spectrogram.mov"
                                             if savePanel.runModal() == .OK {
-                                                SpectrogramProgressView(outputPath: savePanel.url!, videoModel: videoModel, fileModel: fileModel).openInWindow(title: "Spectrogram Generation: \(videoModel.videoFileURL.lastPathComponent)", sender: self, frameName: nil)
+                                                SpectrogramProgressView(outputPath: savePanel.url!, videoModel: videoModel, fileModel: fileModel)
+                                                    .openInWindow(title: "Spectrogram Generation: \(videoModel.videoFileURL.lastPathComponent)", appState: appState, sender: self, frameName: nil)
                                             }
                                             
                                         }
                                         Button("Transcribe Video") {
                                             let transcribePanel = TranscriptionSettingsView(sheetModel: fileModel.sheetModel, videoModel: videoModel)
-                                            transcribePanel.openInWindow(title: "Transcription Settings", sender: self, frameName: nil)
+                                            transcribePanel.openInWindow(title: "Transcription Settings", appState: appState, sender: self, frameName: nil)
                                         }
                                     }, label: {
                                         Image(systemName: "ellipsis.circle.fill")
@@ -97,7 +99,8 @@ struct TracksStackView: View {
             Button("Sync Videos", action: syncVideos)
             Button("Add Video", action: {
                 addVideo()
-                VideoView(videoModel: fileModel.videoModels.last!, sheetModel: fileModel.sheetModel).openInWindow(title: fileModel.videoModels.last!.filename, sender: self, frameName: fileModel.videoModels.last!.filename)
+                VideoView(videoModel: fileModel.videoModels.last!, sheetModel: fileModel.sheetModel)
+                    .openInWindow(title: fileModel.videoModels.last!.filename, appState: appState, sender: self, frameName: fileModel.videoModels.last!.filename)
             })
         }
     }

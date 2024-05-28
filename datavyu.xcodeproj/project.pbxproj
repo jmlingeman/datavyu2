@@ -75,6 +75,7 @@
 		888C04142C03DC3D00EFFDEE /* CellTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888C04132C03DC3D00EFFDEE /* CellTextField.swift */; };
 		888C04172C04DB4D00EFFDEE /* TranscriptionSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888C04162C04DB4D00EFFDEE /* TranscriptionSettingsView.swift */; };
 		888C04192C05092C00EFFDEE /* Paths.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888C04182C05092C00EFFDEE /* Paths.swift */; };
+		888C041B2C055D7600EFFDEE /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888C041A2C055D7600EFFDEE /* AppState.swift */; };
 		88BFE4252A9BE78F00B37DC3 /* CodeEditorRemoveCodeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BFE4242A9BE78F00B37DC3 /* CodeEditorRemoveCodeButton.swift */; };
 		88BFE4292A9D13FC00B37DC3 /* DSWaveformImage in Frameworks */ = {isa = PBXBuildFile; productRef = 88BFE4282A9D13FC00B37DC3 /* DSWaveformImage */; };
 		88BFE42B2A9D13FC00B37DC3 /* DSWaveformImageViews in Frameworks */ = {isa = PBXBuildFile; productRef = 88BFE42A2A9D13FC00B37DC3 /* DSWaveformImageViews */; };
@@ -195,6 +196,7 @@
 		888C04132C03DC3D00EFFDEE /* CellTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellTextField.swift; sourceTree = "<group>"; };
 		888C04162C04DB4D00EFFDEE /* TranscriptionSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptionSettingsView.swift; sourceTree = "<group>"; };
 		888C04182C05092C00EFFDEE /* Paths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paths.swift; sourceTree = "<group>"; };
+		888C041A2C055D7600EFFDEE /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		88BFE4242A9BE78F00B37DC3 /* CodeEditorRemoveCodeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorRemoveCodeButton.swift; sourceTree = "<group>"; };
 		88BFE42C2A9D25CB00B37DC3 /* WaveformViewDV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformViewDV.swift; sourceTree = "<group>"; };
 		88BFE4312A9E9E8700B37DC3 /* ArgumentFocusModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentFocusModel.swift; sourceTree = "<group>"; };
@@ -378,6 +380,7 @@
 				88F62EA22A5A012400DC5B60 /* IOModels.swift */,
 				88BFE4312A9E9E8700B37DC3 /* ArgumentFocusModel.swift */,
 				88CE94522AA25E69000E8DFB /* FileControllerModel.swift */,
+				888C041A2C055D7600EFFDEE /* AppState.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -793,6 +796,7 @@
 				885411852B463924006A86C0 /* WrappedHStack.swift in Sources */,
 				88D3FE372A4DE12A0094F953 /* TrackPositionIndicator.swift in Sources */,
 				88F8A9342A9A56FB001EEB21 /* ControllerPanelView.swift in Sources */,
+				888C041B2C055D7600EFFDEE /* AppState.swift in Sources */,
 				884CBB512A6CA4EF00D5DBA8 /* OrdinalLayout.swift in Sources */,
 				886F73962BF54982006383BE /* SpectrogramView.swift in Sources */,
 				884B0DF92A50CB1B00D16304 /* CodeEditorAddCodeButton.swift in Sources */,

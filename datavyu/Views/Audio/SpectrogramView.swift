@@ -21,10 +21,6 @@ struct SpectrogramView: View {
             Text("\(spectrogramController.updates)")
             Image(nsImage: spectrogramController.outputImage)
                 .frame(width: 500, height: 500)
-            
-            //            Button("Open in Window") {
-            //                self.openInWindow(title: "Win View", sender: self)
-            //            }
         }
     }
 }
