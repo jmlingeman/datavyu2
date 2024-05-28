@@ -20,7 +20,6 @@
 		881A39C72A242D4700B4782D /* sheettestUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39C62A242D4700B4782D /* sheettestUITestsLaunchTests.swift */; };
 		881A39D52A253A4900B4782D /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = 881A39D42A253A4900B4782D /* WrappingHStack */; };
 		881A39EC2A2A888100B4782D /* CellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39EB2A2A888100B4782D /* CellModel.swift */; };
-		881A39EF2A2A88AB00B4782D /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39EE2A2A88AB00B4782D /* CellView.swift */; };
 		881A39F12A2A8D6200B4782D /* SheetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39F02A2A8D6200B4782D /* SheetModel.swift */; };
 		881A39F32A2A8D8700B4782D /* ColumnModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39F22A2A8D8700B4782D /* ColumnModel.swift */; };
 		881A39F52A2A917E00B4782D /* ArgumentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39F42A2A917E00B4782D /* ArgumentModel.swift */; };
@@ -39,8 +38,6 @@
 		884B0DF92A50CB1B00D16304 /* CodeEditorAddCodeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884B0DF82A50CB1B00D16304 /* CodeEditorAddCodeButton.swift */; };
 		884B0DFC2A50CC3900D16304 /* CodeEditorRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884B0DFB2A50CC3900D16304 /* CodeEditorRow.swift */; };
 		884B0DFE2A50CDCE00D16304 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 884B0DFD2A50CDCE00D16304 /* README.md */; };
-		884CBB512A6CA4EF00D5DBA8 /* OrdinalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884CBB502A6CA4EF00D5DBA8 /* OrdinalLayout.swift */; };
-		884CBB532A6CA58F00D5DBA8 /* LayoutKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884CBB522A6CA58F00D5DBA8 /* LayoutKeys.swift */; };
 		884CBB552A6DF8F600D5DBA8 /* ColumnNameDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884CBB542A6DF8F600D5DBA8 /* ColumnNameDialog.swift */; };
 		885411852B463924006A86C0 /* WrappedHStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885411842B463924006A86C0 /* WrappedHStack.swift */; };
 		8861C4142BFA586E00DD180D /* SpectrogramVideoBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8861C4132BFA586E00DD180D /* SpectrogramVideoBuilder.swift */; };
@@ -61,7 +58,6 @@
 		8878A6172A30279700A2658C /* PythonScriptEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6162A30279700A2658C /* PythonScriptEngine.swift */; };
 		8878A61A2A3027F500A2658C /* DatavyuAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6192A3027F500A2658C /* DatavyuAPI.swift */; };
 		8878A61C2A352A5200A2658C /* MillisTimeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A61B2A352A5200A2658C /* MillisTimeFormatter.swift */; };
-		8878A61F2A38D99100A2658C /* WeakTemporalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A61E2A38D99100A2658C /* WeakTemporalLayout.swift */; };
 		8878A6212A3FD4A100A2658C /* TracksStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6202A3FD4A100A2658C /* TracksStackView.swift */; };
 		8878A6232A3FD81900A2658C /* TrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6222A3FD81900A2658C /* TrackView.swift */; };
 		8878A6252A3FE75200A2658C /* VideoHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6242A3FE75200A2658C /* VideoHelpers.swift */; };
@@ -76,6 +72,7 @@
 		888C04172C04DB4D00EFFDEE /* TranscriptionSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888C04162C04DB4D00EFFDEE /* TranscriptionSettingsView.swift */; };
 		888C04192C05092C00EFFDEE /* Paths.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888C04182C05092C00EFFDEE /* Paths.swift */; };
 		888C041B2C055D7600EFFDEE /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888C041A2C055D7600EFFDEE /* AppState.swift */; };
+		888C041D2C06778700EFFDEE /* OrdinalCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888C041C2C06778700EFFDEE /* OrdinalCollectionViewLayout.swift */; };
 		88BFE4252A9BE78F00B37DC3 /* CodeEditorRemoveCodeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BFE4242A9BE78F00B37DC3 /* CodeEditorRemoveCodeButton.swift */; };
 		88BFE4292A9D13FC00B37DC3 /* DSWaveformImage in Frameworks */ = {isa = PBXBuildFile; productRef = 88BFE4282A9D13FC00B37DC3 /* DSWaveformImage */; };
 		88BFE42B2A9D13FC00B37DC3 /* DSWaveformImageViews in Frameworks */ = {isa = PBXBuildFile; productRef = 88BFE42A2A9D13FC00B37DC3 /* DSWaveformImageViews */; };
@@ -139,7 +136,6 @@
 		881A39C42A242D4700B4782D /* sheettestUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sheettestUITests.swift; sourceTree = "<group>"; };
 		881A39C62A242D4700B4782D /* sheettestUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sheettestUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		881A39EB2A2A888100B4782D /* CellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellModel.swift; sourceTree = "<group>"; };
-		881A39EE2A2A88AB00B4782D /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
 		881A39F02A2A8D6200B4782D /* SheetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetModel.swift; sourceTree = "<group>"; };
 		881A39F22A2A8D8700B4782D /* ColumnModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnModel.swift; sourceTree = "<group>"; };
 		881A39F42A2A917E00B4782D /* ArgumentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentModel.swift; sourceTree = "<group>"; };
@@ -160,8 +156,6 @@
 		884B0DF82A50CB1B00D16304 /* CodeEditorAddCodeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorAddCodeButton.swift; sourceTree = "<group>"; };
 		884B0DFB2A50CC3900D16304 /* CodeEditorRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorRow.swift; sourceTree = "<group>"; };
 		884B0DFD2A50CDCE00D16304 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		884CBB502A6CA4EF00D5DBA8 /* OrdinalLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdinalLayout.swift; sourceTree = "<group>"; };
-		884CBB522A6CA58F00D5DBA8 /* LayoutKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutKeys.swift; sourceTree = "<group>"; };
 		884CBB542A6DF8F600D5DBA8 /* ColumnNameDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnNameDialog.swift; sourceTree = "<group>"; };
 		885411842B463924006A86C0 /* WrappedHStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedHStack.swift; sourceTree = "<group>"; };
 		8861C4132BFA586E00DD180D /* SpectrogramVideoBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrogramVideoBuilder.swift; sourceTree = "<group>"; };
@@ -184,7 +178,6 @@
 		8878A6162A30279700A2658C /* PythonScriptEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PythonScriptEngine.swift; sourceTree = "<group>"; };
 		8878A6192A3027F500A2658C /* DatavyuAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatavyuAPI.swift; sourceTree = "<group>"; };
 		8878A61B2A352A5200A2658C /* MillisTimeFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MillisTimeFormatter.swift; sourceTree = "<group>"; };
-		8878A61E2A38D99100A2658C /* WeakTemporalLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakTemporalLayout.swift; sourceTree = "<group>"; };
 		8878A6202A3FD4A100A2658C /* TracksStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksStackView.swift; sourceTree = "<group>"; };
 		8878A6222A3FD81900A2658C /* TrackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackView.swift; sourceTree = "<group>"; };
 		8878A6242A3FE75200A2658C /* VideoHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoHelpers.swift; sourceTree = "<group>"; };
@@ -197,6 +190,7 @@
 		888C04162C04DB4D00EFFDEE /* TranscriptionSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptionSettingsView.swift; sourceTree = "<group>"; };
 		888C04182C05092C00EFFDEE /* Paths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paths.swift; sourceTree = "<group>"; };
 		888C041A2C055D7600EFFDEE /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		888C041C2C06778700EFFDEE /* OrdinalCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdinalCollectionViewLayout.swift; sourceTree = "<group>"; };
 		88BFE4242A9BE78F00B37DC3 /* CodeEditorRemoveCodeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorRemoveCodeButton.swift; sourceTree = "<group>"; };
 		88BFE42C2A9D25CB00B37DC3 /* WaveformViewDV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformViewDV.swift; sourceTree = "<group>"; };
 		88BFE4312A9E9E8700B37DC3 /* ArgumentFocusModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentFocusModel.swift; sourceTree = "<group>"; };
@@ -356,7 +350,6 @@
 				8878A62E2A3FFCB600A2658C /* Audio */,
 				8878A61D2A38D97500A2658C /* Layouts */,
 				8837C56B2A2D299B00F29182 /* Components */,
-				881A39EE2A2A88AB00B4782D /* CellView.swift */,
 				881A39F62A2A9D5900B4782D /* SheetView.swift */,
 				881A39FA2A2AB66900B4782D /* VideoView.swift */,
 				881A39FF2A2BE73B00B4782D /* ControllerView.swift */,
@@ -466,11 +459,9 @@
 		8878A61D2A38D97500A2658C /* Layouts */ = {
 			isa = PBXGroup;
 			children = (
-				8878A61E2A38D99100A2658C /* WeakTemporalLayout.swift */,
-				884CBB502A6CA4EF00D5DBA8 /* OrdinalLayout.swift */,
-				884CBB522A6CA58F00D5DBA8 /* LayoutKeys.swift */,
 				880CBC8A2B3B699D00D7701F /* TemporalLayoutUIKit.swift */,
 				880CBD122B3FB61500D7701F /* TemporalCollectionViewLayout.swift */,
+				888C041C2C06778700EFFDEE /* OrdinalCollectionViewLayout.swift */,
 			);
 			path = Layouts;
 			sourceTree = "<group>";
@@ -743,7 +734,6 @@
 				88BFE4322A9E9E8700B37DC3 /* ArgumentFocusModel.swift in Sources */,
 				881A39EC2A2A888100B4782D /* CellModel.swift in Sources */,
 				88EF5ABF2A9ED19400D1EADA /* MelSpectrogram.swift in Sources */,
-				884CBB532A6CA58F00D5DBA8 /* LayoutKeys.swift in Sources */,
 				888C04192C05092C00EFFDEE /* Paths.swift in Sources */,
 				8878A6102A2FBC8700A2658C /* Config.swift in Sources */,
 				8878A61A2A3027F500A2658C /* DatavyuAPI.swift in Sources */,
@@ -758,9 +748,7 @@
 				88BFE4252A9BE78F00B37DC3 /* CodeEditorRemoveCodeButton.swift in Sources */,
 				8878A60E2A2D698900A2658C /* CodeEditorView.swift in Sources */,
 				8861C4232C02939200DD180D /* CMSampleBufferFactory.swift in Sources */,
-				881A39EF2A2A88AB00B4782D /* CellView.swift in Sources */,
 				881A39F52A2A917E00B4782D /* ArgumentModel.swift in Sources */,
-				8878A61F2A38D99100A2658C /* WeakTemporalLayout.swift in Sources */,
 				881A39FB2A2AB66900B4782D /* VideoView.swift in Sources */,
 				888C04172C04DB4D00EFFDEE /* TranscriptionSettingsView.swift in Sources */,
 				8861C41F2C0155C900DD180D /* AVPlayer+ACBHelper.m in Sources */,
@@ -792,12 +780,12 @@
 				88EF5AC22A9ED19400D1EADA /* AudioSpectrogram.swift in Sources */,
 				88F8A9322A993954001EEB21 /* ControllerButton.swift in Sources */,
 				88E094752B69B5AB00A93660 /* CellViewUIKit.swift in Sources */,
+				888C041D2C06778700EFFDEE /* OrdinalCollectionViewLayout.swift in Sources */,
 				882D71B02BF2AB6600538D51 /* ViewExtensions.swift in Sources */,
 				885411852B463924006A86C0 /* WrappedHStack.swift in Sources */,
 				88D3FE372A4DE12A0094F953 /* TrackPositionIndicator.swift in Sources */,
 				88F8A9342A9A56FB001EEB21 /* ControllerPanelView.swift in Sources */,
 				888C041B2C055D7600EFFDEE /* AppState.swift in Sources */,
-				884CBB512A6CA4EF00D5DBA8 /* OrdinalLayout.swift in Sources */,
 				886F73962BF54982006383BE /* SpectrogramView.swift in Sources */,
 				884B0DF92A50CB1B00D16304 /* CodeEditorAddCodeButton.swift in Sources */,
 				882D71B42BF422A000538D51 /* SpectrogramController.swift in Sources */,

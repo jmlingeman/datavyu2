@@ -22,7 +22,7 @@ class CellViewUIKit: NSCollectionViewItem {
 
     var argumentSizes: [IndexPath: NSSize]
 
-    var parentView: TemporalCollectionAppKitView?
+    var parentView: SheetCollectionAppKitView?
 
     var lastEditedField: LastEditedField = .none
 
@@ -59,7 +59,7 @@ class CellViewUIKit: NSCollectionViewItem {
         return false
     }
 
-    func configureCell(_ cell: CellModel, parentView: TemporalCollectionAppKitView?) {
+    func configureCell(_ cell: CellModel, parentView: SheetCollectionAppKitView?) {
 //        print("CONFIGURING CELL")
 
         self.cell = cell
@@ -189,7 +189,7 @@ class CellViewUIKit: NSCollectionViewItem {
 @objc class OnsetCoordinator: NSObject {
     var cell: CellModel?
     var view: CellViewUIKit?
-    var parentView: TemporalCollectionAppKitView?
+    var parentView: SheetCollectionAppKitView?
     var onsetValue: String?
 
     override init() {
@@ -272,7 +272,7 @@ extension OnsetCoordinator: NSTextFieldDelegate {
 @objc class OffsetCoordinator: NSObject {
     var cell: CellModel?
     var view: CellViewUIKit?
-    var parentView: TemporalCollectionAppKitView?
+    var parentView: SheetCollectionAppKitView?
     var offsetValue: String?
 
     override init() {

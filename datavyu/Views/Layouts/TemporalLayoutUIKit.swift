@@ -8,29 +8,67 @@ enum LastEditedField {
     case arguments
 }
 
-struct TemporalCollectionView: View {
-    @EnvironmentObject var sheetModel: SheetModel
-    var body: some View {
-        VStack {
-            TemporalLayoutCollection(sheetModel: sheetModel, itemSize: NSSize(width: 100, height: 100))
+enum Layouts {
+    case ordinal
+    case temporal
+}
+
+class LayoutChoice: ObservableObject {
+    var layout = Layouts.ordinal
+    
+    func swapLayout() {
+        if self.layout == Layouts.temporal {
+            self.layout = Layouts.ordinal
+        } else {
+            self.layout = Layouts.temporal
         }
     }
 }
 
-final class TemporalCollectionAppKitView: NSCollectionView {
+
+
+struct SheetCollectionView: View {
+    @EnvironmentObject var sheetModel: SheetModel
+    @State var layout: LayoutChoice = LayoutChoice()
+    var body: some View {
+        VStack {
+            SheetLayoutCollection(sheetModel: sheetModel, layout: layout, itemSize: NSSize(width: 100, height: 100))
+            Button("Change Layout") {
+                layout.swapLayout()
+                sheetModel.updates += 1
+            }.keyboardShortcut(KeyboardShortcut("t", modifiers: .command))
+        }
+    }
+}
+
+final class SheetCollectionAppKitView: NSCollectionView {
     @ObservedObject var sheetModel: SheetModel
     var parentScrollView: NSScrollView
+    var currentLayout: LayoutChoice
     private var rightClickIndex: Int = NSNotFound
     var lastSelectedCellModel: CellModel? = nil
     var lastEditedArgument: Argument? = nil
 
-    init(sheetModel: SheetModel, parentScrollView: NSScrollView) {
+    init(sheetModel: SheetModel, parentScrollView: NSScrollView, layout: LayoutChoice) {
         self.sheetModel = sheetModel
         self.parentScrollView = parentScrollView
+        self.currentLayout = layout
         super.init(frame: .zero)
-        let layout = TemporalCollectionViewLayout(sheetModel: sheetModel, scrollView: parentScrollView)
+        let layout = OrdinalCollectionViewLayout(sheetModel: sheetModel, scrollView: parentScrollView)
         collectionViewLayout = layout
         isSelectable = true
+    }
+    
+    func setOrdinalLayout() {
+        print("Setting ordinal layout")
+        let layout = OrdinalCollectionViewLayout(sheetModel: self.sheetModel, scrollView: self.parentScrollView)
+        self.collectionViewLayout = layout
+    }
+    
+    func setTemporalLayout() {
+        print("Setting temporal layout")
+        let layout = TemporalCollectionViewLayout(sheetModel: self.sheetModel, scrollView: self.parentScrollView)
+        self.collectionViewLayout = layout
     }
 
     override func setFrameSize(_ newSize: NSSize) {
@@ -49,7 +87,7 @@ final class TemporalCollectionAppKitView: NSCollectionView {
     func deselectAllCells() {
         for (i, column) in sheetModel.visibleColumns.enumerated() {
             for (j, _) in column.getSortedCells().enumerated() {
-                let curCellItem = (parentScrollView.documentView as! TemporalCollectionAppKitView).item(at: IndexPath(item: j, section: i)) as? CellViewUIKit
+                let curCellItem = (parentScrollView.documentView as! SheetCollectionAppKitView).item(at: IndexPath(item: j, section: i)) as? CellViewUIKit
                 curCellItem?.setDeselected()
             }
         }
@@ -123,8 +161,9 @@ struct Header: View {
     }
 }
 
-struct TemporalLayoutCollection: NSViewRepresentable {
+struct SheetLayoutCollection: NSViewRepresentable {
     @ObservedObject var sheetModel: SheetModel
+    @ObservedObject var layout: LayoutChoice
     var itemSize: NSSize
 
     var scrollView: NSScrollView = .init()
@@ -139,7 +178,7 @@ struct TemporalLayoutCollection: NSViewRepresentable {
 
     func makeNSView(context: Context) -> some NSScrollView {
 //        let scrollView = NSScrollView()
-        let collectionView = TemporalCollectionAppKitView(sheetModel: sheetModel, parentScrollView: scrollView)
+        let collectionView = SheetCollectionAppKitView(sheetModel: sheetModel, parentScrollView: scrollView, layout: layout)
         collectionView.delegate = context.coordinator
         collectionView.dataSource = context.coordinator
         collectionView.allowsEmptySelection = true
@@ -153,14 +192,29 @@ struct TemporalLayoutCollection: NSViewRepresentable {
         scrollView.hasHorizontalScroller = true
 
         context.coordinator.connectCellResponders()
-
+        
+        if layout.layout == Layouts.ordinal {
+            collectionView.setOrdinalLayout()
+        } else {
+            collectionView.setTemporalLayout()
+        }
+        
         return scrollView
     }
 
     func updateNSView(_ nsView: NSViewType, context: Context) {
         print("Trying to reload data...")
-
-        if let collectionView = nsView.documentView as? TemporalCollectionAppKitView {
+        
+        if let collectionView = nsView.documentView as? SheetCollectionAppKitView {
+            print((collectionView.collectionViewLayout as! TemporalCollectionViewLayout).layout, self.layout.layout)
+            if (collectionView.collectionViewLayout as! TemporalCollectionViewLayout).layout != self.layout.layout {
+                if layout.layout == Layouts.ordinal {
+                    collectionView.setOrdinalLayout()
+                } else {
+                    collectionView.setTemporalLayout()
+                }
+            }
+            
             context.coordinator.itemSize = itemSize
             var selectionIndexPath = collectionView.selectionIndexPaths.first
 
@@ -224,11 +278,11 @@ struct TemporalLayoutCollection: NSViewRepresentable {
 
 class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout {
     @ObservedObject var sheetModel: SheetModel
-    var parent: TemporalLayoutCollection
+    var parent: SheetLayoutCollection
     var itemSize: NSSize
     var cellItemMap = [CellModel: NSCollectionViewItem]()
 
-    init(sheetModel: SheetModel, parent: TemporalLayoutCollection, itemSize: NSSize) {
+    init(sheetModel: SheetModel, parent: SheetLayoutCollection, itemSize: NSSize) {
         self.sheetModel = sheetModel
         self.parent = parent
         self.itemSize = itemSize
@@ -237,7 +291,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
     func getCurrentCell() -> CellViewUIKit? {
         print(#function)
 
-        let collectionView = (parent.scrollView.documentView as! TemporalCollectionAppKitView)
+        let collectionView = (parent.scrollView.documentView as! SheetCollectionAppKitView)
 
         var ip: IndexPath? = IndexPath(item: 0, section: 0)
         if collectionView.lastSelectedCellModel != nil {
@@ -251,7 +305,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
     func getCell(ip: IndexPath) -> CellViewUIKit? {
         print(#function)
 
-        let collectionView = (parent.scrollView.documentView as! TemporalCollectionAppKitView)
+        let collectionView = (parent.scrollView.documentView as! SheetCollectionAppKitView)
         let cellItem = collectionView.item(at: ip) as? CellViewUIKit
         return cellItem
     }
@@ -259,7 +313,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
     func getCell(cellModel: CellModel) -> CellViewUIKit? {
         print(#function)
 
-        let collectionView = (parent.scrollView.documentView as! TemporalCollectionAppKitView)
+        let collectionView = (parent.scrollView.documentView as! SheetCollectionAppKitView)
         let ip = sheetModel.findCellIndexPath(cell_to_find: cellModel)
 
         if ip != nil {
@@ -273,7 +327,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
     func setCellSelected(cellModel: CellModel) {
         let ip = sheetModel.findCellIndexPath(cell_to_find: cellModel)
         if ip != nil {
-            let collectionView = (parent.scrollView.documentView as! TemporalCollectionAppKitView)
+            let collectionView = (parent.scrollView.documentView as! SheetCollectionAppKitView)
             collectionView.lastSelectedCellModel = cellModel
             collectionView.selectionIndexPaths = Set([ip!])
         }
@@ -294,7 +348,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
     func focusCell(_ ip: IndexPath) {
         print(#function)
 
-        let collectionView = (parent.scrollView.documentView as! TemporalCollectionAppKitView)
+        let collectionView = (parent.scrollView.documentView as! SheetCollectionAppKitView)
 
         var item = ip.item
         var section = ip.section
@@ -326,7 +380,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
 
     func focusField(_ ip: IndexPath?) {
         print(#function)
-        let collectionView = (parent.scrollView.documentView as! TemporalCollectionAppKitView)
+        let collectionView = (parent.scrollView.documentView as! SheetCollectionAppKitView)
 
         if ip == nil || collectionView.lastSelectedCellModel == nil {
             return
@@ -354,8 +408,8 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
             for (j, cell) in column.getSortedCells().enumerated() {
                 if prevCell != nil {
                     //                        let prevCellItem = cellItemMap[prevCell!]
-                    let prevCellItem = (parent.scrollView.documentView as! TemporalCollectionAppKitView).item(at: IndexPath(item: j - 1, section: i)) as? CellViewUIKit
-                    let curCellItem = (parent.scrollView.documentView as! TemporalCollectionAppKitView).item(at: IndexPath(item: j, section: i)) as? CellViewUIKit
+                    let prevCellItem = (parent.scrollView.documentView as! SheetCollectionAppKitView).item(at: IndexPath(item: j - 1, section: i)) as? CellViewUIKit
+                    let curCellItem = (parent.scrollView.documentView as! SheetCollectionAppKitView).item(at: IndexPath(item: j, section: i)) as? CellViewUIKit
 
                     if prevCellItem != nil {
                         prevCellItem?.nextResponder = curCellItem
@@ -381,7 +435,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         let item = collectionView.makeItem(withIdentifier: .init(CellViewUIKit.identifier), for: indexPath) as! CellViewUIKit
         let cell = sheetModel.visibleColumns[indexPath.section].getSortedCells()[indexPath.item]
 
-        item.configureCell(cell, parentView: parent.scrollView.documentView as? TemporalCollectionAppKitView)
+        item.configureCell(cell, parentView: parent.scrollView.documentView as? SheetCollectionAppKitView)
 
                     print("CREATING CELL AT \(indexPath.section) \(indexPath.item) \(Unmanaged.passUnretained(cell).toOpaque())")
         //            cellItemMap[cell] = item

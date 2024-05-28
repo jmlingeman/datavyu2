@@ -13,6 +13,8 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
     var sheetModel: SheetModel
     var scrollView: NSScrollView
     var updateCount: Int = 0
+    
+    var layout = Layouts.temporal
 
     struct CellInfo: Hashable {
         let model: CellModel

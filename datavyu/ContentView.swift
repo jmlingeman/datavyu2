@@ -71,15 +71,15 @@ struct ContentView: View {
                             let _ = saveOpfFile(fileModel: fileController.activeFileModel, outputFilename: panel.url!)
                         }
                     }
-                    Button(layoutLabel) {
-                        if layoutLabel == "Ordinal Layout" {
-                            layoutLabel = "Temporal Layout"
-                            temporalLayout = true
-                        } else {
-                            layoutLabel = "Ordinal Layout"
-                            temporalLayout = false
-                        }
-                    }.keyboardShortcut("t")
+//                    Button(layoutLabel) {
+//                        if layoutLabel == "Ordinal Layout" {
+//                            layoutLabel = "Temporal Layout"
+//                            temporalLayout = true
+//                        } else {
+//                            layoutLabel = "Ordinal Layout"
+//                            temporalLayout = false
+//                        }
+//                    }.keyboardShortcut("t")
                     Button(hideLabel) {
                         withAnimation {
                             if hideLabel == "Hide Controller" {

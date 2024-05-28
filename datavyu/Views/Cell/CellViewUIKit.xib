@@ -61,7 +61,7 @@
                 </textField>
                 <textField focusRingType="none" verticalHuggingPriority="750" id="d6a-G0-R74" customClass="CellTextField" customModule="datavyu" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="-5" width="300" height="124"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" id="FfD-2Z-PKM">
                         <font key="font" usesAppearanceFont="YES"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
