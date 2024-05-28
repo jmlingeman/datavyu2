@@ -100,6 +100,10 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
         }
         return nil
     }
+    
+    func getNextDefaultColumnName() -> String {
+        return "Column\(columns.count + 1)"
+    }
 
     func findFocusedColumn() -> ColumnModel? {
         var model: ColumnModel?

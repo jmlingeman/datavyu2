@@ -11,9 +11,10 @@ struct CodeEditorRow: View {
     @ObservedObject var column: ColumnModel
 
     var body: some View {
-        HStack {
+//        HStack {
             EditableLabel($column.columnName)
-            ForEach($column.arguments) { $argument in
+            WrappedHStack($column.arguments) { $argument in
+//            ForEach($column.arguments) { $argument in
                 TextField(argument.name, text: $argument.name)
                     .frame(maxWidth: 100)
                     .padding()
@@ -22,6 +23,6 @@ struct CodeEditorRow: View {
             CodeEditorAddCodeButton(column: column)
             CodeEditorRemoveCodeButton(column: column)
             Spacer()
-        }.padding()
+//        }.padding()
     }
 }

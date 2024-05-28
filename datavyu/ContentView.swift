@@ -43,7 +43,7 @@ struct ContentView: View {
                         showingCodeEditor.toggle()
                     }
                     .sheet(isPresented: $showingCodeEditor) {
-                        CodeEditorView(fileModel: fileController.activeFileModel).frame(width: gr.size.width / 2, height: gr.size.height / 2)
+                        CodeEditorView(sheetModel: fileController.activeFileModel.sheetModel).frame(width: gr.size.width / 2, height: gr.size.height / 2)
                     }
                     Button("Options") {
                         showingOptions.toggle()
