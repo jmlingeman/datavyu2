@@ -76,7 +76,7 @@ final class Argument: ObservableObject, Identifiable, Equatable, Hashable, Codab
             self.value = oldValue
             self.update()
         })
-        update()
+//        update()
     }
 
     func setName(name: String) {

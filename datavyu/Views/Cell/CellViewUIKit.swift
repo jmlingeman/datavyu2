@@ -144,6 +144,7 @@ class CellViewUIKit: NSCollectionViewItem {
 
     func focusArgument(_ ip: IndexPath) {
         print(#function)
+        cellTextField.selectArgument(idx: ip.item)
 //        let nextArg = argumentsCollectionView?.item(at: ip) as! ArgumentViewUIKit
 //        print("selecting arg \(nextArg)")
 //        parentView?.lastEditedArgument = nextArg.argument

@@ -25,8 +25,6 @@ class LayoutChoice: ObservableObject {
     }
 }
 
-
-
 struct SheetCollectionView: View {
     @EnvironmentObject var sheetModel: SheetModel
     @State var layout: LayoutChoice = LayoutChoice()
