@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		880CBC8B2B3B699D00D7701F /* TemporalLayoutUIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880CBC8A2B3B699D00D7701F /* TemporalLayoutUIKit.swift */; };
 		880CBD132B3FB61500D7701F /* TemporalCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880CBD122B3FB61500D7701F /* TemporalCollectionViewLayout.swift */; };
-		88140FC82A5214F90095DB5A /* SwiftUIReorderableForEach in Frameworks */ = {isa = PBXBuildFile; productRef = 88140FC72A5214F90095DB5A /* SwiftUIReorderableForEach */; };
 		88140FCD2A5218100095DB5A /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88140FCC2A5218100095DB5A /* OptionsView.swift */; };
 		881A39A92A242D4600B4782D /* sheettestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39A82A242D4600B4782D /* sheettestApp.swift */; };
 		881A39AB2A242D4600B4782D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39AA2A242D4600B4782D /* ContentView.swift */; };
@@ -66,13 +65,13 @@
 		8878A6382A41305E00A2658C /* ClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6372A41305E00A2658C /* ClockView.swift */; };
 		8878A63A2A427C6000A2658C /* MarkerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878A6392A427C6000A2658C /* MarkerModel.swift */; };
 		887B1A3C2B49CA59004068FA /* HierarchyResponder in Frameworks */ = {isa = PBXBuildFile; productRef = 887B1A3B2B49CA59004068FA /* HierarchyResponder */; };
-		887B1A3F2B49D149004068FA /* SwiftUIIntrospect-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 887B1A3E2B49D149004068FA /* SwiftUIIntrospect-Dynamic */; };
 		888C04102C03C24200EFFDEE /* CellTextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888C040F2C03C24200EFFDEE /* CellTextController.swift */; };
 		888C04142C03DC3D00EFFDEE /* CellTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888C04132C03DC3D00EFFDEE /* CellTextField.swift */; };
 		888C04172C04DB4D00EFFDEE /* TranscriptionSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888C04162C04DB4D00EFFDEE /* TranscriptionSettingsView.swift */; };
 		888C04192C05092C00EFFDEE /* Paths.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888C04182C05092C00EFFDEE /* Paths.swift */; };
 		888C041B2C055D7600EFFDEE /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888C041A2C055D7600EFFDEE /* AppState.swift */; };
 		888C041D2C06778700EFFDEE /* OrdinalCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888C041C2C06778700EFFDEE /* OrdinalCollectionViewLayout.swift */; };
+		888C04202C07DCC100EFFDEE /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = 888C041F2C07DCC100EFFDEE /* Logging */; };
 		88BFE4252A9BE78F00B37DC3 /* CodeEditorRemoveCodeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BFE4242A9BE78F00B37DC3 /* CodeEditorRemoveCodeButton.swift */; };
 		88BFE4292A9D13FC00B37DC3 /* DSWaveformImage in Frameworks */ = {isa = PBXBuildFile; productRef = 88BFE4282A9D13FC00B37DC3 /* DSWaveformImage */; };
 		88BFE42B2A9D13FC00B37DC3 /* DSWaveformImageViews in Frameworks */ = {isa = PBXBuildFile; productRef = 88BFE42A2A9D13FC00B37DC3 /* DSWaveformImageViews */; };
@@ -81,7 +80,6 @@
 		88CE94532AA25E69000E8DFB /* FileControllerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CE94522AA25E69000E8DFB /* FileControllerModel.swift */; };
 		88CE94562AA81359000E8DFB /* ColumnListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CE94552AA81359000E8DFB /* ColumnListView.swift */; };
 		88D3FE372A4DE12A0094F953 /* TrackPositionIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3FE362A4DE12A0094F953 /* TrackPositionIndicator.swift */; };
-		88E094642B670CAD00A93660 /* MbSwiftUIFirstResponder in Frameworks */ = {isa = PBXBuildFile; productRef = 88E094632B670CAD00A93660 /* MbSwiftUIFirstResponder */; };
 		88E094752B69B5AB00A93660 /* CellViewUIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E094732B69B5AB00A93660 /* CellViewUIKit.swift */; };
 		88E094762B69B5AB00A93660 /* CellViewUIKit.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88E094742B69B5AB00A93660 /* CellViewUIKit.xib */; };
 		88E094792B69B81A00A93660 /* ArgumentViewUIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E094772B69B81A00A93660 /* ArgumentViewUIKit.swift */; };
@@ -221,14 +219,12 @@
 			files = (
 				88BFE4292A9D13FC00B37DC3 /* DSWaveformImage in Frameworks */,
 				8861C4282C02B76F00DD180D /* WhisperKit in Frameworks */,
-				88140FC82A5214F90095DB5A /* SwiftUIReorderableForEach in Frameworks */,
 				88F62EA12A58D51600DC5B60 /* Yams in Frameworks */,
-				887B1A3F2B49D149004068FA /* SwiftUIIntrospect-Dynamic in Frameworks */,
 				881A39D52A253A4900B4782D /* WrappingHStack in Frameworks */,
 				88F62EA82A5E1D2300DC5B60 /* Vapor in Frameworks */,
 				884B0DF52A4F792A00D16304 /* RubyGateway in Frameworks */,
-				88E094642B670CAD00A93660 /* MbSwiftUIFirstResponder in Frameworks */,
 				88BFE42B2A9D13FC00B37DC3 /* DSWaveformImageViews in Frameworks */,
+				888C04202C07DCC100EFFDEE /* Logging in Frameworks */,
 				88F62EAB2A5E230800DC5B60 /* Leaf in Frameworks */,
 				88F62E9E2A58CEA800DC5B60 /* ZIPFoundation in Frameworks */,
 				887B1A3C2B49CA59004068FA /* HierarchyResponder in Frameworks */,
@@ -576,7 +572,6 @@
 			packageProductDependencies = (
 				881A39D42A253A4900B4782D /* WrappingHStack */,
 				884B0DF42A4F792A00D16304 /* RubyGateway */,
-				88140FC72A5214F90095DB5A /* SwiftUIReorderableForEach */,
 				88F62E9D2A58CEA800DC5B60 /* ZIPFoundation */,
 				88F62EA02A58D51600DC5B60 /* Yams */,
 				88F62EA72A5E1D2300DC5B60 /* Vapor */,
@@ -584,9 +579,8 @@
 				88BFE4282A9D13FC00B37DC3 /* DSWaveformImage */,
 				88BFE42A2A9D13FC00B37DC3 /* DSWaveformImageViews */,
 				887B1A3B2B49CA59004068FA /* HierarchyResponder */,
-				887B1A3E2B49D149004068FA /* SwiftUIIntrospect-Dynamic */,
-				88E094632B670CAD00A93660 /* MbSwiftUIFirstResponder */,
 				8861C4272C02B76F00DD180D /* WhisperKit */,
+				888C041F2C07DCC100EFFDEE /* Logging */,
 			);
 			productName = sheettest;
 			productReference = 881A39A52A242D4600B4782D /* datavyu.app */;
@@ -664,16 +658,14 @@
 			packageReferences = (
 				881A39D32A253A4900B4782D /* XCRemoteSwiftPackageReference "WrappingHStack" */,
 				884B0DF32A4F792A00D16304 /* XCRemoteSwiftPackageReference "RubyGateway" */,
-				88140FC62A5214F90095DB5A /* XCRemoteSwiftPackageReference "swiftui-reorderable-foreach" */,
 				88F62E9C2A58CEA800DC5B60 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
 				88F62E9F2A58D51600DC5B60 /* XCRemoteSwiftPackageReference "Yams" */,
 				88F62EA62A5E1D2300DC5B60 /* XCRemoteSwiftPackageReference "vapor" */,
 				88F62EA92A5E230800DC5B60 /* XCRemoteSwiftPackageReference "leaf" */,
 				88BFE4272A9D13FC00B37DC3 /* XCRemoteSwiftPackageReference "DSWaveformImage" */,
 				887B1A3A2B49CA59004068FA /* XCRemoteSwiftPackageReference "HierarchyResponder" */,
-				887B1A3D2B49D149004068FA /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
-				88E094622B670CAD00A93660 /* XCRemoteSwiftPackageReference "MbSwiftUIFirstResponder" */,
 				8861C4262C02B76F00DD180D /* XCRemoteSwiftPackageReference "whisperkit" */,
+				888C041E2C07DCC100EFFDEE /* XCRemoteSwiftPackageReference "swift-log" */,
 			);
 			productRefGroup = 881A39A62A242D4600B4782D /* Products */;
 			projectDirPath = "";
@@ -1135,14 +1127,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		88140FC62A5214F90095DB5A /* XCRemoteSwiftPackageReference "swiftui-reorderable-foreach" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/globulus/swiftui-reorderable-foreach";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
 		881A39D32A253A4900B4782D /* XCRemoteSwiftPackageReference "WrappingHStack" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/dkk/WrappingHStack";
@@ -1175,12 +1159,12 @@
 				minimumVersion = 1.1.3;
 			};
 		};
-		887B1A3D2B49D149004068FA /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
+		888C041E2C07DCC100EFFDEE /* XCRemoteSwiftPackageReference "swift-log" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect";
+			repositoryURL = "https://github.com/apple/swift-log";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.1.2;
+				minimumVersion = 1.5.4;
 			};
 		};
 		88BFE4272A9D13FC00B37DC3 /* XCRemoteSwiftPackageReference "DSWaveformImage" */ = {
@@ -1189,14 +1173,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 13.0.0;
-			};
-		};
-		88E094622B670CAD00A93660 /* XCRemoteSwiftPackageReference "MbSwiftUIFirstResponder" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mobilinked/MbSwiftUIFirstResponder";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
 			};
 		};
 		88F62E9C2A58CEA800DC5B60 /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
@@ -1234,11 +1210,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		88140FC72A5214F90095DB5A /* SwiftUIReorderableForEach */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 88140FC62A5214F90095DB5A /* XCRemoteSwiftPackageReference "swiftui-reorderable-foreach" */;
-			productName = SwiftUIReorderableForEach;
-		};
 		881A39D42A253A4900B4782D /* WrappingHStack */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 881A39D32A253A4900B4782D /* XCRemoteSwiftPackageReference "WrappingHStack" */;
@@ -1259,10 +1230,10 @@
 			package = 887B1A3A2B49CA59004068FA /* XCRemoteSwiftPackageReference "HierarchyResponder" */;
 			productName = HierarchyResponder;
 		};
-		887B1A3E2B49D149004068FA /* SwiftUIIntrospect-Dynamic */ = {
+		888C041F2C07DCC100EFFDEE /* Logging */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 887B1A3D2B49D149004068FA /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
-			productName = "SwiftUIIntrospect-Dynamic";
+			package = 888C041E2C07DCC100EFFDEE /* XCRemoteSwiftPackageReference "swift-log" */;
+			productName = Logging;
 		};
 		88BFE4282A9D13FC00B37DC3 /* DSWaveformImage */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1273,11 +1244,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 88BFE4272A9D13FC00B37DC3 /* XCRemoteSwiftPackageReference "DSWaveformImage" */;
 			productName = DSWaveformImageViews;
-		};
-		88E094632B670CAD00A93660 /* MbSwiftUIFirstResponder */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 88E094622B670CAD00A93660 /* XCRemoteSwiftPackageReference "MbSwiftUIFirstResponder" */;
-			productName = MbSwiftUIFirstResponder;
 		};
 		88F62E9D2A58CEA800DC5B60 /* ZIPFoundation */ = {
 			isa = XCSwiftPackageProductDependency;
