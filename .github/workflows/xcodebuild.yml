@@ -3,8 +3,8 @@ name: Xcode - Release
 on:
   push:
     branches: [ "main" ]
-    #tags:
-    #- 'v*'
+    tags:
+    - 'v*'
   #pull_request:
     #branches: [ "main" ]
 
@@ -51,7 +51,7 @@ jobs:
           security list-keychain -d user -s $KEYCHAIN_PATH
 
 
-          rm -rf "/Users/runner/Library/Developer/Xcode/DerivedData/*"
+          #rm -rf "/Users/runner/Library/Developer/Xcode/DerivedData/*"
           # xcodebuild build analyze -target "$target" -workspace  
           xcodebuild ONLY_ACTIVE_ARCH=NO -scheme "datavyu" -configuration Release build | xcpretty && exit ${PIPESTATUS[0]} 
       - name: Create dmg file
