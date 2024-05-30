@@ -55,13 +55,13 @@ jobs:
           # xcodebuild build analyze -target "$target" -workspace  
           xcodebuild ONLY_ACTIVE_ARCH=NO -scheme "datavyu" -configuration Release build | xcpretty && exit ${PIPESTATUS[0]} 
       - name: Create dmg file
-          uses: QQxiaoming/create-dmg-action@v0.0.2
-          with:
-            srcdir: build/Release/Datavyu2.app
-            name: "Datavyu2"
+        uses: QQxiaoming/create-dmg-action@v0.0.2
+        with:
+          srcdir: build/Release/Datavyu2.app
+          name: "Datavyu2"
       - name: Upload Release Asset
-          uses: actions/upload-artifact@v1
-          with:
-           name: Datavyu2.dmg
-           path: Datavyu2.dmg
+        uses: actions/upload-artifact@v1
+        with:
+         name: Datavyu2.dmg
+         path: Datavyu2.dmg
 
