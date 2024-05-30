@@ -24,7 +24,6 @@
 		881A39F52A2A917E00B4782D /* ArgumentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39F42A2A917E00B4782D /* ArgumentModel.swift */; };
 		881A39F72A2A9D5900B4782D /* SheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39F62A2A9D5900B4782D /* SheetView.swift */; };
 		881A39FB2A2AB66900B4782D /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39FA2A2AB66900B4782D /* VideoView.swift */; };
-		881A39FD2A2ABBB900B4782D /* IMG_1234.MOV in Resources */ = {isa = PBXBuildFile; fileRef = 881A39FC2A2ABBB900B4782D /* IMG_1234.MOV */; };
 		881A3A002A2BE73B00B4782D /* ControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39FF2A2BE73B00B4782D /* ControllerView.swift */; };
 		881A3A022A2C0B6500B4782D /* VideoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A3A012A2C0B6500B4782D /* VideoModel.swift */; };
 		882D71AE2BEDAC0200538D51 /* FileExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882D71AD2BEDAC0200538D51 /* FileExtensions.swift */; };
@@ -686,7 +685,6 @@
 				881A39B02A242D4700B4782D /* Preview Assets.xcassets in Resources */,
 				881A39AD2A242D4700B4782D /* Assets.xcassets in Resources */,
 				884B0DFE2A50CDCE00D16304 /* README.md in Resources */,
-				881A39FD2A2ABBB900B4782D /* IMG_1234.MOV in Resources */,
 				88E094762B69B5AB00A93660 /* CellViewUIKit.xib in Resources */,
 				88E0947A2B69B81A00A93660 /* ArgumentViewUIKit.xib in Resources */,
 			);
