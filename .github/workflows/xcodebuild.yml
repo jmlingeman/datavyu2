@@ -1,10 +1,12 @@
-name: Xcode - Build and Analyze
+name: Xcode - Release
 
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    #tags:
+    #- 'v*'
+  #pull_request:
+    #branches: [ "main" ]
 
 jobs:
   build:
@@ -51,13 +53,15 @@ jobs:
 
           rm -rf "/Users/runner/Library/Developer/Xcode/DerivedData/*"
           # xcodebuild build analyze -target "$target" -workspace  
-          xcodebuild ONLY_ACTIVE_ARCH=NO -scheme "datavyu" -configuration Release build | xcpretty && exit ${PIPESTATUS[0]}
-      # - name: create-dmg-action
-      #   # You may pin to the exact commit or the version.
-      #   # uses: QQxiaoming/create-dmg-action@9da339e5d8baa50036b55ed2c6545fb51cee72c4
-      #   uses: QQxiaoming/create-dmg-action@v0.0.2
-      #   with:
-      #     # source dir
-      #     srcdir: build/Release
-      #     # dmg name
-      #     name: "Datavyu2"
+          xcodebuild ONLY_ACTIVE_ARCH=NO -scheme "datavyu" -configuration Release build | xcpretty && exit ${PIPESTATUS[0]} 
+      - name: Create dmg file
+          uses: QQxiaoming/create-dmg-action@v0.0.2
+          with:
+            srcdir: build/Release/Datavyu2.app
+            name: "Datavyu2"
+      - name: Upload Release Asset
+          uses: actions/upload-artifact@v1
+          with:
+           name: Datavyu2.dmg
+           path: Datavyu2.dmg
+

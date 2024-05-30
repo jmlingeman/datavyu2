@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "881A39A42A242D4600B4782D"
-               BuildableName = "datavyu.app"
-               BlueprintName = "datavyu"
+               BuildableName = "Datavyu2.app"
+               BlueprintName = "Datavyu2"
                ReferencedContainer = "container:datavyu.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -68,8 +68,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "881A39A42A242D4600B4782D"
-            BuildableName = "datavyu.app"
-            BlueprintName = "datavyu"
+            BuildableName = "Datavyu2.app"
+            BlueprintName = "Datavyu2"
             ReferencedContainer = "container:datavyu.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -97,8 +97,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "881A39A42A242D4600B4782D"
-            BuildableName = "datavyu.app"
-            BlueprintName = "datavyu"
+            BuildableName = "Datavyu2.app"
+            BlueprintName = "Datavyu2"
             ReferencedContainer = "container:datavyu.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

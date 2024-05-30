@@ -121,7 +121,7 @@
 		880CBC8A2B3B699D00D7701F /* TemporalLayoutUIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemporalLayoutUIKit.swift; sourceTree = "<group>"; };
 		880CBD122B3FB61500D7701F /* TemporalCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemporalCollectionViewLayout.swift; sourceTree = "<group>"; };
 		88140FCC2A5218100095DB5A /* OptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsView.swift; sourceTree = "<group>"; };
-		881A39A52A242D4600B4782D /* datavyu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = datavyu.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		881A39A52A242D4600B4782D /* Datavyu2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Datavyu2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		881A39A82A242D4600B4782D /* sheettestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sheettestApp.swift; sourceTree = "<group>"; };
 		881A39AA2A242D4600B4782D /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ContentView.swift; sourceTree = "<group>"; };
 		881A39AC2A242D4700B4782D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -270,7 +270,7 @@
 		881A39A62A242D4600B4782D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				881A39A52A242D4600B4782D /* datavyu.app */,
+				881A39A52A242D4600B4782D /* Datavyu2.app */,
 				881A39B62A242D4700B4782D /* datavyuTests.xctest */,
 				881A39C02A242D4700B4782D /* datavyuUITests.xctest */,
 			);
@@ -555,9 +555,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		881A39A42A242D4600B4782D /* datavyu */ = {
+		881A39A42A242D4600B4782D /* Datavyu2 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 881A39CA2A242D4700B4782D /* Build configuration list for PBXNativeTarget "datavyu" */;
+			buildConfigurationList = 881A39CA2A242D4700B4782D /* Build configuration list for PBXNativeTarget "Datavyu2" */;
 			buildPhases = (
 				881A39A12A242D4600B4782D /* Sources */,
 				881A39A22A242D4600B4782D /* Frameworks */,
@@ -567,7 +567,7 @@
 			);
 			dependencies = (
 			);
-			name = datavyu;
+			name = Datavyu2;
 			packageProductDependencies = (
 				881A39D42A253A4900B4782D /* WrappingHStack */,
 				884B0DF42A4F792A00D16304 /* RubyGateway */,
@@ -582,7 +582,7 @@
 				888C041F2C07DCC100EFFDEE /* Logging */,
 			);
 			productName = sheettest;
-			productReference = 881A39A52A242D4600B4782D /* datavyu.app */;
+			productReference = 881A39A52A242D4600B4782D /* Datavyu2.app */;
 			productType = "com.apple.product-type.application";
 		};
 		881A39B52A242D4700B4782D /* datavyuTests */ = {
@@ -670,7 +670,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				881A39A42A242D4600B4782D /* datavyu */,
+				881A39A42A242D4600B4782D /* Datavyu2 */,
 				881A39B52A242D4700B4782D /* datavyuTests */,
 				881A39BF2A242D4700B4782D /* datavyuUITests */,
 			);
@@ -808,12 +808,12 @@
 /* Begin PBXTargetDependency section */
 		881A39B82A242D4700B4782D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 881A39A42A242D4600B4782D /* datavyu */;
+			target = 881A39A42A242D4600B4782D /* Datavyu2 */;
 			targetProxy = 881A39B72A242D4700B4782D /* PBXContainerItemProxy */;
 		};
 		881A39C22A242D4700B4782D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 881A39A42A242D4600B4782D /* datavyu */;
+			target = 881A39A42A242D4600B4782D /* Datavyu2 */;
 			targetProxy = 881A39C12A242D4700B4782D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1095,7 +1095,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		881A39CA2A242D4700B4782D /* Build configuration list for PBXNativeTarget "datavyu" */ = {
+		881A39CA2A242D4700B4782D /* Build configuration list for PBXNativeTarget "Datavyu2" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				881A39CB2A242D4700B4782D /* Debug */,
