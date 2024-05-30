@@ -53,11 +53,11 @@ jobs:
 
           #rm -rf "/Users/runner/Library/Developer/Xcode/DerivedData/*"
           # xcodebuild build analyze -target "$target" -workspace  
-          xcodebuild ONLY_ACTIVE_ARCH=NO -scheme "datavyu" -configuration Release build | xcpretty && exit ${PIPESTATUS[0]} 
+          xcodebuild ONLY_ACTIVE_ARCH=NO -scheme "datavyu" -configuration Release -derivedDataPath ./output build | xcpretty && exit ${PIPESTATUS[0]} 
       - name: Create dmg file
         uses: QQxiaoming/create-dmg-action@v0.0.2
         with:
-          srcdir: build/Release/Datavyu2.app
+          srcdir: output/Build/Products/Release/Datavyu2.app
           name: "Datavyu2"
       - name: Upload Release Asset
         uses: actions/upload-artifact@v1
