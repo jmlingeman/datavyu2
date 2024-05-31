@@ -45,6 +45,25 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
             !c.hidden
         }
     }
+        
+    func deleteColumn(column: ColumnModel) {
+        let columnIdx = columns.firstIndex(of: column)!
+        columns.removeAll { c in
+            column == c
+        }
+        self.undoManager?.beginUndoGrouping()
+        self.undoManager?.registerUndo(withTarget: self, handler: { _ in
+            let _ = self.addColumnAtIndex(column: column, idx: columnIdx)
+            self.updateSheet()
+        })
+        self.undoManager?.endUndoGrouping()
+        self.updateSheet()
+    }
+    
+    func updateSheet() {
+        setVisibleColumns()
+        self.updates += 1
+    }
 
     func setSelectedColumn(model: ColumnModel, suppress_update: Bool = false) {
         print("Setting column \(model.columnName) to selected")
@@ -56,8 +75,12 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
             }
         }
         if !suppress_update {
-            updates += 1
+            self.updateSheet()
         }
+    }
+    
+    func getSelectedColumns() -> [ColumnModel] {
+        return columns.filter({ $0.isSelected })
     }
 
     func copy() -> SheetModel {
@@ -77,6 +100,10 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
             }
         }
     }
+    
+    func addColumn() -> ColumnModel {
+        return addColumn(columnName: getNextDefaultColumnName())
+    }
 
     func addColumn(columnName: String) -> ColumnModel {
         return addColumn(column: ColumnModel(sheetModel: self, columnName: columnName))
@@ -84,6 +111,29 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
 
     func addColumn(column: ColumnModel) -> ColumnModel {
         columns.append(column)
+        self.undoManager?.beginUndoGrouping()
+        self.undoManager?.registerUndo(withTarget: self, handler: { _ in
+            self.columns.removeAll { c in
+                column == c
+            }
+            self.updateSheet()
+        })
+        self.undoManager?.endUndoGrouping()
+        setVisibleColumns()
+        return column
+    }
+    
+    func checkNewColumnName(column: ColumnModel) -> Bool {
+        for col in columns {
+            if column != col && col.columnName == column.columnName {
+                return false
+            }
+        }
+        return true
+    }
+    
+    func addColumnAtIndex(column: ColumnModel, idx: Int) -> ColumnModel {
+        columns.insert(column, at: idx)
         setVisibleColumns()
         return column
     }

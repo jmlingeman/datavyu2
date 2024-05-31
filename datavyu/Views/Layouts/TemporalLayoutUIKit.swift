@@ -46,6 +46,8 @@ final class SheetCollectionAppKitView: NSCollectionView {
     private var rightClickIndex: Int = NSNotFound
     var lastSelectedCellModel: CellModel? = nil
     var lastEditedArgument: Argument? = nil
+    var floatingHeaders: [ColumnModel: NSHostingView<Header>] = [:]
+
 
     init(sheetModel: SheetModel, parentScrollView: NSScrollView, layout: LayoutChoice) {
         self.sheetModel = sheetModel
@@ -229,6 +231,11 @@ struct SheetLayoutCollection: NSViewRepresentable {
             var curCellModel: CellModel? = curCell?.cell ?? nil
 
             // Do the actual reload, erasing all view cell data
+            for (k,v) in collectionView.floatingHeaders {
+                collectionView.floatingHeaders.removeValue(forKey: k)
+                v.removeFromSuperview()
+            }
+            
             print("Reloading")
             collectionView.reloadData()
 
@@ -445,21 +452,37 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         print(#function)
         let item = collectionView.makeSupplementaryView(ofKind: kind, withIdentifier: .init(HeaderCell.identifier), for: indexPath) as! HeaderCell
 
-        var focusedColumn = sheetModel.findFocusedColumn()
-        if focusedColumn == nil {
-            focusedColumn = sheetModel.visibleColumns[0]
+        if sheetModel.visibleColumns.count > 0 {
+            var focusedColumn = sheetModel.findFocusedColumn()
+            if focusedColumn == nil && sheetModel.visibleColumns.count > 0 {
+                focusedColumn = sheetModel.visibleColumns[0]
+            }
+            
+            let selected = focusedColumn == sheetModel.visibleColumns[indexPath.section]
+            print("SELECTED: \(sheetModel.visibleColumns[indexPath.section].columnName) \(selected)")
+            
+            item.setView(Header(columnModel: $sheetModel.visibleColumns[indexPath.section], selected: selected))
+            
+            let floatingHeader = NSHostingView(rootView: Header(columnModel: $sheetModel.visibleColumns[indexPath.section], selected: selected))
+            floatingHeader.frame = item.frame
+            
+            let column = sheetModel.visibleColumns[indexPath.section]
+            
+            if let sheetCollectionView = (collectionView as? SheetCollectionAppKitView) {
+                if !sheetCollectionView.floatingHeaders.keys.contains(where: { c in
+                    c == column
+                }) {
+                    sheetCollectionView.floatingHeaders[column] = floatingHeader
+                }
+            }
+            
+            
+            parent.scrollView.addFloatingSubview(floatingHeader, for: .vertical)
+            
+            return item
+        } else {
+            return item
         }
-
-        let selected = focusedColumn == sheetModel.visibleColumns[indexPath.section]
-        print("SELECTED: \(sheetModel.visibleColumns[indexPath.section].columnName) \(selected)")
-
-        item.setView(Header(columnModel: $sheetModel.visibleColumns[indexPath.section], selected: selected))
-
-        let floatingHeader = NSHostingView(rootView: Header(columnModel: $sheetModel.visibleColumns[indexPath.section], selected: selected))
-        floatingHeader.frame = item.frame
-        parent.scrollView.addFloatingSubview(floatingHeader, for: .vertical)
-
-        return item
     }
 
     func collectionView(_: NSCollectionView, layout _: NSCollectionViewLayout, sizeForItemAt _: IndexPath) -> NSSize {

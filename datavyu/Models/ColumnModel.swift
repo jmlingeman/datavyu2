@@ -82,6 +82,7 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
             cell.setUndoManager(undoManager: undoManager)
         }
     }
+    
 
     func setHidden(val: Bool) {
         hidden = val

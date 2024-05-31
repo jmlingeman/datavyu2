@@ -138,7 +138,6 @@
 		881A39F42A2A917E00B4782D /* ArgumentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentModel.swift; sourceTree = "<group>"; };
 		881A39F62A2A9D5900B4782D /* SheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetView.swift; sourceTree = "<group>"; };
 		881A39FA2A2AB66900B4782D /* VideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
-		881A39FC2A2ABBB900B4782D /* IMG_1234.MOV */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = IMG_1234.MOV; sourceTree = "<group>"; };
 		881A39FF2A2BE73B00B4782D /* ControllerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ControllerView.swift; path = datavyu/Views/ControllerView.swift; sourceTree = SOURCE_ROOT; };
 		881A3A012A2C0B6500B4782D /* VideoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoModel.swift; sourceTree = "<group>"; };
 		882D71A92BED9CE600538D51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -293,7 +292,6 @@
 				881A39A82A242D4600B4782D /* sheettestApp.swift */,
 				881A39AA2A242D4600B4782D /* ContentView.swift */,
 				881A39AC2A242D4700B4782D /* Assets.xcassets */,
-				881A39FC2A2ABBB900B4782D /* IMG_1234.MOV */,
 				881A39B12A242D4700B4782D /* datavyu.entitlements */,
 				881A39AE2A242D4700B4782D /* Preview Content */,
 				8878A60F2A2FBC8700A2658C /* Config.swift */,

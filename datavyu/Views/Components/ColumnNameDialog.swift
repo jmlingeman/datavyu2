@@ -12,8 +12,17 @@ struct ColumnNameDialog: View {
     @ObservedObject var column: ColumnModel
 
     @FocusState private var focusedField: Bool
+    @State private var nameIsOK: Bool = true
 
     let config = Config()
+    
+    func submit() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            column.sheetModel.updateArgumentNames() // hack to force update of name TODO: why?
+            column.sheetModel.updateSheet()
+        }
+        dismiss()
+    }
 
     var body: some View {
         VStack {
@@ -27,12 +36,31 @@ struct ColumnNameDialog: View {
                             focusedField = true
                         }
                     }
+                    .onChange(of: column.columnName) { oldValue, newValue in
+                        if column.sheetModel.checkNewColumnName(column: column) == false {
+                            nameIsOK = false
+                        } else {
+                            nameIsOK = true
+                        }
+                    }
+                    .onSubmit {
+                        if nameIsOK {
+                            submit()
+                        }
+                    }.onKeyPress(KeyEquivalent.return) {
+                        if nameIsOK {
+                            submit()
+                        }
+                        return KeyPress.Result.handled
+                    }
             }.padding()
+            Text("Error: Column is blank or name already exists").opacity(nameIsOK ? 0 : 1)
             HStack {
                 Button("OK") {
-                    dismiss()
-                    column.update()
-                }
+                    if nameIsOK {
+                        submit()
+                    }
+                }.disabled(!nameIsOK)
             }.padding()
         }.padding()
     }

@@ -24,6 +24,7 @@ struct sheettestApp: App {
     @State private var showingAlert = false
     @State private var errorMsg = ""
     @State private var showingSaveDialog = false
+    @State private var showingColumnNameDialog = false
     
     @StateObject var appState = AppState()
     
@@ -36,6 +37,9 @@ struct sheettestApp: App {
                 .environmentObject(appState)
                 .onAppear {
                 ValueTransformer.setValueTransformer(TimestampTransformer(), forName: .classNameTransformerName)
+            }
+            .sheet(isPresented: $showingColumnNameDialog) {
+                ColumnNameDialog(column: (fileController.activeFileModel.sheetModel.columns.last)!)
             }
             .fileImporter(isPresented: $showingOpenDialog,
                           allowedContentTypes: [UTType.opf],
@@ -94,10 +98,15 @@ struct sheettestApp: App {
             
             CommandMenu("Spreadsheet") {
                 Button("Add Column") {
-                    
+                    let columnModel = fileController.activeFileModel.sheetModel.addColumn()
+                    fileController.activeFileModel.sheetModel.setSelectedColumn(model: columnModel)
+                    showingColumnNameDialog.toggle()
                 }
                 Button("Delete Column") {
-                    
+                    let selectedColumns = fileController.activeFileModel.sheetModel.getSelectedColumns()
+                    for column in selectedColumns {
+                        fileController.activeFileModel.sheetModel.deleteColumn(column: column)
+                    }
                 }
                 Divider()
                 Button("Add Cell") {
