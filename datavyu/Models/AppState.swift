@@ -12,4 +12,5 @@ public class AppState: ObservableObject {
     @Published var controllerWindow: NSWindow?
     @Published var videoWindows: [NSWindow] = []
     @Published var scriptWindows: [NSWindow] = []
+    @Published var layout: LayoutChoice = LayoutChoice()
 }

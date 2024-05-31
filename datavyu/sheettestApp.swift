@@ -25,6 +25,8 @@ struct sheettestApp: App {
     @State private var errorMsg = ""
     @State private var showingSaveDialog = false
     @State private var showingColumnNameDialog = false
+    @State private var showingCodeEditor = false
+    @State private var showingColHideShow = false
     
     @StateObject var appState = AppState()
     
@@ -40,6 +42,12 @@ struct sheettestApp: App {
             }
             .sheet(isPresented: $showingColumnNameDialog) {
                 ColumnNameDialog(column: (fileController.activeFileModel.sheetModel.columns.last)!)
+            }
+            .sheet(isPresented: $showingCodeEditor) {
+                CodeEditorView(sheetModel: fileController.activeFileModel.sheetModel)
+            }
+            .sheet(isPresented: $showingColHideShow) {
+                ColumnListView(sheetModel: fileController.activeFileModel.sheetModel)
             }
             .fileImporter(isPresented: $showingOpenDialog,
                           allowedContentTypes: [UTType.opf],
@@ -110,28 +118,29 @@ struct sheettestApp: App {
                 }
                 Divider()
                 Button("Add Cell") {
-                    
+                    let col = fileController.activeFileModel.sheetModel.getSelectedColumns().first
+                    col?.addCell()
                 }
                 Button("Delete Cell") {
-                    
+                    fileController.activeFileModel.sheetModel.selectedCell?.deleteCell()
                 }
                 Divider()
-                Button("Edit Arguments") {
-                    
+                Button("Edit Columns/Arguments") {
+                    showingCodeEditor.toggle()
                 }
                 Divider()
                 Button("Ordinal Layout") {
-                    
+                    appState.layout.layout = Layouts.ordinal
                 }
                 Button("Temporal Layout") {
-                    
+                    appState.layout.layout = Layouts.temporal
                 }
                 Divider()
                 Button("Hide Column") {
-                    
+                    fileController.activeFileModel.sheetModel.getSelectedColumns().first?.setHidden(val: true)
                 }
                 Button("Hide/Show Columns") {
-                    
+                    showingColHideShow.toggle()
                 }
             }
             

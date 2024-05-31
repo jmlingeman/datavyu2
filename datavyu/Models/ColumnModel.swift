@@ -86,6 +86,7 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
 
     func setHidden(val: Bool) {
         hidden = val
+        update()
     }
 
     func addArgument() {

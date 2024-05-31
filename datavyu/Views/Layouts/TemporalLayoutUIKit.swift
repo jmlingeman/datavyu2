@@ -14,7 +14,7 @@ enum Layouts {
 }
 
 class LayoutChoice: ObservableObject {
-    var layout = Layouts.ordinal
+    @Published var layout = Layouts.ordinal
     
     func swapLayout() {
         if self.layout == Layouts.temporal {
@@ -27,13 +27,13 @@ class LayoutChoice: ObservableObject {
 
 struct SheetCollectionView: View {
     @EnvironmentObject var sheetModel: SheetModel
-    @State var layout: LayoutChoice = LayoutChoice()
+    @EnvironmentObject var appState: AppState
     var body: some View {
         ZStack {
-            SheetLayoutCollection(sheetModel: sheetModel, layout: layout, itemSize: NSSize(width: 100, height: 100))
+            SheetLayoutCollection(sheetModel: sheetModel, layout: appState.layout, itemSize: NSSize(width: 100, height: 100))
             Button("Change Layout") {
-                layout.swapLayout()
-                sheetModel.updates += 1
+                appState.layout.swapLayout()
+                sheetModel.updateSheet()
             }.keyboardShortcut(KeyboardShortcut("t", modifiers: .command)).hidden()
         }
     }
