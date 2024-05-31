@@ -27,6 +27,7 @@ struct sheettestApp: App {
     @State private var showingColumnNameDialog = false
     @State private var showingCodeEditor = false
     @State private var showingColHideShow = false
+    @State private var showingUpdateView = false
     
     @StateObject var appState: AppState = .init()
     
@@ -50,6 +51,9 @@ struct sheettestApp: App {
             }
             .sheet(isPresented: $showingColHideShow) {
                 ColumnListView(sheetModel: fileController.activeFileModel.sheetModel)
+            }
+            .sheet(isPresented: $showingUpdateView) {
+                UpdateView(appState: appState)
             }
             .fileImporter(isPresented: $showingOpenDialog,
                           allowedContentTypes: [UTType.opf],
@@ -83,6 +87,11 @@ struct sheettestApp: App {
                               }
                           })
         }.commands {
+            CommandGroup(after: CommandGroupPlacement.appVisibility) {
+                Button("Check for Updates") {
+                    showingUpdateView.toggle()
+                }
+            }
             CommandGroup(replacing: CommandGroupPlacement.newItem) {
                 Button("New Sheet", action: fileController.newFileDefault)
                     .keyboardShortcut(KeyEquivalent("n"))

@@ -15,6 +15,7 @@ public class AppState: ObservableObject {
     @Published var videoWindows: [FileModel: [NSWindow]] = [:]
     @Published var scriptWindows: [FileModel: [NSWindow]] = [:]
     @Published var layout: LayoutChoice = LayoutChoice()
+    @Published var config: Config = Config()
     
     
     func setControllerWindow(win: NSWindow) {
