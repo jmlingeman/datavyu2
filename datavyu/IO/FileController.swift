@@ -14,6 +14,11 @@ func saveOpfFile(fileModel: FileModel, outputFilename: URL) -> Data {
     let project = saveProject(fileModel: fileModel)
 
     do {
+        do {
+            try FileManager.default.moveItem(at: outputFilename, to: outputFilename.appendingPathExtension(".backup"))
+        } catch let error as NSError {
+            print("Error: \(error.domain)")
+        }
         let archive = try Archive(url: outputFilename, accessMode: .create)
 
         guard let data = db.data(using: .utf8) else { return Data() }

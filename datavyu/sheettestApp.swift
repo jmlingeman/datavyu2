@@ -28,18 +28,20 @@ struct sheettestApp: App {
     @State private var showingCodeEditor = false
     @State private var showingColHideShow = false
     
-    @StateObject var appState = AppState()
+    @StateObject var appState: AppState = .init()
     
     @Environment(\.openWindow) private var openWindow
 
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(fileController)
-                .environmentObject(appState)
-                .onAppear {
+            .onAppear {
+                appState.fileController = fileController
                 ValueTransformer.setValueTransformer(TimestampTransformer(), forName: .classNameTransformerName)
             }
+            .environmentObject(fileController)
+            .environmentObject(appState)
+            
             .sheet(isPresented: $showingColumnNameDialog) {
                 ColumnNameDialog(column: (fileController.activeFileModel.sheetModel.columns.last)!)
             }
@@ -99,7 +101,7 @@ struct sheettestApp: App {
             CommandGroup(after: CommandGroupPlacement.windowList) {
                 Divider()
                 Button("Open Controller Window") {
-                    appState.controllerWindow?.makeKeyAndOrderFront(self)
+                    appState.controllerWindows[fileController.activeFileModel]?.makeKeyAndOrderFront(self)
                 }
                 Divider()
             }

@@ -10,6 +10,8 @@ import WrappingHStack
 
 struct ContentView: View {
     @EnvironmentObject var fileController: FileControllerModel
+    @EnvironmentObject var appState: AppState
+    
     @State var selectedTab = 0
 
     @State private var showingCodeEditor = false
@@ -33,10 +35,17 @@ struct ContentView: View {
                 let server = DatavyuAPIServer(fileController: fileController, port: 1312)
                 server.start()
             }
-            .onChange(of: fileController.activeFileModel) { _, newValue in
+            .onChange(of: fileController.activeFileModel) { oldValue, newValue in
                 let newTabIdx = fileController.fileModels.firstIndex(of: newValue)
                 selectedTab = newTabIdx ?? 0
+                
+                // Hide all of the windows for this tab
+                appState.hideWindows(fileModel: oldValue)
+                appState.showWindows(fileModel: newValue)
             }
+            .onChange(of: selectedTab, { oldValue, newValue in
+                fileController.activeFileModel = fileController.fileModels[selectedTab]
+            })
             .toolbar {
                 ToolbarItemGroup {
                     Button("Code Editor") {

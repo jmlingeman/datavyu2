@@ -9,8 +9,43 @@ import Foundation
 import AppKit
 
 public class AppState: ObservableObject {
-    @Published var controllerWindow: NSWindow?
-    @Published var videoWindows: [NSWindow] = []
-    @Published var scriptWindows: [NSWindow] = []
+    @Published var fileController: FileControllerModel?
+
+    @Published var controllerWindows: [FileModel: NSWindow] = [:]
+    @Published var videoWindows: [FileModel: [NSWindow]] = [:]
+    @Published var scriptWindows: [FileModel: [NSWindow]] = [:]
     @Published var layout: LayoutChoice = LayoutChoice()
+    
+    
+    func setControllerWindow(win: NSWindow) {
+        controllerWindows[fileController!.activeFileModel] = win
+    }
+    
+    func addVideoWindow(win: NSWindow) {
+        videoWindows[fileController!.activeFileModel, default: []].append(win)
+    }
+    
+    func addScriptWindow(win: NSWindow) {
+        scriptWindows[fileController!.activeFileModel, default: []].append(win)
+    }
+    
+    func hideWindows(fileModel: FileModel) {
+        controllerWindows[fileModel]?.orderOut(self)
+        for vw in videoWindows[fileModel] ?? [] {
+            vw.orderOut(self)
+        }
+        for sw in scriptWindows[fileModel] ?? [] {
+            sw.orderOut(self)
+        }
+    }
+    
+    func showWindows(fileModel: FileModel) {
+        controllerWindows[fileModel]?.orderFront(self)
+        for vw in videoWindows[fileModel] ?? [] {
+            vw.orderFront(self)
+        }
+        for sw in scriptWindows[fileModel] ?? [] {
+            sw.orderFront(self)
+        }
+    }
 }
