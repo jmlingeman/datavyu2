@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/console-kit.git",
       "state" : {
-        "revision" : "9c24ac496c97cfb49c1bd5e7162008bb50abafc8",
-        "version" : "4.14.2"
+        "revision" : "9f7932f22ab6f64aafadc14491e694179b7d0f6f",
+        "version" : "4.14.3"
       }
     },
     {
@@ -156,7 +156,7 @@
     {
       "identity" : "swift-log",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-log.git",
+      "location" : "https://github.com/apple/swift-log",
       "state" : {
         "revision" : "e97a6fcb1ab07462881ac165fdbb37f067e205d5",
         "version" : "1.5.4"
@@ -219,7 +219,7 @@
     {
       "identity" : "swift-numerics",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-numerics",
+      "location" : "https://github.com/apple/swift-numerics.git",
       "state" : {
         "revision" : "0a5bc04095a675662cf24757cc0640aa2204253b",
         "version" : "1.0.2"
@@ -267,7 +267,7 @@
       "location" : "https://github.com/argmaxinc/whisperkit",
       "state" : {
         "branch" : "main",
-        "revision" : "3aa94e8c3950afdeaf916cb1da71e44f62bd2864"
+        "revision" : "8fcfadbe37767c7a7971b48b0c231b1f78fb20b2"
       }
     },
     {

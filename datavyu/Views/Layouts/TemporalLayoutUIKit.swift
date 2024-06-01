@@ -374,12 +374,9 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         if cellItem != nil {
             collectionView.lastSelectedCellModel = cellItem?.cell
         }
-//        collectionView.window?.makeFirstResponder(cellItem?.onset)
+        
         collectionView.selectionIndexPaths = Set([corrected_ip])
-
-//        print("Focusing cell's onset \(collectionView.window) \(cellItem?.onset) \(corrected_ip)")
         cellItem?.focusOnset()
-
         collectionView.scrollToItems(at: Set([corrected_ip]), scrollPosition: [.centeredVertically])
     }
 

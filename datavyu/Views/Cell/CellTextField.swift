@@ -240,12 +240,6 @@ extension CellTextField: NSTextFieldDelegate, NSTextViewDelegate {
     func controlTextDidEndEditing(_ obj: Notification) {
         print("ARGUMENT: \(#function)")
         self.isEditing = false
-//        parentView!.lastEditedField = LastEditedField.arguments
-//        if let textField = obj.object as? NSTextField {
-//            if textField.stringValue != argument!.value {
-//                argument!.setValue(value: textField.stringValue)
-//            }
-//        }
         guard
             let textField = obj.object as? NSTextField,
             !textField.isFocused

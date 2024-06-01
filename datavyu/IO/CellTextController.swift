@@ -49,18 +49,36 @@ class CellTextController {
     }
     
     func parseUpdates(newValue: String) -> String {
-        let args = newValue.split(by: CellTextController.argumentSeperator, behavior: .removed)
+        var args = newValue.split(by: CellTextController.argumentSeperator, behavior: .isolated)
+        // We need to add back in things that may have been stripped due to being empty
+        // so if the list starts with a ",", ends with ",", or has 2 "," in a row, we add in a blank
+        if args.first == CellTextController.argumentSeperator {
+            args.insert("", at: 0)
+        }
+        if args.last == CellTextController.argumentSeperator {
+            args.append("")
+        }
+        for i in Range(uncheckedBounds: (0, args.count-1)) {
+            let a1 = args[i]
+            let a2 = args[i+1]
+            if a1 == CellTextController.argumentSeperator && a2 == CellTextController.argumentSeperator {
+                args.insert("", at: i+1)
+            }
+        }
         var startIdx = 0
         var endIdx = 0
-        for (i, arg) in args.enumerated() {
-            if cell.arguments.count > i {
-                if cell.arguments[i].value != arg {
+        var i = 0
+        for arg in args {
+            if arg != CellTextController.argumentSeperator {
+                print(arg.contains("^<.*>$"))
+                if cell.arguments[i].value != arg || !(arg.starts(with: "<") && arg.last == ">") {
                     cell.arguments[i].setValue(value: arg)
                 }
                 
                 endIdx = startIdx + cell.arguments[i].getDisplayString().count
                 currentExtents[i] = SelectionExtent(start: startIdx, end: endIdx)
                 startIdx = endIdx + 1 // Add 1 to skip the seperator
+                i += 1
             }
         }
         return argumentString()
@@ -69,11 +87,7 @@ class CellTextController {
     func argumentString() -> String {
         var strcmp = [String]()
         for arg in cell.arguments {
-            if arg.value.count > 0 {
-                strcmp.append(arg.value)
-            } else {
-                strcmp.append(arg.getPlaceholder())
-            }
+            strcmp.append(arg.getDisplayString())
         }
         return strcmp.joined(separator: CellTextController.argumentSeperator)
     }
