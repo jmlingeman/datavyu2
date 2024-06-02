@@ -48,7 +48,7 @@ struct TracksStackView: View {
                     Grid {
                         ForEach(fileModel.videoModels) { videoModel in
                             GridRow {
-                                HStack {
+//                                HStack {
                                     Text(videoModel.videoFileURL.lastPathComponent).frame(width: 150)
                                     Menu(content: {
                                         Button("Generate Spectrogram") {
@@ -80,9 +80,9 @@ struct TracksStackView: View {
                                             if fileModel.videoModels.count > 0 {
                                                 TrackPositionIndicator(fileModel: fileModel, videoModel: fileModel.primaryVideo!)
                                             }
-                                        }
-                                }.padding(.trailing, 5)
-                            }.frame(height: 30)
+                                        }.frame(maxWidth: .infinity)
+                                }.frame(height: 30)//.padding(.trailing, 5)
+//                            }.frame(height: 30)
                         }
                     }
                 }
