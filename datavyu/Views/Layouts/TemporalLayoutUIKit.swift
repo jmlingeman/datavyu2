@@ -154,6 +154,7 @@ struct Header: View {
             .background(selected ? Color.teal : columnModel.isFinished ? Color.green : Color.accentColor)
         }.frame(width: Config().defaultCellWidth, height: Config().headerSize)
             .onTapGesture {
+                columnModel.sheetModel.selectedCell = nil
                 columnModel.sheetModel.setSelectedColumn(model: columnModel)
                 print("Set selected")
             }
@@ -164,8 +165,10 @@ struct SheetLayoutCollection: NSViewRepresentable {
     @ObservedObject var sheetModel: SheetModel
     @ObservedObject var layout: LayoutChoice
     var itemSize: NSSize
+    
+    @State var oldSheetModel: SheetModel?
 
-    var scrollView: NSScrollView = .init()
+    @State var scrollView: NSScrollView = .init()
 
     // MARK: - Coordinator for Delegate & Data Source & Flow Layout
 
@@ -176,8 +179,9 @@ struct SheetLayoutCollection: NSViewRepresentable {
     // MARK: - NSViewRepresentable
 
     func makeNSView(context: Context) -> some NSScrollView {
-//        let scrollView = NSScrollView()
+        scrollView = NSScrollView()
         let collectionView = SheetCollectionAppKitView(sheetModel: sheetModel, parentScrollView: scrollView, layout: layout)
+//        oldSheetModel = sheetModel
         collectionView.delegate = context.coordinator
         collectionView.dataSource = context.coordinator
         collectionView.allowsEmptySelection = true
@@ -203,6 +207,10 @@ struct SheetLayoutCollection: NSViewRepresentable {
 
     func updateNSView(_ nsView: NSViewType, context: Context) {
         print("Trying to reload data...")
+        
+        if sheetModel != oldSheetModel {
+            print("Sheet model changed")
+        }
         
         if let collectionView = nsView.documentView as? SheetCollectionAppKitView {
             print((collectionView.collectionViewLayout as! TemporalCollectionViewLayout).layout, self.layout.layout)
@@ -230,10 +238,6 @@ struct SheetLayoutCollection: NSViewRepresentable {
             var curCellModel: CellModel? = curCell?.cell ?? nil
 
             // Do the actual reload, erasing all view cell data
-            for (k,v) in collectionView.floatingHeaders {
-                collectionView.floatingHeaders.removeValue(forKey: k)
-                v.removeFromSuperview()
-            }
             
             print("Reloading")
             collectionView.reloadData()
@@ -242,6 +246,8 @@ struct SheetLayoutCollection: NSViewRepresentable {
             // Figure out which view cell to select again
             if sheetModel.selectedCell != nil {
                 curCellModel = sheetModel.selectedCell
+            } else {
+                return
             }
 
             var curCellIndexPath: IndexPath? = nil
@@ -332,7 +338,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         let ip = sheetModel.findCellIndexPath(cell_to_find: cellModel)
         if ip != nil {
             let collectionView = (parent.scrollView.documentView as! SheetCollectionAppKitView)
-            sheetModel.selectedCell = cellModel
+            sheetModel.setSelectedCell(selectedCell: cellModel)
             collectionView.selectionIndexPaths = Set([ip!])
         }
     }
@@ -371,7 +377,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         cellItem?.setSelected()
 
         if cellItem != nil {
-            sheetModel.selectedCell = cellItem?.cell
+            sheetModel.setSelectedCell(selectedCell: cellItem?.cell)
         }
         
         collectionView.selectionIndexPaths = Set([corrected_ip])
@@ -469,10 +475,9 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
                     c == column
                 }) {
                     sheetCollectionView.floatingHeaders[column] = floatingHeader
+                    
                 }
             }
-            
-            
             parent.scrollView.addFloatingSubview(floatingHeader, for: .vertical)
             
             return item

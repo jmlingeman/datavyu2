@@ -82,6 +82,13 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
     func getSelectedColumns() -> [ColumnModel] {
         return columns.filter({ $0.isSelected })
     }
+    
+    func setSelectedCell(selectedCell: CellModel?) {
+        self.selectedCell = selectedCell
+        if selectedCell != nil {
+            self.setSelectedColumn(model: selectedCell!.column, suppress_update: true)
+        }
+    }
 
     func copy() -> SheetModel {
         let newSheetModel = SheetModel(sheetName: sheetName)

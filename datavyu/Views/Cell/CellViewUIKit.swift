@@ -134,7 +134,7 @@ class CellViewUIKit: NSCollectionViewItem {
         view.layer?.borderColor = CGColor(red: 255, green: 0, blue: 0, alpha: 255)
         view.layer?.borderWidth = 1
         isSelected = true
-        self.cell.column.sheetModel.selectedCell = self.cell
+        self.cell.column.sheetModel.setSelectedCell(selectedCell: self.cell)
     }
 
     func setDeselected() {
@@ -233,7 +233,7 @@ extension OnsetCoordinator: NSTextFieldDelegate {
         onsetValue = view?.onset.stringValue
 
         view?.lastEditedField = LastEditedField.onset
-        parentView?.sheetModel.selectedCell = cell
+        parentView?.sheetModel.setSelectedCell(selectedCell: cell)
 
         print("Set focus object to: \(view?.onset)")
     }
@@ -253,7 +253,7 @@ extension OnsetCoordinator: NSTextFieldDelegate {
             }
             self.isEdited = false
         }
-        parentView?.sheetModel.selectedCell = cell
+        parentView?.sheetModel.setSelectedCell(selectedCell: cell)
 //        self.view?.setDeselected()
     }
 
@@ -262,7 +262,7 @@ extension OnsetCoordinator: NSTextFieldDelegate {
         print(#function)
         self.isEdited = true
         view?.lastEditedField = LastEditedField.onset
-        parentView?.sheetModel.selectedCell = cell
+        parentView?.sheetModel.setSelectedCell(selectedCell: cell)
     }
 
     func control(_: NSControl, textShouldBeginEditing _: NSText) -> Bool {
@@ -319,7 +319,7 @@ extension OffsetCoordinator: NSTextFieldDelegate {
         print(#function)
         view?.setSelected()
         view?.lastEditedField = LastEditedField.offset
-        parentView?.sheetModel.selectedCell = cell
+        parentView?.sheetModel.setSelectedCell(selectedCell: cell)
     }
 
     func controlTextDidEndEditing(_ obj: Notification) {
@@ -329,7 +329,7 @@ extension OffsetCoordinator: NSTextFieldDelegate {
                 let timestampStr = textField.stringValue
                 let timestamp = timestringToTimestamp(timestring: timestampStr)
                 view?.lastEditedField = LastEditedField.offset
-                parentView?.sheetModel.selectedCell = cell
+                parentView?.sheetModel.setSelectedCell(selectedCell: cell)
                 textField.stringValue = formatTimestamp(timestamp: cell!.offset)
                 cell!.setOffset(offset: timestamp)
             } else if timestringToTimestamp(timestring: textField.stringValue) != cell!.offset {
