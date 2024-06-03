@@ -131,9 +131,12 @@ final class HeaderCell: NSView, NSCollectionViewElement {
     }
 }
 
+class ColumnSelected : ObservableObject {
+    @Published var isSelected: Bool = false
+}
+
 struct Header: View {
-    @Binding var columnModel: ColumnModel
-    var selected: Bool
+    @ObservedObject var columnModel: ColumnModel
     static let reuseIdentifier: String = "header"
 
     var body: some View {
@@ -150,7 +153,7 @@ struct Header: View {
             }
             .frame(width: Config().defaultCellWidth, height: Config().headerSize)
             .border(Color.black)
-            .background(selected ? Color.teal : columnModel.isFinished ? Color.green : Color.accentColor)
+            .background(columnModel.isSelected ? Color.teal : columnModel.isFinished ? Color.green : Color.accentColor)
         }.frame(width: Config().defaultCellWidth, height: Config().headerSize)
             .onTapGesture {
                 columnModel.sheetModel.selectedCell = nil
@@ -462,9 +465,9 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
             let selected = focusedColumn == sheetModel.visibleColumns[indexPath.section]
             print("SELECTED: \(sheetModel.visibleColumns[indexPath.section].columnName) \(selected)")
 
-            item.setView(Header(columnModel: $sheetModel.visibleColumns[indexPath.section], selected: selected))
+            item.setView(Header(columnModel: sheetModel.visibleColumns[indexPath.section]))
 
-            let floatingHeader = NSHostingView(rootView: Header(columnModel: $sheetModel.visibleColumns[indexPath.section], selected: selected))
+            let floatingHeader = NSHostingView(rootView: Header(columnModel: sheetModel.visibleColumns[indexPath.section]))
             floatingHeader.frame = item.frame
 
             let column = sheetModel.visibleColumns[indexPath.section]
