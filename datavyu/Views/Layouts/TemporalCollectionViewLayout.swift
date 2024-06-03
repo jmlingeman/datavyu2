@@ -177,8 +177,8 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
                     cellHeight = offsetToPos[offset, default: onsetToPos[offset]!] - cellTopY
                 }
 
-                if prevCell != nil, onset - prevCell!.model.offset == 1 {
-                    sizes[prevCell!]!.height = cellTopY - sizes[prevCell!]!.height
+                if prevCell != nil && onset - prevCell!.model.offset == 1 {
+                    sizes[prevCell!]!.height = cellTopY - pts[prevCell!]!.y
                     offsetToPos[offset] = max(offsetToPos[offset] ?? 0, cellTopY)
                 }
 
