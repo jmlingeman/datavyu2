@@ -22,13 +22,13 @@ func saveOpfFile(fileModel: FileModel, outputFilename: URL) -> Data {
         let archive = try Archive(url: outputFilename, accessMode: .create)
 
         guard let data = db.data(using: .utf8) else { return Data() }
-        try? archive.addEntry(with: "db", type: .file, uncompressedSize: Int64(db.count), bufferSize: 4, provider: {
+        try? archive.addEntry(with: "db", type: .file, uncompressedSize: Int64(data.count), provider: {
             (position: Int64, size) -> Data in
             data.subdata(in: Data.Index(position) ..< Int(position) + size)
         })
 
         guard let projectData = project.data(using: .utf8) else { return Data() }
-        try archive.addEntry(with: "project", type: .file, uncompressedSize: Int64(project.count), provider: {
+        try archive.addEntry(with: "project", type: .file, uncompressedSize: Int64(projectData.count), provider: {
             (position: Int64, size) -> Data in
             projectData.subdata(in: Data.Index(position) ..< Int(position) + size)
         })
