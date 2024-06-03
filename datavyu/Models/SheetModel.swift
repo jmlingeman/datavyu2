@@ -69,7 +69,11 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
         print("Setting column \(model.columnName) to selected")
         for column in columns {
             if model == column {
+                if column.sheetModel.selectedCell?.column != column {
+                    column.sheetModel.setSelectedCell(selectedCell: nil)
+                }
                 column.isSelected = true
+
             } else {
                 column.isSelected = false
             }

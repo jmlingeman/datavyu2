@@ -32,8 +32,10 @@ struct SheetCollectionView: View {
         ZStack {
             SheetLayoutCollection(sheetModel: sheetModel, layout: appState.layout, itemSize: NSSize(width: 100, height: 100))
             Button("Change Layout") {
-                appState.layout.swapLayout()
-                sheetModel.updateSheet()
+                DispatchQueue.main.async {
+                    appState.layout.swapLayout()
+                    sheetModel.updateSheet()
+                }
             }.keyboardShortcut(KeyboardShortcut("t", modifiers: .command)).hidden()
         }
     }
@@ -131,7 +133,7 @@ final class HeaderCell: NSView, NSCollectionViewElement {
     }
 }
 
-class ColumnSelected : ObservableObject {
+class ColumnSelected: ObservableObject {
     @Published var isSelected: Bool = false
 }
 
@@ -220,6 +222,18 @@ struct SheetLayoutCollection: NSViewRepresentable {
                     collectionView.setOrdinalLayout()
                 } else {
                     collectionView.setTemporalLayout()
+                }
+            }
+
+            for (i, column) in sheetModel.visibleColumns.enumerated() {
+                let floatingHeader = NSHostingView(rootView: Header(columnModel: sheetModel.visibleColumns[i]))
+                floatingHeader.frame = NSRect(origin: NSPoint(x: Int(Config().defaultCellWidth) * i, y: 0), size: NSSize(width: Config().defaultCellWidth, height: Config().headerSize))
+
+                if !collectionView.floatingHeaders.keys.contains(where: { c in
+                    c == column
+                }) {
+                    collectionView.floatingHeaders[column] = floatingHeader
+                    scrollView.addFloatingSubview(floatingHeader, for: .vertical)
                 }
             }
 
@@ -420,9 +434,6 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
 
                     if prevCellItem != nil {
                         prevCellItem?.nextResponder = curCellItem
-                        //                            prevCellItem?.collectionView?.item(at: IndexPath(item: 0, section: 0))?.textField?.currentEditor()?.nextResponder = curCellItem?.onset
-                        //                            prevCellItem?.collectionView?.item(at: IndexPath(item: 0, section: 0))?.textField?.currentEditor()?.nextKeyView = curCellItem?.onset
-                        print(prevCellItem, prevCellItem?.collectionView?.item(at: IndexPath(item: 0, section: 0))?.nextResponder)
                     }
                 }
                 prevCell = cell
@@ -451,29 +462,21 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         let item = collectionView.makeSupplementaryView(ofKind: kind, withIdentifier: .init(HeaderCell.identifier), for: indexPath) as! HeaderCell
 
         if sheetModel.visibleColumns.count > 0 {
-            var focusedColumn = sheetModel.findFocusedColumn()
-            if focusedColumn == nil, sheetModel.visibleColumns.count > 0 {
-                focusedColumn = sheetModel.visibleColumns[0]
-            }
-
-            let selected = focusedColumn == sheetModel.visibleColumns[indexPath.section]
-            print("SELECTED: \(sheetModel.visibleColumns[indexPath.section].columnName) \(selected)")
-
             item.setView(Header(columnModel: sheetModel.visibleColumns[indexPath.section]))
 
-            let floatingHeader = NSHostingView(rootView: Header(columnModel: sheetModel.visibleColumns[indexPath.section]))
-            floatingHeader.frame = item.frame
-
-            let column = sheetModel.visibleColumns[indexPath.section]
-
-            if let sheetCollectionView = (collectionView as? SheetCollectionAppKitView) {
-                if !sheetCollectionView.floatingHeaders.keys.contains(where: { c in
-                    c == column
-                }) {
-                    sheetCollectionView.floatingHeaders[column] = floatingHeader
-                }
-            }
-            parent.scrollView.addFloatingSubview(floatingHeader, for: .vertical)
+//            let floatingHeader = NSHostingView(rootView: Header(columnModel: sheetModel.visibleColumns[indexPath.section]))
+//            floatingHeader.frame = item.frame
+//
+//            let column = sheetModel.visibleColumns[indexPath.section]
+//
+//            if let sheetCollectionView = (collectionView as? SheetCollectionAppKitView) {
+//                if !sheetCollectionView.floatingHeaders.keys.contains(where: { c in
+//                    c == column
+//                }) {
+//                    sheetCollectionView.floatingHeaders[column] = floatingHeader
+//                }
+//            }
+//            parent.scrollView.addFloatingSubview(floatingHeader, for: .vertical)
 
             return item
         } else {
