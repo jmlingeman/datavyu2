@@ -113,6 +113,7 @@ struct ControllerPanelView: View {
         let model = fileModel.sheetModel.findFocusedColumn()
 
         let cell = model?.addCell()
+        fileModel.sheetModel.selectedCell = cell
         if cell != nil {
             cell?.setOnset(onset: fileModel.primaryVideo?.currentTime ?? 0)
         }
@@ -120,18 +121,18 @@ struct ControllerPanelView: View {
     }
 
     func setOnset() {
-        cellInFocus?.setOnset(onset: fileModel.currentTime())
+        fileModel.sheetModel.selectedCell?.setOnset(onset: fileModel.currentTime())
     }
 
     func setOffset() {
-        cellInFocus?.setOffset(offset: fileModel.currentTime())
+        fileModel.sheetModel.selectedCell?.setOffset(offset: fileModel.currentTime())
     }
 
     func setOffsetAndAddNewCell() {
-        cellInFocus?.setOffset(offset: fileModel.currentTime())
+        fileModel.sheetModel.selectedCell?.setOffset(offset: fileModel.currentTime())
         let cell = columnInFocus?.addCell()
         cell?.setOnset(onset: fileModel.currentTime() + 1)
-        cellInFocus = cell
+        fileModel.sheetModel.selectedCell = cell
 
         fileModel.sheetModel.updates += 1
     }

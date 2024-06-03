@@ -44,7 +44,6 @@ final class SheetCollectionAppKitView: NSCollectionView {
     var parentScrollView: NSScrollView
     var currentLayout: LayoutChoice
     private var rightClickIndex: Int = NSNotFound
-    var lastSelectedCellModel: CellModel? = nil
     var lastEditedArgument: Argument? = nil
     var floatingHeaders: [ColumnModel: NSHostingView<Header>] = [:]
 
@@ -241,8 +240,8 @@ struct SheetLayoutCollection: NSViewRepresentable {
 
 //            DispatchQueue.main.async {
             // Figure out which view cell to select again
-            if collectionView.lastSelectedCellModel != nil {
-                curCellModel = collectionView.lastSelectedCellModel
+            if sheetModel.selectedCell != nil {
+                curCellModel = sheetModel.selectedCell
             }
 
             var curCellIndexPath: IndexPath? = nil
@@ -299,8 +298,8 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         let collectionView = (parent.scrollView.documentView as! SheetCollectionAppKitView)
 
         var ip: IndexPath? = IndexPath(item: 0, section: 0)
-        if collectionView.lastSelectedCellModel != nil {
-            ip = sheetModel.findCellIndexPath(cell_to_find: collectionView.lastSelectedCellModel!) ?? IndexPath(item: 0, section: 0)
+        if sheetModel.selectedCell != nil {
+            ip = sheetModel.findCellIndexPath(cell_to_find: sheetModel.selectedCell!) ?? IndexPath(item: 0, section: 0)
         }
         let cellItem = collectionView.item(at: ip!) as? CellViewUIKit
 
@@ -333,7 +332,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         let ip = sheetModel.findCellIndexPath(cell_to_find: cellModel)
         if ip != nil {
             let collectionView = (parent.scrollView.documentView as! SheetCollectionAppKitView)
-            collectionView.lastSelectedCellModel = cellModel
+            sheetModel.selectedCell = cellModel
             collectionView.selectionIndexPaths = Set([ip!])
         }
     }
@@ -372,7 +371,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         cellItem?.setSelected()
 
         if cellItem != nil {
-            collectionView.lastSelectedCellModel = cellItem?.cell
+            sheetModel.selectedCell = cellItem?.cell
         }
         
         collectionView.selectionIndexPaths = Set([corrected_ip])
@@ -384,13 +383,13 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         print(#function)
         let collectionView = (parent.scrollView.documentView as! SheetCollectionAppKitView)
 
-        if ip == nil || collectionView.lastSelectedCellModel == nil {
+        if ip == nil || sheetModel.selectedCell == nil {
             return
         }
 
         print("Focusing field \(ip?.item)")
 
-        let cellIp = sheetModel.findCellIndexPath(cell_to_find: collectionView.lastSelectedCellModel!)
+        let cellIp = sheetModel.findCellIndexPath(cell_to_find: sheetModel.selectedCell!)
         let cellItem = collectionView.item(at: cellIp!) as? CellViewUIKit
 
         cellItem?.setSelected()

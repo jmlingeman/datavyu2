@@ -134,7 +134,6 @@ class CellViewUIKit: NSCollectionViewItem {
         view.layer?.borderColor = CGColor(red: 255, green: 0, blue: 0, alpha: 255)
         view.layer?.borderWidth = 1
         isSelected = true
-        parentView?.lastSelectedCellModel = cell
         self.cell.column.sheetModel.selectedCell = self.cell
     }
 
@@ -193,6 +192,7 @@ class CellViewUIKit: NSCollectionViewItem {
     var view: CellViewUIKit?
     var parentView: SheetCollectionAppKitView?
     var onsetValue: String?
+    var isEdited = false
 
     override init() {
         super.init()
@@ -233,7 +233,7 @@ extension OnsetCoordinator: NSTextFieldDelegate {
         onsetValue = view?.onset.stringValue
 
         view?.lastEditedField = LastEditedField.onset
-        parentView?.lastSelectedCellModel = cell
+        parentView?.sheetModel.selectedCell = cell
 
         print("Set focus object to: \(view?.onset)")
     }
@@ -241,23 +241,28 @@ extension OnsetCoordinator: NSTextFieldDelegate {
     func controlTextDidEndEditing(_ obj: Notification) {
         print(#function)
         if let textField = obj.object as? NSTextField {
-            if textField.stringValue != onsetValue {
+            if self.isEdited && timestringToTimestamp(timestring: textField.stringValue) != cell!.onset {
                 let timestampStr = textField.stringValue
                 let timestamp = timestringToTimestamp(timestring: timestampStr)
                 view?.lastEditedField = LastEditedField.onset
                 print("SETTING ONSET TO \(timestamp)")
+                textField.stringValue = formatTimestamp(timestamp: cell!.onset)
                 cell!.setOnset(onset: timestamp)
+            } else if timestringToTimestamp(timestring: textField.stringValue) != cell!.onset {
+                textField.stringValue = formatTimestamp(timestamp: cell!.onset)
             }
+            self.isEdited = false
         }
-        parentView?.lastSelectedCellModel = cell
+        parentView?.sheetModel.selectedCell = cell
 //        self.view?.setDeselected()
     }
 
     func controlTextDidChange(_: Notification) {
         print(self)
         print(#function)
+        self.isEdited = true
         view?.lastEditedField = LastEditedField.onset
-        parentView?.lastSelectedCellModel = cell
+        parentView?.sheetModel.selectedCell = cell
     }
 
     func control(_: NSControl, textShouldBeginEditing _: NSText) -> Bool {
@@ -276,6 +281,7 @@ extension OnsetCoordinator: NSTextFieldDelegate {
     var view: CellViewUIKit?
     var parentView: SheetCollectionAppKitView?
     var offsetValue: String?
+    var isEdited = false
 
     override init() {
         super.init()
@@ -313,25 +319,30 @@ extension OffsetCoordinator: NSTextFieldDelegate {
         print(#function)
         view?.setSelected()
         view?.lastEditedField = LastEditedField.offset
-        parentView?.lastSelectedCellModel = cell
+        parentView?.sheetModel.selectedCell = cell
     }
 
     func controlTextDidEndEditing(_ obj: Notification) {
         print(#function)
         if let textField = obj.object as? NSTextField {
-            if textField.stringValue != offsetValue {
+            if self.isEdited && timestringToTimestamp(timestring: textField.stringValue) != cell!.offset {
                 let timestampStr = textField.stringValue
                 let timestamp = timestringToTimestamp(timestring: timestampStr)
                 view?.lastEditedField = LastEditedField.offset
-                parentView?.lastSelectedCellModel = cell
+                parentView?.sheetModel.selectedCell = cell
+                textField.stringValue = formatTimestamp(timestamp: cell!.offset)
                 cell!.setOffset(offset: timestamp)
+            } else if timestringToTimestamp(timestring: textField.stringValue) != cell!.offset {
+                textField.stringValue = formatTimestamp(timestamp: cell!.offset)
             }
+            self.isEdited = false
         }
     }
 
     func controlTextDidChange(_: Notification) {
         print(self)
         print(#function)
+        self.isEdited = true
     }
 
     func control(_: NSControl, textShouldBeginEditing _: NSText) -> Bool {
