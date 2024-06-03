@@ -20,11 +20,11 @@ struct ControllerPanelView: View {
             videoModel.play()
         }
     }
-    
+
     func stepFrame(reverse: Bool = false) {
         var highestFps: Float = -1.0
         var highestFpsVideo: VideoModel?
-        
+
         for videoModel in fileModel.videoModels {
             let fps = videoModel.getFps()
             if fps > highestFps {
@@ -32,46 +32,46 @@ struct ControllerPanelView: View {
                 highestFpsVideo = videoModel
             }
         }
-        
+
         if !reverse {
             highestFpsVideo?.nextFrame()
         } else {
             highestFpsVideo?.prevFrame()
         }
-        
+
         for videoModel in fileModel.videoModels {
             if videoModel == highestFpsVideo {
                 continue
             }
-            
+
             videoModel.seek(to: highestFpsVideo!.currentTime)
         }
     }
-    
+
     func nextFrame() {
         stepFrame()
     }
-    
+
     func prevFrame() {
         stepFrame(reverse: true)
     }
-    
+
     func jump() {
         fileModel.seekAllVideos(to: fileModel.currentTime() + Double(timestringToSecondsDouble(timestring: jumpValue)))
     }
-    
+
     func findOnset() {
         if fileModel.sheetModel.selectedCell != nil {
             find(value: millisToSeconds(millis: fileModel.sheetModel.selectedCell!.onset))
         }
     }
-    
+
     func findOffset() {
         if fileModel.sheetModel.selectedCell != nil {
             find(value: millisToSeconds(millis: fileModel.sheetModel.selectedCell!.offset))
         }
     }
-    
+
     func find(value: Double) {
         fileModel.seekAllVideos(to: value)
     }
@@ -147,7 +147,6 @@ struct ControllerPanelView: View {
                 }
             }
             Grid(alignment: .topLeading, horizontalSpacing: 2, verticalSpacing: 2) {
-                
                 GridRow {
                     ControllerButton(buttonName: "Set\nOnset", action: setOnset)
                         .keyboardShortcut("7", modifiers: .numericPad)
@@ -202,6 +201,5 @@ struct ControllerPanelView: View {
                 }
             }
         }
-        
     }
 }

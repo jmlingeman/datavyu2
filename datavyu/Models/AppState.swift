@@ -5,8 +5,8 @@
 //  Created by Jesse Lingeman on 5/27/24.
 //
 
-import Foundation
 import AppKit
+import Foundation
 
 public class AppState: ObservableObject {
     @Published var fileController: FileControllerModel?
@@ -14,22 +14,21 @@ public class AppState: ObservableObject {
     @Published var controllerWindows: [FileModel: NSWindow] = [:]
     @Published var videoWindows: [FileModel: [NSWindow]] = [:]
     @Published var scriptWindows: [FileModel: [NSWindow]] = [:]
-    @Published var layout: LayoutChoice = LayoutChoice()
-    @Published var config: Config = Config()
-    
-    
+    @Published var layout: LayoutChoice = .init()
+    @Published var config: Config = .init()
+
     func setControllerWindow(win: NSWindow) {
         controllerWindows[fileController!.activeFileModel] = win
     }
-    
+
     func addVideoWindow(win: NSWindow) {
         videoWindows[fileController!.activeFileModel, default: []].append(win)
     }
-    
+
     func addScriptWindow(win: NSWindow) {
         scriptWindows[fileController!.activeFileModel, default: []].append(win)
     }
-    
+
     func hideWindows(fileModel: FileModel) {
         controllerWindows[fileModel]?.orderOut(self)
         for vw in videoWindows[fileModel] ?? [] {
@@ -39,7 +38,7 @@ public class AppState: ObservableObject {
             sw.orderOut(self)
         }
     }
-    
+
     func showWindows(fileModel: FileModel) {
         controllerWindows[fileModel]?.orderFront(self)
         for vw in videoWindows[fileModel] ?? [] {

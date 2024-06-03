@@ -18,7 +18,6 @@ struct ControllerButton: View {
                 .padding()
                 .background(RoundedRectangle(cornerRadius: 8).fill(Color.secondary))
                 .aspectRatio(1.5, contentMode: .fit)
-                
         }
         .buttonStyle(PlainButtonStyle())
         .frame(width: 100, height: 80)

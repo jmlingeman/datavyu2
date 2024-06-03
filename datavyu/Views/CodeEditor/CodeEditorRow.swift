@@ -12,17 +12,17 @@ struct CodeEditorRow: View {
 
     var body: some View {
 //        HStack {
-            EditableLabel($column.columnName)
-            WrappedHStack($column.arguments) { $argument in
+        EditableLabel($column.columnName)
+        WrappedHStack($column.arguments) { $argument in
 //            ForEach($column.arguments) { $argument in
-                TextField(argument.name, text: $argument.name)
-                    .frame(maxWidth: 100)
-                    .padding()
-                    .border(Color.black, width: 5)
-            }
-            CodeEditorAddCodeButton(column: column)
-            CodeEditorRemoveCodeButton(column: column)
-            Spacer()
+            TextField(argument.name, text: $argument.name)
+                .frame(maxWidth: 100)
+                .padding()
+                .border(Color.black, width: 5)
+        }
+        CodeEditorAddCodeButton(column: column)
+        CodeEditorRemoveCodeButton(column: column)
+        Spacer()
 //        }.padding()
     }
 }

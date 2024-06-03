@@ -82,7 +82,6 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
             cell.setUndoManager(undoManager: undoManager)
         }
     }
-    
 
     func setHidden(val: Bool) {
         hidden = val
@@ -143,7 +142,7 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         }
         update()
     }
-    
+
     func getArgumentIndex(_ argument: Argument?) -> Int? {
         if argument != nil {
             return arguments.firstIndex(of: argument!)

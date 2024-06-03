@@ -12,7 +12,7 @@ extension View {
     @discardableResult
     func openInWindow(title: String, appState: AppState, sender: Any?, frameName: String?) -> NSWindow {
         let controller = NSHostingController(rootView: self)
-        
+
         if title.starts(with: "Controller") {
             let controllerWin = appState.controllerWindows[appState.fileController!.activeFileModel]
             if controllerWin != nil {
@@ -33,7 +33,7 @@ extension View {
                 }
             }
         }
-        
+
         // We havent made this window yet, create it
         let win = NSWindow(contentViewController: controller)
         win.contentViewController = controller
@@ -49,7 +49,7 @@ extension View {
             let _ = win.setFrameUsingName(frameName!)
             win.setFrameAutosaveName(frameName!)
         }
-        
+
         if title.starts(with: "Controller") {
             appState.controllerWindows[appState.fileController!.activeFileModel] = win
         } else if title.starts(with: "Script") {

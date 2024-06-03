@@ -10,7 +10,7 @@ public class VideoModel: ObservableObject, Identifiable, Equatable, Hashable, Co
     @Published var selectedMarker: Marker?
     @Published var updates = 0
     @Published var filename: String
-    
+
     @Published var fps: Float = 0
 
     var trackSettings: TrackSetting? = nil
@@ -44,7 +44,7 @@ public class VideoModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         duration = 0.0
 
         filename = videoFilePath.lastPathComponent
-        
+
         Task {
             try await populateMetadata()
         }
@@ -54,21 +54,21 @@ public class VideoModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         self.init(videoFilePath: videoFilePath)
         self.trackSettings = trackSettings
     }
-    
+
     func getFps() -> Float {
-        return fps
+        fps
     }
-    
+
     func populateMetadata() async throws {
         let asset = player.currentItem?.asset
-        
+
         if asset != nil {
             let tracks = try await asset!.loadTracks(withMediaType: .video)
             //                let tracks = asset!.tracks(withMediaType: .video)
             if tracks.count > 0 {
-                self.fps = try await tracks.first!.load(.nominalFrameRate) as Float
+                fps = try await tracks.first!.load(.nominalFrameRate) as Float
                 let durTime = try await asset!.load(.duration) as CMTime
-                self.duration = durTime.seconds
+                duration = durTime.seconds
             }
         }
     }
@@ -86,15 +86,12 @@ public class VideoModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         newVideoModel.ready = ready
         newVideoModel.syncMarker = syncMarker
         newVideoModel.syncOffset = syncOffset
-        
-        
 
         return newVideoModel
     }
 
     func play() {
         player.play()
-        
     }
 
     func stop() {

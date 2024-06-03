@@ -10,7 +10,6 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, Equatable, Hashable {
-    
     public static var readableContentTypes: [UTType] = [UTType.opf]
 
     var version = "#4"
@@ -123,13 +122,13 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
         if videoModels.count == 1 {
             primaryVideo = videoModels[0]
         }
-        
+
         Task {
             try await videoModel.populateMetadata()
             updateLongestDuration()
         }
     }
-    
+
     func updateLongestDuration() {
         longestDuration = 0
         for videoModel in videoModels {
@@ -166,15 +165,15 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
             videoModel.seek(to: priTime)
         }
     }
-    
+
     public static func == (lhs: FileModel, rhs: FileModel) -> Bool {
         lhs.id == rhs.id
     }
-    
+
     public func snapshot(contentType _: UTType) throws -> FileModel {
         copy()
     }
-    
+
     public func fileWrapper(snapshot: FileModel, configuration: WriteConfiguration) throws -> FileWrapper {
         if configuration.existingFile != nil {
             let data = saveOpfFile(fileModel: snapshot, outputFilename: configuration.existingFile!.symbolicLinkDestinationURL!)
@@ -183,27 +182,27 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
             return FileWrapper()
         }
     }
-    
+
     public typealias Snapshot = FileModel
-    
+
     public required init(configuration: ReadConfiguration) throws {
         let url = configuration.file.symbolicLinkDestinationURL
-        
+
         let model = loadOpfFile(inputFilename: url!)
-        
+
         videoModels = model.videoModels
         sheetModel = model.sheetModel
         primaryVideo = model.primaryVideo
         longestDuration = model.longestDuration
         primaryMarker = model.primaryMarker
         updates = model.updates
-        
+
         currentShuttleSpeedIdx = model.currentShuttleSpeedIdx
         videoObservers = model.videoObservers
     }
-    
+
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(self.id)
+        hasher.combine(id)
     }
 }
 

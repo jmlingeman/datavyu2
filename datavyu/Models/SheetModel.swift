@@ -45,24 +45,24 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
             !c.hidden
         }
     }
-        
+
     func deleteColumn(column: ColumnModel) {
         let columnIdx = columns.firstIndex(of: column)!
         columns.removeAll { c in
             column == c
         }
-        self.undoManager?.beginUndoGrouping()
-        self.undoManager?.registerUndo(withTarget: self, handler: { _ in
-            let _ = self.addColumnAtIndex(column: column, idx: columnIdx)
+        undoManager?.beginUndoGrouping()
+        undoManager?.registerUndo(withTarget: self, handler: { _ in
+            _ = self.addColumnAtIndex(column: column, idx: columnIdx)
             self.updateSheet()
         })
-        self.undoManager?.endUndoGrouping()
-        self.updateSheet()
+        undoManager?.endUndoGrouping()
+        updateSheet()
     }
-    
+
     func updateSheet() {
         setVisibleColumns()
-        self.updates += 1
+        updates += 1
     }
 
     func setSelectedColumn(model: ColumnModel, suppress_update: Bool = false) {
@@ -75,18 +75,18 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
             }
         }
         if !suppress_update {
-            self.updateSheet()
+            updateSheet()
         }
     }
-    
+
     func getSelectedColumns() -> [ColumnModel] {
-        return columns.filter({ $0.isSelected })
+        columns.filter(\.isSelected)
     }
-    
+
     func setSelectedCell(selectedCell: CellModel?) {
         self.selectedCell = selectedCell
         if selectedCell != nil {
-            self.setSelectedColumn(model: selectedCell!.column, suppress_update: true)
+            setSelectedColumn(model: selectedCell!.column, suppress_update: true)
         }
     }
 
@@ -107,38 +107,38 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
             }
         }
     }
-    
+
     func addColumn() -> ColumnModel {
-        return addColumn(columnName: getNextDefaultColumnName())
+        addColumn(columnName: getNextDefaultColumnName())
     }
 
     func addColumn(columnName: String) -> ColumnModel {
-        return addColumn(column: ColumnModel(sheetModel: self, columnName: columnName))
+        addColumn(column: ColumnModel(sheetModel: self, columnName: columnName))
     }
 
     func addColumn(column: ColumnModel) -> ColumnModel {
         columns.append(column)
-        self.undoManager?.beginUndoGrouping()
-        self.undoManager?.registerUndo(withTarget: self, handler: { _ in
+        undoManager?.beginUndoGrouping()
+        undoManager?.registerUndo(withTarget: self, handler: { _ in
             self.columns.removeAll { c in
                 column == c
             }
             self.updateSheet()
         })
-        self.undoManager?.endUndoGrouping()
+        undoManager?.endUndoGrouping()
         setVisibleColumns()
         return column
     }
-    
+
     func checkNewColumnName(column: ColumnModel) -> Bool {
         for col in columns {
-            if column != col && col.columnName == column.columnName {
+            if column != col, col.columnName == column.columnName {
                 return false
             }
         }
         return true
     }
-    
+
     func addColumnAtIndex(column: ColumnModel, idx: Int) -> ColumnModel {
         columns.insert(column, at: idx)
         setVisibleColumns()
@@ -157,9 +157,9 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
         }
         return nil
     }
-    
+
     func getNextDefaultColumnName() -> String {
-        return "Column\(columns.count + 1)"
+        "Column\(columns.count + 1)"
     }
 
     func findFocusedColumn() -> ColumnModel? {

@@ -8,7 +8,7 @@
 import Foundation
 
 func formatTimestamp(timestampSeconds: Double) -> String {
-    return formatTimestamp(timestamp: secondsToMillis(secs: timestampSeconds))
+    formatTimestamp(timestamp: secondsToMillis(secs: timestampSeconds))
 }
 
 func formatTimestamp(timestamp: Int) -> String {
@@ -16,7 +16,7 @@ func formatTimestamp(timestamp: Int) -> String {
     let minutes = Int(floor(Double(timestamp / 1000 % 3600 / 60)))
     let seconds = Int(floor(Double(timestamp / 1000 % 60)))
     let milliseconds = timestamp % 1000
-    
+
     let hoursStr = String(format: "%02d", hours)
     let minutesStr = String(format: "%02d", minutes)
     let secondsStr = String(format: "%02d", seconds)
@@ -51,13 +51,13 @@ func timestringToTimestamp(timestring: String) -> Int {
 }
 
 func timestringToSecondsDouble(timestring: String) -> Double {
-    return Double(timestringToTimestamp(timestring: timestring)) / 1000.0
+    Double(timestringToTimestamp(timestring: timestring)) / 1000.0
 }
 
 func millisToSeconds(millis: Int) -> Double {
-    return Double(millis) / 1000.0
+    Double(millis) / 1000.0
 }
 
 func secondsToMillis(secs: Double) -> Int {
-    return Int(secs * 1000)
+    Int(secs * 1000)
 }

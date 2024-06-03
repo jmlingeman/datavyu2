@@ -51,14 +51,14 @@ final class Argument: ObservableObject, Identifiable, Equatable, Hashable, Codab
         let newArgument = Argument(name: name, value: value, column: columnModelCopy)
         return newArgument
     }
-    
+
     func getPlaceholder() -> String {
-        return "<\(self.name)>"
+        "<\(name)>"
     }
-    
+
     func getDisplayString() -> String {
-        if self.value.count > 0 {
-            return self.value
+        if value.count > 0 {
+            return value
         } else {
             return getPlaceholder()
         }

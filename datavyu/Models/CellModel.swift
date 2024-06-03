@@ -50,9 +50,9 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
             }
         }
     }
-    
+
     func deleteCell() {
-        self.column.cells.removeAll { c in
+        column.cells.removeAll { c in
             c == self
         }
     }
@@ -120,7 +120,7 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
     func updateSheet() {
         column.sheetModel.updates += 1
     }
-    
+
     func setOnset(onset: Double) {
         print(#function)
         setOnset(onset: Int(onset * 1000))

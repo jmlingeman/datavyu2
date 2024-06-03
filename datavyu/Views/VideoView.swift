@@ -13,9 +13,8 @@ import SwiftUI
 struct VideoView: View {
     @ObservedObject var videoModel: VideoModel
     var sheetModel: SheetModel
-    
+
     @StateObject var spectrogramBuilder = SpectrogramVideoBuilder(delegate: nil)
-    
 
     var body: some View {
         VStack {
@@ -25,8 +24,6 @@ struct VideoView: View {
                         $videoModel.currentTime.wrappedValue = time.seconds
                         $videoModel.currentPos.wrappedValue = time.seconds / videoModel.player.getCurrentTrackDuration()
                     }
-                    
-                    
                 }
                 .frame(minWidth: 250,
                        idealWidth: videoModel.player.currentItem?.presentationSize.width ?? 250,
@@ -35,7 +32,6 @@ struct VideoView: View {
                        idealHeight: videoModel.player.currentItem?.presentationSize.height ?? 250,
                        maxHeight: .infinity,
                        alignment: .center)
-            
         }
     }
 }

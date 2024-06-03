@@ -19,8 +19,8 @@ class ArgumentTextField: NSTextField {
     func configure(argument: Argument) {
         self.argument = argument
         delegate = self
-        self.cell?.wraps = false
-        self.autoresizingMask = [.height, .width]
+        cell?.wraps = false
+        autoresizingMask = [.height, .width]
     }
 
     func configureParentView(parentView: CellViewUIKit) {
@@ -63,25 +63,25 @@ class ArgumentTextField: NSTextField {
 //
 //        return intrinsicSize
 //    }
-    
+
     override var intrinsicContentSize: NSSize {
         // Guard the cell exists and wraps
         print("setting intrin")
 
-        guard let cell = self.cell else {return super.intrinsicContentSize}
-        
+        guard let cell = cell else { return super.intrinsicContentSize }
+
         // Use intrinsic width to jive with autolayout
         let width = super.intrinsicContentSize.width
-        
+
         // Set the frame height to a reasonable number
-        self.frame.size.height = 750.0
-        
+        frame.size.height = 750.0
+
         // Calcuate height
-        let height = cell.cellSize(forBounds: self.frame).height
-        
-        return NSMakeSize(width, height);
+        let height = cell.cellSize(forBounds: frame).height
+
+        return NSMakeSize(width, height)
     }
-    
+
     override func textDidChange(_ notification: Notification) {
         super.textDidChange(notification)
         print("invalidate intrin")

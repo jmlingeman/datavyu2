@@ -15,12 +15,12 @@ enum Layouts {
 
 class LayoutChoice: ObservableObject {
     @Published var layout = Layouts.ordinal
-    
+
     func swapLayout() {
-        if self.layout == Layouts.temporal {
-            self.layout = Layouts.ordinal
+        if layout == Layouts.temporal {
+            layout = Layouts.ordinal
         } else {
-            self.layout = Layouts.temporal
+            layout = Layouts.temporal
         }
     }
 }
@@ -47,27 +47,26 @@ final class SheetCollectionAppKitView: NSCollectionView {
     var lastEditedArgument: Argument? = nil
     var floatingHeaders: [ColumnModel: NSHostingView<Header>] = [:]
 
-
     init(sheetModel: SheetModel, parentScrollView: NSScrollView, layout: LayoutChoice) {
         self.sheetModel = sheetModel
         self.parentScrollView = parentScrollView
-        self.currentLayout = layout
+        currentLayout = layout
         super.init(frame: .zero)
         let layout = OrdinalCollectionViewLayout(sheetModel: sheetModel, scrollView: parentScrollView)
         collectionViewLayout = layout
         isSelectable = true
     }
-    
+
     func setOrdinalLayout() {
         print("Setting ordinal layout")
-        let layout = OrdinalCollectionViewLayout(sheetModel: self.sheetModel, scrollView: self.parentScrollView)
-        self.collectionViewLayout = layout
+        let layout = OrdinalCollectionViewLayout(sheetModel: sheetModel, scrollView: parentScrollView)
+        collectionViewLayout = layout
     }
-    
+
     func setTemporalLayout() {
         print("Setting temporal layout")
-        let layout = TemporalCollectionViewLayout(sheetModel: self.sheetModel, scrollView: self.parentScrollView)
-        self.collectionViewLayout = layout
+        let layout = TemporalCollectionViewLayout(sheetModel: sheetModel, scrollView: parentScrollView)
+        collectionViewLayout = layout
     }
 
     override func setFrameSize(_ newSize: NSSize) {
@@ -165,7 +164,7 @@ struct SheetLayoutCollection: NSViewRepresentable {
     @ObservedObject var sheetModel: SheetModel
     @ObservedObject var layout: LayoutChoice
     var itemSize: NSSize
-    
+
     @State var oldSheetModel: SheetModel?
 
     @State var scrollView: NSScrollView = .init()
@@ -195,33 +194,33 @@ struct SheetLayoutCollection: NSViewRepresentable {
         scrollView.hasHorizontalScroller = true
 
         context.coordinator.connectCellResponders()
-        
+
         if layout.layout == Layouts.ordinal {
             collectionView.setOrdinalLayout()
         } else {
             collectionView.setTemporalLayout()
         }
-        
+
         return scrollView
     }
 
     func updateNSView(_ nsView: NSViewType, context: Context) {
         print("Trying to reload data...")
-        
+
         if sheetModel != oldSheetModel {
             print("Sheet model changed")
         }
-        
+
         if let collectionView = nsView.documentView as? SheetCollectionAppKitView {
-            print((collectionView.collectionViewLayout as! TemporalCollectionViewLayout).layout, self.layout.layout)
-            if (collectionView.collectionViewLayout as! TemporalCollectionViewLayout).layout != self.layout.layout {
+            print((collectionView.collectionViewLayout as! TemporalCollectionViewLayout).layout, layout.layout)
+            if (collectionView.collectionViewLayout as! TemporalCollectionViewLayout).layout != layout.layout {
                 if layout.layout == Layouts.ordinal {
                     collectionView.setOrdinalLayout()
                 } else {
                     collectionView.setTemporalLayout()
                 }
             }
-            
+
             context.coordinator.itemSize = itemSize
             var selectionIndexPath = collectionView.selectionIndexPaths.first
 
@@ -238,7 +237,7 @@ struct SheetLayoutCollection: NSViewRepresentable {
             var curCellModel: CellModel? = curCell?.cell ?? nil
 
             // Do the actual reload, erasing all view cell data
-            
+
             print("Reloading")
             collectionView.reloadData()
 
@@ -348,7 +347,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         let nextCellIp = IndexPath(item: currentCellIp.item + 1, section: currentCellIp.section)
         focusCell(nextCellIp)
     }
-    
+
     func focusPrevCell(_ currentCellIp: IndexPath) {
         print(#function)
         let nextCellIp = IndexPath(item: currentCellIp.item - 1, section: currentCellIp.section)
@@ -379,7 +378,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         if cellItem != nil {
             sheetModel.setSelectedCell(selectedCell: cellItem?.cell)
         }
-        
+
         collectionView.selectionIndexPaths = Set([corrected_ip])
         cellItem?.focusOnset()
         collectionView.scrollToItems(at: Set([corrected_ip]), scrollPosition: [.centeredVertically])
@@ -444,7 +443,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
 
         item.configureCell(cell, parentView: parent.scrollView.documentView as? SheetCollectionAppKitView)
 
-                    print("CREATING CELL AT \(indexPath.section) \(indexPath.item) \(Unmanaged.passUnretained(cell).toOpaque())")
+        print("CREATING CELL AT \(indexPath.section) \(indexPath.item) \(Unmanaged.passUnretained(cell).toOpaque())")
         //            cellItemMap[cell] = item
 
         return item
@@ -456,30 +455,29 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
 
         if sheetModel.visibleColumns.count > 0 {
             var focusedColumn = sheetModel.findFocusedColumn()
-            if focusedColumn == nil && sheetModel.visibleColumns.count > 0 {
+            if focusedColumn == nil, sheetModel.visibleColumns.count > 0 {
                 focusedColumn = sheetModel.visibleColumns[0]
             }
-            
+
             let selected = focusedColumn == sheetModel.visibleColumns[indexPath.section]
             print("SELECTED: \(sheetModel.visibleColumns[indexPath.section].columnName) \(selected)")
-            
+
             item.setView(Header(columnModel: $sheetModel.visibleColumns[indexPath.section], selected: selected))
-            
+
             let floatingHeader = NSHostingView(rootView: Header(columnModel: $sheetModel.visibleColumns[indexPath.section], selected: selected))
             floatingHeader.frame = item.frame
-            
+
             let column = sheetModel.visibleColumns[indexPath.section]
-            
+
             if let sheetCollectionView = (collectionView as? SheetCollectionAppKitView) {
                 if !sheetCollectionView.floatingHeaders.keys.contains(where: { c in
                     c == column
                 }) {
                     sheetCollectionView.floatingHeaders[column] = floatingHeader
-                    
                 }
             }
             parent.scrollView.addFloatingSubview(floatingHeader, for: .vertical)
-            
+
             return item
         } else {
             return item

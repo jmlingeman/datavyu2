@@ -11,7 +11,7 @@ import SwiftUI
 struct Config {
     let name = "Datavyu"
     let version = "0.0.1"
-    
+
     let updateUrl = "https://api.github.com/repos/jmlingeman/Datavyu2/releases/latest"
 
     let shuttleSpeeds: [Float] = [-32, -16, -8, -4, -2, -1, -1 / 2, -1 / 4, -1 / 8, -1 / 16, -1 / 32, 0, 1 / 32, 1 / 16, 1 / 8, 1 / 4, 1 / 2, 1, 2, 4, 8, 16, 32]

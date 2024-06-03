@@ -13,9 +13,8 @@ struct SpectrogramProgressView: View {
     let fileModel: FileModel
     @Environment(\.dismiss) var dismiss
 
-    
     @StateObject var spectrogramBuilder = SpectrogramVideoBuilder(delegate: nil)
-    
+
     init(outputPath: URL, videoModel: VideoModel, fileModel: FileModel) {
         self.outputPath = outputPath
         self.videoModel = videoModel

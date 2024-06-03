@@ -15,7 +15,7 @@ struct ColumnNameDialog: View {
     @State private var nameIsOK: Bool = true
 
     let config = Config()
-    
+
     func submit() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             column.sheetModel.updateArgumentNames() // hack to force update of name TODO: why?
@@ -36,7 +36,7 @@ struct ColumnNameDialog: View {
                             focusedField = true
                         }
                     }
-                    .onChange(of: column.columnName) { oldValue, newValue in
+                    .onChange(of: column.columnName) { _, _ in
                         if column.sheetModel.checkNewColumnName(column: column) == false {
                             nameIsOK = false
                         } else {

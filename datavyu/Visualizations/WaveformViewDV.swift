@@ -10,11 +10,11 @@ public struct WaveformViewDV: View {
     private let configuration: Waveform.Configuration
     private let renderer: WaveformRenderer
     private let priority: TaskPriority
-    @State private var size: CGSize = CGSize()
+    @State private var size: CGSize = .init()
 
     @StateObject private var waveformDrawer = WaveformImageDrawer()
     @State private var waveformImage: DSImage = .init()
-    
+
     @ObservedObject var fileModel: FileModel
     @ObservedObject var videoModel: VideoModel
     var geometryReader: GeometryProxy
@@ -37,7 +37,6 @@ public struct WaveformViewDV: View {
         renderer: WaveformRenderer = LinearWaveformRenderer(),
         priority: TaskPriority = .userInitiated
     ) {
-        
         self.audioURL = audioURL
         self.configuration = configuration
         self.renderer = renderer
@@ -45,11 +44,11 @@ public struct WaveformViewDV: View {
         self.geometryReader = geometryReader
         self.fileModel = fileModel
         self.videoModel = videoModel
-        
+
         let width = geometryReader.size.width * (fileModel.longestDuration > 0 ? (videoModel.duration / fileModel.longestDuration) : 1) + 1
         let height = geometryReader.size.height
-        
-        self.size = CGSize(width: width, height: height)
+
+        size = CGSize(width: width, height: height)
     }
 
     public var body: some View {
@@ -58,29 +57,29 @@ public struct WaveformViewDV: View {
                 .onAppear {
                     guard waveformImage.size == .zero else { return }
                     updateSize()
-                    update(size: self.size, url: audioURL, configuration: configuration)
+                    update(size: size, url: audioURL, configuration: configuration)
                 }
                 .onChange(of: geometry.size) { updateSize() }
-                .onChange(of: audioURL) { update(size: self.size, url: $0, configuration: configuration) }
+                .onChange(of: audioURL) { update(size: size, url: $0, configuration: configuration) }
                 .onChange(of: configuration) {
-                    update(size: self.size, url: audioURL, configuration: $0)
+                    update(size: size, url: audioURL, configuration: $0)
                 }
                 .onChange(of: fileModel.longestDuration) {
                     updateSize()
-                    update(size: self.size, url: audioURL, configuration: configuration)
+                    update(size: size, url: audioURL, configuration: configuration)
                 }
-                .onChange(of: geometryReader.size) { oldValue, newValue in
+                .onChange(of: geometryReader.size) { _, _ in
                     updateSize()
-                    update(size: self.size, url: audioURL, configuration: configuration)
+                    update(size: size, url: audioURL, configuration: configuration)
                 }
         }
     }
-    
+
     func updateSize() {
         let width = geometryReader.size.width * (fileModel.longestDuration > 0 ? (videoModel.duration / fileModel.longestDuration) : 1) + 1
         let height = geometryReader.size.height
-        
-        self.size = CGSize(width: width, height: height)
+
+        size = CGSize(width: width, height: height)
     }
 
     private var image: some View {

@@ -35,15 +35,13 @@ class CellViewUIKit: NSCollectionViewItem {
         onset = CellTimeTextField()
         offset = CellTimeTextField()
         cellTextField = CellTextField()
-    
+
         argumentSizes = [IndexPath: NSSize]()
 
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        
 
         ValueTransformer.setValueTransformer(TimestampTransformer(), forName: .classNameTransformerName)
     }
-
 
     @available(*, unavailable)
     required init?(coder _: NSCoder) {
@@ -57,7 +55,7 @@ class CellViewUIKit: NSCollectionViewItem {
     func isLastArgument() -> Bool {
 //        let selectedIndexPaths = argumentsCollectionView?.selectionIndexPaths
 //        return selectedIndexPaths?.first?.item == cell.arguments.count - 1
-        return false
+        false
     }
 
     func configureCell(_ cell: CellModel, parentView: SheetCollectionAppKitView?) {
@@ -72,8 +70,8 @@ class CellViewUIKit: NSCollectionViewItem {
 
         onset.parentView = self
         offset.parentView = self
-        
-        self.cellTextField.configure(cellModel: cell)
+
+        cellTextField.configure(cellModel: cell)
         cellTextField.configureParentView(parentView: self)
 
 //        argumentsCollectionView.delegate = self
@@ -88,7 +86,7 @@ class CellViewUIKit: NSCollectionViewItem {
             onset.isEnabled = true
             offset.isEnabled = true
         }
-        
+
 //        print("CONFIGURED CELL \(self.onset) \(self.offset) \(self.cell) \(cell.ordinal) \(cell)")
     }
 
@@ -134,7 +132,7 @@ class CellViewUIKit: NSCollectionViewItem {
         view.layer?.borderColor = CGColor(red: 255, green: 0, blue: 0, alpha: 255)
         view.layer?.borderWidth = 1
         isSelected = true
-        self.cell.column.sheetModel.setSelectedCell(selectedCell: self.cell)
+        cell.column.sheetModel.setSelectedCell(selectedCell: cell)
     }
 
     func setDeselected() {
@@ -185,7 +183,6 @@ class CellViewUIKit: NSCollectionViewItem {
         parentView?.window?.makeFirstResponder(focusObject)
     }
 }
-
 
 @objc class OnsetCoordinator: NSObject {
     var cell: CellModel?
@@ -241,7 +238,7 @@ extension OnsetCoordinator: NSTextFieldDelegate {
     func controlTextDidEndEditing(_ obj: Notification) {
         print(#function)
         if let textField = obj.object as? NSTextField {
-            if self.isEdited && timestringToTimestamp(timestring: textField.stringValue) != cell!.onset {
+            if isEdited, timestringToTimestamp(timestring: textField.stringValue) != cell!.onset {
                 let timestampStr = textField.stringValue
                 let timestamp = timestringToTimestamp(timestring: timestampStr)
                 view?.lastEditedField = LastEditedField.onset
@@ -251,7 +248,7 @@ extension OnsetCoordinator: NSTextFieldDelegate {
             } else if timestringToTimestamp(timestring: textField.stringValue) != cell!.onset {
                 textField.stringValue = formatTimestamp(timestamp: cell!.onset)
             }
-            self.isEdited = false
+            isEdited = false
         }
         parentView?.sheetModel.setSelectedCell(selectedCell: cell)
 //        self.view?.setDeselected()
@@ -260,7 +257,7 @@ extension OnsetCoordinator: NSTextFieldDelegate {
     func controlTextDidChange(_: Notification) {
         print(self)
         print(#function)
-        self.isEdited = true
+        isEdited = true
         view?.lastEditedField = LastEditedField.onset
         parentView?.sheetModel.setSelectedCell(selectedCell: cell)
     }
@@ -325,7 +322,7 @@ extension OffsetCoordinator: NSTextFieldDelegate {
     func controlTextDidEndEditing(_ obj: Notification) {
         print(#function)
         if let textField = obj.object as? NSTextField {
-            if self.isEdited && timestringToTimestamp(timestring: textField.stringValue) != cell!.offset {
+            if isEdited, timestringToTimestamp(timestring: textField.stringValue) != cell!.offset {
                 let timestampStr = textField.stringValue
                 let timestamp = timestringToTimestamp(timestring: timestampStr)
                 view?.lastEditedField = LastEditedField.offset
@@ -335,14 +332,14 @@ extension OffsetCoordinator: NSTextFieldDelegate {
             } else if timestringToTimestamp(timestring: textField.stringValue) != cell!.offset {
                 textField.stringValue = formatTimestamp(timestamp: cell!.offset)
             }
-            self.isEdited = false
+            isEdited = false
         }
     }
 
     func controlTextDidChange(_: Notification) {
         print(self)
         print(#function)
-        self.isEdited = true
+        isEdited = true
     }
 
     func control(_: NSControl, textShouldBeginEditing _: NSText) -> Bool {

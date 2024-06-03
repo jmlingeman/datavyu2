@@ -8,10 +8,10 @@
 import AppKit
 import CoreML
 import Foundation
-import Speech
-import WhisperKit
 import Logging
+import Speech
 import SwiftUI
+import WhisperKit
 
 public class SpeechRecognizer: ObservableObject {
     var videoModel: VideoModel?
@@ -19,33 +19,32 @@ public class SpeechRecognizer: ObservableObject {
     var targetColumn: ColumnModel?
     var targetArgument: Argument?
     let locale: Locale = .current
-        
+
     @Published var transcriptionError: Bool = false
     @Published var transcriptionErrorDesc: String = ""
-    
+
     @Published var modelState: ModelState = .unloaded
-    
+
     @Published var availableModels: [String] = []
     @Published var defaultModel: String = ""
-    
+
     @Published var downloadProgress: Double = 0
-            
+
     var whisperKit: WhisperKitProgress? = nil
-    
+
     init() {
-        self.populateAvailableModels()
+        populateAvailableModels()
         Task {
             try await self.whisperKit = WhisperKitProgress()
         }
     }
 
-    
     func initializeWhisperKit(model: String) {
         Task {
             try await whisperKit?.initialize(model: model)
         }
     }
-    
+
     func checkModelInstalled(model: String) -> Bool {
         let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
         let url = NSURL(fileURLWithPath: path)
@@ -61,12 +60,12 @@ public class SpeechRecognizer: ObservableObject {
             return false
         }
     }
-    
+
     func populateAvailableModels() {
         Task {
             let models = try await WhisperKit.fetchAvailableModels()
             let (recommendedModel, disabledModels) = WhisperKit.recommendedModels()
-            
+
             DispatchQueue.main.async {
                 self.availableModels.removeAll { model in
                     disabledModels.contains { disabledModel in
@@ -78,87 +77,86 @@ public class SpeechRecognizer: ObservableObject {
             }
         }
     }
-    
+
     func run(selectedModel: String, videoModel: VideoModel, sheetModel: SheetModel?, targetColumn: ColumnModel?, targetArgument: Argument?) {
         self.videoModel = videoModel
         self.sheetModel = sheetModel
         self.targetColumn = targetColumn
         self.targetArgument = targetArgument
 
-            Task {
-                do {
-                    print("started")
-                    
-                    if whisperKit == nil {
-                        whisperKit = try await WhisperKitProgress(model: selectedModel, logLevel: Logging.LogLevel.debug)
-                    }
-                    
-                    let argIdx = targetColumn!.getArgumentIndex(targetArgument)!
-                    let result = try await whisperKit!.transcribe(audioPath: videoModel.videoFileURL.path)
-                    
-                    await MainActor.run {
-                        if sheetModel != nil && targetColumn != nil {
-                            for txRes in result {
-                                print(txRes)
-                                for segment in txRes.segments {
-                                    let onset = segment.start
-                                    let offset = segment.end
-                                    let text = segment.text
-                                    
-                                    let textTagsRemoved = text.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression).trimmingCharacters(in: .whitespacesAndNewlines)
-                                    
-                                    let cell = targetColumn?.addCell()
-                                    cell?.setOnset(onset: Int(onset * 1000))
-                                    cell?.setOffset(offset: Int(offset * 1000))
-                                    cell?.setArgumentValue(index: argIdx, value: textTagsRemoved)
-                                }
+        Task {
+            do {
+                print("started")
+
+                if whisperKit == nil {
+                    whisperKit = try await WhisperKitProgress(model: selectedModel, logLevel: Logging.LogLevel.debug)
+                }
+
+                let argIdx = targetColumn!.getArgumentIndex(targetArgument)!
+                let result = try await whisperKit!.transcribe(audioPath: videoModel.videoFileURL.path)
+
+                await MainActor.run {
+                    if sheetModel != nil, targetColumn != nil {
+                        for txRes in result {
+                            print(txRes)
+                            for segment in txRes.segments {
+                                let onset = segment.start
+                                let offset = segment.end
+                                let text = segment.text
+
+                                let textTagsRemoved = text.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression).trimmingCharacters(in: .whitespacesAndNewlines)
+
+                                let cell = targetColumn?.addCell()
+                                cell?.setOnset(onset: Int(onset * 1000))
+                                cell?.setOffset(offset: Int(offset * 1000))
+                                cell?.setArgumentValue(index: argIdx, value: textTagsRemoved)
                             }
                         }
                     }
-                } catch {
-                    print(error.localizedDescription)
                 }
+            } catch {
+                print(error.localizedDescription)
             }
+        }
     }
 }
 
 public class WhisperKitProgress: WhisperKit, ObservableObject {
     @Published var downloadProgress: Double = 0
-    
+
     var model: String? = nil
     var downloadBase: URL? = nil
     var modelRepo: String? = nil
-    
+
     override public init(
         model: String? = nil,
-        downloadBase: URL? = nil,
+        downloadBase _: URL? = nil,
         modelRepo: String? = nil,
-        modelFolder: String? = nil,
-        tokenizerFolder: URL? = nil,
-        computeOptions: ModelComputeOptions? = nil,
-        audioProcessor: (any AudioProcessing)? = nil,
-        featureExtractor: (any FeatureExtracting)? = nil,
-        audioEncoder: (any AudioEncoding)? = nil,
-        textDecoder: (any TextDecoding)? = nil,
-        logitsFilters: [any LogitsFiltering]? = nil,
-        segmentSeeker: (any SegmentSeeking)? = nil,
-        verbose: Bool = true,
-        logLevel: Logging.LogLevel = .info,
-        prewarm: Bool? = nil,
-        load: Bool? = nil,
-        download: Bool = true,
-        useBackgroundDownloadSession: Bool = false
+        modelFolder _: String? = nil,
+        tokenizerFolder _: URL? = nil,
+        computeOptions _: ModelComputeOptions? = nil,
+        audioProcessor _: (any AudioProcessing)? = nil,
+        featureExtractor _: (any FeatureExtracting)? = nil,
+        audioEncoder _: (any AudioEncoding)? = nil,
+        textDecoder _: (any TextDecoding)? = nil,
+        logitsFilters _: [any LogitsFiltering]? = nil,
+        segmentSeeker _: (any SegmentSeeking)? = nil,
+        verbose _: Bool = true,
+        logLevel _: Logging.LogLevel = .info,
+        prewarm _: Bool? = nil,
+        load _: Bool? = nil,
+        download _: Bool = true,
+        useBackgroundDownloadSession _: Bool = false
     ) async throws {
         try await super.init()
-        
+
         self.model = model
         self.modelRepo = modelRepo
-        
-        self.downloadBase = Paths.transcriptionFolder
-        Paths.createDirectory(directory: self.downloadBase!)
-                
+
+        downloadBase = Paths.transcriptionFolder
+        Paths.createDirectory(directory: downloadBase!)
     }
-    
+
     func initialize(
         model: String,
         download: Bool = true,
@@ -166,9 +164,8 @@ public class WhisperKitProgress: WhisperKit, ObservableObject {
         prewarm: Bool? = nil,
         load: Bool? = nil
     ) async throws {
-        
         self.model = model
-        
+
         try await setupModelsProgress(
             model: model,
             downloadBase: downloadBase,
@@ -176,19 +173,19 @@ public class WhisperKitProgress: WhisperKit, ObservableObject {
             modelFolder: modelFolder,
             download: download
         )
-        
+
         if let prewarm = prewarm, prewarm {
             Logging.info("Prewarming models...")
             try await prewarmModels()
         }
-        
+
         // If load is not passed in, load based on whether a modelFolder is passed
         if load ?? (modelFolder != nil) {
             Logging.info("Loading models...")
             try await loadModels()
         }
     }
-    
+
     func setupModelsProgress(
         model: String?,
         downloadBase: URL? = nil,
@@ -198,7 +195,7 @@ public class WhisperKitProgress: WhisperKit, ObservableObject {
     ) async throws {
         // Determine the model variant to use
         let modelVariant = model ?? WhisperKit.recommendedModels().default
-        
+
         // If a local model folder is provided, use it; otherwise, download the model
         if let folder = modelFolder {
             self.modelFolder = URL(fileURLWithPath: folder)

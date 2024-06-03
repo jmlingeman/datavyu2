@@ -14,7 +14,7 @@ struct ControllerView: View {
     @FocusState private var cellInFocus: CellModel?
     @Binding var hideController: Bool
     @State private var showingColumnNameDialog = false
-    
+
     @EnvironmentObject private var appState: AppState
 
     var body: some View {

@@ -28,64 +28,63 @@ struct sheettestApp: App {
     @State private var showingCodeEditor = false
     @State private var showingColHideShow = false
     @State private var showingUpdateView = false
-    
+
     @StateObject var appState: AppState = .init()
-    
+
     @Environment(\.openWindow) private var openWindow
 
     var body: some Scene {
         WindowGroup {
             ContentView()
-            .onAppear {
-                appState.fileController = fileController
-                ValueTransformer.setValueTransformer(TimestampTransformer(), forName: .classNameTransformerName)
-            }
-            .environmentObject(fileController)
-            .environmentObject(appState)
-            
-            .sheet(isPresented: $showingColumnNameDialog) {
-                ColumnNameDialog(column: (fileController.activeFileModel.sheetModel.columns.last)!)
-            }
-            .sheet(isPresented: $showingCodeEditor) {
-                CodeEditorView(sheetModel: fileController.activeFileModel.sheetModel)
-            }
-            .sheet(isPresented: $showingColHideShow) {
-                ColumnListView(sheetModel: fileController.activeFileModel.sheetModel)
-            }
-            .sheet(isPresented: $showingUpdateView) {
-                UpdateView(appState: appState)
-            }
-            .fileImporter(isPresented: $showingOpenDialog,
-                          allowedContentTypes: [UTType.opf],
-                          allowsMultipleSelection: true,
-                          onCompletion: { result in
+                .onAppear {
+                    appState.fileController = fileController
+                    ValueTransformer.setValueTransformer(TimestampTransformer(), forName: .classNameTransformerName)
+                }
+                .environmentObject(fileController)
+                .environmentObject(appState)
+                .sheet(isPresented: $showingColumnNameDialog) {
+                    ColumnNameDialog(column: (fileController.activeFileModel.sheetModel.columns.last)!)
+                }
+                .sheet(isPresented: $showingCodeEditor) {
+                    CodeEditorView(sheetModel: fileController.activeFileModel.sheetModel)
+                }
+                .sheet(isPresented: $showingColHideShow) {
+                    ColumnListView(sheetModel: fileController.activeFileModel.sheetModel)
+                }
+                .sheet(isPresented: $showingUpdateView) {
+                    UpdateView(appState: appState)
+                }
+                .fileImporter(isPresented: $showingOpenDialog,
+                              allowedContentTypes: [UTType.opf],
+                              allowsMultipleSelection: true,
+                              onCompletion: { result in
 
-                              switch result {
-                              case let .success(urls):
-                                  for url in urls {
-                                      fileController.openFile(inputFilename: url)
+                                  switch result {
+                                  case let .success(urls):
+                                      for url in urls {
+                                          fileController.openFile(inputFilename: url)
+                                      }
+                                  case let .failure(error):
+                                      errorMsg = "\(error)"
+                                      showingAlert.toggle()
                                   }
-                              case let .failure(error):
-                                  errorMsg = "\(error)"
-                                  showingAlert.toggle()
-                              }
-                          })
-            .alert(isPresented: $showingAlert) {
-                Alert(title: Text("Error: File error"), message: Text(errorMsg))
-            }
-            .fileExporter(isPresented: $showingSaveDialog,
-                          document: fileController.activeFileModel,
-                          contentType: UTType.opf,
-                          defaultFilename: "\(fileController.activeFileModel.sheetModel.sheetName).opf",
-                          onCompletion: { result in
-                              switch result {
-                              case let .success(url):
-                                  fileController.saveFile(outputFilename: url)
-                              case let .failure(error):
-                                  errorMsg = "\(error)"
-                                  showingAlert.toggle()
-                              }
-                          })
+                              })
+                .alert(isPresented: $showingAlert) {
+                    Alert(title: Text("Error: File error"), message: Text(errorMsg))
+                }
+                .fileExporter(isPresented: $showingSaveDialog,
+                              document: fileController.activeFileModel,
+                              contentType: UTType.opf,
+                              defaultFilename: "\(fileController.activeFileModel.sheetModel.sheetName).opf",
+                              onCompletion: { result in
+                                  switch result {
+                                  case let .success(url):
+                                      fileController.saveFile(outputFilename: url)
+                                  case let .failure(error):
+                                      errorMsg = "\(error)"
+                                      showingAlert.toggle()
+                                  }
+                              })
         }.commands {
             CommandGroup(after: CommandGroupPlacement.appVisibility) {
                 Button("Check for Updates") {
@@ -98,7 +97,7 @@ struct sheettestApp: App {
                 Button("Open Sheet",
                        action: { showingOpenDialog.toggle() })
                     .keyboardShortcut(KeyEquivalent("o"))
-                
+
                 // TODO: Previously opened files
             }
 
@@ -106,7 +105,7 @@ struct sheettestApp: App {
                 Button("Save Sheet", action: { showingSaveDialog.toggle() })
                     .keyboardShortcut(KeyEquivalent("s"))
             }
-            
+
             CommandGroup(after: CommandGroupPlacement.windowList) {
                 Divider()
                 Button("Open Controller Window") {
@@ -114,7 +113,7 @@ struct sheettestApp: App {
                 }
                 Divider()
             }
-            
+
             CommandMenu("Spreadsheet") {
                 Button("Add Column") {
                     let columnModel = fileController.activeFileModel.sheetModel.addColumn()
@@ -154,22 +153,18 @@ struct sheettestApp: App {
                     showingColHideShow.toggle()
                 }
             }
-            
+
             CommandMenu("Scripting") {
-                Button("Run Script") {
-                    
-                }
-                
+                Button("Run Script") {}
+
                 // TODO: Previously run files
             }
-            
+
 //            CommandMenu("History") {
 //                Button("Show ") {
 //
 //                }
 //            }
-            
-            
         }
     }
 }

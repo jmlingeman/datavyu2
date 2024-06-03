@@ -11,7 +11,7 @@ import AVFoundation
 
 extension AudioSpectrogram: AVCaptureAudioDataOutputSampleBufferDelegate {
     public func captureOutput(_: AVCaptureOutput,
-                              didOutput sampleBuffer: CMSampleBuffer,
+                              didOutput _: CMSampleBuffer,
                               from _: AVCaptureConnection)
     {
 //        var audioBufferList = AudioBufferList()
@@ -74,26 +74,24 @@ extension AudioSpectrogram: AVCaptureAudioDataOutputSampleBufferDelegate {
 //            outputImage = makeAudioSpectrogramImage()
 //        }
     }
-    
+
     func configureAVPlayerCaptureSession(player: AVPlayer) {
-        
         /// Implement https://github.com/gchilds/MTAudioProcessingTap-in-Swift
-        
+
         captureSession.beginConfiguration()
-        
-#if os(macOS)
-        // Note that in macOS, you can change the sample rate, for example to
-        // `AVSampleRateKey: 22050`. This reduces the Nyquist frequency and
-        // increases the resolution at lower frequencies.
-        audioOutput.audioSettings = [
-            AVFormatIDKey: kAudioFormatLinearPCM,
-            AVLinearPCMIsFloatKey: false,
-            AVLinearPCMBitDepthKey: 16,
-            AVNumberOfChannelsKey: 1,
-        ]
-#endif
-        player.audioPCMBufferFetched { pcmBuffer, fetched in
-            
+
+        #if os(macOS)
+            // Note that in macOS, you can change the sample rate, for example to
+            // `AVSampleRateKey: 22050`. This reduces the Nyquist frequency and
+            // increases the resolution at lower frequencies.
+            audioOutput.audioSettings = [
+                AVFormatIDKey: kAudioFormatLinearPCM,
+                AVLinearPCMIsFloatKey: false,
+                AVLinearPCMBitDepthKey: 16,
+                AVNumberOfChannelsKey: 1,
+            ]
+        #endif
+        player.audioPCMBufferFetched { _, _ in
         }
         if captureSession.canAddOutput(audioOutput) {
             captureSession.addOutput(audioOutput)
@@ -108,17 +106,15 @@ extension AudioSpectrogram: AVCaptureAudioDataOutputSampleBufferDelegate {
         else {
             fatalError("Can't create microphone.")
         }
-//        
+//
 //        if player.currentItem != nil {
-//            
+//
 //            if captureSession.canAddInput(ouput) {
 //                captureSession.addInput(microphoneInput)
 //            }
-//            
+//
 //            captureSession.commitConfiguration()
 //        }
-        
-        
     }
 
     func configureMicrophoneCaptureSession() {
@@ -197,5 +193,3 @@ extension AudioSpectrogram: AVCaptureAudioDataOutputSampleBufferDelegate {
         }
     }
 }
-
-
