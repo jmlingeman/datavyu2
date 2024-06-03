@@ -14,7 +14,7 @@ enum Layouts {
 }
 
 class LayoutChoice: ObservableObject {
-    @Published var layout = Layouts.ordinal
+    var layout = Layouts.ordinal
 
     func swapLayout() {
         if layout == Layouts.temporal {
@@ -215,7 +215,6 @@ struct SheetLayoutCollection: NSViewRepresentable {
         }
 
         if let collectionView = nsView.documentView as? SheetCollectionAppKitView {
-            print((collectionView.collectionViewLayout as! TemporalCollectionViewLayout).layout, layout.layout)
             if (collectionView.collectionViewLayout as! TemporalCollectionViewLayout).layout != layout.layout {
                 if layout.layout == Layouts.ordinal {
                     collectionView.setOrdinalLayout()
@@ -236,8 +235,7 @@ struct SheetLayoutCollection: NSViewRepresentable {
 
             // If the cell's onset or offset changes, we gotta find it again
             // so we can re-highlight it.
-            let curCell = context.coordinator.getCell(ip: selectionIndexPath ?? IndexPath(item: 0, section: 0))
-            var curCellModel: CellModel? = curCell?.cell ?? nil
+            var curCellModel: CellModel?
 
             // Do the actual reload, erasing all view cell data
 
@@ -383,8 +381,8 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         }
 
         collectionView.selectionIndexPaths = Set([corrected_ip])
+        collectionView.animator().scrollToItems(at: Set([corrected_ip]), scrollPosition: [.bottom])
         cellItem?.focusOnset()
-        collectionView.scrollToItems(at: Set([corrected_ip]), scrollPosition: [.centeredVertically])
     }
 
     func focusField(_ ip: IndexPath?) {
@@ -445,10 +443,6 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         let cell = sheetModel.visibleColumns[indexPath.section].getSortedCells()[indexPath.item]
 
         item.configureCell(cell, parentView: parent.scrollView.documentView as? SheetCollectionAppKitView)
-
-        print("CREATING CELL AT \(indexPath.section) \(indexPath.item) \(Unmanaged.passUnretained(cell).toOpaque())")
-        //            cellItemMap[cell] = item
-
         return item
     }
 

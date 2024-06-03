@@ -186,6 +186,13 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         let cell = CellModel(column: self)
         return addCell(cell: cell, force: force)
     }
+    
+    func addCell(onset: Int = 0, offset: Int = 0, force: Bool = false) -> CellModel? {
+        let cell = CellModel(column: self)
+        cell.onset = onset
+        cell.offset = offset
+        return addCell(cell: cell, force: force)
+    }
 
     enum CodingKeys: CodingKey {
         case columnName

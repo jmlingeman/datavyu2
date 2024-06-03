@@ -130,11 +130,10 @@ struct ControllerPanelView: View {
 
     func setOffsetAndAddNewCell() {
         fileModel.sheetModel.selectedCell?.setOffset(offset: fileModel.currentTime())
-        let cell = columnInFocus?.addCell()
-        cell?.setOnset(onset: fileModel.currentTime() + 1)
+        let cell = fileModel.sheetModel.selectedCell?.column.addCell(onset: secondsToMillis(secs: fileModel.currentTime()) + 1)
         fileModel.sheetModel.setSelectedCell(selectedCell: cell)
 
-        fileModel.sheetModel.updates += 1
+        fileModel.sheetModel.updateSheet()
     }
 
     var body: some View {

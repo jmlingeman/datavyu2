@@ -55,6 +55,7 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
         column.cells.removeAll { c in
             c == self
         }
+        column.update()
     }
 
     func setUndoManager(undoManager: UndoManager) {
