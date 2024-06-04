@@ -28,7 +28,7 @@ struct ControllerView: View {
                 }
             }.onAppear(perform: {
                 HStack {
-                    ControllerPanelView(fileModel: fileModel, columnInFocus: _columnInFocus, cellInFocus: _cellInFocus).frame(alignment: .topLeading)
+                    ControllerPanelView(fileModel: fileModel).frame(alignment: .topLeading)
                     TracksStackView(fileModel: fileModel).environmentObject(appState)
                 }.openInWindow(title: "Controller", appState: appState, sender: self, frameName: "controller")
             })

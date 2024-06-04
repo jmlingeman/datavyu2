@@ -53,7 +53,7 @@ struct TrackRowView: View {
                 Image(systemName: volume == 0 ? "speaker.slash.fill" : volume == 1 ? "speaker.wave.3.fill" : "speaker.wave.1.fill")
             }.popover(isPresented: $showingVolumeControl, content: {
                 Slider(value: $volume, in: 0.0 ... 1.0) {
-                    Image(systemName: volume == 0 ? "speaker.slash.fill" : "speaker.wave.1.fill")
+                    Image(systemName: volume == 0 ? "speaker.slash.fill" : volume == 1 ? "speaker.wave.3.fill" : "speaker.wave.1.fill")
                 } minimumValueLabel: {
                     Image(systemName: "speaker.slash.fill")
                 } maximumValueLabel: {

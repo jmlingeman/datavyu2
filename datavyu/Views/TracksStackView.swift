@@ -69,9 +69,3 @@ struct TracksStackView: View {
         }
     }
 }
-
-// struct TracksStackView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        TracksStackView(videoModels: [VideoModel(videoFilePath: "IMG_1234")])
-//    }
-// }

@@ -139,12 +139,11 @@ struct sheettestApp: App {
                     showingCodeEditor.toggle()
                 }
                 Divider()
-                Button("Ordinal Layout") {
-                    appState.layout.layout = Layouts.ordinal
-                }
-                Button("Temporal Layout") {
-                    appState.layout.layout = Layouts.temporal
-                }
+                Button {
+                    appState.layout.swapLayout()
+                } label: {
+                    Text("Switch Spreadsheet Layout")
+                }.keyboardShortcut(KeyEquivalent("t"), modifiers: .command)
                 Divider()
                 Button("Hide Column") {
                     fileController.activeFileModel.sheetModel.getSelectedColumns().first?.setHidden(val: true)
@@ -152,6 +151,54 @@ struct sheettestApp: App {
                 Button("Hide/Show Columns") {
                     showingColHideShow.toggle()
                 }
+            }
+
+            // A blank CommandMenu name hides the menu from the UI
+            // So we can use this to manage our KB shortcuts w/o
+            // showing this to the user.
+            CommandMenu("") {
+                Button("Set\nOnset") {
+                    fileController.activeFileModel.videoController!.setOnset()
+                }.keyboardShortcut("7", modifiers: .numericPad)
+                Button("Play") {
+                    fileController.activeFileModel.videoController!.play()
+                }.keyboardShortcut("8", modifiers: .numericPad)
+                Button("Set Offset") {
+                    fileController.activeFileModel.videoController!.setOffset()
+                }.keyboardShortcut("9", modifiers: .numericPad)
+                Button("Jump") {
+                    fileController.activeFileModel.videoController!.jump()
+                }.keyboardShortcut("-", modifiers: .numericPad)
+                Button("Shuttle <") {
+                    fileController.activeFileModel.videoController!.shuttleStepDown()
+                }.keyboardShortcut("4", modifiers: .numericPad)
+                Button("Stop") {
+                    fileController.activeFileModel.videoController!.stop()
+                }.keyboardShortcut("5", modifiers: .numericPad)
+                Button("Shuttle >") {
+                    fileController.activeFileModel.videoController!.shuttleStepUp()
+                }.keyboardShortcut("6", modifiers: .numericPad)
+                Button("Find Onset") {
+                    fileController.activeFileModel.videoController!.findOnset()
+                }.keyboardShortcut("+", modifiers: .numericPad)
+                Button("Find Offset") {
+                    fileController.activeFileModel.videoController!.findOffset()
+                }.keyboardShortcut("+", modifiers: EventModifiers(rawValue: EventModifiers.shift.rawValue + EventModifiers.numericPad.rawValue))
+                Button("Prev") {
+                    fileController.activeFileModel.videoController!.prevFrame()
+                }.keyboardShortcut("1", modifiers: .numericPad)
+                Button("Pause") {
+                    fileController.activeFileModel.videoController!.pause()
+                }.keyboardShortcut("2", modifiers: .numericPad)
+                Button("Next") {
+                    fileController.activeFileModel.videoController!.nextFrame()
+                }.keyboardShortcut("3", modifiers: .numericPad)
+                Button("Add Cell") {
+                    fileController.activeFileModel.videoController!.addCell()
+                }.keyboardShortcut("0", modifiers: .numericPad)
+                Button("Set Offset and Add Cell") {
+                    fileController.activeFileModel.videoController!.setOffsetAndAddNewCell()
+                }.keyboardShortcut(".", modifiers: .numericPad)
             }
 
             CommandMenu("Scripting") {

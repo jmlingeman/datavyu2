@@ -21,6 +21,8 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
     @Published var primaryVideo: VideoModel?
     @Published var longestDuration: Double = 0
 
+    @Published var videoController: VideoController?
+
     var videoObservers: [NSKeyValueObservation] = []
 
     var currentShuttleSpeedIdx: Int = 0
@@ -33,6 +35,7 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
         videoModels = []
         updates = 0
         currentShuttleSpeedIdx = config.shuttleSpeeds.firstIndex(of: 0)!
+        videoController = VideoController(fileModel: self)
     }
 
     init(sheetModel: SheetModel) {
@@ -40,6 +43,7 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
         videoModels = []
         updates = 0
         currentShuttleSpeedIdx = config.shuttleSpeeds.firstIndex(of: 0)!
+        videoController = VideoController(fileModel: self)
     }
 
     init(sheetModel: SheetModel, videoModels: [VideoModel]) {
@@ -66,6 +70,11 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
             })
             videoObservers.append(observer)
         }
+        videoController = VideoController(fileModel: self)
+    }
+
+    func configVideoController() {
+        videoController = VideoController(fileModel: self)
     }
 
     func copy() -> FileModel {

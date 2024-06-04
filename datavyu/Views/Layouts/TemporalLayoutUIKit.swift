@@ -14,7 +14,7 @@ enum Layouts {
 }
 
 class LayoutChoice: ObservableObject {
-    var layout = Layouts.ordinal
+    @Published var layout = Layouts.ordinal
 
     func swapLayout() {
         if layout == Layouts.temporal {
