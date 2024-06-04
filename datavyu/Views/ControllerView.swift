@@ -23,13 +23,13 @@ struct ControllerView: View {
                 ForEach(fileModel.videoModels) { videoModel in
                     ZStack {}.onAppear(perform: {
                         VideoView(videoModel: videoModel, sheetModel: fileModel.sheetModel)
-                            .openInWindow(title: "Video: " + videoModel.filename, appState: appState, sender: self, frameName: videoModel.filename)
+                            .openInWindow(title: videoModel.getWindowTitle(), appState: appState, sender: self, frameName: videoModel.filename)
                     })
                 }
             }.onAppear(perform: {
                 HStack {
                     ControllerPanelView(fileModel: fileModel, columnInFocus: _columnInFocus, cellInFocus: _cellInFocus).frame(alignment: .topLeading)
-                    TracksStackView(fileModel: fileModel)
+                    TracksStackView(fileModel: fileModel).environmentObject(appState)
                 }.openInWindow(title: "Controller", appState: appState, sender: self, frameName: "controller")
             })
 

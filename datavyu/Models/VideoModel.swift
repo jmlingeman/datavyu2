@@ -10,6 +10,7 @@ public class VideoModel: ObservableObject, Identifiable, Equatable, Hashable, Co
     @Published var selectedMarker: Marker?
     @Published var updates = 0
     @Published var filename: String
+    @Published var isHidden = false
 
     @Published var fps: Float = 0
 
@@ -98,6 +99,10 @@ public class VideoModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         player.pause()
     }
 
+    func getWindowTitle() -> String {
+        "Video: \(filename)"
+    }
+
     func getDuration() -> Double {
         if duration == 0 {
             duration = player.getCurrentTrackDuration()
@@ -130,6 +135,14 @@ public class VideoModel: ObservableObject, Identifiable, Equatable, Hashable, Co
     func prevFrame() {
         player.currentItem!.step(byCount: -1)
         updateTimes()
+    }
+
+    func changeVolume(newVolume: Float) {
+        player.volume = newVolume
+    }
+
+    func getVolume() -> Float {
+        player.volume
     }
 
     func seek(to: Double) {

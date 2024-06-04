@@ -45,42 +45,8 @@ struct TracksStackView: View {
             GridRow {
                 GeometryReader { _ in
                     Grid {
-                        ForEach(fileModel.videoModels) { videoModel in
-                            GridRow {
-//                                HStack {
-                                Text(videoModel.videoFileURL.lastPathComponent).frame(width: 150)
-                                Menu(content: {
-                                    Button("Generate Spectrogram") {
-                                        let savePanel = NSSavePanel()
-                                        savePanel.allowedContentTypes = [UTType.mpeg4Movie, UTType.quickTimeMovie, UTType.video]
-                                        savePanel.directoryURL = videoModel.videoFileURL.deletingLastPathComponent()
-                                        savePanel.nameFieldStringValue = "\(videoModel.videoFileURL.lastPathComponent)-spectrogram.mov"
-                                        if savePanel.runModal() == .OK {
-                                            SpectrogramProgressView(outputPath: savePanel.url!, videoModel: videoModel, fileModel: fileModel)
-                                                .openInWindow(title: "Spectrogram Generation: \(videoModel.videoFileURL.lastPathComponent)", appState: appState, sender: self, frameName: nil)
-                                        }
-                                    }
-                                    Button("Transcribe Video") {
-                                        let transcribePanel = TranscriptionSettingsView(sheetModel: fileModel.sheetModel, videoModel: videoModel)
-                                        transcribePanel.openInWindow(title: "Transcription Settings", appState: appState, sender: self, frameName: nil)
-                                    }
-                                }, label: {
-                                    Image(systemName: "ellipsis.circle.fill")
-                                }).menuIndicator(.hidden).buttonBorderShape(.capsule).frame(width: 30)
-
-                                TrackView(videoModel: videoModel,
-                                          fileModel: fileModel,
-                                          primaryMarker: $fileModel.primaryMarker)
-                                    .onTapGesture {
-                                        fileModel.updates += 1
-                                        videoModel.updates += 1
-                                    }.overlay {
-                                        if fileModel.videoModels.count > 0 {
-                                            TrackPositionIndicator(fileModel: fileModel, videoModel: fileModel.primaryVideo!)
-                                        }
-                                    }.frame(maxWidth: .infinity)
-                            }.frame(height: 30) // .padding(.trailing, 5)
-//                            }.frame(height: 30)
+                        ForEach($fileModel.videoModels) { $videoModel in
+                            TrackRowView(fileModel: fileModel, videoModel: videoModel, appState: appState)
                         }
                     }
                 }
@@ -98,7 +64,7 @@ struct TracksStackView: View {
             Button("Add Video", action: {
                 addVideo()
                 VideoView(videoModel: fileModel.videoModels.last!, sheetModel: fileModel.sheetModel)
-                    .openInWindow(title: "Video: " + fileModel.videoModels.last!.filename, appState: appState, sender: self, frameName: fileModel.videoModels.last!.filename)
+                    .openInWindow(title: "Video: " + fileModel.videoModels.last!.getWindowTitle(), appState: appState, sender: self, frameName: fileModel.videoModels.last!.filename)
             })
         }
     }

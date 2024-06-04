@@ -39,6 +39,19 @@ public class AppState: ObservableObject {
         }
     }
 
+    func hideWindow(fileModel: FileModel, title: String) {
+        for vw in videoWindows[fileModel] ?? [] {
+            if title == vw.title {
+                vw.orderOut(self)
+            }
+        }
+        for sw in scriptWindows[fileModel] ?? [] {
+            if title == sw.title {
+                sw.orderOut(self)
+            }
+        }
+    }
+
     func showWindows(fileModel: FileModel) {
         controllerWindows[fileModel]?.orderFront(self)
         for vw in videoWindows[fileModel] ?? [] {
@@ -46,6 +59,19 @@ public class AppState: ObservableObject {
         }
         for sw in scriptWindows[fileModel] ?? [] {
             sw.orderFront(self)
+        }
+    }
+
+    func showWindow(fileModel: FileModel, title: String) {
+        for vw in videoWindows[fileModel] ?? [] {
+            if title == vw.title {
+                vw.orderFront(self)
+            }
+        }
+        for sw in scriptWindows[fileModel] ?? [] {
+            if title == sw.title {
+                sw.orderFront(self)
+            }
         }
     }
 }
