@@ -33,7 +33,7 @@ struct TrackRowView: View {
                     transcribePanel.openInWindow(title: "Transcription Settings", appState: appState, sender: self, frameName: nil)
                 }
             }, label: {
-                Image(systemName: "ellipsis.circle.fill")
+                Image(systemName: "waveform.circle.fill")
             }).menuIndicator(.hidden).buttonBorderShape(.capsule).frame(width: 30)
 
             Button {
@@ -62,7 +62,6 @@ struct TrackRowView: View {
                     .onChange(of: volume) { _, newValue in
                         videoModel.changeVolume(newVolume: newValue)
                     }
-
             })
 
             TrackView(videoModel: videoModel,
