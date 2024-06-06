@@ -9,7 +9,7 @@ import Foundation
 import Vapor
 
 final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Codable, Content, Comparable {
-    @Published var column: ColumnModel
+    @Published var column: ColumnModel?
     @Published var onset: Int = 0
     @Published var offset: Int = 0
     @Published var ordinal: Int = 0
@@ -22,13 +22,13 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
 
     init() {
         column = ColumnModel(sheetModel: SheetModel(sheetName: "dummy"), columnName: "dummy")
-        undoManager = column.sheetModel.undoManager
+        undoManager = column?.sheetModel?.undoManager
         syncArguments()
     }
 
     init(column: ColumnModel) {
         self.column = column
-        undoManager = column.sheetModel.undoManager
+        undoManager = column.sheetModel?.undoManager
         syncArguments()
     }
 
@@ -45,17 +45,17 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
 
     func updateArgumentNames() {
         for (idx, argument) in arguments.enumerated() {
-            if argument.name != column.arguments[idx].name {
-                argument.setName(name: column.arguments[idx].name)
+            if argument.name != column?.arguments[idx].name {
+                argument.setName(name: column!.arguments[idx].name)
             }
         }
     }
 
     func deleteCell() {
-        column.cells.removeAll { c in
+        column?.cells.removeAll { c in
             c == self
         }
-        column.update()
+        column?.update()
     }
 
     func setUndoManager(undoManager: UndoManager) {
@@ -86,19 +86,21 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
     }
 
     func syncArguments() {
-        let args = column.arguments
-        for arg in args {
-            var found = false
-            for x in arguments {
-                if arg.name == x.name {
-                    found = true
+        let args = column?.arguments
+        if args != nil {
+            for arg in args! {
+                var found = false
+                for x in arguments {
+                    if arg.name == x.name {
+                        found = true
+                    }
+                }
+                if !found {
+                    arguments.append(Argument(name: arg.name, column: arg.column))
                 }
             }
-            if !found {
-                arguments.append(Argument(name: arg.name, column: arg.column))
-            }
+            arguments.last?.isLastArgument = true
         }
-        arguments.last?.isLastArgument = true
     }
 
     func setOnset(onset: Int) {
@@ -119,7 +121,7 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
     }
 
     func updateSheet() {
-        column.sheetModel.updates += 1
+        column?.sheetModel?.updates += 1
     }
 
     func setOnset(onset: Double) {
@@ -196,7 +198,7 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
         offset = try container.decode(Int.self, forKey: .offset)
         comment = try container.decode(String.self, forKey: .comment)
         arguments = try container.decode([Argument].self, forKey: .arguments)
-        column = try container.decode(ColumnModel.self, forKey: .column)
+//        column = try container.decode(ColumnModel.self, forKey: .column)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -205,6 +207,6 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
         try container.encode(offset, forKey: .offset)
         try container.encode(comment, forKey: .comment)
         try container.encode(arguments, forKey: .arguments)
-        try container.encode(column, forKey: .column)
+//        try container.encode(column, forKey: .column)
     }
 }

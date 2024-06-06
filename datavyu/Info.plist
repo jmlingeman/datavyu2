@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>Required for transcription services. Only uses on-device speech recognition. No data is sent over the network.</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -75,6 +73,30 @@
 				<key>public.mime-type</key>
 				<array>
 					<string>zip</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.text</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Rscript</string>
+			<key>UTTypeIcons</key>
+			<dict/>
+			<key>UTTypeIdentifier</key>
+			<string>com.R.script</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>R</string>
+					<string>r</string>
+				</array>
+				<key>public.mime-type</key>
+				<array>
+					<string>text</string>
 				</array>
 			</dict>
 		</dict>

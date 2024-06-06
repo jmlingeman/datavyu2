@@ -18,8 +18,8 @@ struct ColumnNameDialog: View {
 
     func submit() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            column.sheetModel.updateArgumentNames() // hack to force update of name TODO: why?
-            column.sheetModel.updateSheet()
+            column.sheetModel?.updateArgumentNames() // hack to force update of name TODO: why?
+            column.sheetModel?.updateSheet()
         }
         dismiss()
     }
@@ -37,7 +37,7 @@ struct ColumnNameDialog: View {
                         }
                     }
                     .onChange(of: column.columnName) { _, _ in
-                        if column.sheetModel.checkNewColumnName(column: column) == false {
+                        if column.sheetModel?.checkNewColumnName(column: column) == false {
                             nameIsOK = false
                         } else {
                             nameIsOK = true

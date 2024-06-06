@@ -120,7 +120,7 @@ class VideoController: ObservableObject {
 
     func setOffsetAndAddNewCell() {
         fileModel.sheetModel.selectedCell?.setOffset(offset: fileModel.currentTime())
-        let cell = fileModel.sheetModel.selectedCell?.column.addCell(onset: secondsToMillis(secs: fileModel.currentTime()) + 1)
+        let cell = fileModel.sheetModel.selectedCell?.column?.addCell(onset: secondsToMillis(secs: fileModel.currentTime()) + 1)
         fileModel.sheetModel.setSelectedCell(selectedCell: cell)
 
         fileModel.sheetModel.updateSheet()

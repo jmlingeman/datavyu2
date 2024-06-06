@@ -11,7 +11,7 @@ import Vapor
 final class Argument: ObservableObject, Identifiable, Equatable, Hashable, Codable, Content {
     @Published var name: String
     @Published var value: String
-    @Published var column: ColumnModel
+    @Published var column: ColumnModel?
 
     @Published var isLastArgument: Bool = false
 
@@ -30,21 +30,21 @@ final class Argument: ObservableObject, Identifiable, Equatable, Hashable, Codab
         name = ""
         value = ""
         column = ColumnModel()
-        undoManager = column.sheetModel.undoManager
+        undoManager = column?.sheetModel?.undoManager
     }
 
-    init(name: String, column: ColumnModel) {
+    init(name: String, column: ColumnModel?) {
         self.name = name
         value = ""
         self.column = column
-        undoManager = column.sheetModel.undoManager
+        undoManager = column?.sheetModel?.undoManager
     }
 
-    init(name: String, value: String, column: ColumnModel) {
+    init(name: String, value: String, column: ColumnModel?) {
         self.name = name
         self.value = value
         self.column = column
-        undoManager = column.sheetModel.undoManager
+        undoManager = column?.sheetModel?.undoManager
     }
 
     func copy(columnModelCopy: ColumnModel) -> Argument {
@@ -90,11 +90,11 @@ final class Argument: ObservableObject, Identifiable, Equatable, Hashable, Codab
     }
 
     func update() {
-        column.sheetModel.updates += 1
+        column?.sheetModel?.updates += 1
     }
 
     func blankCopy() -> Argument {
-        Argument(name: name, column: column)
+        Argument(name: name, column: column!)
     }
 
     enum CodingKeys: CodingKey {
@@ -111,9 +111,13 @@ final class Argument: ObservableObject, Identifiable, Equatable, Hashable, Codab
     }
 
     func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(name, forKey: .name)
-        try container.encode(value, forKey: .value)
-        try container.encode(column, forKey: .column)
+        do {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(name, forKey: .name)
+            try container.encode(value, forKey: .value)
+//            try container.encode(column, forKey: .column)
+        } catch {
+            print(error)
+        }
     }
 }

@@ -15,9 +15,9 @@ func saveOpfFile(fileModel: FileModel, outputFilename: URL) -> Data {
 
     do {
         do {
-            try FileManager.default.moveItem(at: outputFilename, to: outputFilename.appendingPathExtension(".backup"))
+            try FileManager.default.removeItem(at: outputFilename)
         } catch let error as NSError {
-            print("Error: \(error.domain)")
+            print("Error: \(error)")
         }
         let archive = try Archive(url: outputFilename, accessMode: .create)
 
@@ -32,6 +32,15 @@ func saveOpfFile(fileModel: FileModel, outputFilename: URL) -> Data {
             (position: Int64, size) -> Data in
             projectData.subdata(in: Data.Index(position) ..< Int(position) + size)
         })
+
+        for (i, videoModel) in fileModel.videoModels.enumerated() {
+            let trackString = generateVideoSettingsFile(videoModel: videoModel, trackSettingsId: "\(i + 1)")
+            guard let trackData = trackString.data(using: .utf8) else { return Data() }
+            try archive.addEntry(with: "\(i + 1)", type: .file, uncompressedSize: Int64(trackData.count), provider: {
+                (position: Int64, size) -> Data in
+                trackData.subdata(in: Data.Index(position) ..< Int(position) + size)
+            })
+        }
 
         return data
     } catch {
@@ -74,6 +83,15 @@ private func generateColumnString(columnModel: ColumnModel) -> String {
     return s
 }
 
+func generateVideoSettingsFile(videoModel: VideoModel, trackSettingsId _: String) -> String {
+    let size = videoModel.player.currentItem?.presentationSize
+    var height = 350
+    if size != nil {
+        height = Int(size!.height)
+    }
+    return "height=\(height)\nvolume=\(videoModel.player.volume)\nvisible=true\noffset=0\nframesPerSecond=\(videoModel.player.currentItem?.tracks.first?.assetTrack?.nominalFrameRate ?? 29.97)"
+}
+
 func saveProject(fileModel: FileModel) -> String {
     /*
      !project
@@ -96,22 +114,22 @@ func saveProject(fileModel: FileModel) -> String {
      */
 
     var viewerSettings = [ViewerSetting]()
-    for video in fileModel.videoModels {
+    for (i, video) in fileModel.videoModels.enumerated() {
         let vs = ViewerSetting(classifier: "datavyu.video",
-                               feed: video.videoFileURL.absoluteString,
+                               feed: video.videoFileURL.path(percentEncoded: false).replacingOccurrences(of: "file://", with: ""),
                                plugin: "db3fc496-58a7-3706-8538-3f61278b5bec",
-                               settingsId: "1",
-                               trackSettings: video.trackSettings != nil ? video.trackSettings! : TrackSetting(), version: 2)
+                               settingsId: "\(i + 1)",
+                               trackSettings: video.trackSettings != nil ? video.trackSettings! : TrackSetting(), version: 3)
         viewerSettings.append(vs)
     }
     var project = ProjectFile(dbFile: fileModel.sheetModel.sheetName,
                               name: fileModel.sheetModel.sheetName,
-                              origpath: "", version: 5,
+                              origpath: "/Users/jesse/Downloads", version: 5,
                               viewerSettings: viewerSettings)
 
     do {
         let encodedYaml = try YAMLEncoder().encode(project)
-        return encodedYaml
+        return "!project\n" + encodedYaml.replacingOccurrences(of: "- classifier", with: "- !vs\n  classifier").replacingOccurrences(of: "trackSettings:", with: "trackSettings: !ts")
     } catch {
         print("ERROR encoding project file: \(error)")
     }

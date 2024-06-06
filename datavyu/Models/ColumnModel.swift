@@ -9,7 +9,7 @@ import Foundation
 import Vapor
 
 final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Codable, Content {
-    @Published var sheetModel: SheetModel
+    @Published var sheetModel: SheetModel?
     @Published var columnName: String
     @Published var cells: [CellModel]
     @Published var arguments: [Argument]
@@ -26,7 +26,7 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         arguments = []
         addArgument()
 
-        undoManager = sheetModel.undoManager
+        undoManager = sheetModel?.undoManager
     }
 
     init(sheetModel: SheetModel, columnName: String) {
@@ -153,7 +153,7 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
 
     func update() {
         print("Updating")
-        sheetModel.updates += 1
+        sheetModel?.updates += 1
     }
 
     func hash(into hasher: inout Hasher) {
@@ -186,7 +186,7 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         let cell = CellModel(column: self)
         return addCell(cell: cell, force: force)
     }
-    
+
     func addCell(onset: Int = 0, offset: Int = 0, force: Bool = false) -> CellModel? {
         let cell = CellModel(column: self)
         cell.onset = onset
@@ -206,7 +206,7 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         columnName = try container.decode(String.self, forKey: .columnName)
         cells = try container.decode([CellModel].self, forKey: .cells)
         arguments = try container.decode([Argument].self, forKey: .arguments)
-        sheetModel = try container.decode(SheetModel.self, forKey: .sheetModel)
+//        sheetModel = try container.decode(SheetModel.self, forKey: .sheetModel)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -214,6 +214,6 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         try container.encode(columnName, forKey: .columnName)
         try container.encode(cells, forKey: .cells)
         try container.encode(arguments, forKey: .arguments)
-        try container.encode(sheetModel, forKey: .sheetModel)
+//        try container.encode(sheetModel, forKey: .sheetModel)
     }
 }

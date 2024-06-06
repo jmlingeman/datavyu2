@@ -79,6 +79,7 @@
 		88BFE42B2A9D13FC00B37DC3 /* DSWaveformImageViews in Frameworks */ = {isa = PBXBuildFile; productRef = 88BFE42A2A9D13FC00B37DC3 /* DSWaveformImageViews */; };
 		88BFE42D2A9D25CB00B37DC3 /* WaveformViewDV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BFE42C2A9D25CB00B37DC3 /* WaveformViewDV.swift */; };
 		88BFE4322A9E9E8700B37DC3 /* ArgumentFocusModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BFE4312A9E9E8700B37DC3 /* ArgumentFocusModel.swift */; };
+		88C3FA262C1114C700589CB8 /* ScriptController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C3FA252C1114C700589CB8 /* ScriptController.swift */; };
 		88CE94532AA25E69000E8DFB /* FileControllerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CE94522AA25E69000E8DFB /* FileControllerModel.swift */; };
 		88CE94562AA81359000E8DFB /* ColumnListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CE94552AA81359000E8DFB /* ColumnListView.swift */; };
 		88D3FE372A4DE12A0094F953 /* TrackPositionIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3FE362A4DE12A0094F953 /* TrackPositionIndicator.swift */; };
@@ -196,6 +197,7 @@
 		88BFE4242A9BE78F00B37DC3 /* CodeEditorRemoveCodeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorRemoveCodeButton.swift; sourceTree = "<group>"; };
 		88BFE42C2A9D25CB00B37DC3 /* WaveformViewDV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformViewDV.swift; sourceTree = "<group>"; };
 		88BFE4312A9E9E8700B37DC3 /* ArgumentFocusModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentFocusModel.swift; sourceTree = "<group>"; };
+		88C3FA252C1114C700589CB8 /* ScriptController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptController.swift; sourceTree = "<group>"; };
 		88CE94522AA25E69000E8DFB /* FileControllerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileControllerModel.swift; sourceTree = "<group>"; };
 		88CE94552AA81359000E8DFB /* ColumnListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnListView.swift; sourceTree = "<group>"; };
 		88D3FE362A4DE12A0094F953 /* TrackPositionIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackPositionIndicator.swift; sourceTree = "<group>"; };
@@ -454,6 +456,7 @@
 				8878A6142A30275900A2658C /* RScriptEngine.swift */,
 				8878A6162A30279700A2658C /* PythonScriptEngine.swift */,
 				8878A6192A3027F500A2658C /* DatavyuAPI.swift */,
+				88C3FA252C1114C700589CB8 /* ScriptController.swift */,
 			);
 			path = Scripting;
 			sourceTree = "<group>";
@@ -740,6 +743,7 @@
 				8878A61C2A352A5200A2658C /* MillisTimeFormatter.swift in Sources */,
 				88CE94562AA81359000E8DFB /* ColumnListView.swift in Sources */,
 				88E0947C2B69D8FA00A93660 /* TimestampTransformer.swift in Sources */,
+				88C3FA262C1114C700589CB8 /* ScriptController.swift in Sources */,
 				881A39AB2A242D4600B4782D /* ContentView.swift in Sources */,
 				8861C4182C014A3500DD180D /* SpectrogramProgressView.swift in Sources */,
 				88BFE4252A9BE78F00B37DC3 /* CodeEditorRemoveCodeButton.swift in Sources */,
@@ -862,7 +866,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 117;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -926,7 +930,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 117;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -960,7 +964,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 117;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = ZBRT6TPG8Y;
@@ -969,6 +973,7 @@
 				INFOPLIST_FILE = datavyu/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Required for transcription services. Only uses on-device speech recognition. No data is sent over the network.";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -996,7 +1001,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 117;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = ZBRT6TPG8Y;
@@ -1005,6 +1010,7 @@
 				INFOPLIST_FILE = datavyu/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Required for transcription services. Only uses on-device speech recognition. No data is sent over the network.";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1027,7 +1033,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 117;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
@@ -1046,7 +1052,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 117;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
@@ -1064,7 +1070,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 117;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -1081,7 +1087,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 117;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;

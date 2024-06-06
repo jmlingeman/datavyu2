@@ -7,6 +7,7 @@
 
 import AppKit
 import Foundation
+import RubyGateway
 
 final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
     @Published var sheetName: String
@@ -69,8 +70,8 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
         print("Setting column \(model.columnName) to selected")
         for column in columns {
             if model == column {
-                if column.sheetModel.selectedCell?.column != column {
-                    column.sheetModel.setSelectedCell(selectedCell: nil)
+                if column.sheetModel?.selectedCell?.column != column {
+                    column.sheetModel?.setSelectedCell(selectedCell: nil)
                 }
                 column.isSelected = true
 
@@ -90,7 +91,7 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
     func setSelectedCell(selectedCell: CellModel?) {
         self.selectedCell = selectedCell
         if selectedCell != nil {
-            setSelectedColumn(model: selectedCell!.column, suppress_update: true)
+            setSelectedColumn(model: selectedCell!.column!, suppress_update: true)
         }
     }
 

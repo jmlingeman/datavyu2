@@ -29,6 +29,13 @@ public class AppState: ObservableObject {
         scriptWindows[fileController!.activeFileModel, default: []].append(win)
     }
 
+    func removeVideo(fileModel: FileModel, videoTitle: String) {
+        hideWindow(fileModel: fileModel, title: videoTitle)
+        videoWindows[fileModel]?.removeAll { win in
+            win.title == videoTitle
+        }
+    }
+
     func hideWindows(fileModel: FileModel) {
         controllerWindows[fileModel]?.orderOut(self)
         for vw in videoWindows[fileModel] ?? [] {

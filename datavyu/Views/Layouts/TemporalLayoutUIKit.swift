@@ -158,8 +158,8 @@ struct Header: View {
             .background(columnModel.isSelected ? Color.teal : columnModel.isFinished ? Color.green : Color.accentColor)
         }.frame(width: Config().defaultCellWidth, height: Config().headerSize)
             .onTapGesture {
-                columnModel.sheetModel.selectedCell = nil
-                columnModel.sheetModel.setSelectedColumn(model: columnModel)
+                columnModel.sheetModel?.selectedCell = nil
+                columnModel.sheetModel?.setSelectedColumn(model: columnModel)
                 print("Set selected")
             }
     }

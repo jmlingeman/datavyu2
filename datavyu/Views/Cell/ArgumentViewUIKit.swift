@@ -35,7 +35,7 @@ class ArgumentViewUIKit: NSCollectionViewItem {
         print("Configuring Arg: \(argument.name) \(argument.value)")
         argumentValue.configure(argument: argument)
 
-        if argument.column.isFinished {
+        if argument.column!.isFinished {
             argumentValue.isEnabled = false
         } else {
             argumentValue.isEnabled = true

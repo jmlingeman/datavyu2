@@ -28,6 +28,7 @@ struct sheettestApp: App {
     @State private var showingCodeEditor = false
     @State private var showingColHideShow = false
     @State private var showingUpdateView = false
+    @State private var showingScriptSelector = false
 
     @StateObject var appState: AppState = .init()
 
@@ -54,21 +55,6 @@ struct sheettestApp: App {
                 .sheet(isPresented: $showingUpdateView) {
                     UpdateView(appState: appState)
                 }
-                .fileImporter(isPresented: $showingOpenDialog,
-                              allowedContentTypes: [UTType.opf],
-                              allowsMultipleSelection: true,
-                              onCompletion: { result in
-
-                                  switch result {
-                                  case let .success(urls):
-                                      for url in urls {
-                                          fileController.openFile(inputFilename: url)
-                                      }
-                                  case let .failure(error):
-                                      errorMsg = "\(error)"
-                                      showingAlert.toggle()
-                                  }
-                              })
                 .alert(isPresented: $showingAlert) {
                     Alert(title: Text("Error: File error"), message: Text(errorMsg))
                 }
@@ -85,6 +71,36 @@ struct sheettestApp: App {
                                       showingAlert.toggle()
                                   }
                               })
+                .fileImporter(isPresented: $showingScriptSelector,
+                              allowedContentTypes: [UTType.rscript, UTType.rubyScript],
+                              allowsMultipleSelection: true,
+                              onCompletion: { result in
+
+                                  switch result {
+                                  case let .success(urls):
+                                      for url in urls {
+                                          fileController.openFile(inputFilename: url)
+                                      }
+                                  case let .failure(error):
+                                      errorMsg = "\(error)"
+                                      showingAlert.toggle()
+                                  }
+                              })
+                .fileImporter(isPresented: $showingOpenDialog,
+                              allowedContentTypes: [UTType.opf],
+                              allowsMultipleSelection: true,
+                              onCompletion: { result in
+
+                                  switch result {
+                                  case let .success(urls):
+                                      for url in urls {
+                                          fileController.openFile(inputFilename: url)
+                                      }
+                                  case let .failure(error):
+                                      errorMsg = "\(error)"
+                                      showingAlert.toggle()
+                                  }
+                              })
         }.commands {
             CommandGroup(after: CommandGroupPlacement.appVisibility) {
                 Button("Check for Updates") {
@@ -96,7 +112,7 @@ struct sheettestApp: App {
                     .keyboardShortcut(KeyEquivalent("n"))
                 Button("Open Sheet",
                        action: { showingOpenDialog.toggle() })
-                    .keyboardShortcut(KeyEquivalent("o"))
+//                    .keyboardShortcut(KeyEquivalent("o"))
 
                 // TODO: Previously opened files
             }
@@ -156,7 +172,9 @@ struct sheettestApp: App {
             // A blank CommandMenu name hides the menu from the UI
             // So we can use this to manage our KB shortcuts w/o
             // showing this to the user.
+
             CommandMenu("") {
+                // Numpad shortcut buttons
                 Button("Set\nOnset") {
                     fileController.activeFileModel.videoController!.setOnset()
                 }.keyboardShortcut("7", modifiers: .numericPad)
@@ -199,6 +217,50 @@ struct sheettestApp: App {
                 Button("Set Offset and Add Cell") {
                     fileController.activeFileModel.videoController!.setOffsetAndAddNewCell()
                 }.keyboardShortcut(".", modifiers: .numericPad)
+
+                // Normal keyboard shortcut buttons
+                Button("Set\nOnset") {
+                    fileController.activeFileModel.videoController!.setOnset()
+                }.keyboardShortcut("i", modifiers: .command)
+                Button("Play") {
+                    fileController.activeFileModel.videoController!.play()
+                }.keyboardShortcut("o", modifiers: .command)
+                Button("Set Offset") {
+                    fileController.activeFileModel.videoController!.setOffset()
+                }.keyboardShortcut("p", modifiers: .command)
+                Button("Jump") {
+                    fileController.activeFileModel.videoController!.jump()
+                }.keyboardShortcut("[", modifiers: .command)
+                Button("Shuttle <") {
+                    fileController.activeFileModel.videoController!.shuttleStepDown()
+                }.keyboardShortcut("k", modifiers: .command)
+                Button("Stop") {
+                    fileController.activeFileModel.videoController!.stop()
+                }.keyboardShortcut("l", modifiers: .command)
+                Button("Shuttle >") {
+                    fileController.activeFileModel.videoController!.shuttleStepUp()
+                }.keyboardShortcut(";", modifiers: .command)
+                Button("Find Onset") {
+                    fileController.activeFileModel.videoController!.findOnset()
+                }.keyboardShortcut("'", modifiers: .command)
+                Button("Find Offset") {
+                    fileController.activeFileModel.videoController!.findOffset()
+                }.keyboardShortcut("'", modifiers: EventModifiers(rawValue: EventModifiers.shift.rawValue + EventModifiers.command.rawValue))
+                Button("Prev") {
+                    fileController.activeFileModel.videoController!.prevFrame()
+                }.keyboardShortcut(",", modifiers: .command)
+                Button("Pause") {
+                    fileController.activeFileModel.videoController!.pause()
+                }.keyboardShortcut(".", modifiers: .command)
+                Button("Next") {
+                    fileController.activeFileModel.videoController!.nextFrame()
+                }.keyboardShortcut("/", modifiers: .command)
+                Button("Add Cell") {
+                    fileController.activeFileModel.videoController!.addCell()
+                }.keyboardShortcut("j", modifiers: .command)
+                Button("Set Offset and Add Cell") {
+                    fileController.activeFileModel.videoController!.setOffsetAndAddNewCell()
+                }.keyboardShortcut("m", modifiers: .command)
             }
 
             CommandMenu("Scripting") {

@@ -139,11 +139,13 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
     }
 
     func updateLongestDuration() {
-        longestDuration = 0
-        for videoModel in videoModels {
-            if videoModel.duration > longestDuration {
-                longestDuration = videoModel.duration
-                primaryVideo = videoModel
+        DispatchQueue.main.async {
+            self.longestDuration = 0
+            for videoModel in self.videoModels {
+                if videoModel.duration > self.longestDuration {
+                    self.longestDuration = videoModel.duration
+                    self.primaryVideo = videoModel
+                }
             }
         }
     }

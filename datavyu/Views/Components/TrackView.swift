@@ -16,6 +16,8 @@ struct TrackView: View {
     @State var selectedMarker: Marker?
     @State var calcWidth: Double = 0
 
+    @EnvironmentObject var appState: AppState
+
     @State var configuration: Waveform.Configuration = .init(
         style: .outlined(.blue, 3),
         verticalScalingFactor: 1.0
@@ -33,6 +35,7 @@ struct TrackView: View {
 
     func removeVideo() {
         fileModel.removeVideoModel(videoModel: videoModel)
+        appState.removeVideo(fileModel: fileModel, videoTitle: videoModel.getWindowTitle())
     }
 
     var body: some View {

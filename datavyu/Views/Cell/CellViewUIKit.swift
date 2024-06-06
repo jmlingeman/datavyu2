@@ -79,7 +79,7 @@ class CellViewUIKit: NSCollectionViewItem {
 
         self.parentView = parentView
 
-        if cell.column.isFinished {
+        if cell.column!.isFinished {
             onset.isEnabled = false
             offset.isEnabled = false
         } else {
@@ -132,7 +132,7 @@ class CellViewUIKit: NSCollectionViewItem {
         view.layer?.borderColor = CGColor(red: 255, green: 0, blue: 0, alpha: 255)
         view.layer?.borderWidth = 1
         isSelected = true
-        cell.column.sheetModel.setSelectedCell(selectedCell: cell)
+        cell.column?.sheetModel?.setSelectedCell(selectedCell: cell)
     }
 
     func setDeselected() {
