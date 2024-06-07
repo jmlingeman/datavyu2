@@ -63,8 +63,6 @@ struct TracksStackView: View {
             Button("Sync Videos", action: syncVideos)
             Button("Add Video", action: {
                 addVideo()
-                VideoView(videoModel: fileModel.videoModels.last!, sheetModel: fileModel.sheetModel)
-                    .openInWindow(title: "Video: " + fileModel.videoModels.last!.getWindowTitle(), appState: appState, sender: self, frameName: fileModel.videoModels.last!.filename)
             })
         }
     }

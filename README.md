@@ -6,7 +6,7 @@ Not yet released.
 
 ## Requirements
 
-- MacOS 13.0 or higher
+- MacOS 14.0 or higher
 
 ## Why?
 

@@ -13,12 +13,7 @@ struct sheettestApp: App {
 //    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject var fileController: FileControllerModel = .init(fileModels: [
         FileModel(sheetModel: SheetModel(sheetName: "Test Sheet", run_setup: false),
-                  videoModels: [
-                      VideoModel(
-                          videoFilePath: URL(fileURLWithPath: "/Users/jesse/Downloads/IMG_0822.MOV")),
-                      VideoModel(
-                          videoFilePath: URL(fileURLWithPath: "/Users/jesse/Downloads/IMG_1234.MOV")),
-                  ]),
+                  videoModels: []),
     ])
     @State private var showingOpenDialog = false
     @State private var showingAlert = false
