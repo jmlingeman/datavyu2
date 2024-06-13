@@ -100,6 +100,9 @@
 		88F62EA52A5A041200DC5B60 /* TimeHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F62EA42A5A041200DC5B60 /* TimeHelpers.swift */; };
 		88F62EA82A5E1D2300DC5B60 /* Vapor in Frameworks */ = {isa = PBXBuildFile; productRef = 88F62EA72A5E1D2300DC5B60 /* Vapor */; };
 		88F62EAB2A5E230800DC5B60 /* Leaf in Frameworks */ = {isa = PBXBuildFile; productRef = 88F62EAA2A5E230800DC5B60 /* Leaf */; };
+		88F703C42C19D689002805FA /* Datavyu_API.rb in Resources */ = {isa = PBXBuildFile; fileRef = 88F703C12C19D689002805FA /* Datavyu_API.rb */; };
+		88F703C52C19D689002805FA /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 88F703C22C19D689002805FA /* README.md */; };
+		88F703C62C19D689002805FA /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 88F703C02C19D689002805FA /* .gitignore */; };
 		88F8A9322A993954001EEB21 /* ControllerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F8A9312A993954001EEB21 /* ControllerButton.swift */; };
 		88F8A9342A9A56FB001EEB21 /* ControllerPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F8A9332A9A56FB001EEB21 /* ControllerPanelView.swift */; };
 /* End PBXBuildFile section */
@@ -214,6 +217,9 @@
 		88F62E9A2A58BDD700DC5B60 /* DatavyuErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatavyuErrors.swift; sourceTree = "<group>"; };
 		88F62EA22A5A012400DC5B60 /* IOModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOModels.swift; sourceTree = "<group>"; };
 		88F62EA42A5A041200DC5B60 /* TimeHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeHelpers.swift; sourceTree = "<group>"; };
+		88F703C02C19D689002805FA /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		88F703C12C19D689002805FA /* Datavyu_API.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = Datavyu_API.rb; sourceTree = "<group>"; };
+		88F703C22C19D689002805FA /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		88F8A9312A993954001EEB21 /* ControllerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerButton.swift; sourceTree = "<group>"; };
 		88F8A9332A9A56FB001EEB21 /* ControllerPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerPanelView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -287,6 +293,7 @@
 		881A39A72A242D4600B4782D /* datavyu */ = {
 			isa = PBXGroup;
 			children = (
+				88F703BF2C19D2F2002805FA /* Resources */,
 				882D71A92BED9CE600538D51 /* Info.plist */,
 				88BFE42E2A9D264300B37DC3 /* Visualizations */,
 				88F62E992A58BDCA00DC5B60 /* Errors */,
@@ -562,6 +569,24 @@
 			path = Errors;
 			sourceTree = "<group>";
 		};
+		88F703BF2C19D2F2002805FA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				88F703C32C19D689002805FA /* datavyu2_ruby_api */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		88F703C32C19D689002805FA /* datavyu2_ruby_api */ = {
+			isa = PBXGroup;
+			children = (
+				88F703C02C19D689002805FA /* .gitignore */,
+				88F703C12C19D689002805FA /* Datavyu_API.rb */,
+				88F703C22C19D689002805FA /* README.md */,
+			);
+			path = datavyu2_ruby_api;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -695,6 +720,9 @@
 				881A39B02A242D4700B4782D /* Preview Assets.xcassets in Resources */,
 				881A39AD2A242D4700B4782D /* Assets.xcassets in Resources */,
 				884B0DFE2A50CDCE00D16304 /* README.md in Resources */,
+				88F703C42C19D689002805FA /* Datavyu_API.rb in Resources */,
+				88F703C52C19D689002805FA /* README.md in Resources */,
+				88F703C62C19D689002805FA /* .gitignore in Resources */,
 				88E094762B69B5AB00A93660 /* CellViewUIKit.xib in Resources */,
 				88E0947A2B69B81A00A93660 /* ArgumentViewUIKit.xib in Resources */,
 			);
@@ -866,7 +894,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 157;
+				CURRENT_PROJECT_VERSION = 168;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -930,7 +958,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 157;
+				CURRENT_PROJECT_VERSION = 168;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -964,7 +992,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 157;
+				CURRENT_PROJECT_VERSION = 168;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = ZBRT6TPG8Y;
@@ -1001,7 +1029,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 157;
+				CURRENT_PROJECT_VERSION = 168;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = ZBRT6TPG8Y;
@@ -1033,7 +1061,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 157;
+				CURRENT_PROJECT_VERSION = 168;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
@@ -1052,7 +1080,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 157;
+				CURRENT_PROJECT_VERSION = 168;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
@@ -1070,7 +1098,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 157;
+				CURRENT_PROJECT_VERSION = 168;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -1087,7 +1115,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 157;
+				CURRENT_PROJECT_VERSION = 168;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -1209,8 +1237,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/vapor/vapor";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.0;
+				branch = main;
+				kind = branch;
 			};
 		};
 		88F62EA92A5E230800DC5B60 /* XCRemoteSwiftPackageReference "leaf" */ = {

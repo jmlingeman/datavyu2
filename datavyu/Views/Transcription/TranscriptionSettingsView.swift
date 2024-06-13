@@ -43,7 +43,7 @@ struct TranscriptionSettingsView: View {
 
             Text(String(format: "%.2f%% downloaded", downloadProgress * 100))
             ProgressView(value: downloadProgress).onReceive(timer) { _ in
-                downloadProgress = speech.whisperKit!.downloadProgress
+                downloadProgress = speech.whisperKit?.downloadProgress ?? 0
             }.padding()
 
             Picker("Select column to transcribe in to:", selection: $selectedColumn) {
@@ -75,7 +75,7 @@ struct TranscriptionSettingsView: View {
 
             Text(String(format: "%.2f%% transcribed", transcriptionProgress * 100))
             ProgressView(value: transcriptionProgress).onReceive(timer) { _ in
-                transcriptionProgress = speech.whisperKit!.progress.fractionCompleted
+                transcriptionProgress = speech.whisperKit?.progress.fractionCompleted ?? 0
                 if transcriptionProgress == 1.0 {
                     running = false
                 }

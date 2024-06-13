@@ -1,0 +1,3 @@
+[submodule "datavyu/Resources/datavyu2_ruby_api"]
+	path = datavyu/Resources/datavyu2_ruby_api
+	url = https://gitea.jesseisageek.com/jesse/datavyu2_ruby_api
