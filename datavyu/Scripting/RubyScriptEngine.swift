@@ -4,8 +4,9 @@ import Foundation
 import RubyGateway
 
 // https://johnfairh.github.io/RubyGateway/
+// https://stackoverflow.com/questions/70560903/swiftui-async-redirect-output-on-view-like-console-output-realtime
 
-class RubyEngine {
+class RubyScriptEngine {
     var outPipe = Pipe()
     var errPipe = Pipe()
 
@@ -19,14 +20,13 @@ class RubyEngine {
 
             let apiLocation = Bundle.main.url(forResource: "Datavyu_API", withExtension: "rb")!
 
-            try Ruby.eval(ruby: "$LOAD_PATH.unshift(File.expand_path(\"\(apiLocation.deletingLastPathComponent())\")")
+            try Ruby.eval(ruby: "$LOAD_PATH.unshift(File.expand_path(\"\(apiLocation.deletingLastPathComponent().path().replacingOccurrences(of: "file://", with: ""))\"))")
 //            try Ruby.load(filename: "Datavyu_API.rb")
-            try Ruby.load(filename: url.absoluteString)
+            try Ruby.load(filename: url.path().replacingOccurrences(of: "file://", with: ""))
 
-            let result = try Ruby.eval(ruby: "'a' * 4")
-            print(result)
-
-        } catch {}
+        } catch {
+            print(error)
+        }
     }
 
     func runCommand(cmd: String, args: String...) -> (output: [String], error: [String], exitCode: Int32) {

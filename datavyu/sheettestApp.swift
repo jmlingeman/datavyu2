@@ -66,21 +66,6 @@ struct sheettestApp: App {
                                       showingAlert.toggle()
                                   }
                               })
-                .fileImporter(isPresented: $showingScriptSelector,
-                              allowedContentTypes: [UTType.rscript, UTType.rubyScript],
-                              allowsMultipleSelection: true,
-                              onCompletion: { result in
-
-                                  switch result {
-                                  case let .success(urls):
-                                      for url in urls {
-                                          fileController.openFile(inputFilename: url)
-                                      }
-                                  case let .failure(error):
-                                      errorMsg = "\(error)"
-                                      showingAlert.toggle()
-                                  }
-                              })
                 .fileImporter(isPresented: $showingOpenDialog,
                               allowedContentTypes: [UTType.opf],
                               allowsMultipleSelection: true,
@@ -259,7 +244,16 @@ struct sheettestApp: App {
             }
 
             CommandMenu("Scripting") {
-                Button("Run Script") {}
+                Button("Run Script") {
+                    let panel = NSOpenPanel()
+                    panel.allowsMultipleSelection = false
+                    panel.canChooseDirectories = false
+                    panel.allowedContentTypes = [UTType.rubyScript, UTType.rscript]
+                    if panel.runModal() == .OK {
+                        let rse = RubyScriptEngine()
+                        rse.runScript(url: panel.url!, fileModel: fileController.activeFileModel)
+                    }
+                }
 
                 // TODO: Previously run files
             }
