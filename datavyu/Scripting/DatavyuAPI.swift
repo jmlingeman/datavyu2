@@ -19,6 +19,9 @@ class DatavyuAPIServer {
         app = Application(.development)
         self.fileController = fileController
         configure(app)
+
+        // Hack so Vapor works in unit tests
+        app.environment.arguments = [app.environment.arguments[0]]
     }
 
     private func configure(_ app: Application) {

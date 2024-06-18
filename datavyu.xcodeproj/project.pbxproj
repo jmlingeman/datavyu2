@@ -14,7 +14,7 @@
 		881A39AB2A242D4600B4782D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39AA2A242D4600B4782D /* ContentView.swift */; };
 		881A39AD2A242D4700B4782D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 881A39AC2A242D4700B4782D /* Assets.xcassets */; };
 		881A39B02A242D4700B4782D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 881A39AF2A242D4700B4782D /* Preview Assets.xcassets */; };
-		881A39BB2A242D4700B4782D /* sheettestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39BA2A242D4700B4782D /* sheettestTests.swift */; };
+		881A39BB2A242D4700B4782D /* modelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39BA2A242D4700B4782D /* modelTests.swift */; };
 		881A39C52A242D4700B4782D /* sheettestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39C42A242D4700B4782D /* sheettestUITests.swift */; };
 		881A39C72A242D4700B4782D /* sheettestUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39C62A242D4700B4782D /* sheettestUITestsLaunchTests.swift */; };
 		881A39D52A253A4900B4782D /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = 881A39D42A253A4900B4782D /* WrappingHStack */; };
@@ -101,6 +101,7 @@
 		88F62EAB2A5E230800DC5B60 /* Leaf in Frameworks */ = {isa = PBXBuildFile; productRef = 88F62EAA2A5E230800DC5B60 /* Leaf */; };
 		88F703C42C19D689002805FA /* Datavyu_API.rb in Resources */ = {isa = PBXBuildFile; fileRef = 88F703C12C19D689002805FA /* Datavyu_API.rb */; };
 		88F703C62C19D689002805FA /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 88F703C02C19D689002805FA /* .gitignore */; };
+		88F703CB2C1FCABC002805FA /* ScriptOutputWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F703CA2C1FCABC002805FA /* ScriptOutputWindow.swift */; };
 		88F8A9322A993954001EEB21 /* ControllerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F8A9312A993954001EEB21 /* ControllerButton.swift */; };
 		88F8A9342A9A56FB001EEB21 /* ControllerPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F8A9332A9A56FB001EEB21 /* ControllerPanelView.swift */; };
 /* End PBXBuildFile section */
@@ -133,7 +134,7 @@
 		881A39AF2A242D4700B4782D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		881A39B12A242D4700B4782D /* datavyu.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = datavyu.entitlements; sourceTree = "<group>"; };
 		881A39B62A242D4700B4782D /* datavyuTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = datavyuTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		881A39BA2A242D4700B4782D /* sheettestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sheettestTests.swift; sourceTree = "<group>"; };
+		881A39BA2A242D4700B4782D /* modelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = modelTests.swift; sourceTree = "<group>"; };
 		881A39C02A242D4700B4782D /* datavyuUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = datavyuUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		881A39C42A242D4700B4782D /* sheettestUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sheettestUITests.swift; sourceTree = "<group>"; };
 		881A39C62A242D4700B4782D /* sheettestUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sheettestUITestsLaunchTests.swift; sourceTree = "<group>"; };
@@ -218,6 +219,7 @@
 		88F703C02C19D689002805FA /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		88F703C12C19D689002805FA /* Datavyu_API.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = Datavyu_API.rb; sourceTree = "<group>"; };
 		88F703C22C19D689002805FA /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		88F703CA2C1FCABC002805FA /* ScriptOutputWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptOutputWindow.swift; sourceTree = "<group>"; };
 		88F8A9312A993954001EEB21 /* ControllerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerButton.swift; sourceTree = "<group>"; };
 		88F8A9332A9A56FB001EEB21 /* ControllerPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerPanelView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -271,8 +273,8 @@
 			children = (
 				884B0DFD2A50CDCE00D16304 /* README.md */,
 				881A39A72A242D4600B4782D /* datavyu */,
-				881A39B92A242D4700B4782D /* sheettestTests */,
-				881A39C32A242D4700B4782D /* sheettestUITests */,
+				881A39B92A242D4700B4782D /* datavyuTests */,
+				881A39C32A242D4700B4782D /* datavyuUITests */,
 				881A39A62A242D4600B4782D /* Products */,
 				882D72042BF5352700538D51 /* Frameworks */,
 			);
@@ -320,21 +322,21 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		881A39B92A242D4700B4782D /* sheettestTests */ = {
+		881A39B92A242D4700B4782D /* datavyuTests */ = {
 			isa = PBXGroup;
 			children = (
-				881A39BA2A242D4700B4782D /* sheettestTests.swift */,
+				881A39BA2A242D4700B4782D /* modelTests.swift */,
 			);
-			path = sheettestTests;
+			path = datavyuTests;
 			sourceTree = "<group>";
 		};
-		881A39C32A242D4700B4782D /* sheettestUITests */ = {
+		881A39C32A242D4700B4782D /* datavyuUITests */ = {
 			isa = PBXGroup;
 			children = (
 				881A39C42A242D4700B4782D /* sheettestUITests.swift */,
 				881A39C62A242D4700B4782D /* sheettestUITestsLaunchTests.swift */,
 			);
-			path = sheettestUITests;
+			path = datavyuUITests;
 			sourceTree = "<group>";
 		};
 		881A39E62A2A880E00B4782D /* Formatters */ = {
@@ -348,6 +350,7 @@
 		881A39E92A2A886400B4782D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				88F703C72C1FCA8D002805FA /* Scripting */,
 				888C04152C04DB3D00EFFDEE /* Transcription */,
 				88E0947D2B6AAD2900A93660 /* Cell */,
 				88CE94542AA81345000E8DFB /* ColumnList */,
@@ -585,6 +588,14 @@
 			path = datavyu2_ruby_api;
 			sourceTree = "<group>";
 		};
+		88F703C72C1FCA8D002805FA /* Scripting */ = {
+			isa = PBXGroup;
+			children = (
+				88F703CA2C1FCABC002805FA /* ScriptOutputWindow.swift */,
+			);
+			path = Scripting;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -798,6 +809,7 @@
 				888C04142C03DC3D00EFFDEE /* CellTextField.swift in Sources */,
 				880CBD132B3FB61500D7701F /* TemporalCollectionViewLayout.swift in Sources */,
 				8861C4212C0155C900DD180D /* ACBAudioProcessHelper.m in Sources */,
+				88F703CB2C1FCABC002805FA /* ScriptOutputWindow.swift in Sources */,
 				881A39F72A2A9D5900B4782D /* SheetView.swift in Sources */,
 				88BFE42D2A9D25CB00B37DC3 /* WaveformViewDV.swift in Sources */,
 				880CBC8B2B3B699D00D7701F /* TemporalLayoutUIKit.swift in Sources */,
@@ -828,7 +840,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				881A39BB2A242D4700B4782D /* sheettestTests.swift in Sources */,
+				881A39BB2A242D4700B4782D /* modelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -890,7 +902,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 176;
+				CURRENT_PROJECT_VERSION = 199;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -954,7 +966,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 176;
+				CURRENT_PROJECT_VERSION = 199;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -988,7 +1000,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 176;
+				CURRENT_PROJECT_VERSION = 199;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = ZBRT6TPG8Y;
@@ -1025,7 +1037,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 176;
+				CURRENT_PROJECT_VERSION = 199;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = ZBRT6TPG8Y;
@@ -1057,16 +1069,16 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 176;
+				CURRENT_PROJECT_VERSION = 199;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jesseisageek.sheettestTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/datavyu.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/datavyu";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Datavyu2.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Datavyu2";
 			};
 			name = Debug;
 		};
@@ -1076,16 +1088,16 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 176;
+				CURRENT_PROJECT_VERSION = 199;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jesseisageek.sheettestTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/datavyu.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/datavyu";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Datavyu2.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Datavyu2";
 			};
 			name = Release;
 		};
@@ -1094,7 +1106,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 176;
+				CURRENT_PROJECT_VERSION = 199;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -1111,7 +1123,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 176;
+				CURRENT_PROJECT_VERSION = 199;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;

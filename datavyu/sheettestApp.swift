@@ -24,6 +24,7 @@ struct sheettestApp: App {
     @State private var showingColHideShow = false
     @State private var showingUpdateView = false
     @State private var showingScriptSelector = false
+    @State private var scriptEngine = RubyScriptEngine()
 
     @StateObject var appState: AppState = .init()
 
@@ -250,8 +251,7 @@ struct sheettestApp: App {
                     panel.canChooseDirectories = false
                     panel.allowedContentTypes = [UTType.rubyScript, UTType.rscript]
                     if panel.runModal() == .OK {
-                        let rse = RubyScriptEngine()
-                        rse.runScript(url: panel.url!, fileModel: fileController.activeFileModel)
+                        ScriptOutputWindow(url: panel.url!, fileModel: fileController.activeFileModel, scriptEngine: scriptEngine).openInWindow(title: "Script Output", appState: appState, sender: self, frameName: nil)
                     }
                 }
 
