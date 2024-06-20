@@ -1,5 +1,5 @@
 //
-//  sheettestApp.swift
+//  DatavyuApp.swift
 //  sheettest
 //
 //  Created by Jesse Lingeman on 5/28/23.
@@ -9,10 +9,10 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 @main
-struct sheettestApp: App {
+struct DatavyuApp: App {
 //    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject var fileController: FileControllerModel = .init(fileModels: [
-        FileModel(sheetModel: SheetModel(sheetName: "Test Sheet", run_setup: false),
+        FileModel(sheetModel: SheetModel(sheetName: "New Sheet", run_setup: false),
                   videoModels: []),
     ])
     @State private var showingOpenDialog = false

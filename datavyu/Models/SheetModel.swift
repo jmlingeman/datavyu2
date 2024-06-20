@@ -204,6 +204,12 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
         }
     }
 
+    func setColumnsSheet() {
+        for col in columns {
+            col.sheetModel = self
+        }
+    }
+
     enum CodingKeys: CodingKey {
         case sheetName
         case columns
@@ -215,6 +221,8 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
         sheetName = try container.decode(String.self, forKey: .sheetName)
         columns = try container.decode([ColumnModel].self, forKey: .columns)
         visibleColumns = try container.decode([ColumnModel].self, forKey: .visibleColumns)
+
+        setColumnsSheet()
     }
 
     func encode(to encoder: Encoder) throws {

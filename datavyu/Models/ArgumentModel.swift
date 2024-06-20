@@ -107,7 +107,7 @@ final class Argument: ObservableObject, Identifiable, Equatable, Hashable, Codab
         let container = try decoder.container(keyedBy: CodingKeys.self)
         name = try container.decode(String.self, forKey: .name)
         value = try container.decode(String.self, forKey: .value)
-        column = try container.decode(ColumnModel.self, forKey: .column)
+//        column = try container.decode(ColumnModel.self, forKey: .column)
     }
 
     func encode(to encoder: Encoder) throws {

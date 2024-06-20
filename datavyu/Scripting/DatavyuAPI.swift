@@ -32,6 +32,7 @@ class DatavyuAPIServer {
         app.leaf.cache.isEnabled = app.environment.isRelease
         app.leaf.configuration.rootDirectory = Bundle.main.bundlePath
         app.routes.defaultMaxBodySize = "50MB"
+        app.logger.logLevel = .critical
 
         do {
             try app.register(collection: FileWebRouteCollection(fileModel: fileController.activeFileModel))

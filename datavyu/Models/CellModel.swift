@@ -189,7 +189,6 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
         case offset
         case comment
         case arguments
-        case column
     }
 
     required init(from decoder: Decoder) throws {
@@ -198,7 +197,6 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
         offset = try container.decode(Int.self, forKey: .offset)
         comment = try container.decode(String.self, forKey: .comment)
         arguments = try container.decode([Argument].self, forKey: .arguments)
-//        column = try container.decode(ColumnModel.self, forKey: .column)
     }
 
     func encode(to encoder: Encoder) throws {

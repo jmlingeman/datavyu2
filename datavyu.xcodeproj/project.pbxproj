@@ -10,7 +10,7 @@
 		880CBC8B2B3B699D00D7701F /* TemporalLayoutUIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880CBC8A2B3B699D00D7701F /* TemporalLayoutUIKit.swift */; };
 		880CBD132B3FB61500D7701F /* TemporalCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880CBD122B3FB61500D7701F /* TemporalCollectionViewLayout.swift */; };
 		88140FCD2A5218100095DB5A /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88140FCC2A5218100095DB5A /* OptionsView.swift */; };
-		881A39A92A242D4600B4782D /* sheettestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39A82A242D4600B4782D /* sheettestApp.swift */; };
+		881A39A92A242D4600B4782D /* DatavyuApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39A82A242D4600B4782D /* DatavyuApp.swift */; };
 		881A39AB2A242D4600B4782D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881A39AA2A242D4600B4782D /* ContentView.swift */; };
 		881A39AD2A242D4700B4782D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 881A39AC2A242D4700B4782D /* Assets.xcassets */; };
 		881A39B02A242D4700B4782D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 881A39AF2A242D4700B4782D /* Preview Assets.xcassets */; };
@@ -128,7 +128,7 @@
 		880CBD122B3FB61500D7701F /* TemporalCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemporalCollectionViewLayout.swift; sourceTree = "<group>"; };
 		88140FCC2A5218100095DB5A /* OptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsView.swift; sourceTree = "<group>"; };
 		881A39A52A242D4600B4782D /* Datavyu2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Datavyu2.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		881A39A82A242D4600B4782D /* sheettestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sheettestApp.swift; sourceTree = "<group>"; };
+		881A39A82A242D4600B4782D /* DatavyuApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatavyuApp.swift; sourceTree = "<group>"; };
 		881A39AA2A242D4600B4782D /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ContentView.swift; sourceTree = "<group>"; };
 		881A39AC2A242D4700B4782D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		881A39AF2A242D4700B4782D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -304,7 +304,7 @@
 				881A39EA2A2A887100B4782D /* Models */,
 				881A39E92A2A886400B4782D /* Views */,
 				881A39E62A2A880E00B4782D /* Formatters */,
-				881A39A82A242D4600B4782D /* sheettestApp.swift */,
+				881A39A82A242D4600B4782D /* DatavyuApp.swift */,
 				881A39AA2A242D4600B4782D /* ContentView.swift */,
 				881A39AC2A242D4700B4782D /* Assets.xcassets */,
 				881A39B12A242D4700B4782D /* datavyu.entitlements */,
@@ -797,7 +797,7 @@
 				8861C4252C02A4C900DD180D /* SpeechRecognizer.swift in Sources */,
 				8878A6252A3FE75200A2658C /* VideoHelpers.swift in Sources */,
 				883E3B392C0FC68D0066F1F4 /* VideoControllerModel.swift in Sources */,
-				881A39A92A242D4600B4782D /* sheettestApp.swift in Sources */,
+				881A39A92A242D4600B4782D /* DatavyuApp.swift in Sources */,
 				88F62E9B2A58BDD700DC5B60 /* DatavyuErrors.swift in Sources */,
 				88F62EA32A5A012400DC5B60 /* IOModels.swift in Sources */,
 				884B0DF72A50BE6B00D16304 /* DatavyuView.swift in Sources */,
@@ -902,7 +902,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 199;
+				CURRENT_PROJECT_VERSION = 222;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -966,7 +966,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 199;
+				CURRENT_PROJECT_VERSION = 222;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1000,7 +1000,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 199;
+				CURRENT_PROJECT_VERSION = 222;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = ZBRT6TPG8Y;
@@ -1037,7 +1037,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 199;
+				CURRENT_PROJECT_VERSION = 222;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = ZBRT6TPG8Y;
@@ -1069,7 +1069,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 199;
+				CURRENT_PROJECT_VERSION = 222;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
@@ -1088,7 +1088,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 199;
+				CURRENT_PROJECT_VERSION = 222;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
@@ -1106,7 +1106,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 199;
+				CURRENT_PROJECT_VERSION = 222;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -1123,7 +1123,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 199;
+				CURRENT_PROJECT_VERSION = 222;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;

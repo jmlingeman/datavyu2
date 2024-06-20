@@ -194,6 +194,18 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         return addCell(cell: cell, force: force)
     }
 
+    private func setCellColumns() {
+        for cell in cells {
+            cell.column = self
+            for arg in cell.arguments {
+                arg.column = self
+            }
+        }
+        for arg in arguments {
+            arg.column = self
+        }
+    }
+
     enum CodingKeys: CodingKey {
         case columnName
         case cells
@@ -207,6 +219,8 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         cells = try container.decode([CellModel].self, forKey: .cells)
         arguments = try container.decode([Argument].self, forKey: .arguments)
 //        sheetModel = try container.decode(SheetModel.self, forKey: .sheetModel)
+
+        setCellColumns()
     }
 
     func encode(to encoder: Encoder) throws {
