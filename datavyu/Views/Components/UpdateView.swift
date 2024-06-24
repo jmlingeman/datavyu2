@@ -31,7 +31,7 @@ struct UpdateView: View {
     }
 
     func loadData() {
-        guard let url = URL(string: appState.config.updateUrl) else {
+        guard let url = URL(string: Config.updateUrl) else {
             print("Invalid URL")
             return
         }

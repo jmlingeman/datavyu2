@@ -85,7 +85,7 @@ class FileWebRouteCollection: RouteCollection {
 
     func saveDB(filename: String) {
         DispatchQueue.main.async {
-            saveOpfFile(fileModel: self.fileModel, outputFilename: URL(fileURLWithPath: filename))
+            let _ = saveOpfFile(fileModel: self.fileModel, outputFilename: URL(fileURLWithPath: filename))
         }
     }
 
@@ -122,6 +122,7 @@ class FileWebRouteCollection: RouteCollection {
     func setColumn(column: ColumnModel) {
         DispatchQueue.main.async {
             self.fileModel.sheetModel.setColumn(column: column)
+            column.isSelected = true
             self.fileModel.updates += 1
         }
     }

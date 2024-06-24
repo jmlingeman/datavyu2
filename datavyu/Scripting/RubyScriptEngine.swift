@@ -34,27 +34,4 @@ class RubyScriptEngine: ObservableObject {
             print(error)
         }
     }
-
-    func runCommand(cmd: String, args: String...) -> (output: [String], error: [String], exitCode: Int32) {
-        var output: [String] = []
-        var error: [String] = []
-
-        let task = Process()
-        task.launchPath = cmd
-        task.arguments = args
-
-        let outpipe = Pipe()
-        task.standardOutput = outpipe
-        let errpipe = Pipe()
-        task.standardError = errpipe
-
-        task.launch()
-
-        // TODO: Hook up outpipe and errpipe to a screen
-
-        task.waitUntilExit()
-        let status = task.terminationStatus
-
-        return (output, error, status)
-    }
 }

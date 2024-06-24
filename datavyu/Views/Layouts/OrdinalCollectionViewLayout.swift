@@ -9,10 +9,9 @@ class OrdinalCollectionViewLayout: TemporalCollectionViewLayout {
         layout = Layouts.ordinal
         print("PREPARING")
 
-        let config = Config()
-        let gapSize = config.gapSize
-        let columnSize = config.defaultCellWidth
-        let headerSize = config.headerSize
+        let gapSize = Config.gapSize
+        let columnSize = getColumnWidth()
+        let headerSize = Config.headerSize
 
         var cellLayouts = [CellInfo: NSCollectionViewLayoutAttributes]()
         var headerLayouts = [Int: NSCollectionViewLayoutAttributes]()
@@ -24,8 +23,8 @@ class OrdinalCollectionViewLayout: TemporalCollectionViewLayout {
             }
             let headerLayout = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: "header", with: IndexPath(item: -1, section: colIdx))
             headerLayout.frame.origin = CGPoint(x: Int(columnSize) * colIdx, y: 0)
-            headerLayout.frame.size = CGSize(width: config.defaultCellWidth, height: config.headerSize)
-            headerLayout.size = CGSize(width: config.defaultCellWidth, height: config.headerSize)
+            headerLayout.frame.size = CGSize(width: columnSize, height: Config.headerSize)
+            headerLayout.size = CGSize(width: columnSize, height: Config.headerSize)
             headerLayouts[colIdx] = headerLayout
         }
 
@@ -67,10 +66,10 @@ class OrdinalCollectionViewLayout: TemporalCollectionViewLayout {
          the onset map to get positions for cells sharing onsets.
          */
         for colIdx in columnViews.keys {
-            var colHeight = config.headerSize
+            var colHeight = Config.headerSize
             let colCells = columnViews[colIdx]!
             for curCell in colCells {
-                let cellHeight = Double(config.minCellHeight)
+                let cellHeight = getCellHeight()
 
                 // Set cell boundary
                 pts[curCell]?.y = colHeight

@@ -16,6 +16,7 @@ public class AppState: ObservableObject {
     @Published var scriptWindows: [FileModel: [NSWindow]] = [:]
     @Published var layout: LayoutChoice = .init()
     @Published var config: Config = .init()
+    @Published var zoomFactor = 1.0
 
     func setControllerWindow(win: NSWindow) {
         controllerWindows[fileController!.activeFileModel] = win

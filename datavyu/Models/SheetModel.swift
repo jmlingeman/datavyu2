@@ -17,7 +17,6 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
     @Published var updated: Bool = false
     var selectedCell: CellModel?
 
-    let config = Config()
     var undoManager: UndoManager?
 
     init(sheetName: String, run_setup: Bool = false) {

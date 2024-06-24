@@ -30,7 +30,7 @@ struct SheetCollectionView: View {
     @EnvironmentObject var appState: AppState
     var body: some View {
         ZStack {
-            SheetLayoutCollection(sheetModel: sheetModel, layout: appState.layout, itemSize: NSSize(width: 100, height: 100))
+            SheetLayoutCollection(sheetModel: sheetModel, layout: appState.layout, appState: appState, itemSize: NSSize(width: 100, height: 100))
             Button("Change Layout") {
                 DispatchQueue.main.async {
                     appState.layout.swapLayout()
@@ -43,31 +43,33 @@ struct SheetCollectionView: View {
 
 final class SheetCollectionAppKitView: NSCollectionView {
     @ObservedObject var sheetModel: SheetModel
+    @ObservedObject var appState: AppState
     var parentScrollView: NSScrollView
     var currentLayout: LayoutChoice
     private var rightClickIndex: Int = NSNotFound
     var lastEditedArgument: Argument? = nil
     var floatingHeaders: [ColumnModel: NSHostingView<Header>] = [:]
 
-    init(sheetModel: SheetModel, parentScrollView: NSScrollView, layout: LayoutChoice) {
+    init(sheetModel: SheetModel, appState: AppState, parentScrollView: NSScrollView, layout: LayoutChoice) {
         self.sheetModel = sheetModel
         self.parentScrollView = parentScrollView
+        self.appState = appState
         currentLayout = layout
         super.init(frame: .zero)
-        let layout = OrdinalCollectionViewLayout(sheetModel: sheetModel, scrollView: parentScrollView)
+        let layout = OrdinalCollectionViewLayout(sheetModel: sheetModel, scrollView: parentScrollView, appState: appState)
         collectionViewLayout = layout
         isSelectable = true
     }
 
     func setOrdinalLayout() {
         print("Setting ordinal layout")
-        let layout = OrdinalCollectionViewLayout(sheetModel: sheetModel, scrollView: parentScrollView)
+        let layout = OrdinalCollectionViewLayout(sheetModel: sheetModel, scrollView: parentScrollView, appState: appState)
         collectionViewLayout = layout
     }
 
     func setTemporalLayout() {
         print("Setting temporal layout")
-        let layout = TemporalCollectionViewLayout(sheetModel: sheetModel, scrollView: parentScrollView)
+        let layout = TemporalCollectionViewLayout(sheetModel: sheetModel, scrollView: parentScrollView, appState: appState)
         collectionViewLayout = layout
     }
 
@@ -139,24 +141,28 @@ class ColumnSelected: ObservableObject {
 
 struct Header: View {
     @ObservedObject var columnModel: ColumnModel
+    @ObservedObject var appState: AppState
     static let reuseIdentifier: String = "header"
 
     var body: some View {
         GeometryReader { _ in
             HStack {
-                VStack {
-                    EditableLabel($columnModel.columnName)
-                    Toggle(isOn: $columnModel.isFinished, label: {
-                        Text("Finished")
-                    }).onChange(of: $columnModel.isFinished.wrappedValue) {
-                        columnModel.update()
-                    }.toggleStyle(CheckboxToggleStyle()).frame(maxWidth: .infinity, alignment: .topTrailing)
+                ZStack {
+                    EditableLabel($columnModel.columnName).font(.system(size: Config.defaultCellTextSize * appState.zoomFactor)).frame(alignment: .center)
+                    VStack {
+                        Toggle(isOn: $columnModel.isFinished, label: {
+                            Text("Finished")
+                        }).onChange(of: $columnModel.isFinished.wrappedValue) {
+                            columnModel.update()
+                        }.toggleStyle(CheckboxToggleStyle()).frame(maxWidth: .infinity, alignment: .bottomTrailing)
+                            .font(.system(size: Config.defaultCellTextSize * appState.zoomFactor))
+                    }
                 }
             }
-            .frame(width: Config().defaultCellWidth, height: Config().headerSize)
+            .frame(width: Config.defaultCellWidth * appState.zoomFactor, height: Config.headerSize)
             .border(Color.black)
             .background(columnModel.isSelected ? Color.teal : columnModel.isFinished ? Color.green : Color.accentColor)
-        }.frame(width: Config().defaultCellWidth, height: Config().headerSize)
+        }.frame(width: Config.defaultCellWidth * appState.zoomFactor, height: Config.headerSize)
             .onTapGesture {
                 columnModel.sheetModel?.selectedCell = nil
                 columnModel.sheetModel?.setSelectedColumn(model: columnModel)
@@ -168,6 +174,7 @@ struct Header: View {
 struct SheetLayoutCollection: NSViewRepresentable {
     @ObservedObject var sheetModel: SheetModel
     @ObservedObject var layout: LayoutChoice
+    @ObservedObject var appState: AppState
     var itemSize: NSSize
 
     @State var oldSheetModel: SheetModel?
@@ -177,14 +184,14 @@ struct SheetLayoutCollection: NSViewRepresentable {
     // MARK: - Coordinator for Delegate & Data Source & Flow Layout
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(sheetModel: sheetModel, parent: self, itemSize: itemSize)
+        Coordinator(sheetModel: sheetModel, parent: self, itemSize: itemSize, appState: appState)
     }
 
     // MARK: - NSViewRepresentable
 
     func makeNSView(context: Context) -> some NSScrollView {
         scrollView = NSScrollView()
-        let collectionView = SheetCollectionAppKitView(sheetModel: sheetModel, parentScrollView: scrollView, layout: layout)
+        let collectionView = SheetCollectionAppKitView(sheetModel: sheetModel, appState: appState, parentScrollView: scrollView, layout: layout)
 //        oldSheetModel = sheetModel
         collectionView.delegate = context.coordinator
         collectionView.dataSource = context.coordinator
@@ -226,15 +233,20 @@ struct SheetLayoutCollection: NSViewRepresentable {
             }
 
             for (i, column) in sheetModel.visibleColumns.enumerated() {
-                let floatingHeader = NSHostingView(rootView: Header(columnModel: sheetModel.visibleColumns[i]))
-                floatingHeader.frame = NSRect(origin: NSPoint(x: Int(Config().defaultCellWidth) * i, y: 0), size: NSSize(width: Config().defaultCellWidth, height: Config().headerSize))
+                let floatingHeader = NSHostingView(rootView: Header(columnModel: sheetModel.visibleColumns[i], appState: appState))
+                floatingHeader.frame = NSRect(origin: NSPoint(x: Int(Config.defaultCellWidth * appState.zoomFactor) * i,
+                                                              y: 0),
+                                              size: NSSize(width: Config.defaultCellWidth * appState.zoomFactor,
+                                                           height: Config.headerSize))
 
-                if !collectionView.floatingHeaders.keys.contains(where: { c in
+                if collectionView.floatingHeaders.keys.contains(where: { c in
                     c == column
                 }) {
-                    collectionView.floatingHeaders[column] = floatingHeader
-                    scrollView.addFloatingSubview(floatingHeader, for: .vertical)
+                    collectionView.floatingHeaders[column]?.removeFromSuperview()
+                    collectionView.floatingHeaders.removeValue(forKey: column)
                 }
+                collectionView.floatingHeaders[column] = floatingHeader
+                scrollView.addFloatingSubview(floatingHeader, for: .vertical)
             }
 
             context.coordinator.itemSize = itemSize
@@ -302,14 +314,16 @@ struct SheetLayoutCollection: NSViewRepresentable {
 
 class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout {
     @ObservedObject var sheetModel: SheetModel
+    @ObservedObject var appState: AppState
     var parent: SheetLayoutCollection
     var itemSize: NSSize
     var cellItemMap = [CellModel: NSCollectionViewItem]()
 
-    init(sheetModel: SheetModel, parent: SheetLayoutCollection, itemSize: NSSize) {
+    init(sheetModel: SheetModel, parent: SheetLayoutCollection, itemSize: NSSize, appState: AppState) {
         self.sheetModel = sheetModel
         self.parent = parent
         self.itemSize = itemSize
+        self.appState = appState
     }
 
     func getCurrentCell() -> CellViewUIKit? {
@@ -462,21 +476,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         let item = collectionView.makeSupplementaryView(ofKind: kind, withIdentifier: .init(HeaderCell.identifier), for: indexPath) as! HeaderCell
 
         if sheetModel.visibleColumns.count > 0 {
-            item.setView(Header(columnModel: sheetModel.visibleColumns[indexPath.section]))
-
-//            let floatingHeader = NSHostingView(rootView: Header(columnModel: sheetModel.visibleColumns[indexPath.section]))
-//            floatingHeader.frame = item.frame
-//
-//            let column = sheetModel.visibleColumns[indexPath.section]
-//
-//            if let sheetCollectionView = (collectionView as? SheetCollectionAppKitView) {
-//                if !sheetCollectionView.floatingHeaders.keys.contains(where: { c in
-//                    c == column
-//                }) {
-//                    sheetCollectionView.floatingHeaders[column] = floatingHeader
-//                }
-//            }
-//            parent.scrollView.addFloatingSubview(floatingHeader, for: .vertical)
+            item.setView(Header(columnModel: sheetModel.visibleColumns[indexPath.section], appState: appState))
 
             return item
         } else {

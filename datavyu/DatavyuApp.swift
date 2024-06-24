@@ -111,6 +111,18 @@ struct DatavyuApp: App {
                 Divider()
             }
 
+            CommandGroup(after: CommandGroupPlacement.textFormatting) {
+                Divider()
+                Button("Increase Font Size") {
+                    let zoomFactor = appState.zoomFactor + Config.textSizeIncrement
+                    appState.zoomFactor = min(zoomFactor, Config.maxTextSizeIncrement)
+                }.keyboardShortcut(KeyEquivalent("="))
+                Button("Decrease Font Size") {
+                    let zoomFactor = appState.zoomFactor - Config.textSizeIncrement
+                    appState.zoomFactor = max(zoomFactor, Config.minTextSizeIncrement)
+                }.keyboardShortcut(KeyEquivalent("-"))
+            }
+
             CommandMenu("Spreadsheet") {
                 Button("Add Column") {
                     let columnModel = fileController.activeFileModel.sheetModel.addColumn()

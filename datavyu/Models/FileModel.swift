@@ -28,13 +28,11 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
     var currentShuttleSpeedIdx: Int = 0
     var legacyProjectSettings: ProjectFile?
 
-    let config = Config()
-
     init() {
         sheetModel = SheetModel(sheetName: "default")
         videoModels = []
         updates = 0
-        currentShuttleSpeedIdx = config.shuttleSpeeds.firstIndex(of: 0)!
+        currentShuttleSpeedIdx = Config.shuttleSpeeds.firstIndex(of: 0)!
         videoController = VideoController(fileModel: self)
     }
 
@@ -42,7 +40,7 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
         self.sheetModel = sheetModel
         videoModels = []
         updates = 0
-        currentShuttleSpeedIdx = config.shuttleSpeeds.firstIndex(of: 0)!
+        currentShuttleSpeedIdx = Config.shuttleSpeeds.firstIndex(of: 0)!
         videoController = VideoController(fileModel: self)
     }
 
@@ -50,7 +48,7 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
         self.sheetModel = sheetModel
         self.videoModels = videoModels
         updates = 0
-        currentShuttleSpeedIdx = config.shuttleSpeeds.firstIndex(of: 0)!
+        currentShuttleSpeedIdx = Config.shuttleSpeeds.firstIndex(of: 0)!
 
         if videoModels.count > 0 {
             primaryVideo = videoModels[0]
@@ -97,11 +95,11 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
     }
 
     func changeShuttleSpeed(step: Int) {
-        if currentShuttleSpeedIdx + step < config.shuttleSpeeds.count, currentShuttleSpeedIdx + step >= 0 {
+        if currentShuttleSpeedIdx + step < Config.shuttleSpeeds.count, currentShuttleSpeedIdx + step >= 0 {
             currentShuttleSpeedIdx += step
         }
         for video in videoModels {
-            video.player.rate = config.shuttleSpeeds[currentShuttleSpeedIdx]
+            video.player.rate = Config.shuttleSpeeds[currentShuttleSpeedIdx]
         }
     }
 
@@ -117,7 +115,7 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
     }
 
     func resetShuttleSpeed() {
-        currentShuttleSpeedIdx = config.shuttleSpeeds.firstIndex(of: 0)!
+        currentShuttleSpeedIdx = Config.shuttleSpeeds.firstIndex(of: 0)!
     }
 
     func addVideo(videoUrl: URL) {

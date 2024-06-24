@@ -20,8 +20,6 @@ struct Sheet: View {
 
     @State var argumentFocusModel: ArgumentFocusModel
 
-    let config = Config()
-
     var body: some View {
         GeometryReader { _ in
             VStack {

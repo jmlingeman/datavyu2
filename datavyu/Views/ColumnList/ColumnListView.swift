@@ -13,7 +13,6 @@ struct ColumnListView: View {
     @Environment(\.dismiss) var dismiss
 
     @State private var selectedColumns = Set<ColumnModel.ID>()
-    let config = Config()
 
     func hideColumns() {
         for colId in selectedColumns {

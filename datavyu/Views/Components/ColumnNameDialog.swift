@@ -14,8 +14,6 @@ struct ColumnNameDialog: View {
     @FocusState private var focusedField: Bool
     @State private var nameIsOK: Bool = true
 
-    let config = Config()
-
     func submit() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             column.sheetModel?.updateArgumentNames() // hack to force update of name TODO: why?

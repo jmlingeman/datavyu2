@@ -74,8 +74,20 @@ class CellViewUIKit: NSCollectionViewItem {
         cellTextField.configure(cellModel: cell)
         cellTextField.configureParentView(parentView: self)
 
-//        argumentsCollectionView.delegate = self
-//        argumentsCollectionView.dataSource = self
+        // Set Font Size
+        onset.font = NSFont.systemFont(ofSize: Config.defaultCellTextSize * (parentView?.appState.zoomFactor ?? 1))
+        offset.font = NSFont.systemFont(ofSize: Config.defaultCellTextSize * (parentView?.appState.zoomFactor ?? 1))
+        cellTextField.font = NSFont.systemFont(ofSize: Config.defaultCellTextSize * (parentView?.appState.zoomFactor ?? 1))
+        ordinal.font = NSFont.systemFont(ofSize: Config.defaultCellTextSize * (parentView?.appState.zoomFactor ?? 1))
+
+        onset.sizeToFit()
+        offset.sizeToFit()
+
+        let offsetOrigin = NSPoint(x: cellTextField.frame.maxX - offset.frame.width, y: cellTextField.frame.maxY + 5)
+        offset.frame.origin = offsetOrigin
+
+        let onsetOrigin = NSPoint(x: offset.frame.minX - onset.frame.width - 5, y: cellTextField.frame.maxY + 5)
+        onset.frame.origin = onsetOrigin
 
         self.parentView = parentView
 

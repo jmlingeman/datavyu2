@@ -12,6 +12,7 @@ import SwiftUI
 class TemporalCollectionViewLayout: NSCollectionViewLayout {
     var sheetModel: SheetModel
     var scrollView: NSScrollView
+    var appState: AppState
     var updateCount: Int = 0
 
     var layout = Layouts.temporal
@@ -41,10 +42,19 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
         NSSize(width: cache.maxWidth, height: cache.maxHeight)
     }
 
-    init(sheetModel: SheetModel, scrollView: NSScrollView) {
+    init(sheetModel: SheetModel, scrollView: NSScrollView, appState: AppState) {
         self.sheetModel = sheetModel
         self.scrollView = scrollView
+        self.appState = appState
         super.init()
+    }
+
+    func getColumnWidth() -> Double {
+        Config.defaultCellWidth * appState.zoomFactor
+    }
+
+    func getCellHeight() -> Double {
+        Double(Config.minCellHeight) * appState.zoomFactor
     }
 
     @available(*, unavailable)
@@ -55,10 +65,9 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
     override func prepare() {
         print("PREPARING")
 
-        let config = Config()
-        let gapSize = config.gapSize
-        let columnSize = config.defaultCellWidth
-        let headerSize = config.headerSize
+        let gapSize = Config.gapSize
+        let columnSize = getColumnWidth()
+        let headerSize = getCellHeight()
 
         var cellLayouts = [CellInfo: NSCollectionViewLayoutAttributes]()
         var headerLayouts = [Int: NSCollectionViewLayoutAttributes]()
@@ -70,8 +79,8 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
             }
             let headerLayout = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: "header", with: IndexPath(item: -1, section: colIdx))
             headerLayout.frame.origin = CGPoint(x: Int(columnSize) * colIdx, y: 0)
-            headerLayout.frame.size = CGSize(width: config.defaultCellWidth, height: config.headerSize)
-            headerLayout.size = CGSize(width: config.defaultCellWidth, height: config.headerSize)
+            headerLayout.frame.size = CGSize(width: columnSize, height: Config.headerSize)
+            headerLayout.size = CGSize(width: columnSize, height: Config.headerSize)
             headerLayouts[colIdx] = headerLayout
         }
 
@@ -121,7 +130,7 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
         for colIdx in columnViews.keys {
             var intermediateMap: [Int: Double] = [:]
             for cell in columnViews[colIdx]! {
-                let height = Double(config.minCellHeight)
+                let height = getCellHeight()
                 let onset = cell.model.onset
                 intermediateMap[onset] = intermediateMap[onset, default: 0] + height
                 times.insert(cell.model.onset)
@@ -134,7 +143,7 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
             }
         }
 
-        var pos = headerSize
+        var pos = getCellHeight()
         for time in Array(times).sorted() {
             onsetToPos[time] = pos
             pos += heightMap[time, default: 0]
@@ -164,12 +173,12 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
                 var cellHeight = 0.0
                 if onset > offset {
                     // TODO: Set overlap border here
-                    cellHeight = Double(config.minCellHeight)
+                    cellHeight = getCellHeight()
                 } else if nextCell != nil, onset == nextCell!.model.onset {
                     if onset != offset || offset == nextCell!.model.offset {
                         // TODO: Set overlap border here
                     }
-                    cellHeight = Double(config.minCellHeight)
+                    cellHeight = getCellHeight()
                 } else if nextCell != nil, offset >= nextCell!.model.onset {
                     // TODO: Set overlap border here
                     cellHeight = onsetMapLocal[nextCell!.model.onset]! - cellTopY
@@ -177,13 +186,13 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
                     cellHeight = offsetToPos[offset, default: onsetToPos[offset]!] - cellTopY
                 }
 
-                if prevCell != nil && onset - prevCell!.model.offset == 1 {
+                if prevCell != nil, onset - prevCell!.model.offset == 1 {
                     sizes[prevCell!]!.height = cellTopY - pts[prevCell!]!.y
                     offsetToPos[offset] = max(offsetToPos[offset] ?? 0, cellTopY)
                 }
 
                 // fix for edge cases...maybe investigate later
-                cellHeight = max(cellHeight, Double(config.minCellHeight))
+                cellHeight = max(cellHeight, getCellHeight())
                 // Set cell boundary
                 pts[curCell]?.y = cellTopY
                 sizes[curCell]?.height = cellHeight

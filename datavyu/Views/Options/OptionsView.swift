@@ -12,8 +12,6 @@ struct OptionsView: View {
 
     @AppStorage("colorscheme") private var colorscheme: String = "auto"
 
-    let config = Config()
-
     var body: some View {
         ScrollView(.vertical) {
             Text("Options").font(.system(size: 30)).frame(alignment: .topLeading).padding()
@@ -28,11 +26,5 @@ struct OptionsView: View {
                 dismiss()
             }.padding()
         }
-    }
-}
-
-struct OptionsView_Previews: PreviewProvider {
-    static var previews: some View {
-        OptionsView()
     }
 }
