@@ -8,15 +8,17 @@
 import AppKit
 import Foundation
 
-public class AppState: ObservableObject {
+public class AppState: NSObject, ObservableObject {
     @Published var fileController: FileControllerModel?
 
     @Published var controllerWindows: [FileModel: NSWindow] = [:]
     @Published var videoWindows: [FileModel: [NSWindow]] = [:]
     @Published var scriptWindows: [FileModel: [NSWindow]] = [:]
     @Published var layout: LayoutChoice = .init()
-    @Published var config: Config = .init()
     @Published var zoomFactor = 1.0
+    @Published var highlightMode = false
+    @Published var focusMode = false
+    @objc dynamic var playbackTime = 0.0
 
     func setControllerWindow(win: NSWindow) {
         controllerWindows[fileController!.activeFileModel] = win
@@ -80,6 +82,17 @@ public class AppState: ObservableObject {
             if title == sw.title {
                 sw.orderFront(self)
             }
+        }
+    }
+
+    func toggleHighlightMode() {
+        highlightMode = !highlightMode
+    }
+
+    func toggleFocusMode() {
+        focusMode = !focusMode
+        if focusMode {
+            highlightMode = true
         }
     }
 }

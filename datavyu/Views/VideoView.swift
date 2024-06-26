@@ -12,6 +12,7 @@ import SwiftUI
 
 struct VideoView: View {
     @ObservedObject var videoModel: VideoModel
+    @ObservedObject var appState: AppState
     var sheetModel: SheetModel
 
     @StateObject var spectrogramBuilder = SpectrogramVideoBuilder(delegate: nil)
@@ -23,6 +24,10 @@ struct VideoView: View {
                     videoModel.player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.01, preferredTimescale: 600), queue: nil) { time in
                         $videoModel.currentTime.wrappedValue = time.seconds
                         $videoModel.currentPos.wrappedValue = time.seconds / videoModel.player.getCurrentTrackDuration()
+
+                        if videoModel.isPrimaryVideo {
+                            appState.playbackTime = time.seconds
+                        }
                     }
                 }
                 .frame(minWidth: 250,

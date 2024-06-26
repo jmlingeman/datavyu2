@@ -57,6 +57,10 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
         Double(Config.minCellHeight) * appState.zoomFactor
     }
 
+    func getHeaderHeight() -> Double {
+        Double(Config.headerSize)
+    }
+
     @available(*, unavailable)
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -67,7 +71,7 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
 
         let gapSize = Config.gapSize
         let columnSize = getColumnWidth()
-        let headerSize = getCellHeight()
+        let headerSize = getHeaderHeight()
 
         var cellLayouts = [CellInfo: NSCollectionViewLayoutAttributes]()
         var headerLayouts = [Int: NSCollectionViewLayoutAttributes]()
@@ -143,7 +147,7 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
             }
         }
 
-        var pos = getCellHeight()
+        var pos = getHeaderHeight()
         for time in Array(times).sorted() {
             onsetToPos[time] = pos
             pos += heightMap[time, default: 0]

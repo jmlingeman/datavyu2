@@ -22,7 +22,7 @@ struct ControllerView: View {
             ZStack {
                 ForEach(fileModel.videoModels) { videoModel in
                     ZStack {}.onAppear(perform: {
-                        VideoView(videoModel: videoModel, sheetModel: fileModel.sheetModel)
+                        VideoView(videoModel: videoModel, appState: appState, sheetModel: fileModel.sheetModel)
                             .openInWindow(title: videoModel.getWindowTitle(), appState: appState, sender: self, frameName: videoModel.filename)
                     })
                 }

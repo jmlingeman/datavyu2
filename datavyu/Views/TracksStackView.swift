@@ -60,6 +60,14 @@ struct TracksStackView: View {
     var overlayButtons: some View {
         HStack(alignment: .bottom) {
             Spacer()
+            Button("Cell Highlighting") {
+                // TODO: highlight and focus
+                appState.toggleHighlightMode()
+            }
+            Button("Highlight + Focus") {
+                // TODO: highlight and focus
+                appState.toggleFocusMode()
+            }
             Button("Sync Videos", action: syncVideos)
             Button("Add Video", action: {
                 addVideo()

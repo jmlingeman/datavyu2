@@ -16,6 +16,8 @@ public class VideoModel: ObservableObject, Identifiable, Equatable, Hashable, Co
 
     var trackSettings: TrackSetting? = nil
 
+    var isPrimaryVideo: Bool = false
+
     var player: AVPlayer
 
     /// The primary video will always have a sync point of 0

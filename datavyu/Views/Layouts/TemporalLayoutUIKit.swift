@@ -204,6 +204,7 @@ struct SheetLayoutCollection: NSViewRepresentable {
 
         scrollView.documentView = collectionView
         scrollView.hasHorizontalScroller = true
+        scrollView.registerForDraggedTypes([NSPasteboard.PasteboardType("columnModel")])
 
         context.coordinator.connectCellResponders()
 
@@ -318,6 +319,8 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
     var parent: SheetLayoutCollection
     var itemSize: NSSize
     var cellItemMap = [CellModel: NSCollectionViewItem]()
+
+    var draggingItem: NSCollectionViewItem?
 
     init(sheetModel: SheetModel, parent: SheetLayoutCollection, itemSize: NSSize, appState: AppState) {
         self.sheetModel = sheetModel
@@ -463,11 +466,40 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         sheetModel.visibleColumns[section].getSortedCells().count + 1
     }
 
+    func collectionView(_: NSCollectionView, canDragItemsAt _: IndexSet, with _: NSEvent) -> Bool {
+        true
+    }
+
+    /* MARK: Drag + Drop */
+//    func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forItemsAt indexPaths: Set<IndexPath>) {
+//        if let indexPath = indexPaths.first,
+//           let item = collectionView.item(at: indexPath as IndexPath) {
+//            draggingItem = item  // draggingItem is temporary instance variable of NSCollectionViewItem
+//        }
+//    }
+//
+//    func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, endedAt screenPoint: NSPoint, dragOperation operation: NSDragOperation) {
+//        draggingItem = nil
+//    }
+//
+//    func collectionView(_ collectionView: NSCollectionView, validateDrop draggingInfo: any NSDraggingInfo, proposedIndexPath proposedDropIndexPath: AutoreleasingUnsafeMutablePointer<NSIndexPath>, dropOperation proposedDropOperation: UnsafeMutablePointer<NSCollectionView.DropOperation>) -> NSDragOperation {
+//        if draggingItem != nil {
+//            let proposedDropIndexPath = proposedDropIndexPath.pointee
+//            let currentIndexPath = collectionView.indexPath(for: draggingItem!)
+//            if currentIndexPath! as NSIndexPath != proposedDropIndexPath {  // guard to move once only
+//                collectionView.animator().moveItem(at: currentIndexPath!, to: proposedDropIndexPath as IndexPath)
+//            }
+//        }
+//
+//        return .move
+//    }
+
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
         let item = collectionView.makeItem(withIdentifier: .init(CellViewUIKit.identifier), for: indexPath) as! CellViewUIKit
         let cell = sheetModel.visibleColumns[indexPath.section].getSortedCells()[indexPath.item]
 
-        item.configureCell(cell, parentView: parent.scrollView.documentView as? SheetCollectionAppKitView)
+        item.configureCell(cell, parentView: parent.scrollView.documentView as? SheetCollectionAppKitView, appState: appState)
+
         return item
     }
 

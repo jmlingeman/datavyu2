@@ -8,6 +8,12 @@
 import AppKit
 import SwiftUI
 
+enum CellHighlightState {
+    case active
+    case passed
+    case off
+}
+
 class CellViewUIKit: NSCollectionViewItem {
     static let identifier: String = "CellViewUIKit"
 
@@ -25,6 +31,11 @@ class CellViewUIKit: NSCollectionViewItem {
     var parentView: SheetCollectionAppKitView?
 
     var lastEditedField: LastEditedField = .none
+
+    var appState: AppState?
+
+    var highlightObserver: AppStateObserver?
+    var highlightStatus: CellHighlightState = .off
 
     @ObservedObject var cell: CellModel
     let dummyCell = CellModel(column: ColumnModel(sheetModel: SheetModel(sheetName: "temp"), columnName: "temp"))
@@ -58,7 +69,7 @@ class CellViewUIKit: NSCollectionViewItem {
         false
     }
 
-    func configureCell(_ cell: CellModel, parentView: SheetCollectionAppKitView?) {
+    func configureCell(_ cell: CellModel, parentView: SheetCollectionAppKitView?, appState: AppState?) {
 //        print("CONFIGURING CELL")
 
         self.cell = cell
@@ -68,6 +79,9 @@ class CellViewUIKit: NSCollectionViewItem {
         onset.stringValue = formatTimestamp(timestamp: cell.onset)
         offset.stringValue = formatTimestamp(timestamp: cell.offset)
 
+        if appState != nil {
+            highlightObserver = AppStateObserver(object: appState!, cellItem: self)
+        }
         onset.parentView = self
         offset.parentView = self
 
@@ -102,10 +116,28 @@ class CellViewUIKit: NSCollectionViewItem {
 //        print("CONFIGURED CELL \(self.onset) \(self.offset) \(self.cell) \(cell.ordinal) \(cell)")
     }
 
+    func setHighlightActive() {
+        view.layer?.borderColor = CGColor(red: 0, green: 255, blue: 0, alpha: 255)
+        view.layer?.borderWidth = 3
+        highlightStatus = CellHighlightState.active
+    }
+
+    func setHighlightPassed() {
+        view.layer?.borderColor = CGColor(red: 255, green: 0, blue: 0, alpha: 255)
+        view.layer?.borderWidth = 3
+        highlightStatus = CellHighlightState.active
+    }
+
+    func setHighlightOff() {
+        view.layer?.borderColor = CGColor(red: 0, green: 0, blue: 0, alpha: 255)
+        view.layer?.borderWidth = 3
+        highlightStatus = CellHighlightState.active
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 //        argumentsCollectionView.register(ArgumentViewUIKit.self, forItemWithIdentifier: .init(ArgumentViewUIKit.identifier))
-        configureCell(cell, parentView: parentView)
+        configureCell(cell, parentView: parentView, appState: appState)
     }
 
     override func viewDidAppear() {
@@ -141,7 +173,7 @@ class CellViewUIKit: NSCollectionViewItem {
 
     func setSelected() {
         parentView?.deselectAllCells()
-        view.layer?.borderColor = CGColor(red: 255, green: 0, blue: 0, alpha: 255)
+        view.layer?.borderColor = CGColor(red: 0, green: 0, blue: 255, alpha: 255)
         view.layer?.borderWidth = 1
         isSelected = true
         cell.column?.sheetModel?.setSelectedCell(selectedCell: cell)

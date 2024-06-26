@@ -52,6 +52,7 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
 
         if videoModels.count > 0 {
             primaryVideo = videoModels[0]
+            setPrimaryVideo(primaryVideo!)
         }
 
         for videoModel in videoModels {
@@ -62,13 +63,21 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
 
                     if videoModel.duration > self.longestDuration {
                         self.longestDuration = videoModel.duration
-                        self.primaryVideo = videoModel
+                        self.setPrimaryVideo(videoModel)
                     }
                 }
             })
             videoObservers.append(observer)
         }
         videoController = VideoController(fileModel: self)
+    }
+
+    func setPrimaryVideo(_ video: VideoModel) {
+        primaryVideo = video
+        for videoModel in videoModels {
+            videoModel.isPrimaryVideo = false
+        }
+        primaryVideo?.isPrimaryVideo = true
     }
 
     func configVideoController() {
@@ -127,7 +136,7 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
         videoModels.append(videoModel)
 
         if videoModels.count == 1 {
-            primaryVideo = videoModels[0]
+            setPrimaryVideo(videoModels[0])
         }
 
         Task {
