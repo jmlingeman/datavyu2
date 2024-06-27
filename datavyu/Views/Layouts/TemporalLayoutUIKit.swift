@@ -103,10 +103,10 @@ final class SheetCollectionAppKitView: NSCollectionView {
 //        self.animator().selectItems(at: indexSet, scrollPosition: NSCollectionView.ScrollPosition.top)
 //    }
 //
-    override func keyDown(with _: NSEvent) {
-        print("AAAA")
-//        setResponderChain()
-    }
+//    override func keyDown(with _: NSEvent) {
+//        print("AAAA")
+    ////        setResponderChain()
+//    }
 }
 
 final class HeaderCell: NSView, NSCollectionViewElement {
@@ -179,7 +179,7 @@ struct SheetLayoutCollection: NSViewRepresentable {
 
     @State var oldSheetModel: SheetModel?
 
-    @State var scrollView: NSScrollView = .init()
+    @State var scrollView: DVScrollView = .init()
 
     // MARK: - Coordinator for Delegate & Data Source & Flow Layout
 
@@ -189,10 +189,22 @@ struct SheetLayoutCollection: NSViewRepresentable {
 
     // MARK: - NSViewRepresentable
 
+    class DVScrollView: NSScrollView {
+        var appState: AppState?
+
+        override func mouseDown(with event: NSEvent) {
+            super.mouseDown(with: event)
+            print("Mouse Down")
+            appState?.fileController?.activeFileModel.sheetModel.selectedCell = nil
+            appState?.fileController?.activeFileModel.sheetModel.updateSheet()
+        }
+    }
+
     func makeNSView(context: Context) -> some NSScrollView {
-        scrollView = NSScrollView()
+        scrollView = DVScrollView()
         let collectionView = SheetCollectionAppKitView(sheetModel: sheetModel, appState: appState, parentScrollView: scrollView, layout: layout)
-//        oldSheetModel = sheetModel
+        scrollView.appState = appState
+
         collectionView.delegate = context.coordinator
         collectionView.dataSource = context.coordinator
         collectionView.allowsEmptySelection = true
@@ -420,7 +432,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         print(#function)
         let collectionView = (parent.scrollView.documentView as! SheetCollectionAppKitView)
 
-        if ip == nil || sheetModel.selectedCell == nil {
+        if ip == nil || sheetModel.selectedCell == nil || appState.quickKeyMode {
             return
         }
 

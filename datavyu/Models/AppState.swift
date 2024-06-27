@@ -18,6 +18,8 @@ public class AppState: NSObject, ObservableObject {
     @Published var zoomFactor = 1.0
     @Published var highlightMode = false
     @Published var focusMode = false
+    @Published var quickKeyMode = false
+
     @objc dynamic var playbackTime = 0.0
 
     func setControllerWindow(win: NSWindow) {

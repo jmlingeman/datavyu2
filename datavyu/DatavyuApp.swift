@@ -29,6 +29,11 @@ struct DatavyuApp: App {
     @StateObject var appState: AppState = .init()
 
     @Environment(\.openWindow) private var openWindow
+    private let keyInputSubject = KeyInputSubjectWrapper()
+
+    func keyInput(_ key: KeyEquivalent, modifiers: EventModifiers = .none) -> some View {
+        keyboardShortcut(key, sender: keyInputSubject, modifiers: modifiers)
+    }
 
     var body: some Scene {
         WindowGroup {
@@ -82,6 +87,16 @@ struct DatavyuApp: App {
                                       showingAlert.toggle()
                                   }
                               })
+                .onReceive(keyInputSubject) { c in
+                    let cell = fileController.activeFileModel.sheetModel.getSelectedColumns().first?.addCell()
+                    cell?.setArgumentValue(index: 0, value: String(c.character))
+                    let time = secondsToMillis(secs: fileController.activeFileModel.currentTime())
+                    cell?.onset = time
+                    cell?.offset = time
+                    fileController.activeFileModel.sheetModel.selectedCell = cell
+                    fileController.activeFileModel.sheetModel.updateSheet()
+                }
+                .environmentObject(keyInputSubject)
         }.commands {
             CommandGroup(after: CommandGroupPlacement.appVisibility) {
                 Button("Check for Updates") {
@@ -160,6 +175,9 @@ struct DatavyuApp: App {
                 Button("Hide/Show Columns") {
                     showingColHideShow.toggle()
                 }
+                Button(appState.quickKeyMode ? "Enable Quick Key Mode" : "Disable Quick Key Mode") {
+                    appState.quickKeyMode.toggle()
+                }.keyboardShortcut(KeyEquivalent("k"), modifiers: [.command, .shift])
             }
 
             // A blank CommandMenu name hides the menu from the UI
@@ -167,6 +185,10 @@ struct DatavyuApp: App {
             // showing this to the user.
 
             CommandMenu("") {
+                ForEach(Config.quickKeyCharacters.split(separator: ""), id: \.self) { c in
+                    keyInput(KeyEquivalent(c.first!)).disabled(!appState.quickKeyMode)
+                }
+                keyInput(KeyEquivalent("a"), modifiers: .none)
                 // Numpad shortcut buttons
                 Button("Set\nOnset") {
                     fileController.activeFileModel.videoController!.setOnset()
@@ -278,51 +300,3 @@ struct DatavyuApp: App {
         }
     }
 }
-
-// class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
-//
-//    func applicationDidFinishLaunching(_ notification: Notification) {
-//        // Set window delegate so we get close notifications
-//        NSApp.windows.first?.delegate = self
-//        // Restore last window frame
-//        if let frameDescription = UserDefaults.standard.string(forKey: "MainWindowFrame") {
-//            // To prevent the window from jumping we hide it
-//            mainWindow.orderOut(self)
-//            Task { @MainActor in
-//                // Setting the frame only works after a short delay
-//                try? await Task.sleep(for: .seconds(0.5))
-//                mainWindow.setFrame(from: frameDescription)
-//                // Show the window
-//                mainWindow.makeKeyAndOrderFront(nil)
-//            }
-//        }
-//    }
-//
-//    func windowShouldClose(_ sender: NSWindow) -> Bool {
-//        if let mainWindow = NSApp.windows.first {
-//            UserDefaults.standard.set(mainWindow.frameDescriptor, forKey: "MainWindowFrame")
-//        }
-//        return true
-//    }
-//
-//    func applicationWillTerminate(_ notification: Notification) {
-//        if let mainWindow = NSApp.windows.first {
-//            UserDefaults.standard.set(mainWindow.frameDescriptor, forKey: "MainWindowFrame")
-//        }
-//    }
-//
-//    func applicationDidFinishLaunching(_ notification: Notification) {
-//        let mainWindow = NSApp.windows.first
-//        mainWindow?.delegate = self
-//    }
-//
-//    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
-//        let mainWindow = NSApp.windows.first
-//        if flag {
-//            mainWindow?.orderFront(nil)
-//        } else {
-//            mainWindow?.makeKeyAndOrderFront(nil)
-//        }
-//        return true
-//    }
-// }
