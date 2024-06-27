@@ -125,13 +125,13 @@ class CellViewUIKit: NSCollectionViewItem {
     func setHighlightPassed() {
         view.layer?.borderColor = CGColor(red: 255, green: 0, blue: 0, alpha: 255)
         view.layer?.borderWidth = 3
-        highlightStatus = CellHighlightState.active
+        highlightStatus = CellHighlightState.passed
     }
 
     func setHighlightOff() {
         view.layer?.borderColor = CGColor(red: 0, green: 0, blue: 0, alpha: 255)
         view.layer?.borderWidth = 3
-        highlightStatus = CellHighlightState.active
+        highlightStatus = CellHighlightState.off
     }
 
     override func viewDidLoad() {
@@ -173,8 +173,10 @@ class CellViewUIKit: NSCollectionViewItem {
 
     func setSelected() {
         parentView?.deselectAllCells()
-        view.layer?.borderColor = CGColor(red: 0, green: 0, blue: 255, alpha: 255)
-        view.layer?.borderWidth = 1
+        if highlightStatus == .off {
+            view.layer?.borderColor = CGColor(red: 0, green: 0, blue: 255, alpha: 255)
+            view.layer?.borderWidth = 1
+        }
         isSelected = true
         cell.column?.sheetModel?.setSelectedCell(selectedCell: cell)
     }
@@ -186,11 +188,8 @@ class CellViewUIKit: NSCollectionViewItem {
 
     func focusArgument(_ ip: IndexPath) {
         print(#function)
+        parentView?.window?.makeFirstResponder(cellTextField)
         cellTextField.selectArgument(idx: ip.item)
-//        let nextArg = argumentsCollectionView?.item(at: ip) as! ArgumentViewUIKit
-//        print("selecting arg \(nextArg)")
-//        parentView?.lastEditedArgument = nextArg.argument
-//        parentView?.window?.makeFirstResponder(nextArg.argumentValue)
     }
 
     func focusOnset() {

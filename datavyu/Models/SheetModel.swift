@@ -67,19 +67,21 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
 
     func setSelectedColumn(model: ColumnModel, suppress_update: Bool = false) {
         print("Setting column \(model.columnName) to selected")
-        for column in columns {
-            if model == column {
-                if column.sheetModel?.selectedCell?.column != column {
-                    column.sheetModel?.setSelectedCell(selectedCell: nil)
-                }
-                column.isSelected = true
+        DispatchQueue.main.async {
+            for column in self.columns {
+                if model == column {
+                    if column.sheetModel?.selectedCell?.column != column {
+                        column.sheetModel?.setSelectedCell(selectedCell: nil)
+                    }
+                    column.isSelected = true
 
-            } else {
-                column.isSelected = false
+                } else {
+                    column.isSelected = false
+                }
             }
-        }
-        if !suppress_update {
-            updateSheet()
+            if !suppress_update {
+                self.updateSheet()
+            }
         }
     }
 

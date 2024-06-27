@@ -63,15 +63,19 @@ public class VideoModel: ObservableObject, Identifiable, Equatable, Hashable, Co
     }
 
     func populateMetadata() async throws {
-        let asset = player.currentItem?.asset
+        let asset = await player.currentItem?.asset
 
         if asset != nil {
             let tracks = try await asset!.loadTracks(withMediaType: .video)
             //                let tracks = asset!.tracks(withMediaType: .video)
             if tracks.count > 0 {
-                fps = try await tracks.first!.load(.nominalFrameRate) as Float
+                let fpsPromise = try await tracks.first!.load(.nominalFrameRate) as Float
                 let durTime = try await asset!.load(.duration) as CMTime
-                duration = durTime.seconds
+
+                DispatchQueue.main.async {
+                    self.fps = fpsPromise
+                    self.duration = durTime.seconds
+                }
             }
         }
     }

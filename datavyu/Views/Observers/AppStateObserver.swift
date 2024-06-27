@@ -11,6 +11,7 @@ class AppStateObserver: NSObject {
     @objc var appState: AppState
     var cellItem: CellViewUIKit
     var observation: NSKeyValueObservation?
+    var isSet = false
 
     init(object: AppState, cellItem: CellViewUIKit) {
         appState = object
@@ -20,13 +21,17 @@ class AppStateObserver: NSObject {
         observation = observe(
             \.appState.playbackTime,
             options: [.old, .new]
-        ) { _, change in
-            print("myDate changed from: \(change.oldValue!), updated to: \(change.newValue!)")
+        ) { _, _ in
             let playbackTimeMs = secondsToMillis(secs: self.appState.playbackTime)
             if self.appState.highlightMode {
-                if playbackTimeMs >= self.cellItem.cell.onset, playbackTimeMs <= self.cellItem.cell.offset {
+                if !self.isSet, playbackTimeMs >= self.cellItem.cell.onset, playbackTimeMs <= self.cellItem.cell.offset {
                     cellItem.setHighlightActive()
+                    self.isSet = true
+                    if self.appState.focusMode {
+                        cellItem.focusArgument(IndexPath(item: 0, section: 0))
+                    }
                 } else if playbackTimeMs >= self.cellItem.cell.offset {
+                    self.isSet = false
                     cellItem.setHighlightPassed()
                 }
             }
