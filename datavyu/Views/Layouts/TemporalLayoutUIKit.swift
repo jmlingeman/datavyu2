@@ -49,6 +49,7 @@ final class SheetCollectionAppKitView: NSCollectionView {
     private var rightClickIndex: Int = NSNotFound
     var lastEditedArgument: Argument? = nil
     var floatingHeaders: [ColumnModel: NSHostingView<Header>] = [:]
+    var newColumnHeader: NSHostingView<NewColumnQuickButton>? = nil
 
     init(sheetModel: SheetModel, appState: AppState, parentScrollView: NSScrollView, layout: LayoutChoice) {
         self.sheetModel = sheetModel
@@ -171,6 +172,31 @@ struct Header: View {
     }
 }
 
+struct NewColumnQuickButton: View {
+    @ObservedObject var appState: AppState
+    @State var showingAlert: Bool = false
+    @State var columnName: String = ""
+
+    var body: some View {
+        Button {
+            showingAlert.toggle()
+        } label: {
+            Image(systemName: "plus")
+        }.onAppear(perform: {
+            columnName = appState.fileController!.activeFileModel.sheetModel.getNextDefaultColumnName()
+        }).alert("New Column", isPresented: $showingAlert) {
+            TextField("Column Name", text: $columnName)
+            Button("OK") {
+                let _ = appState.fileController?.activeFileModel.sheetModel.addColumn(columnName: columnName)
+            }
+            Button("Cancel") {
+                columnName = ""
+                showingAlert.toggle()
+            }
+        }
+    }
+}
+
 struct SheetLayoutCollection: NSViewRepresentable {
     @ObservedObject var sheetModel: SheetModel
     @ObservedObject var layout: LayoutChoice
@@ -245,6 +271,7 @@ struct SheetLayoutCollection: NSViewRepresentable {
                 }
             }
 
+            // Set up floating headers
             for (i, column) in sheetModel.visibleColumns.enumerated() {
                 let floatingHeader = NSHostingView(rootView: Header(columnModel: sheetModel.visibleColumns[i], appState: appState))
                 floatingHeader.frame = NSRect(origin: NSPoint(x: Int(Config.defaultCellWidth * appState.zoomFactor) * i,
@@ -261,6 +288,13 @@ struct SheetLayoutCollection: NSViewRepresentable {
                 collectionView.floatingHeaders[column] = floatingHeader
                 scrollView.addFloatingSubview(floatingHeader, for: .vertical)
             }
+            let newColumnHeader = NSHostingView(rootView: NewColumnQuickButton(appState: appState))
+            newColumnHeader.frame = NSRect(origin: NSPoint(x: Int(Config.defaultCellWidth * appState.zoomFactor) * sheetModel.visibleColumns.count, y: 0),
+                                           size: NSSize(width: Config.headerSize,
+                                                        height: Config.headerSize))
+            collectionView.newColumnHeader?.removeFromSuperview()
+            collectionView.newColumnHeader = newColumnHeader
+            scrollView.addFloatingSubview(newColumnHeader, for: .vertical)
 
             context.coordinator.itemSize = itemSize
             var selectionIndexPath = collectionView.selectionIndexPaths.first
