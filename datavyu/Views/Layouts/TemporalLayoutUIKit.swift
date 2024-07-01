@@ -152,7 +152,7 @@ struct Header: View {
                     EditableLabel($columnModel.columnName).font(.system(size: Config.defaultCellTextSize * appState.zoomFactor)).frame(alignment: .center)
                     VStack {
                         Toggle(isOn: $columnModel.isFinished, label: {
-                            Text("Finished")
+                            Image(systemName: "lock.fill")
                         }).onChange(of: $columnModel.isFinished.wrappedValue) {
                             columnModel.update()
                         }.toggleStyle(CheckboxToggleStyle()).frame(maxWidth: .infinity, alignment: .bottomTrailing)
