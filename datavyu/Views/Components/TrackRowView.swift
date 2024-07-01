@@ -34,7 +34,7 @@ struct TrackRowView: View {
                 }
             }, label: {
                 Image(systemName: "waveform.circle.fill")
-            }).menuIndicator(.hidden).buttonBorderShape(.capsule).frame(width: 30)
+            }).menuIndicator(.hidden).buttonBorderShape(.capsule).frame(width: 35)
 
             Button {
                 videoModel.isHidden.toggle()
@@ -45,7 +45,7 @@ struct TrackRowView: View {
                 }
             } label: {
                 Image(systemName: videoModel.isHidden ? "eye.slash.fill" : "eye.fill")
-            }
+            }.frame(width: 35)
 
             Button {
                 showingVolumeControl.toggle()
@@ -62,7 +62,9 @@ struct TrackRowView: View {
                     .onChange(of: volume) { _, newValue in
                         videoModel.changeVolume(newVolume: newValue)
                     }
-            })
+            }).frame(width: 35)
+
+            Rectangle().frame(width: 10).opacity(0)
 
             TrackView(videoModel: videoModel,
                       fileModel: fileModel,
@@ -75,6 +77,8 @@ struct TrackRowView: View {
                         TrackPositionIndicator(fileModel: fileModel, videoModel: fileModel.primaryVideo!)
                     }
                 }.frame(maxWidth: .infinity)
+
+            Rectangle().frame(width: 10).opacity(0)
         }.frame(height: 30)
     }
 }

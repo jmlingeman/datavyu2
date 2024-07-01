@@ -23,6 +23,9 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
 
     @Published var videoController: VideoController?
 
+    @Published var leftRegionTime: Double = 0
+    @Published var rightRegionTime: Double = .greatestFiniteMagnitude
+
     var videoObservers: [NSKeyValueObservation] = []
 
     var currentShuttleSpeedIdx: Int = 0
@@ -82,6 +85,18 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
 
     func configVideoController() {
         videoController = VideoController(fileModel: self)
+    }
+
+    func snapToRegion() {
+        if sheetModel.selectedCell != nil {
+            leftRegionTime = millisToSeconds(millis: sheetModel.selectedCell!.onset)
+            rightRegionTime = millisToSeconds(millis: sheetModel.selectedCell!.offset)
+        }
+    }
+
+    func clearRegion() {
+        leftRegionTime = -0.05
+        rightRegionTime = primaryVideo?.getDuration() ?? 0 + 0.05
     }
 
     func copy() -> FileModel {

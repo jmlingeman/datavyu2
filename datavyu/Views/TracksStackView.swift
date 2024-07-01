@@ -8,6 +8,8 @@ struct TracksStackView: View {
     @State private var showingSaveDialog = false
     @EnvironmentObject private var appState: AppState
 
+    @State var trackPosStart: CGFloat = 0
+
     func syncVideos() {
         if fileModel.primaryVideo != nil, fileModel.videoModels.count > 1, fileModel.primaryVideo!.selectedMarker != nil {
             fileModel.primaryVideo!.syncMarker = fileModel.primaryVideo!.selectedMarker
@@ -43,17 +45,27 @@ struct TracksStackView: View {
     var body: some View {
         Grid {
             GridRow {
-                GeometryReader { _ in
-                    Grid {
-                        ForEach($fileModel.videoModels) { $videoModel in
-                            TrackRowView(fileModel: fileModel, videoModel: videoModel, appState: appState)
+                GeometryReader { gr in
+                    ZStack {
+                        Grid {
+                            ForEach($fileModel.videoModels) { $videoModel in
+                                TrackRowView(fileModel: fileModel, videoModel: videoModel, appState: appState).onAppear {
+                                    trackPosStart = gr.frame(in: .global).minX
+                                    print(trackPosStart)
+                                }
+                            }
                         }
                     }
                 }
             }
+            GridRow {
+                overlayButtons
+            }
 
-        }.overlay(alignment: .bottomTrailing) {
-            overlayButtons
+        }.overlay(alignment: .leading) {
+            GeometryReader { gr in
+                TrackSnapOverlay(gr: gr, fileModel: fileModel)
+            }
         }
     }
 

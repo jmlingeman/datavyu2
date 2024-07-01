@@ -28,6 +28,20 @@ struct VideoView: View {
                         if videoModel.isPrimaryVideo {
                             appState.playbackTime = time.seconds
                         }
+
+                        if videoModel.currentTime < appState.fileController!.activeFileModel.leftRegionTime {
+                            videoModel.stop()
+                            videoModel.seek(to: appState.fileController!.activeFileModel.leftRegionTime) {
+                                appState.fileController!.activeFileModel.leftRegionTime = videoModel.currentTime
+                            }
+                        }
+
+                        if videoModel.currentTime > appState.fileController!.activeFileModel.rightRegionTime {
+                            videoModel.stop()
+                            videoModel.seek(to: appState.fileController!.activeFileModel.rightRegionTime) {
+                                appState.fileController!.activeFileModel.rightRegionTime = videoModel.currentTime
+                            }
+                        }
                     }
                 }
                 .frame(minWidth: 250,

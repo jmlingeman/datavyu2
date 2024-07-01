@@ -151,7 +151,7 @@ public class VideoModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         player.volume
     }
 
-    func seek(to: Double) {
+    func seek(to: Double, callback: (() -> Void)? = nil) {
         let jumpTime: Double
         if to + syncOffset > getDuration() {
             jumpTime = getDuration()
@@ -162,6 +162,7 @@ public class VideoModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         player.currentItem!.seek(to: time, toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero) { finished in
             if finished {
                 self.updateTimes()
+                callback?()
             }
         }
     }

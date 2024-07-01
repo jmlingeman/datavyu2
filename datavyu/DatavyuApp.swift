@@ -178,6 +178,16 @@ struct DatavyuApp: App {
                 Button(appState.quickKeyMode ? "Enable Quick Key Mode" : "Disable Quick Key Mode") {
                     appState.quickKeyMode.toggle()
                 }.keyboardShortcut(KeyEquivalent("k"), modifiers: [.command, .shift])
+
+                Divider()
+
+                Button("Snap Region to Selected Cell") {
+                    appState.fileController?.activeFileModel.snapToRegion()
+                }.keyboardShortcut(KeyEquivalent("+"), modifiers: .control)
+
+                Button("Clear Selected Region") {
+                    appState.fileController?.activeFileModel.clearRegion()
+                }.keyboardShortcut(KeyEquivalent("-"), modifiers: .control)
             }
 
             // A blank CommandMenu name hides the menu from the UI
@@ -188,7 +198,7 @@ struct DatavyuApp: App {
                 ForEach(Config.quickKeyCharacters.split(separator: ""), id: \.self) { c in
                     keyInput(KeyEquivalent(c.first!)).disabled(!appState.quickKeyMode)
                 }
-                keyInput(KeyEquivalent("a"), modifiers: .none)
+
                 // Numpad shortcut buttons
                 Button("Set\nOnset") {
                     fileController.activeFileModel.videoController!.setOnset()
