@@ -70,20 +70,34 @@ struct TracksStackView: View {
     }
 
     var overlayButtons: some View {
-        HStack(alignment: .bottom) {
-            Spacer()
-            Button("Cell Highlighting") {
-                // TODO: highlight and focus
-                appState.toggleHighlightMode()
+        VStack {
+            HStack {
+                Spacer()
+                Button("Snap Region") {
+                    appState.fileController?.activeFileModel.snapToRegion()
+                }
+                Button("Clear Region") {
+                    appState.fileController?.activeFileModel.clearRegion()
+                }
+                Button("Lock All") {
+                    // TODO: Implement track locking.
+                }
             }
-            Button("Highlight + Focus") {
-                // TODO: highlight and focus
-                appState.toggleFocusMode()
+            HStack(alignment: .bottom) {
+                Spacer()
+                Button(appState.highlightMode ? "Enable Cell Highlighting" : "Disable Cell Highlighting") {
+                    // TODO: highlight and focus
+                    appState.toggleHighlightMode()
+                }
+                Button(appState.focusMode ? "Enable Highlight + Focus" : "Disable Highlight + Focus") {
+                    // TODO: highlight and focus
+                    appState.toggleFocusMode()
+                }
+                Button("Sync Videos", action: syncVideos)
+                Button("Add Video", action: {
+                    addVideo()
+                })
             }
-            Button("Sync Videos", action: syncVideos)
-            Button("Add Video", action: {
-                addVideo()
-            })
         }
     }
 }

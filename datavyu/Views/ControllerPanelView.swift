@@ -55,8 +55,7 @@ struct ControllerPanelView: View {
                     ControllerButton(buttonName: "Shuttle >", action: fileModel.videoController!.shuttleStepUp)
                         .keyboardShortcut("6", modifiers: .numericPad)
                         .keyboardShortcut("'")
-                    ControllerButton(buttonName: "Find", action: fileModel.videoController!.findOnset)
-                        .keyboardShortcut("+", modifiers: .numericPad)
+                    TextField("Jump by", text: $jumpValue).frame(width: 100)
                 }
                 GridRow {
                     ControllerButton(buttonName: "Prev", action: fileModel.videoController!.prevFrame)
@@ -68,7 +67,8 @@ struct ControllerPanelView: View {
                     ControllerButton(buttonName: "Next", action: fileModel.videoController!.nextFrame)
                         .keyboardShortcut("3", modifiers: .numericPad)
                         .keyboardShortcut("=")
-                    TextField("Jump by", text: $jumpValue).frame(width: 100)
+                    ControllerButton(buttonName: "Find", action: fileModel.videoController!.findOnset)
+                        .keyboardShortcut("+", modifiers: .numericPad)
                 }
                 GridRow {
                     ControllerButton(buttonName: "Add\nCell", action: fileModel.videoController!.addCell)
