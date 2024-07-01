@@ -47,19 +47,59 @@ struct ControllerButtonLabel: View {
     }
 }
 
+struct ControllerButtonKeyLabel: View {
+    var buttonName: String
+
+    var body: some View {
+        switch buttonName {
+        case "Set\nOnset":
+            Text("7")
+        case "Set\nOffset":
+            Text("9")
+        case "Play":
+            Text("8")
+        case "Stop":
+            Text("5")
+        case "Shuttle <":
+            Text("4")
+        case "Shuttle >":
+            Text("6")
+        case "Pause":
+            Text("2")
+        case "Prev":
+            Text("1")
+        case "Next":
+            Text("3")
+        case "Add\nCell":
+            Text("enter")
+        case "Set\nOffset\n+ Add":
+            Text("0")
+        case "Jump":
+            Text("-")
+        case "Find":
+            Text("+")
+        default:
+            Text("")
+        }
+    }
+}
+
 struct ControllerButton: View {
     var buttonName: String
     var action: () -> Void
 
     var body: some View {
-        Button(action: action) {
-            ControllerButtonLabel(buttonName: buttonName).font(.system(size: 20))
-                .multilineTextAlignment(.center)
-                .padding()
-                .background(RoundedRectangle(cornerRadius: 8).fill(Color.secondary))
-                .aspectRatio(1.5, contentMode: .fit)
-        }
-        .buttonStyle(PlainButtonStyle())
-        .frame(width: 100, height: 80)
+        ZStack {
+            ControllerButtonKeyLabel(buttonName: buttonName).offset(x: -20, y: -18)
+            Button(action: action) {
+                ControllerButtonLabel(buttonName: buttonName).font(.system(size: 20))
+                    .multilineTextAlignment(.center)
+                    .padding()
+                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.secondary))
+                    .aspectRatio(1.5, contentMode: .fit)
+            }
+            .buttonStyle(PlainButtonStyle())
+
+        }.frame(width: 100, height: 80)
     }
 }
