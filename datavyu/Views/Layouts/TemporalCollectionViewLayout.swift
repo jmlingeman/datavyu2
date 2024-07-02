@@ -29,6 +29,7 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
         var maxWidth: CGFloat
         var cellLayouts: [CellInfo: NSCollectionViewLayoutAttributes]
         var headerLayouts: [Int: NSCollectionViewLayoutAttributes]
+        var newCellButtonLayout: [Int: NSCollectionViewLayoutAttributes]
     }
 
     var cache: CacheData = .init(
@@ -36,7 +37,8 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
         maxHeight: 0,
         maxWidth: 0,
         cellLayouts: [CellInfo: NSCollectionViewLayoutAttributes](),
-        headerLayouts: [Int: NSCollectionViewLayoutAttributes]()
+        headerLayouts: [Int: NSCollectionViewLayoutAttributes](),
+        newCellButtonLayout: [Int: NSCollectionViewLayoutAttributes]()
     )
     override var collectionViewContentSize: NSSize {
         NSSize(width: cache.maxWidth, height: cache.maxHeight)
@@ -75,6 +77,7 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
 
         var cellLayouts = [CellInfo: NSCollectionViewLayoutAttributes]()
         var headerLayouts = [Int: NSCollectionViewLayoutAttributes]()
+        var newCellLayouts = [Int: NSCollectionViewLayoutAttributes]()
 
         for (colIdx, column) in sheetModel.visibleColumns.enumerated() {
             for (cellIdx, cell) in column.getSortedCells().enumerated() {
@@ -86,6 +89,12 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
             headerLayout.frame.size = CGSize(width: columnSize, height: Config.headerSize)
             headerLayout.size = CGSize(width: columnSize, height: Config.headerSize)
             headerLayouts[colIdx] = headerLayout
+
+            let newCellLayout = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: "newcell", with: IndexPath(item: column.getSortedCells().count + 1, section: colIdx))
+            newCellLayouts[colIdx] = newCellLayout
+            newCellLayout.frame.origin = CGPoint(x: Int(columnSize) * colIdx, y: 0)
+            newCellLayout.frame.size = CGSize(width: columnSize, height: Config.headerSize)
+            newCellLayout.size = CGSize(width: columnSize, height: Config.headerSize)
         }
 
         /*
@@ -159,6 +168,8 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
          (starting from onset map's value and ending at the offset's value), update the local copy of
          the onset map to get positions for cells sharing onsets.
          */
+
+        var colHeights = [Int: Double]()
         for colIdx in columnViews.keys {
             var colHeight = 0.0
             var onsetMapLocal: [Int: Double] = onsetToPos
@@ -214,7 +225,16 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
                 prevCell = curCell
             }
 
+            colHeights[colIdx] = colHeight
             cache.maxHeight = max(cache.maxHeight, colHeight)
+        }
+
+        for (colIdx, column) in sheetModel.visibleColumns.enumerated() {
+            let newCellLayout = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: "newcell", with: IndexPath(item: column.getSortedCells().count + 1, section: colIdx))
+            newCellLayouts[colIdx] = newCellLayout
+            newCellLayout.frame.origin = CGPoint(x: Int(columnSize) * colIdx, y: Int(colHeights[colIdx] ?? Config.headerSize))
+            newCellLayout.frame.size = CGSize(width: columnSize, height: Config.headerSize)
+            newCellLayout.size = CGSize(width: columnSize, height: Config.headerSize)
         }
 
         var i = 0
@@ -238,12 +258,14 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
             }
 
             indexToLayout[headerLayouts[colIdx]!.indexPath!] = headerLayouts[colIdx]
+            indexToLayout[newCellLayouts[colIdx]!.indexPath!] = newCellLayouts[colIdx]
         }
 
         cache.indexToLayout = indexToLayout
         cache.cellLayouts = cellLayouts
         cache.maxWidth = Double(sheetModel.visibleColumns.count) * columnSize
         cache.headerLayouts = headerLayouts
+        cache.newCellButtonLayout = newCellLayouts
     }
 
     override func layoutAttributesForElements(in rect: NSRect) -> [NSCollectionViewLayoutAttributes] {
@@ -257,7 +279,11 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
         for colIdx in cache.headerLayouts.keys {
             let layout = cache.headerLayouts[colIdx]!
             layouts.append(layout)
+
+            let newCellLayout = cache.newCellButtonLayout[colIdx]!
+            layouts.append(newCellLayout)
         }
+
         return layouts
     }
 

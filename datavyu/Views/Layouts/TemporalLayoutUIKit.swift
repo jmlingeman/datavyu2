@@ -197,6 +197,49 @@ struct NewColumnQuickButton: View {
     }
 }
 
+struct NewCellQuickButton: View {
+    @ObservedObject var column: ColumnModel
+
+    var body: some View {
+        Button {
+            let _ = column.addCell()
+            column.update()
+        } label: {
+            HStack {
+                Image(systemName: "plus.rectangle")
+                    .imageScale(.large)
+                    .frame(width: Config.defaultCellWidth, height: Config.headerSize)
+            }.background(Color(red: 40 / 256.0, green: 40 / 256.0, blue: 40 / 256.0))
+        }.buttonStyle(PlainButtonStyle())
+    }
+}
+
+final class NewCellQuickButtonCell: NSView, NSCollectionViewElement {
+    static let identifier: String = "newcell"
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+    }
+
+    @available(*, unavailable)
+    @objc dynamic required init?(coder _: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func setView<Content>(_ newValue: Content) where Content: View {
+        for view in subviews {
+            view.removeFromSuperview()
+        }
+        let view = NSHostingView(rootView: newValue)
+        view.autoresizingMask = [.width, .height]
+        view.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(view)
+        view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        view.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        view.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    }
+}
+
 struct SheetLayoutCollection: NSViewRepresentable {
     @ObservedObject var sheetModel: SheetModel
     @ObservedObject var layout: LayoutChoice
@@ -238,7 +281,8 @@ struct SheetLayoutCollection: NSViewRepresentable {
         collectionView.isSelectable = true
 
         collectionView.register(CellViewUIKit.self, forItemWithIdentifier: .init(CellViewUIKit.identifier))
-        collectionView.register(HeaderCell.self, forSupplementaryViewOfKind: "header", withIdentifier: .init(HeaderCell.identifier))
+        collectionView.register(HeaderCell.self, forSupplementaryViewOfKind: HeaderCell.identifier, withIdentifier: .init(HeaderCell.identifier))
+        collectionView.register(NewCellQuickButtonCell.self, forSupplementaryViewOfKind: NewCellQuickButtonCell.identifier, withIdentifier: .init(NewCellQuickButtonCell.identifier))
 
         scrollView.documentView = collectionView
         scrollView.hasHorizontalScroller = true
@@ -551,13 +595,19 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
 
     func collectionView(_ collectionView: NSCollectionView, viewForSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind, at indexPath: IndexPath) -> NSView {
         print(#function)
-        let item = collectionView.makeSupplementaryView(ofKind: kind, withIdentifier: .init(HeaderCell.identifier), for: indexPath) as! HeaderCell
+        if kind == HeaderCell.identifier {
+            let item = collectionView.makeSupplementaryView(ofKind: kind, withIdentifier: .init(HeaderCell.identifier), for: indexPath) as! HeaderCell
 
-        if sheetModel.visibleColumns.count > 0 {
-            item.setView(Header(columnModel: sheetModel.visibleColumns[indexPath.section], appState: appState))
-
+            if sheetModel.visibleColumns.count > 0 {
+                item.setView(Header(columnModel: sheetModel.visibleColumns[indexPath.section], appState: appState))
+            }
             return item
+
         } else {
+            let item = collectionView.makeSupplementaryView(ofKind: kind, withIdentifier: .init(NewCellQuickButtonCell.identifier), for: indexPath) as! NewCellQuickButtonCell
+            if sheetModel.visibleColumns.count > 0 {
+                item.setView(NewCellQuickButton(column: sheetModel.visibleColumns[indexPath.section]))
+            }
             return item
         }
     }

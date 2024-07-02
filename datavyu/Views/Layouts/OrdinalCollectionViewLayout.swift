@@ -15,6 +15,7 @@ class OrdinalCollectionViewLayout: TemporalCollectionViewLayout {
 
         var cellLayouts = [CellInfo: NSCollectionViewLayoutAttributes]()
         var headerLayouts = [Int: NSCollectionViewLayoutAttributes]()
+        var newCellLayouts = [Int: NSCollectionViewLayoutAttributes]()
 
         for (colIdx, column) in sheetModel.visibleColumns.enumerated() {
             for (cellIdx, cell) in column.getSortedCells().enumerated() {
@@ -26,6 +27,9 @@ class OrdinalCollectionViewLayout: TemporalCollectionViewLayout {
             headerLayout.frame.size = CGSize(width: columnSize, height: Config.headerSize)
             headerLayout.size = CGSize(width: columnSize, height: Config.headerSize)
             headerLayouts[colIdx] = headerLayout
+
+            let newCellLayout = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: "newcell", with: IndexPath(item: column.getSortedCells().count + 1, section: colIdx))
+            newCellLayouts[colIdx] = newCellLayout
         }
 
         /*
@@ -65,6 +69,7 @@ class OrdinalCollectionViewLayout: TemporalCollectionViewLayout {
          (starting from onset map's value and ending at the offset's value), update the local copy of
          the onset map to get positions for cells sharing onsets.
          */
+        var colHeights = [Int: Double]()
         for colIdx in columnViews.keys {
             var colHeight = Config.headerSize
             let colCells = columnViews[colIdx]!
@@ -79,7 +84,16 @@ class OrdinalCollectionViewLayout: TemporalCollectionViewLayout {
                 colHeight = colHeight + cellHeight
             }
 
+            colHeights[colIdx] = colHeight
             cache.maxHeight = max(cache.maxHeight, colHeight)
+        }
+
+        for (colIdx, column) in sheetModel.visibleColumns.enumerated() {
+            let newCellLayout = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: "newcell", with: IndexPath(item: column.getSortedCells().count + 1, section: colIdx))
+            newCellLayouts[colIdx] = newCellLayout
+            newCellLayout.frame.origin = CGPoint(x: Int(columnSize) * colIdx, y: Int(colHeights[colIdx] ?? Config.headerSize))
+            newCellLayout.frame.size = CGSize(width: columnSize, height: Config.headerSize)
+            newCellLayout.size = CGSize(width: columnSize, height: Config.headerSize)
         }
 
         var i = 0
@@ -97,11 +111,13 @@ class OrdinalCollectionViewLayout: TemporalCollectionViewLayout {
             }
 
             indexToLayout[headerLayouts[colIdx]!.indexPath!] = headerLayouts[colIdx]
+            indexToLayout[newCellLayouts[colIdx]!.indexPath!] = newCellLayouts[colIdx]
         }
 
         cache.indexToLayout = indexToLayout
         cache.cellLayouts = cellLayouts
         cache.maxWidth = Double(sheetModel.visibleColumns.count) * columnSize
         cache.headerLayouts = headerLayouts
+        cache.newCellButtonLayout = newCellLayouts
     }
 }
