@@ -181,7 +181,7 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
             })
 
             sheetModel?.fileModel?.setFileChanged()
-
+            update()
             return cell
         }
         return nil

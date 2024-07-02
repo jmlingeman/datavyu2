@@ -206,14 +206,43 @@ struct DatavyuApp: App {
                         fileController.activeFileModel.sheetModel.deleteColumn(column: column)
                     }
                 }
+                Button("Show All Columns") {
+                    for column in fileController.activeFileModel.sheetModel.columns {
+                        column.setHidden(val: false)
+                    }
+                }
+                Button("Hide Column") {
+                    fileController.activeFileModel.sheetModel.getSelectedColumns().first?.setHidden(val: true)
+                }.keyboardShortcut(KeyEquivalent("h"), modifiers: .command)
+                Button("Hide/Show Columns") {
+                    showingColHideShow.toggle()
+                }
                 Divider()
                 Button("Add Cell") {
                     let col = fileController.activeFileModel.sheetModel.getSelectedColumns().first
-                    col?.addCell()
+                    let _ = col?.addCell()
                 }
                 Button("Delete Cell") {
                     fileController.activeFileModel.sheetModel.selectedCell?.deleteCell()
-                }
+                }.keyboardShortcut(KeyEquivalent("\\"), modifiers: .command)
+                Button("Add Cell in Column to the Left") {
+                    let selectedCell = fileController.activeFileModel.sheetModel.selectedCell
+                    if selectedCell != nil {
+                        let colIdx = fileController.activeFileModel.sheetModel.visibleColumns.firstIndex(of: selectedCell!.column!)! - 1
+                        if colIdx >= 0 {
+                            let _ = fileController.activeFileModel.sheetModel.visibleColumns[colIdx].addCell(onset: selectedCell!.onset, offset: selectedCell!.offset)
+                        }
+                    }
+                }.keyboardShortcut(KeyEquivalent("l"), modifiers: .command)
+                Button("Add Cell in Column to the Right") {
+                    let selectedCell = fileController.activeFileModel.sheetModel.selectedCell
+                    if selectedCell != nil {
+                        let colIdx = fileController.activeFileModel.sheetModel.visibleColumns.firstIndex(of: selectedCell!.column!)! + 1
+                        if colIdx < fileController.activeFileModel.sheetModel.visibleColumns.count {
+                            let _ = fileController.activeFileModel.sheetModel.visibleColumns[colIdx].addCell(onset: selectedCell!.onset, offset: selectedCell!.offset)
+                        }
+                    }
+                }.keyboardShortcut(KeyEquivalent("r"), modifiers: .command)
                 Divider()
                 Button("Edit Columns/Arguments") {
                     showingCodeEditor.toggle()
@@ -225,12 +254,6 @@ struct DatavyuApp: App {
                     Text("Switch Spreadsheet Layout")
                 }.keyboardShortcut(KeyEquivalent("t"), modifiers: .command)
                 Divider()
-                Button("Hide Column") {
-                    fileController.activeFileModel.sheetModel.getSelectedColumns().first?.setHidden(val: true)
-                }
-                Button("Hide/Show Columns") {
-                    showingColHideShow.toggle()
-                }
                 Button(appState.quickKeyMode ? "Enable Quick Key Mode" : "Disable Quick Key Mode") {
                     appState.quickKeyMode.toggle()
                 }.keyboardShortcut(KeyEquivalent("k"), modifiers: [.command, .shift])
@@ -304,46 +327,46 @@ struct DatavyuApp: App {
                 // Normal keyboard shortcut buttons
                 Button("Set\nOnset") {
                     fileController.activeFileModel.videoController!.setOnset()
-                }.keyboardShortcut("i", modifiers: .command)
+                }.keyboardShortcut("i", modifiers: [.command, .shift])
                 Button("Play") {
                     fileController.activeFileModel.videoController!.play()
-                }.keyboardShortcut("o", modifiers: .command)
+                }.keyboardShortcut("o", modifiers: [.command, .shift])
                 Button("Set Offset") {
                     fileController.activeFileModel.videoController!.setOffset()
-                }.keyboardShortcut("p", modifiers: .command)
+                }.keyboardShortcut("p", modifiers: [.command, .shift])
                 Button("Jump") {
                     fileController.activeFileModel.videoController!.jump()
-                }.keyboardShortcut("[", modifiers: .command)
+                }.keyboardShortcut("[", modifiers: [.command, .shift])
                 Button("Shuttle <") {
                     fileController.activeFileModel.videoController!.shuttleStepDown()
-                }.keyboardShortcut("k", modifiers: .command)
+                }.keyboardShortcut("k", modifiers: [.command, .shift])
                 Button("Stop") {
                     fileController.activeFileModel.videoController!.stop()
-                }.keyboardShortcut("l", modifiers: .command)
+                }.keyboardShortcut("l", modifiers: [.command, .shift])
                 Button("Shuttle >") {
                     fileController.activeFileModel.videoController!.shuttleStepUp()
-                }.keyboardShortcut(";", modifiers: .command)
+                }.keyboardShortcut(";", modifiers: [.command, .shift])
                 Button("Find Onset") {
                     fileController.activeFileModel.videoController!.findOnset()
-                }.keyboardShortcut("'", modifiers: .command)
+                }.keyboardShortcut("'", modifiers: [.command, .shift])
                 Button("Find Offset") {
                     fileController.activeFileModel.videoController!.findOffset()
                 }.keyboardShortcut("'", modifiers: EventModifiers(rawValue: EventModifiers.shift.rawValue + EventModifiers.command.rawValue))
                 Button("Prev") {
                     fileController.activeFileModel.videoController!.prevFrame()
-                }.keyboardShortcut(",", modifiers: .command)
+                }.keyboardShortcut(",", modifiers: [.command, .shift])
                 Button("Pause") {
                     fileController.activeFileModel.videoController!.pause()
-                }.keyboardShortcut(".", modifiers: .command)
+                }.keyboardShortcut(".", modifiers: [.command, .shift])
                 Button("Next") {
                     fileController.activeFileModel.videoController!.nextFrame()
-                }.keyboardShortcut("/", modifiers: .command)
+                }.keyboardShortcut("/", modifiers: [.command, .shift])
                 Button("Add Cell") {
                     fileController.activeFileModel.videoController!.addCell()
-                }.keyboardShortcut("j", modifiers: .command)
+                }.keyboardShortcut("j", modifiers: [.command, .shift])
                 Button("Set Offset and Add Cell") {
                     fileController.activeFileModel.videoController!.setOffsetAndAddNewCell()
-                }.keyboardShortcut("m", modifiers: .command)
+                }.keyboardShortcut("m", modifiers: [.command, .shift])
             }
 
             CommandMenu("Scripting") {
