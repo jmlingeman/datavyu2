@@ -169,6 +169,53 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
         return nil
     }
 
+    func findVisibleCellIndexPath(cell_to_find: CellModel) -> IndexPath? {
+        print(#function)
+        for (i, column) in visibleColumns.enumerated() {
+            for (j, cell) in column.getSortedCells().enumerated() {
+                if cell == cell_to_find {
+                    print("Found cell at \(i) \(j)")
+                    return IndexPath(item: j, section: i)
+                }
+            }
+        }
+        return nil
+    }
+
+    func findCellInNextColumnIndexPath(cell: CellModel) -> IndexPath? {
+        print(#function)
+        let ip = findVisibleCellIndexPath(cell_to_find: cell)
+        if ip != nil {
+            let colIdx = ip!.section + 1
+            if colIdx < visibleColumns.count {
+                for (i, c) in visibleColumns[colIdx].getSortedCells().enumerated() {
+                    if cell.containsOtherCell(otherCell: c) {
+                        return IndexPath(item: i, section: colIdx)
+                    }
+                }
+            }
+        }
+
+        return nil
+    }
+
+    func findCellInPrevColumnIndexPath(cell: CellModel) -> IndexPath? {
+        print(#function)
+        let ip = findVisibleCellIndexPath(cell_to_find: cell)
+        if ip != nil {
+            let colIdx = ip!.section - 1
+            if colIdx < visibleColumns.count {
+                for (i, c) in visibleColumns[colIdx].getSortedCells().enumerated() {
+                    if c.containsOtherCell(otherCell: cell) {
+                        return IndexPath(item: i, section: colIdx)
+                    }
+                }
+            }
+        }
+
+        return nil
+    }
+
     func getNextDefaultColumnName() -> String {
         "Column\(columns.count + 1)"
     }

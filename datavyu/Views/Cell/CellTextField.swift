@@ -305,28 +305,45 @@ extension CellTextField: NSTextFieldDelegate, NSTextViewDelegate {
                 return true
             }
         } else if commandSelector == #selector(moveDown) {
-            let ip = self.parentView!.parentView!.sheetModel.findCellIndexPath(cell_to_find: self.parentView!.cell)
+            let ip = self.parentView!.parentView!.sheetModel.findVisibleCellIndexPath(cell_to_find: self.parentView!.cell)
             if ip != nil {
                 (self.parentView!.parentView!.delegate as! Coordinator).focusNextCell(ip!)
                 (self.parentView!.parentView!.delegate as! Coordinator).focusField(IndexPath(item: self.currentArgumentIndex, section: 0))
             }
-            self.resignFirstResponder()
+            let _ = self.resignFirstResponder()
             return true
         } else if commandSelector == #selector(moveUp) {
-            var ip = self.parentView!.parentView!.sheetModel.findCellIndexPath(cell_to_find: self.parentView!.cell)
+            var ip = self.parentView!.parentView!.sheetModel.findVisibleCellIndexPath(cell_to_find: self.parentView!.cell)
 
             if ip != nil {
-                ip!.item = ip!.item - 2
-                if ip!.item == 0 {
+                ip!.item = ip!.item - 1
+                if ip!.item < 0 {
                     return true
                 }
+                (self.parentView!.parentView!.delegate as! Coordinator).focusCell(ip!)
+                (self.parentView!.parentView!.delegate as! Coordinator).focusField(IndexPath(item: self.currentArgumentIndex, section: 0))
+                return true
+            }
+            let _ = self.resignFirstResponder()
+        } else if commandSelector == #selector(moveRight) {
+            var ip = self.parentView!.parentView!.sheetModel.findCellInNextColumnIndexPath(cell: self.parentView!.cell)
+
+            if ip != nil {
                 (self.parentView!.parentView!.delegate as! Coordinator).focusNextCell(ip!)
                 (self.parentView!.parentView!.delegate as! Coordinator).focusField(IndexPath(item: self.currentArgumentIndex, section: 0))
                 return true
             }
-            self.resignFirstResponder()
-        } else if commandSelector == #selector(moveRight) {
-        } else if commandSelector == #selector(moveLeft) {}
+            let _ = self.resignFirstResponder()
+        } else if commandSelector == #selector(moveLeft) {
+            var ip = self.parentView!.parentView!.sheetModel.findCellInPrevColumnIndexPath(cell: self.parentView!.cell)
+
+            if ip != nil {
+                (self.parentView!.parentView!.delegate as! Coordinator).focusNextCell(ip!)
+                (self.parentView!.parentView!.delegate as! Coordinator).focusField(IndexPath(item: self.currentArgumentIndex, section: 0))
+                return true
+            }
+            let _ = self.resignFirstResponder()
+        }
 
         return false
     }

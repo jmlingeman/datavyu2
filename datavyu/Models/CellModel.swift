@@ -59,6 +59,13 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
         column?.sheetModel?.fileModel?.setFileChanged()
     }
 
+    func containsOtherCell(otherCell: CellModel) -> Bool {
+        if otherCell.onset >= onset, otherCell.offset <= offset {
+            return true
+        }
+        return false
+    }
+
     func setUndoManager(undoManager: UndoManager) {
         self.undoManager = undoManager
 
@@ -80,6 +87,9 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
 
     static func < (lhs: CellModel, rhs: CellModel) -> Bool {
         if lhs.onset == rhs.onset {
+            if lhs.offset == rhs.offset {
+                return lhs.ordinal < rhs.ordinal
+            }
             return lhs.offset < rhs.offset
         } else {
             return lhs.onset < rhs.onset
