@@ -111,6 +111,7 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         arguments.last?.isLastArgument = true
 
         update()
+        sheetModel?.fileModel?.setFileChanged()
     }
 
     func getSortedCells() -> [CellModel] {
@@ -142,6 +143,7 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
             let _ = cell.arguments.popLast()
         }
         update()
+        sheetModel?.fileModel?.setFileChanged()
     }
 
     func getArgumentIndex(_ argument: Argument?) -> Int? {
@@ -177,6 +179,8 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
                 }
                 self.update()
             })
+
+            sheetModel?.fileModel?.setFileChanged()
 
             return cell
         }

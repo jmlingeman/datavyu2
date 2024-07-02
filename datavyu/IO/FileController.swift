@@ -13,6 +13,8 @@ func saveOpfFile(fileModel: FileModel, outputFilename: URL) -> Data {
     let db = saveDB(fileModel: fileModel)
     let project = saveProject(fileModel: fileModel)
 
+    fileModel.fileURL = outputFilename
+
     do {
         do {
             try FileManager.default.removeItem(at: outputFilename)

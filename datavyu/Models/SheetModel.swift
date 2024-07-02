@@ -18,6 +18,7 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
     var selectedCell: CellModel?
 
     var undoManager: UndoManager?
+    var fileModel: FileModel?
 
     init(sheetName: String, run_setup: Bool = false) {
         self.sheetName = sheetName
@@ -58,6 +59,8 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
         })
         undoManager?.endUndoGrouping()
         updateSheet()
+
+        fileModel?.setFileChanged()
     }
 
     func updateSheet() {
@@ -133,6 +136,7 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
         })
         undoManager?.endUndoGrouping()
         setVisibleColumns()
+        fileModel?.setFileChanged()
         return column
     }
 
@@ -148,6 +152,7 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
     func addColumnAtIndex(column: ColumnModel, idx: Int) -> ColumnModel {
         columns.insert(column, at: idx)
         setVisibleColumns()
+        fileModel?.setFileChanged()
         return column
     }
 
@@ -179,6 +184,17 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
         return model
     }
 
+    func selectNextCellInSelectedColumn() {
+        let col = getSelectedColumns().first
+        if col != nil, selectedCell != nil {
+            let cellIdx = col!.getSortedCells().firstIndex(of: selectedCell!)
+            if cellIdx != nil, cellIdx! + 1 < col!.getSortedCells().count {
+                let newSelectedCell = col!.getSortedCells()[cellIdx! + 1]
+                setSelectedCell(selectedCell: newSelectedCell)
+            }
+        }
+    }
+
     func setup() {
         let column = ColumnModel(sheetModel: self, columnName: "Test1")
         let column2 = ColumnModel(sheetModel: self, columnName: "Test2")
@@ -202,6 +218,8 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
                 self.columns[colIdx!] = column
                 self.updates += 1
             }
+
+            self.fileModel?.setFileChanged()
         }
     }
 

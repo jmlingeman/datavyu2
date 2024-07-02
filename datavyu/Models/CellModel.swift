@@ -56,6 +56,7 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
             c == self
         }
         column?.update()
+        column?.sheetModel?.fileModel?.setFileChanged()
     }
 
     func setUndoManager(undoManager: UndoManager) {
@@ -100,6 +101,7 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
                 }
             }
             arguments.last?.isLastArgument = true
+            column?.sheetModel?.fileModel?.setFileChanged()
         }
     }
 
@@ -116,6 +118,7 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
                 })
                 self.undoManager?.endUndoGrouping()
                 self.updateSheet()
+                self.column?.sheetModel?.fileModel?.setFileChanged()
             }
         }
     }
@@ -152,6 +155,7 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
                 })
                 self.undoManager?.endUndoGrouping()
                 self.updateSheet()
+                self.column?.sheetModel?.fileModel?.setFileChanged()
             }
         }
     }
@@ -162,6 +166,7 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
 
     func setArgumentValue(index: Int, value: String) {
         arguments[index].setValue(value: value)
+        column?.sheetModel?.fileModel?.setFileChanged()
     }
 
     func getArgumentIndex(_ argument: Argument?) -> IndexPath {

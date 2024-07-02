@@ -51,7 +51,7 @@ struct TrackSnapOverlay: View {
         Rectangle().frame(width: 8, height: .infinity, alignment: .trailing)
             .background(Color.green)
             .clipShape(RoundedRectangle(cornerRadius: 5))
-            .position(x: leftRegionProp * ((gr.size.width - rightGutterSize) - leftTrackStart - rightGutterSize) + leftOffset + (leftTrackStart - leftOffset))
+            .position(x: leftRegionProp * ((gr.size.width - rightGutterSize) - leftTrackStart - rightGutterSize) + leftOffset + (leftTrackStart - leftOffset), y: gr.size.height / 2)
             .opacity(0.5)
             .gesture(
                 DragGesture()
@@ -78,7 +78,7 @@ struct TrackSnapOverlay: View {
         Rectangle().frame(width: 8, height: .infinity, alignment: .leading)
             .background(Color.green)
             .clipShape(RoundedRectangle(cornerRadius: 5))
-            .position(x: rightRegionProp * ((gr.size.width - rightGutterSize) - leftTrackStart - rightGutterSize) + leftOffset + (leftTrackStart - leftOffset)) // TODO: Fix this so its not based on a magic value. Gotta put into the same ref frame.
+            .position(x: rightRegionProp * ((gr.size.width - rightGutterSize) - leftTrackStart - rightGutterSize) + leftOffset + (leftTrackStart - leftOffset), y: gr.size.height / 2) // TODO: Fix this so its not based on a magic value. Gotta put into the same ref frame.
             .offset(x: 15)
             .opacity(0.5)
             .onAppear {

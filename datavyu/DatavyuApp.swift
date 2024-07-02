@@ -8,9 +8,60 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
+final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
+    var fileController: FileControllerModel?
+
+    func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool {
+        true
+    }
+
+    func applicationShouldTerminate(_: NSApplication) -> NSApplication.TerminateReply {
+        // some code
+        if fileController != nil {
+            for fileModel in fileController!.fileModels {
+                if fileModel.unsavedChanges {
+                    fileController!.activeFileModel = fileModel
+
+                    let saveCloseAlert = NSAlert()
+                    saveCloseAlert.messageText = "Spreadsheet '\(fileModel.sheetModel.sheetName)' has unsaved changes."
+                    saveCloseAlert.informativeText = "Do you want to save before exiting?"
+                    saveCloseAlert.addButton(withTitle: "Save")
+                    saveCloseAlert.addButton(withTitle: "Cancel")
+                    saveCloseAlert.addButton(withTitle: "Don't Save").hasDestructiveAction = true
+
+                    let result = saveCloseAlert.runModal()
+                    print(result)
+                    if result == .alertFirstButtonReturn {
+                        print("Got ok")
+                        let savePanel = NSSavePanel()
+                        savePanel.allowedContentTypes = [UTType.opf]
+                        if fileController!.activeFileModel.fileURL != nil {
+                            savePanel.directoryURL = fileController!.activeFileModel.fileURL!.deletingLastPathComponent()
+                        } else {
+                            savePanel.directoryURL = Config.defaultSaveDirectory
+                        }
+                        savePanel.nameFieldStringValue = fileController!.activeFileModel.sheetModel.sheetName
+                        if savePanel.runModal() == .OK {
+                            let _ = saveOpfFile(fileModel: fileController!.activeFileModel, outputFilename: savePanel.url!)
+                        }
+                    } else if result == .alertSecondButtonReturn {
+                        print("Got cancel")
+                        return .terminateCancel
+                    } else if result == .alertThirdButtonReturn {
+                        print("Got dont save")
+                    }
+                }
+            }
+        }
+
+        return .terminateNow
+    }
+}
+
 @main
 struct DatavyuApp: App {
-//    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     @StateObject var fileController: FileControllerModel = .init(fileModels: [
         FileModel(sheetModel: SheetModel(sheetName: "New Sheet", run_setup: false),
                   videoModels: []),
@@ -25,6 +76,8 @@ struct DatavyuApp: App {
     @State private var showingUpdateView = false
     @State private var showingScriptSelector = false
     @State private var scriptEngine = RubyScriptEngine()
+
+    @State private var showingSaveCloseDiaglog = false
 
     @StateObject var appState: AppState = .init()
 
@@ -95,6 +148,9 @@ struct DatavyuApp: App {
                     cell?.offset = time
                     fileController.activeFileModel.sheetModel.selectedCell = cell
                     fileController.activeFileModel.sheetModel.updateSheet()
+                }
+                .onAppear {
+                    appDelegate.fileController = fileController
                 }
                 .environmentObject(keyInputSubject)
         }.commands {
@@ -198,6 +254,8 @@ struct DatavyuApp: App {
                 ForEach(Config.quickKeyCharacters.split(separator: ""), id: \.self) { c in
                     keyInput(KeyEquivalent(c.first!)).disabled(!appState.quickKeyMode)
                 }
+
+                Button("Next Cell in Column") {}.keyboardShortcut(KeyEquivalent.downArrow)
 
                 // Numpad shortcut buttons
                 Button("Set\nOnset") {

@@ -26,6 +26,10 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
     @Published var leftRegionTime: Double = 0
     @Published var rightRegionTime: Double = .greatestFiniteMagnitude
 
+    @Published var unsavedChanges: Bool = false
+
+    @Published var fileURL: URL?
+
     var videoObservers: [NSKeyValueObservation] = []
 
     var currentShuttleSpeedIdx: Int = 0
@@ -37,6 +41,8 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
         updates = 0
         currentShuttleSpeedIdx = Config.shuttleSpeeds.firstIndex(of: 0)!
         videoController = VideoController(fileModel: self)
+
+        setFileModelForSheet()
     }
 
     init(sheetModel: SheetModel) {
@@ -45,6 +51,8 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
         updates = 0
         currentShuttleSpeedIdx = Config.shuttleSpeeds.firstIndex(of: 0)!
         videoController = VideoController(fileModel: self)
+
+        setFileModelForSheet()
     }
 
     init(sheetModel: SheetModel, videoModels: [VideoModel]) {
@@ -73,6 +81,12 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
             videoObservers.append(observer)
         }
         videoController = VideoController(fileModel: self)
+
+        setFileModelForSheet()
+    }
+
+    func setFileModelForSheet() {
+        sheetModel.fileModel = self
     }
 
     func setPrimaryVideo(_ video: VideoModel) {
@@ -127,6 +141,14 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
         }
     }
 
+    func setFileChanged() {
+        unsavedChanges = true
+    }
+
+    func setFileSaved() {
+        unsavedChanges = false
+    }
+
     func removeVideoModel(videoModel: VideoModel) {
         let idx = videoModels.firstIndex(of: videoModel)
         if idx != nil {
@@ -136,6 +158,8 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
             primaryVideo = videoModels[0]
         }
         updateLongestDuration()
+
+        setFileChanged()
     }
 
     func resetShuttleSpeed() {
@@ -158,6 +182,8 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
             try await videoModel.populateMetadata()
             updateLongestDuration()
         }
+
+        setFileChanged()
     }
 
     func updateLongestDuration() {

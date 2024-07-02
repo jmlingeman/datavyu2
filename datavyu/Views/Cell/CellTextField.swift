@@ -282,6 +282,7 @@ extension CellTextField: NSTextFieldDelegate, NSTextViewDelegate {
 
     func textView(_: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
         print(#function)
+        print(commandSelector)
         if commandSelector == #selector(insertTab) {
             if self.currentArgumentIndex + 1 < self.cellModel!.arguments.count {
                 self.selectArgument(idx: self.currentArgumentIndex + 1)
@@ -303,7 +304,29 @@ extension CellTextField: NSTextFieldDelegate, NSTextViewDelegate {
                 self.resignFirstResponder()
                 return true
             }
-        }
+        } else if commandSelector == #selector(moveDown) {
+            let ip = self.parentView!.parentView!.sheetModel.findCellIndexPath(cell_to_find: self.parentView!.cell)
+            if ip != nil {
+                (self.parentView!.parentView!.delegate as! Coordinator).focusNextCell(ip!)
+                (self.parentView!.parentView!.delegate as! Coordinator).focusField(IndexPath(item: self.currentArgumentIndex, section: 0))
+            }
+            self.resignFirstResponder()
+            return true
+        } else if commandSelector == #selector(moveUp) {
+            var ip = self.parentView!.parentView!.sheetModel.findCellIndexPath(cell_to_find: self.parentView!.cell)
+
+            if ip != nil {
+                ip!.item = ip!.item - 2
+                if ip!.item == 0 {
+                    return true
+                }
+                (self.parentView!.parentView!.delegate as! Coordinator).focusNextCell(ip!)
+                (self.parentView!.parentView!.delegate as! Coordinator).focusField(IndexPath(item: self.currentArgumentIndex, section: 0))
+                return true
+            }
+            self.resignFirstResponder()
+        } else if commandSelector == #selector(moveRight) {
+        } else if commandSelector == #selector(moveLeft) {}
 
         return false
     }

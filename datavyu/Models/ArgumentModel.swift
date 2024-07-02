@@ -76,6 +76,7 @@ final class Argument: ObservableObject, Identifiable, Equatable, Hashable, Codab
             self.value = oldValue
             self.update()
         })
+        column?.sheetModel?.fileModel?.setFileChanged()
 //        update()
     }
 
@@ -87,6 +88,7 @@ final class Argument: ObservableObject, Identifiable, Equatable, Hashable, Codab
             self.update()
         })
         update()
+        column?.sheetModel?.fileModel?.setFileChanged()
     }
 
     func update() {
