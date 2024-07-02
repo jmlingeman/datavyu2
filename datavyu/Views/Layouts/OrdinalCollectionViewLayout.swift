@@ -95,6 +95,7 @@ class OrdinalCollectionViewLayout: TemporalCollectionViewLayout {
             newCellLayout.frame.size = CGSize(width: columnSize, height: Config.headerSize)
             newCellLayout.size = CGSize(width: columnSize, height: Config.headerSize)
         }
+        cache.maxHeight = cache.maxHeight + Config.headerSize
 
         var i = 0
         var indexToLayout = [IndexPath: NSCollectionViewLayoutAttributes]()
