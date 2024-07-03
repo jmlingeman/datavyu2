@@ -29,7 +29,7 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
     @Published var unsavedChanges: Bool = false
 
     @Published var fileURL: URL?
-
+    @Published var associatedScripts: [URL] = []
     var videoObservers: [NSKeyValueObservation] = []
 
     var currentShuttleSpeedIdx: Int = 0
@@ -141,6 +141,11 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
         }
     }
 
+    func setFileURL(url: URL) {
+        fileURL = url
+        loadAssociatedScripts()
+    }
+
     func setFileChanged() {
         unsavedChanges = true
     }
@@ -231,6 +236,26 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
 
     public func snapshot(contentType _: UTType) throws -> FileModel {
         copy()
+    }
+
+    private func getScriptsKey() -> String? {
+        if fileURL != nil {
+            return "\(fileURL!.path()) -- associatedScripts"
+        }
+        return nil
+    }
+
+    public func addAssociatedScript(url: URL) {
+        if fileURL != nil {
+            associatedScripts.append(url)
+            UserDefaults.standard.set(associatedScripts, forKey: getScriptsKey()!)
+        }
+    }
+
+    public func loadAssociatedScripts() {
+        if fileURL != nil {
+            associatedScripts = UserDefaults.standard.object(forKey: getScriptsKey()!) as? [URL] ?? []
+        }
     }
 
     public func fileWrapper(snapshot: FileModel, configuration: WriteConfiguration) throws -> FileWrapper {

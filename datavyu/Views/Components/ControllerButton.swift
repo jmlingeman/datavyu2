@@ -41,6 +41,8 @@ struct ControllerButtonLabel: View {
             Image(systemName: "arrowshape.turn.up.backward")
         case "Find":
             Image(systemName: "magnifyingglass")
+        case "Point Cell":
+            Image(systemName: "plus.circle")
         default:
             Text(buttonName)
         }
@@ -71,13 +73,15 @@ struct ControllerButtonKeyLabel: View {
         case "Next":
             Text("3")
         case "Add\nCell":
-            Text("enter")
+            Image(systemName: "return")
         case "Set\nOffset\n+ Add":
             Text("0")
         case "Jump":
             Text("-")
         case "Find":
             Text("+")
+        case "Point Cell":
+            Text("/")
         default:
             Text("")
         }

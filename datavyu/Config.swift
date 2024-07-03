@@ -43,4 +43,5 @@ enum Config {
     static let maxTextSizeIncrement = 2.0
 
     static let defaultSaveDirectory = URL(string: NSSearchPathForDirectoriesInDomains(.desktopDirectory, .userDomainMask, true).first!)
+    static let maxRecentFiles = 6
 }

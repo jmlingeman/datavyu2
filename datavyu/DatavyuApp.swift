@@ -62,6 +62,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 struct DatavyuApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
+    @AppStorage("recentlyOpenedFiles") private var recentlyOpenedFiles: [URL] = []
+    @AppStorage("recentlyOpenedScripts") private var recentlyOpenedScripts: [URL] = []
+
     @StateObject var fileController: FileControllerModel = .init(fileModels: [
         FileModel(sheetModel: SheetModel(sheetName: "New Sheet", run_setup: false),
                   videoModels: []),
@@ -134,6 +137,10 @@ struct DatavyuApp: App {
                                   case let .success(urls):
                                       for url in urls {
                                           fileController.openFile(inputFilename: url)
+                                          recentlyOpenedFiles.append(url)
+                                          if recentlyOpenedFiles.count > Config.maxRecentFiles {
+                                              recentlyOpenedFiles = Array(recentlyOpenedFiles[max(0, recentlyOpenedFiles.count - Config.maxRecentFiles) ..< recentlyOpenedFiles.count])
+                                          }
                                       }
                                   case let .failure(error):
                                       errorMsg = "\(error)"
@@ -159,6 +166,7 @@ struct DatavyuApp: App {
                     showingUpdateView.toggle()
                 }
             }
+
             CommandGroup(replacing: CommandGroupPlacement.newItem) {
                 Button("New Sheet", action: fileController.newFileDefault)
                     .keyboardShortcut(KeyEquivalent("n"))
@@ -167,6 +175,16 @@ struct DatavyuApp: App {
 //                    .keyboardShortcut(KeyEquivalent("o"))
 
                 // TODO: Previously opened files
+            }
+
+            CommandGroup(after: CommandGroupPlacement.newItem) {
+                Menu("Open Recent Files") {
+                    ForEach(recentlyOpenedFiles, id: \.self) { fileUrl in
+                        Button(fileUrl.path(percentEncoded: false)) {
+                            let _ = loadOpfFile(inputFilename: fileUrl)
+                        }
+                    }
+                }
             }
 
             CommandGroup(replacing: CommandGroupPlacement.saveItem) {
@@ -377,6 +395,23 @@ struct DatavyuApp: App {
                     panel.allowedContentTypes = [UTType.rubyScript, UTType.rscript]
                     if panel.runModal() == .OK {
                         ScriptOutputWindow(url: panel.url!, fileModel: fileController.activeFileModel, scriptEngine: scriptEngine).openInWindow(title: "Script Output", appState: appState, sender: self, frameName: nil)
+                        recentlyOpenedScripts.append(panel.url!)
+                        fileController.activeFileModel.associatedScripts.append(panel.url!)
+                    }
+                }
+                Divider()
+                Menu("Run Recent Script") {
+                    ForEach(recentlyOpenedScripts, id: \.self) { script in
+                        Button(script.path(percentEncoded: false)) {
+                            ScriptOutputWindow(url: script, fileModel: fileController.activeFileModel, scriptEngine: scriptEngine).openInWindow(title: "Script Output", appState: appState, sender: self, frameName: nil)
+                        }
+                    }
+                }
+                Menu("Run Associated Script") {
+                    ForEach(fileController.activeFileModel.associatedScripts, id: \.self) { script in
+                        Button(script.path(percentEncoded: false)) {
+                            ScriptOutputWindow(url: script, fileModel: fileController.activeFileModel, scriptEngine: scriptEngine).openInWindow(title: "Script Output", appState: appState, sender: self, frameName: nil)
+                        }
                     }
                 }
 

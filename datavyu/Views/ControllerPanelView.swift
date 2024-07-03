@@ -33,6 +33,15 @@ struct ControllerPanelView: View {
             }
             Grid(alignment: .topLeading, horizontalSpacing: 2, verticalSpacing: 2) {
                 GridRow {
+                    ControllerButton(buttonName: "") {}.disabled(true)
+                    ControllerButton(buttonName: "Point Cell") {
+                        let currentTime = secondsToMillis(secs: fileModel.currentTime())
+                        let _ = fileModel.sheetModel.getSelectedColumns().first?.addCell(onset: currentTime, offset: currentTime)
+                    }
+                    ControllerButton(buttonName: "") {}.disabled(true)
+                    ControllerButton(buttonName: "") {}.disabled(true)
+                }
+                GridRow {
                     ControllerButton(buttonName: "Set\nOnset", action: fileModel.videoController!.setOnset)
 //                        .keyboardShortcut("7", modifiers: .numericPad)
                         .keyboardShortcut("[", modifiers: .command)

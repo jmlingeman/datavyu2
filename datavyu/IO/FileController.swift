@@ -13,7 +13,7 @@ func saveOpfFile(fileModel: FileModel, outputFilename: URL) -> Data {
     let db = saveDB(fileModel: fileModel)
     let project = saveProject(fileModel: fileModel)
 
-    fileModel.fileURL = outputFilename
+    fileModel.setFileURL(url: outputFilename)
 
     do {
         do {
@@ -143,6 +143,8 @@ func saveLegacyFiles(fileModel _: FileModel) {}
 func loadOpfFile(inputFilename: URL) -> FileModel {
     let workingDirectory = URL(filePath: NSTemporaryDirectory() + UUID().uuidString)
     var db = FileModel()
+
+    db.setFileURL(url: inputFilename)
     var media: [VideoModel] = []
     do {
         try FileManager.default.createDirectory(at: workingDirectory, withIntermediateDirectories: false)
