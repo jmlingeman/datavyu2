@@ -16,13 +16,14 @@ enum TimeCodeLevel {
 struct TrackTimeMarkings: View {
     @ObservedObject var fileModel: FileModel
     var gr: GeometryProxy
+    var trackZoomFactor: CGFloat
 
     let leftTrackStart: CGFloat = 305
     let rightTrackEnd: CGFloat = 10
 
     func calculateTimeFromPos(x: Double, gr: GeometryProxy) -> Double {
         let duration = fileModel.longestDuration
-        let trackLength = (gr.size.width - leftTrackStart - rightTrackEnd)
+        let trackLength = (gr.size.width * trackZoomFactor - leftTrackStart - rightTrackEnd)
         let time = (x - leftTrackStart) / trackLength * duration
 
         return time
@@ -45,9 +46,17 @@ struct TrackTimeMarkings: View {
             cutoff = Int(duration / 60 / 60) * 60 * 60
         }
 
+        if numLines > 100 {
+            if timeLevel == .seconds {
+                numLines = Int(duration / 60) * 2
+            } else if timeLevel == .minutes {
+                numLines = Int(duration / 60 / 60) * 2
+            }
+        }
+
         // Get the percentage of the duration with the last bit that this time level won't cover cut off
         let coveredProp = Double(cutoff) / duration
-        let stepWidth = (gr.size.width - leftTrackStart - rightTrackEnd) * coveredProp / Double(numLines)
+        let stepWidth = (gr.size.width * trackZoomFactor - leftTrackStart - rightTrackEnd) * coveredProp / Double(numLines)
 
         for i in 0 ... numLines {
             let linePos = Double(i) * stepWidth
@@ -59,7 +68,7 @@ struct TrackTimeMarkings: View {
 
     var body: some View {
         ZStack {
-            Rectangle().frame(width: gr.size.width - leftTrackStart - rightTrackEnd, height: 20).position(x: leftTrackStart + (gr.size.width - leftTrackStart - rightTrackEnd) / 2).foregroundColor(Color(NSColor.secondarySystemFill))
+            Rectangle().frame(width: gr.size.width * trackZoomFactor - leftTrackStart - rightTrackEnd, height: 20).position(x: leftTrackStart + (gr.size.width * trackZoomFactor - leftTrackStart - rightTrackEnd) / 2).foregroundColor(Color(NSColor.secondarySystemFill))
             ForEach(getLinePositions(duration: fileModel.longestDuration, gr: gr, timeLevel: .seconds), id: \.self) { linePos in
                 Rectangle().frame(width: 1, height: 10).position(x: linePos + leftTrackStart).foregroundColor(Color.blue)
             }

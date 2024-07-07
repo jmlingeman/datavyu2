@@ -10,10 +10,11 @@ import SwiftUI
 struct TrackSnapOverlay: View {
     var gr: GeometryProxy
     var fileModel: FileModel
+    var trackZoomFactor: CGFloat
 //    @Binding var trackPosStart: CGFloat
 
     @State var leftRegionProp: CGFloat = -0.005
-    @State var rightRegionProp: CGFloat = 1.005
+    @State var rightRegionProp: CGFloat = 1.001
 
     let leftOffset: CGFloat = 290
     let leftTrackStart: CGFloat = 295
@@ -51,7 +52,7 @@ struct TrackSnapOverlay: View {
         Rectangle().frame(width: 8, height: .infinity, alignment: .trailing)
             .background(Color.green)
             .clipShape(RoundedRectangle(cornerRadius: 5))
-            .position(x: leftRegionProp * ((gr.size.width - rightGutterSize) - leftTrackStart - rightGutterSize) + leftOffset + (leftTrackStart - leftOffset), y: gr.size.height / 2)
+            .position(x: leftRegionProp * ((gr.size.width * trackZoomFactor - rightGutterSize) - leftTrackStart - rightGutterSize) + leftOffset + (leftTrackStart - leftOffset), y: gr.size.height / 2)
             .opacity(0.5)
             .gesture(
                 DragGesture()
@@ -68,8 +69,6 @@ struct TrackSnapOverlay: View {
             }.onChange(of: leftRegionProp) { _, newValue in
                 print(newValue)
                 if newValue >= 0, newValue < 1 {
-//                    let relativePos = clamp(x: (newValue - leftTrackStart) / (gr.size.width - leftTrackStart - rightGutterSize), minVal: 0, maxVal: 1)
-//                    print(relativePos)
                     let absoluteTime = fileModel.primaryVideo!.getDuration() * newValue
                     print(absoluteTime)
                     fileModel.leftRegionTime = absoluteTime
@@ -78,11 +77,11 @@ struct TrackSnapOverlay: View {
         Rectangle().frame(width: 8, height: .infinity, alignment: .leading)
             .background(Color.green)
             .clipShape(RoundedRectangle(cornerRadius: 5))
-            .position(x: rightRegionProp * ((gr.size.width - rightGutterSize) - leftTrackStart - rightGutterSize) + leftOffset + (leftTrackStart - leftOffset), y: gr.size.height / 2) // TODO: Fix this so its not based on a magic value. Gotta put into the same ref frame.
+            .position(x: rightRegionProp * ((gr.size.width * trackZoomFactor - rightGutterSize) - leftTrackStart - rightGutterSize) + leftOffset + (leftTrackStart - leftOffset), y: gr.size.height / 2) // TODO: Fix this so its not based on a magic value. Gotta put into the same ref frame.
             .offset(x: 15)
             .opacity(0.5)
             .onAppear {
-                rightTrackEnd = gr.size.width - rightGutterSize
+                rightTrackEnd = gr.size.width * trackZoomFactor - rightGutterSize
             }.gesture(
                 DragGesture()
                     .onChanged { gesture in

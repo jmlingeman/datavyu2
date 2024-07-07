@@ -9,6 +9,8 @@ struct TracksStackView: View {
     @EnvironmentObject private var appState: AppState
 
     @State var trackPosStart: CGFloat = 0
+    @State var trackZoomFactor: CGFloat = 1
+    @State var videoLoaded: Bool = false
 
     func syncVideos() {
         if fileModel.primaryVideo != nil, fileModel.videoModels.count > 1, fileModel.primaryVideo!.selectedMarker != nil {
@@ -35,6 +37,7 @@ struct TracksStackView: View {
         if panel.runModal() == .OK {
             fileModel.addVideo(videoUrl: panel.url!)
             fileModel.updates += 1
+            videoLoaded = true
         }
     }
 
@@ -47,28 +50,24 @@ struct TracksStackView: View {
             GridRow {
                 GeometryReader { gr in
                     ZStack {
-                        Grid {
-                            ForEach($fileModel.videoModels) { $videoModel in
-                                TrackRowView(fileModel: fileModel, videoModel: videoModel, appState: appState).onAppear {
-                                    trackPosStart = gr.frame(in: .global).minX
-                                    print(trackPosStart)
+                        ScrollView(.horizontal) {
+                            Grid {
+                                ForEach($fileModel.videoModels) { $videoModel in
+                                    TrackRowView(fileModel: fileModel, videoModel: videoModel, appState: appState).onAppear {
+                                        trackPosStart = gr.frame(in: .global).minX
+                                        print(trackPosStart)
+                                    }
                                 }
+                                TrackTimeMarkings(fileModel: fileModel, gr: gr, trackZoomFactor: trackZoomFactor)
+                            }.frame(width: gr.size.width * trackZoomFactor).overlay(alignment: .leading) {
+                                TrackSnapOverlay(gr: gr, fileModel: fileModel, trackZoomFactor: trackZoomFactor)
                             }
-//                            GridRow {
-//                                Spacer()
-                            TrackTimeMarkings(fileModel: fileModel, gr: gr)
-//                            }
-                        }
+                        }.frame(width: gr.size.width).scrollIndicators(.visible, axes: .horizontal)
                     }
                 }
             }
             GridRow {
                 overlayButtons
-            }
-
-        }.overlay(alignment: .leading) {
-            GeometryReader { gr in
-                TrackSnapOverlay(gr: gr, fileModel: fileModel)
             }
         }
     }
@@ -79,25 +78,37 @@ struct TracksStackView: View {
                 Spacer()
                 Button("Snap Region") {
                     appState.fileController?.activeFileModel.snapToRegion()
-                }
+                }.disabled(!videoLoaded)
                 Button("Clear Region") {
                     appState.fileController?.activeFileModel.clearRegion()
-                }
+                }.disabled(!videoLoaded)
                 Button("Lock All") {
                     // TODO: Implement track locking.
-                }
+                }.disabled(!videoLoaded)
+
+                Slider(value: $trackZoomFactor, in: 1 ... 3) {
+                    Button {
+                        trackZoomFactor = 1
+                    } label: {
+                        Image(systemName: "magnifyingglass")
+                    }
+                } minimumValueLabel: {
+                    Text("1x")
+                } maximumValueLabel: {
+                    Text("3x")
+                }.frame(width: 200).disabled(!videoLoaded)
             }
             HStack(alignment: .bottom) {
                 Spacer()
                 Button(appState.highlightMode ? "Enable Cell Highlighting" : "Disable Cell Highlighting") {
                     // TODO: highlight and focus
                     appState.toggleHighlightMode()
-                }
+                }.disabled(!videoLoaded)
                 Button(appState.focusMode ? "Enable Highlight + Focus" : "Disable Highlight + Focus") {
                     // TODO: highlight and focus
                     appState.toggleFocusMode()
-                }
-                Button("Sync Videos", action: syncVideos)
+                }.disabled(!videoLoaded)
+                Button("Sync Videos", action: syncVideos).disabled(!videoLoaded)
                 Button("Add Video", action: {
                     addVideo()
                 })
