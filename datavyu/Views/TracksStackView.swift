@@ -54,6 +54,10 @@ struct TracksStackView: View {
                                     print(trackPosStart)
                                 }
                             }
+//                            GridRow {
+//                                Spacer()
+                            TrackTimeMarkings(fileModel: fileModel, gr: gr)
+//                            }
                         }
                     }
                 }
