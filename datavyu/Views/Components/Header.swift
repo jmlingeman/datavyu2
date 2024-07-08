@@ -54,17 +54,11 @@ struct DragRelocateDelegate: DropDelegate {
 
     func dropEntered(info _: DropInfo) {
         if item != current {
-            print(item.columnName, current?.columnName)
-            print(listData)
             let from = listData.firstIndex(of: current!)!
             let to = listData.firstIndex(of: item)!
             if listData[to].columnName != current!.columnName {
                 listData.move(fromOffsets: IndexSet(integer: from),
                               toOffset: to > from ? to + 1 : to)
-            }
-            print("--")
-            for c in listData {
-                print(c.columnName)
             }
             item.update()
         }
