@@ -20,6 +20,8 @@ public class AppState: NSObject, ObservableObject {
     @Published var focusMode = false
     @Published var quickKeyMode = false
 
+    @Published var draggingColumn: ColumnModel?
+
     @objc dynamic var playbackTime = 0.0
 
     func setControllerWindow(win: NSWindow) {

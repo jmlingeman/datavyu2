@@ -110,66 +110,8 @@ final class SheetCollectionAppKitView: NSCollectionView {
 //    }
 }
 
-final class HeaderCell: NSView, NSCollectionViewElement {
-    static let identifier: String = "header"
-    override init(frame frameRect: NSRect) {
-        super.init(frame: frameRect)
-    }
-
-    @available(*, unavailable)
-    @objc dynamic required init?(coder _: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    func setView<Content>(_ newValue: Content) where Content: View {
-        for view in subviews {
-            view.removeFromSuperview()
-        }
-        let view = NSHostingView(rootView: newValue)
-        view.autoresizingMask = [.width, .height]
-        view.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(view)
-        view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        view.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        view.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-    }
-}
-
 class ColumnSelected: ObservableObject {
     @Published var isSelected: Bool = false
-}
-
-struct Header: View {
-    @ObservedObject var columnModel: ColumnModel
-    @ObservedObject var appState: AppState
-    static let reuseIdentifier: String = "header"
-
-    var body: some View {
-        GeometryReader { _ in
-            HStack {
-                ZStack {
-                    EditableLabel($columnModel.columnName).font(.system(size: Config.defaultCellTextSize * appState.zoomFactor)).frame(alignment: .center)
-                    VStack {
-                        Toggle(isOn: $columnModel.isFinished, label: {
-                            Image(systemName: "lock.fill")
-                        }).onChange(of: $columnModel.isFinished.wrappedValue) {
-                            columnModel.update()
-                        }.toggleStyle(CheckboxToggleStyle()).frame(maxWidth: .infinity, alignment: .bottomTrailing)
-                            .font(.system(size: Config.defaultCellTextSize * appState.zoomFactor))
-                    }
-                }
-            }
-            .frame(width: Config.defaultCellWidth * appState.zoomFactor, height: Config.headerSize)
-            .border(Color.black)
-            .background(columnModel.isSelected ? Color.teal : columnModel.isFinished ? Color.green : Color.accentColor)
-        }.frame(width: Config.defaultCellWidth * appState.zoomFactor, height: Config.headerSize)
-            .onTapGesture {
-                columnModel.sheetModel?.selectedCell = nil
-                columnModel.sheetModel?.setSelectedColumn(model: columnModel)
-                print("Set selected")
-            }
-    }
 }
 
 struct NewColumnQuickButton: View {
@@ -261,6 +203,16 @@ struct SheetLayoutCollection: NSViewRepresentable {
     class DVScrollView: NSScrollView {
         var appState: AppState?
 
+        override init(frame frameRect: NSRect) {
+            super.init(frame: frameRect)
+            registerForDraggedTypes([.string])
+        }
+
+        @available(*, unavailable)
+        required init?(coder _: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+
         override func mouseDown(with event: NSEvent) {
             super.mouseDown(with: event)
             print("Mouse Down")
@@ -317,7 +269,7 @@ struct SheetLayoutCollection: NSViewRepresentable {
 
             // Set up floating headers
             for (i, column) in sheetModel.visibleColumns.enumerated() {
-                let floatingHeader = NSHostingView(rootView: Header(columnModel: sheetModel.visibleColumns[i], appState: appState))
+                let floatingHeader = NSHostingView(rootView: Header(columnModel: sheetModel.visibleColumns[i], appState: appState, columnList: $sheetModel.visibleColumns))
                 floatingHeader.frame = NSRect(origin: NSPoint(x: Int(Config.defaultCellWidth * appState.zoomFactor) * i,
                                                               y: 0),
                                               size: NSSize(width: Config.defaultCellWidth * appState.zoomFactor,
@@ -599,7 +551,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
             let item = collectionView.makeSupplementaryView(ofKind: kind, withIdentifier: .init(HeaderCell.identifier), for: indexPath) as! HeaderCell
 
             if sheetModel.visibleColumns.count > 0 {
-                item.setView(Header(columnModel: sheetModel.visibleColumns[indexPath.section], appState: appState))
+                item.setView(Header(columnModel: sheetModel.visibleColumns[indexPath.section], appState: appState, columnList: $sheetModel.visibleColumns))
             }
             return item
 
