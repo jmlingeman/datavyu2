@@ -142,11 +142,13 @@ struct NewColumnQuickButton: View {
             Button {
                 showingHiddenColumns.toggle()
             } label: {
-                Text("\(appState.fileController!.activeFileModel.sheetModel.getHiddenColumns().count) Hidden Columns")
+                Text("\(appState.fileController?.activeFileModel.sheetModel.getHiddenColumns().count ?? 0) Hidden Columns")
             }.popover(isPresented: $showingHiddenColumns, content: {
-                List(appState.fileController!.activeFileModel.sheetModel.getHiddenColumns(), selection: $selectedHiddenColumn) { col in
-                    Button(col.columnName) {
-                        col.setHidden(val: false)
+                VStack {
+                    List(appState.fileController!.activeFileModel.sheetModel.getHiddenColumns(), selection: $selectedHiddenColumn) { col in
+                        Button(col.columnName) {
+                            col.setHidden(val: false)
+                        }
                     }
                 }
             })
@@ -456,7 +458,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         var item = ip.item
         var section = ip.section
 
-        if sheetModel.visibleColumns.count > 0, item >= sheetModel.visibleColumns[section].cells.count {
+        if sheetModel.visibleColumns.count > section, item >= sheetModel.visibleColumns[section].cells.count {
             print("Selecting next column")
             item = 0
             section = section + 1
@@ -531,30 +533,6 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
     func collectionView(_: NSCollectionView, canDragItemsAt _: IndexSet, with _: NSEvent) -> Bool {
         true
     }
-
-    /* MARK: Drag + Drop */
-//    func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forItemsAt indexPaths: Set<IndexPath>) {
-//        if let indexPath = indexPaths.first,
-//           let item = collectionView.item(at: indexPath as IndexPath) {
-//            draggingItem = item  // draggingItem is temporary instance variable of NSCollectionViewItem
-//        }
-//    }
-//
-//    func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, endedAt screenPoint: NSPoint, dragOperation operation: NSDragOperation) {
-//        draggingItem = nil
-//    }
-//
-//    func collectionView(_ collectionView: NSCollectionView, validateDrop draggingInfo: any NSDraggingInfo, proposedIndexPath proposedDropIndexPath: AutoreleasingUnsafeMutablePointer<NSIndexPath>, dropOperation proposedDropOperation: UnsafeMutablePointer<NSCollectionView.DropOperation>) -> NSDragOperation {
-//        if draggingItem != nil {
-//            let proposedDropIndexPath = proposedDropIndexPath.pointee
-//            let currentIndexPath = collectionView.indexPath(for: draggingItem!)
-//            if currentIndexPath! as NSIndexPath != proposedDropIndexPath {  // guard to move once only
-//                collectionView.animator().moveItem(at: currentIndexPath!, to: proposedDropIndexPath as IndexPath)
-//            }
-//        }
-//
-//        return .move
-//    }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
         let item = collectionView.makeItem(withIdentifier: .init(CellViewUIKit.identifier), for: indexPath) as! CellViewUIKit
