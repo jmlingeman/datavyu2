@@ -94,7 +94,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 if fileModel.unsavedChanges {
                     fileController!.activeFileModel = fileModel
 
-                    let res = savePanel(fileModel: fileModel)
+                    let res = savePanel(fileModel: fileModel, exiting: true)
                     if !res {
                         return .terminateCancel
                     }
