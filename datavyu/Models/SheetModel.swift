@@ -47,6 +47,10 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
         }
     }
 
+    func getHiddenColumns() -> [ColumnModel] {
+        columns.filter { c in c.hidden }
+    }
+
     func deleteColumn(column: ColumnModel) {
         let columnIdx = columns.firstIndex(of: column)!
         columns.removeAll { c in

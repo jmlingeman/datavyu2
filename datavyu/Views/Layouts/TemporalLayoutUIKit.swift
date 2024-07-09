@@ -77,7 +77,7 @@ final class SheetCollectionAppKitView: NSCollectionView {
     override func setFrameSize(_ newSize: NSSize) {
         var size = NSSize(width: newSize.width, height: newSize.height)
         if newSize.width != collectionViewLayout?.collectionViewContentSize.width {
-            size.width = collectionViewLayout?.collectionViewContentSize.width ?? 0
+            size.width = collectionViewLayout?.collectionViewContentSize.width ?? 0 + Config.addColumnSheetButtonSize
         }
         super.setFrameSize(size)
     }
@@ -118,23 +118,38 @@ struct NewColumnQuickButton: View {
     @ObservedObject var appState: AppState
     @State var showingAlert: Bool = false
     @State var columnName: String = ""
+    @State var showingHiddenColumns: Bool = false
+    @State var selectedHiddenColumn: ColumnModel?
 
     var body: some View {
-        Button {
-            showingAlert.toggle()
-        } label: {
-            Image(systemName: "plus")
-        }.onAppear(perform: {
-            columnName = appState.fileController!.activeFileModel.sheetModel.getNextDefaultColumnName()
-        }).alert("New Column", isPresented: $showingAlert) {
-            TextField("Column Name", text: $columnName)
-            Button("OK") {
-                let _ = appState.fileController?.activeFileModel.sheetModel.addColumn(columnName: columnName)
-            }
-            Button("Cancel") {
-                columnName = ""
+        HStack {
+            Button {
                 showingAlert.toggle()
+            } label: {
+                Image(systemName: "plus")
+            }.onAppear(perform: {
+                columnName = appState.fileController!.activeFileModel.sheetModel.getNextDefaultColumnName()
+            }).alert("New Column", isPresented: $showingAlert) {
+                TextField("Column Name", text: $columnName)
+                Button("OK") {
+                    let _ = appState.fileController?.activeFileModel.sheetModel.addColumn(columnName: columnName)
+                }
+                Button("Cancel") {
+                    columnName = ""
+                    showingAlert.toggle()
+                }
             }
+            Button {
+                showingHiddenColumns.toggle()
+            } label: {
+                Text("\(appState.fileController!.activeFileModel.sheetModel.getHiddenColumns().count) Hidden Columns")
+            }.popover(isPresented: $showingHiddenColumns, content: {
+                List(appState.fileController!.activeFileModel.sheetModel.getHiddenColumns(), selection: $selectedHiddenColumn) { col in
+                    Button(col.columnName) {
+                        col.setHidden(val: false)
+                    }
+                }
+            })
         }
     }
 }
@@ -284,9 +299,14 @@ struct SheetLayoutCollection: NSViewRepresentable {
                 collectionView.floatingHeaders[column] = floatingHeader
                 scrollView.addFloatingSubview(floatingHeader, for: .vertical)
             }
+            for (column, header) in collectionView.floatingHeaders {
+                if column.hidden {
+                    header.removeFromSuperview()
+                }
+            }
             let newColumnHeader = NSHostingView(rootView: NewColumnQuickButton(appState: appState))
             newColumnHeader.frame = NSRect(origin: NSPoint(x: Int(Config.defaultCellWidth * appState.zoomFactor) * sheetModel.visibleColumns.count, y: 0),
-                                           size: NSSize(width: Config.headerSize,
+                                           size: NSSize(width: Config.addColumnSheetButtonSize,
                                                         height: Config.headerSize))
             collectionView.newColumnHeader?.removeFromSuperview()
             collectionView.newColumnHeader = newColumnHeader

@@ -47,4 +47,6 @@ enum Config {
 
     static let autosaveFrequencySeconds = 30.0
     static let autosaveUserDefaultsKey = "datavyu_autosave_file_urls"
+
+    static let addColumnSheetButtonSize = 200.0
 }
