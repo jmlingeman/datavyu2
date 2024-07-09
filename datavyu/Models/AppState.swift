@@ -6,7 +6,8 @@
 //
 
 import AppKit
-import Foundation
+import AVFoundation
+import SwiftUI
 
 public class AppState: NSObject, ObservableObject {
     @Published var fileController: FileControllerModel?
@@ -21,6 +22,8 @@ public class AppState: NSObject, ObservableObject {
     @Published var quickKeyMode = false
 
     @Published var draggingColumn: ColumnModel?
+
+    @AppStorage(Config.autosaveUserDefaultsKey) var autosaveURLs: [URL] = []
 
     @objc dynamic var playbackTime = 0.0
 

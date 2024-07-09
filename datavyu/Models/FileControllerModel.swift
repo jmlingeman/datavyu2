@@ -28,10 +28,12 @@ class FileControllerModel: ObservableObject, Identifiable {
         }
     }
 
-    func openFile(inputFilename: URL) {
+    func openFile(inputFilename: URL) -> FileModel {
         var fileModel = loadOpfFile(inputFilename: inputFilename)
         fileModels.append(fileModel)
         activeFileModel = fileModel
+
+        return fileModel
     }
 
     func newFile() -> FileModel {
@@ -50,5 +52,6 @@ class FileControllerModel: ObservableObject, Identifiable {
 
     func saveFile(outputFilename: URL) {
         saveOpfFile(fileModel: activeFileModel, outputFilename: outputFilename)
+        activeFileModel.unsavedChanges = false
     }
 }

@@ -9,11 +9,23 @@ import Foundation
 import Yams
 import ZIPFoundation
 
-func saveOpfFile(fileModel: FileModel, outputFilename: URL) -> Data {
+func autosaveFile(fileModel: FileModel, appState: AppState, tabIndex _: Int) {
+    let outputFilename = URL(fileURLWithPath: NSTemporaryDirectory() + fileModel.sheetModel.sheetName + ".opf")
+    _ = saveOpfFile(fileModel: fileModel, outputFilename: outputFilename, autosaving: true)
+    if !appState.autosaveURLs.contains(where: { url in
+        url.path() == outputFilename.path()
+    }) {
+        appState.autosaveURLs.append(outputFilename)
+    }
+}
+
+func saveOpfFile(fileModel: FileModel, outputFilename: URL, autosaving: Bool = false) -> Data {
     let db = saveDB(fileModel: fileModel)
     let project = saveProject(fileModel: fileModel)
 
-    fileModel.setFileURL(url: outputFilename)
+    if !autosaving {
+        fileModel.setFileURL(url: outputFilename)
+    }
 
     do {
         do {
@@ -42,6 +54,10 @@ func saveOpfFile(fileModel: FileModel, outputFilename: URL) -> Data {
                 (position: Int64, size) -> Data in
                 trackData.subdata(in: Data.Index(position) ..< Int(position) + size)
             })
+        }
+
+        if !autosaving {
+            fileModel.unsavedChanges = false
         }
 
         return data

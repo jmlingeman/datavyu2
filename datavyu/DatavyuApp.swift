@@ -10,9 +10,81 @@ import UniformTypeIdentifiers
 
 final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     var fileController: FileControllerModel?
+    var appState: AppState?
 
     func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool {
         true
+    }
+
+    func applicationDidFinishLaunching(_: Notification) {
+        let autosaveURLs = appState?.autosaveURLs
+        if autosaveURLs != nil, autosaveURLs?.count ?? 0 > 0 {
+            // Prompt user to re-open file
+            let autosaveAlert = NSAlert()
+            let urlStrings = autosaveURLs!.map { url in
+                url.lastPathComponent
+            }
+            autosaveAlert.messageText = "Datavyu crashed and the following files were autosaved: \(urlStrings.joined(separator: ", "))"
+            autosaveAlert.informativeText = "Do you want to reopen these files?"
+            autosaveAlert.addButton(withTitle: "Open All")
+            autosaveAlert.addButton(withTitle: "Don't Open").hasDestructiveAction = true
+
+            let result = autosaveAlert.runModal()
+            if result == .alertFirstButtonReturn {
+                for url in autosaveURLs! {
+                    let fileModel = appState?.fileController?.openFile(inputFilename: url)
+                    fileModel?.unsavedChanges = true
+                }
+                appState?.autosaveURLs = []
+            } else if result == .alertSecondButtonReturn {
+                appState?.autosaveURLs = []
+            }
+        }
+    }
+
+    func displaySavePanel(fileModel: FileModel, quicksaveAllowed: Bool = true) {
+        if quicksaveAllowed, fileModel.fileURL != nil {
+            let _ = saveOpfFile(fileModel: fileModel, outputFilename: fileModel.fileURL!)
+            return
+        }
+
+        let savePanel = NSSavePanel()
+        savePanel.allowedContentTypes = [UTType.opf]
+        if fileModel.fileURL != nil {
+            savePanel.directoryURL = fileModel.fileURL!.deletingLastPathComponent()
+        } else {
+            savePanel.directoryURL = Config.defaultSaveDirectory
+        }
+        savePanel.nameFieldStringValue = fileModel.sheetModel.sheetName
+        if savePanel.runModal() == .OK {
+            let _ = saveOpfFile(fileModel: fileModel, outputFilename: savePanel.url!)
+        }
+    }
+
+    func savePanel(fileModel: FileModel, exiting: Bool = false) -> Bool {
+        if exiting {
+            let saveCloseAlert = NSAlert()
+            saveCloseAlert.messageText = "Spreadsheet '\(fileModel.sheetModel.sheetName)' has unsaved changes."
+            saveCloseAlert.informativeText = "Do you want to save before exiting?"
+            saveCloseAlert.addButton(withTitle: "Save")
+            saveCloseAlert.addButton(withTitle: "Cancel")
+            saveCloseAlert.addButton(withTitle: "Don't Save").hasDestructiveAction = true
+
+            let result = saveCloseAlert.runModal()
+            print(result)
+            if result == .alertFirstButtonReturn {
+                displaySavePanel(fileModel: fileModel)
+            } else if result == .alertSecondButtonReturn {
+                print("Got cancel")
+                return false
+            } else if result == .alertThirdButtonReturn {
+                print("Got dont save")
+            }
+        } else {
+            displaySavePanel(fileModel: fileModel)
+        }
+
+        return true
     }
 
     func applicationShouldTerminate(_: NSApplication) -> NSApplication.TerminateReply {
@@ -22,37 +94,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 if fileModel.unsavedChanges {
                     fileController!.activeFileModel = fileModel
 
-                    let saveCloseAlert = NSAlert()
-                    saveCloseAlert.messageText = "Spreadsheet '\(fileModel.sheetModel.sheetName)' has unsaved changes."
-                    saveCloseAlert.informativeText = "Do you want to save before exiting?"
-                    saveCloseAlert.addButton(withTitle: "Save")
-                    saveCloseAlert.addButton(withTitle: "Cancel")
-                    saveCloseAlert.addButton(withTitle: "Don't Save").hasDestructiveAction = true
-
-                    let result = saveCloseAlert.runModal()
-                    print(result)
-                    if result == .alertFirstButtonReturn {
-                        print("Got ok")
-                        let savePanel = NSSavePanel()
-                        savePanel.allowedContentTypes = [UTType.opf]
-                        if fileController!.activeFileModel.fileURL != nil {
-                            savePanel.directoryURL = fileController!.activeFileModel.fileURL!.deletingLastPathComponent()
-                        } else {
-                            savePanel.directoryURL = Config.defaultSaveDirectory
-                        }
-                        savePanel.nameFieldStringValue = fileController!.activeFileModel.sheetModel.sheetName
-                        if savePanel.runModal() == .OK {
-                            let _ = saveOpfFile(fileModel: fileController!.activeFileModel, outputFilename: savePanel.url!)
-                        }
-                    } else if result == .alertSecondButtonReturn {
-                        print("Got cancel")
+                    let res = savePanel(fileModel: fileModel)
+                    if !res {
                         return .terminateCancel
-                    } else if result == .alertThirdButtonReturn {
-                        print("Got dont save")
                     }
                 }
             }
         }
+
+        // Since we're exiting normally, clear the autosaved files so we don't
+        // try to reopen them.
+        UserDefaults.standard.set([], forKey: Config.autosaveUserDefaultsKey)
 
         return .terminateNow
     }
@@ -115,19 +167,25 @@ struct DatavyuApp: App {
                 .alert(isPresented: $showingAlert) {
                     Alert(title: Text("Error: File error"), message: Text(errorMsg))
                 }
-                .fileExporter(isPresented: $showingSaveDialog,
-                              document: fileController.activeFileModel,
-                              contentType: UTType.opf,
-                              defaultFilename: "\(fileController.activeFileModel.sheetModel.sheetName).opf",
-                              onCompletion: { result in
-                                  switch result {
-                                  case let .success(url):
-                                      fileController.saveFile(outputFilename: url)
-                                  case let .failure(error):
-                                      errorMsg = "\(error)"
-                                      showingAlert.toggle()
-                                  }
-                              })
+                .onChange(of: showingSaveDialog) {
+                    if showingSaveDialog {
+                        _ = appDelegate.savePanel(fileModel: fileController.activeFileModel)
+                    }
+                    showingSaveDialog = false
+                }
+//                .fileExporter(isPresented: $showingSaveDialog,
+//                              document: fileController.activeFileModel,
+//                              contentType: UTType.opf,
+//                              defaultFilename: "\(fileController.activeFileModel.sheetModel.sheetName).opf",
+//                              onCompletion: { result in
+//                                  switch result {
+//                                  case let .success(url):
+//                                      fileController.saveFile(outputFilename: url)
+//                                  case let .failure(error):
+//                                      errorMsg = "\(error)"
+//                                      showingAlert.toggle()
+//                                  }
+//                              })
                 .fileImporter(isPresented: $showingOpenDialog,
                               allowedContentTypes: [UTType.opf],
                               allowsMultipleSelection: true,
@@ -158,6 +216,7 @@ struct DatavyuApp: App {
                 }
                 .onAppear {
                     appDelegate.fileController = fileController
+                    appDelegate.appState = appState
                 }
                 .environmentObject(keyInputSubject)
         }.commands {

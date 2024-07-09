@@ -26,7 +26,8 @@ struct ContentView: View {
         GeometryReader { gr in
             TabView(selection: $selectedTab) {
                 ForEach(Array(zip(fileController.fileModels.indices, $fileController.fileModels)), id: \.0) { idx, $fileModel in
-                    DatavyuView(fileModel: fileModel, temporalLayout: $temporalLayout, hideController: $hideController).tabItem { Text(fileModel.sheetModel.sheetName) }
+                    DatavyuView(fileModel: fileModel, temporalLayout: $temporalLayout, hideController: $hideController, tabIndex: idx)
+                        .tabItem { Text("\(fileModel.sheetModel.sheetName)\(fileModel.unsavedChanges ? " *" : "")") }
                         .environmentObject(fileModel.sheetModel)
                         .environmentObject(fileModel).tag(idx)
                 }

@@ -10,9 +10,11 @@ import SwiftUI
 struct ControllerView: View {
     @ObservedObject var fileModel: FileModel
     @Binding var temporalLayout: Bool
+    @Binding var hideController: Bool
+    let tabIndex: Int
+
     @FocusState private var columnInFocus: ColumnModel?
     @FocusState private var cellInFocus: CellModel?
-    @Binding var hideController: Bool
     @State private var showingColumnNameDialog = false
 
     @EnvironmentObject private var appState: AppState
@@ -40,6 +42,9 @@ struct ControllerView: View {
                 .frame(minWidth: 600)
                 .layoutPriority(1)
                 .environmentObject(fileModel.sheetModel)
+                .onChange(of: fileModel.sheetModel.updates) { _, _ in
+                    autosaveFile(fileModel: fileModel, appState: appState, tabIndex: tabIndex)
+                }
         }
     }
 }

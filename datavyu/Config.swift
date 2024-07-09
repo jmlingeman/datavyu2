@@ -44,4 +44,7 @@ enum Config {
 
     static let defaultSaveDirectory = URL(string: NSSearchPathForDirectoriesInDomains(.desktopDirectory, .userDomainMask, true).first!)
     static let maxRecentFiles = 6
+
+    static let autosaveFrequencySeconds = 30.0
+    static let autosaveUserDefaultsKey = "datavyu_autosave_file_urls"
 }
