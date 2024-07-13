@@ -5,6 +5,7 @@
 //  Created by Jesse Lingeman on 5/28/23.
 //
 
+import AppKit
 import SwiftUI
 import WrappingHStack
 
@@ -26,8 +27,25 @@ struct ContentView: View {
         GeometryReader { gr in
             TabView(selection: $selectedTab) {
                 ForEach(Array(zip(fileController.fileModels.indices, $fileController.fileModels)), id: \.0) { idx, $fileModel in
+
                     DatavyuView(fileModel: fileModel, temporalLayout: $temporalLayout, hideController: $hideController, tabIndex: idx)
-                        .tabItem { Text("\(fileModel.sheetModel.sheetName)\(fileModel.unsavedChanges ? " *" : "")") }
+                        .tabItem {
+                            HStack {
+                                Text("\(fileModel.sheetModel.sheetName)\(fileModel.unsavedChanges ? " *" : "")")
+                                Button {
+                                    if !fileModel.unsavedChanges {
+                                        appState.closeFile(fileModel: fileModel)
+                                    } else {
+                                        let ret = appState.savePanel(fileModel: fileController.activeFileModel)
+                                        if ret {
+                                            appState.closeFile(fileModel: fileModel)
+                                        }
+                                    }
+                                } label: {
+                                    Image(systemName: "x.circle").resizable()
+                                }
+                            }
+                        }
                         .environmentObject(fileModel.sheetModel)
                         .environmentObject(fileModel).tag(idx)
                 }

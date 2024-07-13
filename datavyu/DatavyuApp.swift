@@ -42,51 +42,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         }
     }
 
-    func displaySavePanel(fileModel: FileModel, quicksaveAllowed: Bool = true) {
-        if quicksaveAllowed, fileModel.fileURL != nil {
-            let _ = saveOpfFile(fileModel: fileModel, outputFilename: fileModel.fileURL!)
-            return
-        }
-
-        let savePanel = NSSavePanel()
-        savePanel.allowedContentTypes = [UTType.opf]
-        if fileModel.fileURL != nil {
-            savePanel.directoryURL = fileModel.fileURL!.deletingLastPathComponent()
-        } else {
-            savePanel.directoryURL = Config.defaultSaveDirectory
-        }
-        savePanel.nameFieldStringValue = fileModel.sheetModel.sheetName
-        if savePanel.runModal() == .OK {
-            let _ = saveOpfFile(fileModel: fileModel, outputFilename: savePanel.url!)
-        }
-    }
-
-    func savePanel(fileModel: FileModel, exiting: Bool = false) -> Bool {
-        if exiting {
-            let saveCloseAlert = NSAlert()
-            saveCloseAlert.messageText = "Spreadsheet '\(fileModel.sheetModel.sheetName)' has unsaved changes."
-            saveCloseAlert.informativeText = "Do you want to save before exiting?"
-            saveCloseAlert.addButton(withTitle: "Save")
-            saveCloseAlert.addButton(withTitle: "Cancel")
-            saveCloseAlert.addButton(withTitle: "Don't Save").hasDestructiveAction = true
-
-            let result = saveCloseAlert.runModal()
-            print(result)
-            if result == .alertFirstButtonReturn {
-                displaySavePanel(fileModel: fileModel)
-            } else if result == .alertSecondButtonReturn {
-                print("Got cancel")
-                return false
-            } else if result == .alertThirdButtonReturn {
-                print("Got dont save")
-            }
-        } else {
-            displaySavePanel(fileModel: fileModel)
-        }
-
-        return true
-    }
-
     func applicationShouldTerminate(_: NSApplication) -> NSApplication.TerminateReply {
         // some code
         if fileController != nil {
@@ -94,7 +49,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 if fileModel.unsavedChanges {
                     fileController!.activeFileModel = fileModel
 
-                    let res = savePanel(fileModel: fileModel, exiting: true)
+                    let res = appState!.savePanel(fileModel: fileModel, exiting: true)
                     if !res {
                         return .terminateCancel
                     }
@@ -169,7 +124,7 @@ struct DatavyuApp: App {
                 }
                 .onChange(of: showingSaveDialog) {
                     if showingSaveDialog {
-                        _ = appDelegate.savePanel(fileModel: fileController.activeFileModel)
+                        _ = appState.savePanel(fileModel: fileController.activeFileModel)
                     }
                     showingSaveDialog = false
                 }

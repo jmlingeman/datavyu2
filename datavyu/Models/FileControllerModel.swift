@@ -48,7 +48,11 @@ class FileControllerModel: ObservableObject, Identifiable {
         let _ = newFile()
     }
 
-    func closeFile() {}
+    func closeFile(fileModel: FileModel) {
+        fileModels.removeAll { f in
+            f == fileModel
+        }
+    }
 
     func saveFile(outputFilename: URL) {
         saveOpfFile(fileModel: activeFileModel, outputFilename: outputFilename)

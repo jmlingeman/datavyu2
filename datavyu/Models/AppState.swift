@@ -27,6 +27,58 @@ public class AppState: NSObject, ObservableObject {
 
     @objc dynamic var playbackTime = 0.0
 
+    func closeFile(fileModel: FileModel) {
+        fileController?.closeFile(fileModel: fileModel)
+        controllerWindows.removeValue(forKey: fileModel)
+        videoWindows.removeValue(forKey: fileModel)
+        scriptWindows.removeValue(forKey: fileModel)
+    }
+
+    func displaySavePanel(fileModel: FileModel, quicksaveAllowed: Bool = true) {
+        if quicksaveAllowed, fileModel.fileURL != nil {
+            let _ = saveOpfFile(fileModel: fileModel, outputFilename: fileModel.fileURL!)
+            return
+        }
+
+        let savePanel = NSSavePanel()
+        savePanel.allowedContentTypes = [UTType.opf]
+        if fileModel.fileURL != nil {
+            savePanel.directoryURL = fileModel.fileURL!.deletingLastPathComponent()
+        } else {
+            savePanel.directoryURL = Config.defaultSaveDirectory
+        }
+        savePanel.nameFieldStringValue = fileModel.sheetModel.sheetName
+        if savePanel.runModal() == .OK {
+            let _ = saveOpfFile(fileModel: fileModel, outputFilename: savePanel.url!)
+        }
+    }
+
+    func savePanel(fileModel: FileModel, exiting: Bool = false) -> Bool {
+        if exiting {
+            let saveCloseAlert = NSAlert()
+            saveCloseAlert.messageText = "Spreadsheet '\(fileModel.sheetModel.sheetName)' has unsaved changes."
+            saveCloseAlert.informativeText = "Do you want to save before exiting?"
+            saveCloseAlert.addButton(withTitle: "Save")
+            saveCloseAlert.addButton(withTitle: "Cancel")
+            saveCloseAlert.addButton(withTitle: "Don't Save").hasDestructiveAction = true
+
+            let result = saveCloseAlert.runModal()
+            print(result)
+            if result == .alertFirstButtonReturn {
+                displaySavePanel(fileModel: fileModel)
+            } else if result == .alertSecondButtonReturn {
+                print("Got cancel")
+                return false
+            } else if result == .alertThirdButtonReturn {
+                print("Got dont save")
+            }
+        } else {
+            displaySavePanel(fileModel: fileModel)
+        }
+
+        return true
+    }
+
     func setControllerWindow(win: NSWindow) {
         controllerWindows[fileController!.activeFileModel] = win
     }
