@@ -9,7 +9,7 @@ import Foundation
 import Yams
 import ZIPFoundation
 
-func autosaveFile(fileModel: FileModel, appState: AppState, tabIndex _: Int) {
+func autosaveFile(fileModel: FileModel, appState: AppState) {
     let outputFilename = URL(fileURLWithPath: NSTemporaryDirectory() + fileModel.sheetModel.sheetName + ".opf")
     _ = saveOpfFile(fileModel: fileModel, outputFilename: outputFilename, autosaving: true)
     if !appState.autosaveURLs.contains(where: { url in
@@ -60,7 +60,9 @@ func saveOpfFile(fileModel: FileModel, outputFilename: URL, autosaving: Bool = f
             fileModel.unsavedChanges = false
         }
 
-        return data
+        if archive.data != nil {
+            return archive.data!
+        }
     } catch {
         print("ERROR WRITING ZIP FILE: \(error)")
     }
@@ -155,6 +157,21 @@ func saveProject(fileModel: FileModel) -> String {
 }
 
 func saveLegacyFiles(fileModel _: FileModel) {}
+
+func loadOpfData(data: Data) -> FileModel {
+    let workingDirectory = URL(filePath: NSTemporaryDirectory() + UUID().uuidString)
+    let fileUrl = workingDirectory.appendingPathComponent("New Sheet", conformingTo: .opf)
+
+    do {
+        try FileManager.default.createDirectory(at: workingDirectory, withIntermediateDirectories: false)
+        FileManager.default.createFile(atPath: fileUrl.path(), contents: data)
+        return loadOpfFile(inputFilename: fileUrl)
+    } catch {
+        print(error)
+    }
+
+    return FileModel()
+}
 
 func loadOpfFile(inputFilename: URL) -> FileModel {
     let workingDirectory = URL(filePath: NSTemporaryDirectory() + UUID().uuidString)

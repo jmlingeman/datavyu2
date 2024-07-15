@@ -10,23 +10,23 @@ import SwiftUI
 
 extension View {
     @discardableResult
-    func openInWindow(title: String, appState: AppState, sender: Any?, frameName: String?) -> NSWindow {
+    func openInWindow(title: String, appState: AppState, fileModel: FileModel, sender: Any?, frameName: String?) -> NSWindow {
         let controller = NSHostingController(rootView: self)
 
         if title.starts(with: "Controller") {
-            let controllerWin = appState.controllerWindows[appState.fileController!.activeFileModel]
+            let controllerWin = appState.controllerWindows[fileModel]
             if controllerWin != nil {
                 return controllerWin!
             }
         } else if title.starts(with: "Script") {
-            let scriptWindows = appState.scriptWindows[appState.fileController!.activeFileModel] ?? []
+            let scriptWindows = appState.scriptWindows[fileModel] ?? []
             for sw in scriptWindows {
                 if sw.title == title {
                     return sw
                 }
             }
         } else if title.starts(with: "Video") {
-            let videoWindows = appState.videoWindows[appState.fileController!.activeFileModel] ?? []
+            let videoWindows = appState.videoWindows[fileModel] ?? []
             for vw in videoWindows {
                 if vw.title == title {
                     return vw
@@ -51,11 +51,11 @@ extension View {
         }
 
         if title.starts(with: "Controller") {
-            appState.controllerWindows[appState.fileController!.activeFileModel] = win
+            appState.controllerWindows[fileModel] = win
         } else if title.starts(with: "Script") {
-            appState.addScriptWindow(win: win)
+            appState.addScriptWindow(win: win, fileModel: fileModel)
         } else if title.starts(with: "Video") {
-            appState.addVideoWindow(win: win)
+            appState.addVideoWindow(win: win, fileModel: fileModel)
         }
 
         return win

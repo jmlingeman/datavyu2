@@ -11,6 +11,9 @@ import UniformTypeIdentifiers
 
 public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, Equatable, Hashable {
     public static var readableContentTypes: [UTType] = [UTType.opf]
+    public static var writableContentTypes: [UTType] = [UTType.opf]
+
+    public static let type = "com.datavyu.opf"
 
     var version = "#4"
 
@@ -270,23 +273,44 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
     public typealias Snapshot = FileModel
 
     public required init(configuration: ReadConfiguration) throws {
-        let url = configuration.file.symbolicLinkDestinationURL
+        print("Reg: \(configuration.file.isRegularFile) Sym: \(configuration.file.isSymbolicLink)")
 
-        let model = loadOpfFile(inputFilename: url!)
+        if configuration.file.isSymbolicLink {
+            let url = configuration.file.symbolicLinkDestinationURL
+            let model = loadOpfFile(inputFilename: url!)
 
-        videoModels = model.videoModels
-        sheetModel = model.sheetModel
-        primaryVideo = model.primaryVideo
-        longestDuration = model.longestDuration
-        primaryMarker = model.primaryMarker
-        updates = model.updates
+            videoModels = model.videoModels
+            sheetModel = model.sheetModel
+            primaryVideo = model.primaryVideo
+            longestDuration = model.longestDuration
+            primaryMarker = model.primaryMarker
+            updates = model.updates
 
-        currentShuttleSpeedIdx = model.currentShuttleSpeedIdx
-        videoObservers = model.videoObservers
+            currentShuttleSpeedIdx = model.currentShuttleSpeedIdx
+            videoObservers = model.videoObservers
+            videoController = VideoController(fileModel: self)
+        } else {
+            let model = loadOpfData(data: configuration.file.regularFileContents!)
+            videoModels = model.videoModels
+            sheetModel = model.sheetModel
+            primaryVideo = model.primaryVideo
+            longestDuration = model.longestDuration
+            primaryMarker = model.primaryMarker
+            updates = model.updates
+
+            currentShuttleSpeedIdx = model.currentShuttleSpeedIdx
+            videoObservers = model.videoObservers
+            videoController = VideoController(fileModel: self)
+        }
     }
 
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
+    }
+
+    public func fileWrapper(configuration _: WriteConfiguration) throws -> FileWrapper {
+        let data = saveOpfFile(fileModel: self, outputFilename: fileURL!)
+        return FileWrapper(serializedRepresentation: data)!
     }
 }
 

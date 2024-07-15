@@ -10,6 +10,8 @@ import SwiftUI
 import WrappingHStack
 
 struct ContentView: View {
+    @ObservedObject var fileModel: FileModel
+
     @EnvironmentObject var fileController: FileControllerModel
     @EnvironmentObject var appState: AppState
 
@@ -25,80 +27,41 @@ struct ContentView: View {
 
     var body: some View {
         GeometryReader { gr in
-            TabView(selection: $selectedTab) {
-                ForEach(Array(zip(fileController.fileModels.indices, $fileController.fileModels)), id: \.0) { idx, $fileModel in
-
-                    DatavyuView(fileModel: fileModel, temporalLayout: $temporalLayout, hideController: $hideController, tabIndex: idx)
-                        .tabItem {
-                            HStack {
-                                Text("\(fileModel.sheetModel.sheetName)\(fileModel.unsavedChanges ? " *" : "")")
-                                Button {
-                                    if !fileModel.unsavedChanges {
-                                        appState.closeFile(fileModel: fileModel)
-                                    } else {
-                                        let ret = appState.savePanel(fileModel: fileController.activeFileModel)
-                                        if ret {
-                                            appState.closeFile(fileModel: fileModel)
-                                        }
-                                    }
-                                } label: {
-                                    Image(systemName: "x.circle").resizable()
-                                }
-                            }
+            DatavyuView(fileModel: fileModel, temporalLayout: $temporalLayout, hideController: $hideController)
+                .environmentObject(fileModel.sheetModel)
+                .environmentObject(fileModel)
+                .focusedSceneObject(fileModel)
+//            .onChange(of: fileController.activeFileModel) { oldValue, newValue in
+//                let newTabIdx = fileController.fileModels.firstIndex(of: newValue)
+//                selectedTab = newTabIdx ?? 0
+//
+//                // Hide all of the windows for this tab
+//                appState.hideWindows(fileModel: oldValue)
+//                appState.showWindows(fileModel: newValue)
+//            }
+//            .onChange(of: selectedTab) { _, _ in
+//                fileController.activeFileModel = fileController.fileModels[selectedTab]
+//            }
+                .toolbar {
+                    ToolbarItemGroup {
+                        Button("Code Editor") {
+                            showingCodeEditor.toggle()
                         }
-                        .environmentObject(fileModel.sheetModel)
-                        .environmentObject(fileModel).tag(idx)
-                }
-            }
-            .onAppear {
-                let server = DatavyuAPIServer(fileController: fileController, port: 1312)
-                server.start()
-            }
-            .onChange(of: fileController.activeFileModel) { oldValue, newValue in
-                let newTabIdx = fileController.fileModels.firstIndex(of: newValue)
-                selectedTab = newTabIdx ?? 0
-
-                // Hide all of the windows for this tab
-                appState.hideWindows(fileModel: oldValue)
-                appState.showWindows(fileModel: newValue)
-            }
-            .onChange(of: selectedTab) { _, _ in
-                fileController.activeFileModel = fileController.fileModels[selectedTab]
-            }
-            .toolbar {
-                ToolbarItemGroup {
-                    Button("Code Editor") {
-                        showingCodeEditor.toggle()
-                    }
-                    .sheet(isPresented: $showingCodeEditor) {
-                        CodeEditorView(sheetModel: fileController.activeFileModel.sheetModel).frame(width: gr.size.width / 2, height: gr.size.height / 2)
-                    }
-                    Button("Options") {
-                        showingOptions.toggle()
-                    }
-                    .sheet(isPresented: $showingOptions) {
-                        OptionsView().frame(width: gr.size.width / 2, height: gr.size.height / 2)
-                    }
-                    Button("Hide/Show Columns") {
-                        showingColumnList.toggle()
-                    }
-                    .sheet(isPresented: $showingColumnList) {
-                        ColumnListView(sheetModel: fileController.activeFileModel.sheetModel).frame(width: gr.size.width / 2, height: gr.size.height / 2)
-                    }
-                    Button("Open File") {
-                        let panel = NSOpenPanel()
-                        panel.allowsMultipleSelection = false
-                        panel.canChooseDirectories = false
-                        if panel.runModal() == .OK {
-                            fileController.openFile(inputFilename: panel.url!)
+                        .sheet(isPresented: $showingCodeEditor) {
+                            CodeEditorView(sheetModel: fileModel.sheetModel).frame(width: gr.size.width / 2, height: gr.size.height / 2)
                         }
-                    }
-                    Button("Save File") {
-                        let panel = NSSavePanel()
-                        if panel.runModal() == .OK {
-                            let _ = saveOpfFile(fileModel: fileController.activeFileModel, outputFilename: panel.url!)
+                        Button("Options") {
+                            showingOptions.toggle()
                         }
-                    }
+                        .sheet(isPresented: $showingOptions) {
+                            OptionsView().frame(width: gr.size.width / 2, height: gr.size.height / 2)
+                        }
+                        Button("Hide/Show Columns") {
+                            showingColumnList.toggle()
+                        }
+                        .sheet(isPresented: $showingColumnList) {
+                            ColumnListView(sheetModel: fileModel.sheetModel).frame(width: gr.size.width / 2, height: gr.size.height / 2)
+                        }
 //                    Button(layoutLabel) {
 //                        if layoutLabel == "Ordinal Layout" {
 //                            layoutLabel = "Temporal Layout"
@@ -108,19 +71,19 @@ struct ContentView: View {
 //                            temporalLayout = false
 //                        }
 //                    }.keyboardShortcut("t")
-                    Button(hideLabel) {
-                        withAnimation {
-                            if hideLabel == "Hide Controller" {
-                                hideLabel = "Show Controller"
-                                hideController = true
-                            } else {
-                                hideLabel = "Hide Controller"
-                                hideController = false
+                        Button(hideLabel) {
+                            withAnimation {
+                                if hideLabel == "Hide Controller" {
+                                    hideLabel = "Show Controller"
+                                    hideController = true
+                                } else {
+                                    hideLabel = "Hide Controller"
+                                    hideController = false
+                                }
                             }
-                        }
-                    }.keyboardShortcut("g")
+                        }.keyboardShortcut("g")
+                    }
                 }
-            }
         }
     }
 }

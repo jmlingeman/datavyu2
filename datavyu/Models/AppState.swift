@@ -21,9 +21,32 @@ public class AppState: NSObject, ObservableObject {
     @Published var focusMode = false
     @Published var quickKeyMode = false
 
+    @Published var showingOpenDialog = false
+    @Published var showingAlert = false
+    @Published var errorMsg = ""
+    @Published var showingSaveDialog = false
+    @Published var showingColumnNameDialog = false
+    @Published var showingCodeEditor = false
+    @Published var showingColHideShow = false
+    @Published var showingUpdateView = false
+    @Published var showingScriptSelector = false
+    @Published var scriptEngine = RubyScriptEngine()
+
+    @Published var showingSaveCloseDiaglog = false
+
+    @Published var layoutLabel = "Ordinal Layout"
+    @Published var temporalLayout = false
+    @Published var hideLabel = "Hide Controller"
+    @Published var hideController = false
+
     @Published var draggingColumn: ColumnModel?
 
+    @Published var server: DatavyuAPIServer?
+
     @AppStorage(Config.autosaveUserDefaultsKey) var autosaveURLs: [URL] = []
+    @AppStorage(Config.lastOpenedFileUserDefaultsKey) var lastOpenedURL: URL?
+    @AppStorage("recentlyOpenedFiles") var recentlyOpenedFiles: [URL] = []
+    @AppStorage("recentlyOpenedScripts") var recentlyOpenedScripts: [URL] = []
 
     @objc dynamic var playbackTime = 0.0
 
@@ -79,16 +102,16 @@ public class AppState: NSObject, ObservableObject {
         return true
     }
 
-    func setControllerWindow(win: NSWindow) {
-        controllerWindows[fileController!.activeFileModel] = win
+    func setControllerWindow(win: NSWindow, fileModel: FileModel) {
+        controllerWindows[fileModel] = win
     }
 
-    func addVideoWindow(win: NSWindow) {
-        videoWindows[fileController!.activeFileModel, default: []].append(win)
+    func addVideoWindow(win: NSWindow, fileModel: FileModel) {
+        videoWindows[fileModel, default: []].append(win)
     }
 
-    func addScriptWindow(win: NSWindow) {
-        scriptWindows[fileController!.activeFileModel, default: []].append(win)
+    func addScriptWindow(win: NSWindow, fileModel: FileModel) {
+        scriptWindows[fileModel, default: []].append(win)
     }
 
     func removeVideo(fileModel: FileModel, videoTitle: String) {
@@ -152,6 +175,14 @@ public class AppState: NSObject, ObservableObject {
         focusMode = !focusMode
         if focusMode {
             highlightMode = true
+        }
+    }
+
+    func changeActiveFileModel(fileModel: FileModel) {
+        if fileController?.activeFileModel != nil, fileModel != fileController!.activeFileModel {
+            hideWindows(fileModel: fileController!.activeFileModel)
+            fileController?.activeFileModel = fileModel
+            showWindows(fileModel: fileModel)
         }
     }
 }

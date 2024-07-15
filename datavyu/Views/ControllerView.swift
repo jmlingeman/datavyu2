@@ -11,7 +11,6 @@ struct ControllerView: View {
     @ObservedObject var fileModel: FileModel
     @Binding var temporalLayout: Bool
     @Binding var hideController: Bool
-    let tabIndex: Int
 
     @FocusState private var columnInFocus: ColumnModel?
     @FocusState private var cellInFocus: CellModel?
@@ -25,14 +24,14 @@ struct ControllerView: View {
                 ForEach(fileModel.videoModels) { videoModel in
                     ZStack {}.onAppear(perform: {
                         VideoView(videoModel: videoModel, appState: appState, sheetModel: fileModel.sheetModel)
-                            .openInWindow(title: videoModel.getWindowTitle(), appState: appState, sender: self, frameName: videoModel.filename)
+                            .openInWindow(title: videoModel.getWindowTitle(), appState: appState, fileModel: fileModel, sender: self, frameName: videoModel.filename)
                     })
                 }
             }.onAppear(perform: {
                 HStack {
                     ControllerPanelView(fileModel: fileModel).frame(alignment: .topLeading)
                     TracksStackView(fileModel: fileModel).environmentObject(appState)
-                }.openInWindow(title: "Controller", appState: appState, sender: self, frameName: "controller")
+                }.openInWindow(title: "Controller", appState: appState, fileModel: fileModel, sender: self, frameName: "controller")
             })
 
             Sheet(columnInFocus: _columnInFocus,
@@ -43,7 +42,7 @@ struct ControllerView: View {
                 .layoutPriority(1)
                 .environmentObject(fileModel.sheetModel)
                 .onChange(of: fileModel.sheetModel.updates) { _, _ in
-                    autosaveFile(fileModel: fileModel, appState: appState, tabIndex: tabIndex)
+                    autosaveFile(fileModel: fileModel, appState: appState)
                 }
         }
     }

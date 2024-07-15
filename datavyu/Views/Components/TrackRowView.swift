@@ -25,12 +25,12 @@ struct TrackRowView: View {
                     savePanel.nameFieldStringValue = "\(videoModel.videoFileURL.lastPathComponent)-spectrogram.mov"
                     if savePanel.runModal() == .OK {
                         SpectrogramProgressView(outputPath: savePanel.url!, videoModel: videoModel, fileModel: fileModel)
-                            .openInWindow(title: "Spectrogram Generation: \(videoModel.videoFileURL.lastPathComponent)", appState: appState, sender: self, frameName: nil)
+                            .openInWindow(title: "Spectrogram Generation: \(videoModel.videoFileURL.lastPathComponent)", appState: appState, fileModel: fileModel, sender: self, frameName: nil)
                     }
                 }
                 Button("Transcribe Video") {
                     let transcribePanel = TranscriptionSettingsView(sheetModel: fileModel.sheetModel, videoModel: videoModel)
-                    transcribePanel.openInWindow(title: "Transcription Settings", appState: appState, sender: self, frameName: nil)
+                    transcribePanel.openInWindow(title: "Transcription Settings", appState: appState, fileModel: fileModel, sender: self, frameName: nil)
                 }
             }, label: {
                 Image(systemName: "waveform.circle.fill")
