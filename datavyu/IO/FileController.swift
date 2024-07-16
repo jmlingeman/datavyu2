@@ -19,21 +19,30 @@ func autosaveFile(fileModel: FileModel, appState: AppState) {
     }
 }
 
-func saveOpfFile(fileModel: FileModel, outputFilename: URL, autosaving: Bool = false) -> Data {
+func saveOpfFile(fileModel: FileModel, outputFilename: URL?, autosaving: Bool = false, writeFile: Bool = true) -> Data {
     let db = saveDB(fileModel: fileModel)
     let project = saveProject(fileModel: fileModel)
 
-    if !autosaving {
-        fileModel.setFileURL(url: outputFilename)
+    if !autosaving, outputFilename != nil {
+        fileModel.setFileURL(url: outputFilename!)
     }
 
     do {
-        do {
-            try FileManager.default.removeItem(at: outputFilename)
-        } catch let error as NSError {
-            print("Error: \(error)")
+        if writeFile {
+            do {
+                try FileManager.default.removeItem(at: outputFilename!)
+            } catch let error as NSError {
+                print("Error: \(error)")
+            }
         }
-        let archive = try Archive(url: outputFilename, accessMode: .create)
+        var archive_init: Archive?
+        if !writeFile {
+            archive_init = try Archive(accessMode: .create)
+        } else {
+            archive_init = try Archive(url: outputFilename!, accessMode: .create)
+        }
+
+        let archive = archive_init!
 
         guard let data = db.data(using: .utf8) else { return Data() }
         try? archive.addEntry(with: "db", type: .file, uncompressedSize: Int64(data.count), provider: {

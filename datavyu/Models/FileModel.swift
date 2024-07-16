@@ -263,8 +263,19 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
 
     public func fileWrapper(snapshot: FileModel, configuration: WriteConfiguration) throws -> FileWrapper {
         if configuration.existingFile != nil {
-            let data = saveOpfFile(fileModel: snapshot, outputFilename: configuration.existingFile!.symbolicLinkDestinationURL!)
-            return FileWrapper(regularFileWithContents: data)
+            if configuration.existingFile!.isSymbolicLink {
+                let data = saveOpfFile(fileModel: snapshot, outputFilename: configuration.existingFile!.symbolicLinkDestinationURL!)
+                return FileWrapper(symbolicLinkWithDestinationURL: configuration.existingFile!.symbolicLinkDestinationURL!)
+//                return FileWrapper(regularFileWithContents: data)
+            } else {
+                if snapshot.fileURL != nil {
+                    let data = saveOpfFile(fileModel: snapshot, outputFilename: snapshot.fileURL!)
+                    return FileWrapper(symbolicLinkWithDestinationURL: snapshot.fileURL!)
+                } else {
+                    let data = saveOpfFile(fileModel: snapshot, outputFilename: nil, writeFile: false)
+                    return FileWrapper(regularFileWithContents: data)
+                }
+            }
         } else {
             return FileWrapper()
         }

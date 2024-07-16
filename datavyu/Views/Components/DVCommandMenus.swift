@@ -55,10 +55,10 @@ struct DVCommandMenus: Commands {
             }
         }
 
-        CommandGroup(replacing: CommandGroupPlacement.saveItem) {
-            Button("Save Sheet", action: { appState.showingSaveDialog.toggle() })
-                .keyboardShortcut(KeyEquivalent("s"))
-        }
+//        CommandGroup(replacing: CommandGroupPlacement.saveItem) {
+//            Button("Save Sheet", action: { appState.showingSaveDialog.toggle() })
+//                .keyboardShortcut(KeyEquivalent("s"))
+//        }
 
         CommandGroup(after: CommandGroupPlacement.windowList) {
             Divider()

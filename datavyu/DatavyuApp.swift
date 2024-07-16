@@ -166,6 +166,9 @@ struct DatavyuApp: App {
                     fileModelWrapper.document.sheetModel.updateSheet()
                 }
                 .environmentObject(keyInputSubject)
+                .contextMenu {
+                    RenameButton()
+                }
         }
         .commands {
             DVCommandMenus(appState: appState, keyInputSubject: keyInputSubject)
@@ -174,6 +177,9 @@ struct DatavyuApp: App {
             if fileModel != nil {
                 appState.changeActiveFileModel(fileModel: fileModel!)
             }
+        }
+        .onChange(of: appState.zoomFactor, initial: true) { _, _ in
+            NSDocumentController.shared.newDocument(nil)
         }
     }
 }
