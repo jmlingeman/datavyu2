@@ -49,14 +49,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         // some code
         if appState!.fileController != nil {
             for fileModel in appState!.fileController!.fileModels {
-                if fileModel.unsavedChanges {
-                    appState!.fileController!.activeFileModel = fileModel
-
-                    let res = appState!.savePanel(fileModel: fileModel, exiting: true)
-                    if !res {
-                        return .terminateCancel
-                    }
-                }
+//                if fileModel.unsavedChanges {
+//                    appState!.fileController!.activeFileModel = fileModel
+//
+//                    let res = appState!.savePanel(fileModel: fileModel, exiting: true)
+//                    if !res {
+//                        return .terminateCancel
+//                    }
+//                }
             }
         }
 
@@ -166,32 +166,32 @@ struct DatavyuApp: App {
 //                                      showingAlert.toggle()
 //                                  }
 //                              })
-                .fileImporter(isPresented: $appState.showingOpenDialog,
-                              allowedContentTypes: [UTType.opf],
-                              allowsMultipleSelection: true,
-                              onCompletion: { result in
-
-                                  switch result {
-                                  case let .success(urls):
-                                      for url in urls {
-                                          Task {
-                                              do {
-                                                  try await openDocument(at: url)
-                                              } catch {
-                                                  print(error)
-                                              }
-                                          }
-//                                          fileController.openFile(inputFilename: url)
-                                          appState.recentlyOpenedFiles.append(url)
-                                          if appState.recentlyOpenedFiles.count > Config.maxRecentFiles {
-                                              appState.recentlyOpenedFiles = Array(appState.recentlyOpenedFiles[max(0, appState.recentlyOpenedFiles.count - Config.maxRecentFiles) ..< appState.recentlyOpenedFiles.count])
-                                          }
-                                      }
-                                  case let .failure(error):
-                                      appState.errorMsg = "\(error)"
-                                      appState.showingAlert.toggle()
-                                  }
-                              })
+//                .fileImporter(isPresented: $appState.showingOpenDialog,
+//                              allowedContentTypes: [UTType.opf],
+//                              allowsMultipleSelection: true,
+//                              onCompletion: { result in
+//
+//                                  switch result {
+//                                  case let .success(urls):
+//                                      for url in urls {
+//                                          Task {
+//                                              do {
+//                                                  try await openDocument(at: url)
+//                                              } catch {
+//                                                  print(error)
+//                                              }
+//                                          }
+                ////                                          fileController.openFile(inputFilename: url)
+//                                          appState.recentlyOpenedFiles.append(url)
+//                                          if appState.recentlyOpenedFiles.count > Config.maxRecentFiles {
+//                                              appState.recentlyOpenedFiles = Array(appState.recentlyOpenedFiles[max(0, appState.recentlyOpenedFiles.count - Config.maxRecentFiles) ..< appState.recentlyOpenedFiles.count])
+//                                          }
+//                                      }
+//                                  case let .failure(error):
+//                                      appState.errorMsg = "\(error)"
+//                                      appState.showingAlert.toggle()
+//                                  }
+//                              })
                 .onReceive(keyInputSubject) { c in
                     let cell = fileModelWrapper.document.sheetModel.getSelectedColumns().first?.addCell()
                     cell?.setArgumentValue(index: 0, value: String(c.character))
@@ -215,6 +215,7 @@ struct DatavyuApp: App {
             }
         }
         .onChange(of: appState.zoomFactor, initial: true) { _, _ in
+            NSDocumentController.shared.closeAllDocuments(withDelegate: nil, didCloseAllSelector: nil, contextInfo: nil)
             NSDocumentController.shared.newDocument(nil)
         }
     }

@@ -108,9 +108,11 @@ class CellViewUIKit: NSCollectionViewItem {
         if cell.column!.isFinished {
             onset.isEnabled = false
             offset.isEnabled = false
+            cellTextField.isEnabled = false
         } else {
             onset.isEnabled = true
             offset.isEnabled = true
+            cellTextField.isEnabled = false
         }
 
 //        print("CONFIGURED CELL \(self.onset) \(self.offset) \(self.cell) \(cell.ordinal) \(cell)")
