@@ -16,6 +16,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     func applicationDidFinishLaunching(_: Notification) {
+        flushSavedWindowState()
         let autosaveURLs = appState?.autosaveURLs
         if autosaveURLs != nil, autosaveURLs?.count ?? 0 > 0 {
             // Prompt user to re-open file
@@ -63,7 +64,42 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         // try to reopen them.
         UserDefaults.standard.set([], forKey: Config.autosaveUserDefaultsKey)
 
+        flushSavedWindowState()
         return .terminateNow
+    }
+
+    func flushSavedWindowState() {
+        do {
+            let libURL = try FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+            guard let appPersistentStateDirName = Bundle.main.bundleIdentifier?.appending(".savedState") else { print("get bundleID failed"); return }
+            let savedDataURL = libURL.appendingPathComponent("Saved Application State", isDirectory: true)
+                .appendingPathComponent(appPersistentStateDirName, isDirectory: true)
+            var files = [URL]()
+            if let enumerator = FileManager.default.enumerator(at: savedDataURL, includingPropertiesForKeys: [.isRegularFileKey], options: [.skipsHiddenFiles, .skipsPackageDescendants]) {
+                for case let fileURL as URL in enumerator {
+                    do {
+                        let fileAttributes = try fileURL.resourceValues(forKeys: [.isRegularFileKey])
+                        if fileAttributes.isRegularFile! {
+                            files.append(fileURL)
+                        }
+                    } catch { print(error, fileURL) }
+                }
+                print(files)
+            }
+            for fileURL in files {
+                print("path to remove: ", fileURL)
+                try FileManager.default.removeItem(at: fileURL)
+            }
+//            let windowsPlistFilePath = libURL.appendingPathComponent("Saved Application State", isDirectory: true)
+//                .appendingPathComponent(appPersistentStateDirName, isDirectory: true)
+//                .appendingPathComponent("data.data", isDirectory: false)
+//                .path
+//
+//            print("path to remove: ", windowsPlistFilePath)
+//            try FileManager.default.removeItem(atPath: windowsPlistFilePath)
+        } catch {
+            print("exception: \(error)")
+        }
     }
 }
 

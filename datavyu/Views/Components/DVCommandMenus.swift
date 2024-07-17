@@ -23,43 +23,6 @@ struct DVCommandMenus: Commands {
             }
         }
 
-        //            CommandGroup(replacing: CommandGroupPlacement.newItem) {
-        //                Button("New Sheet", action: fileController.newFileDefault)
-        //                    .keyboardShortcut(KeyEquivalent("n"))
-        //                Button("Open Sheet") {
-        //
-        //                    NSOpenPanel()
-        //                    Task {
-        //                        do {
-        //                            try await openDocument(at: appState.lastOpenedURL?)
-        //                        }
-        //                    }
-        //                }
-        ////                    .keyboardShortcut(KeyEquivalent("o"))
-        //
-        //                // TODO: Previously opened files
-        //            }
-
-        CommandGroup(after: CommandGroupPlacement.newItem) {
-            Menu("Open Recent Files") {
-                ForEach(appState.recentlyOpenedFiles, id: \.self) { fileUrl in
-                    Button(fileUrl.path(percentEncoded: false)) {
-                        let fileModel = loadOpfFile(inputFilename: fileUrl)
-                        do {
-                            try NSDocumentController.shared.makeDocument(withContentsOf: fileUrl, ofType: FileModel.type)
-                        } catch {
-                            print(error)
-                        }
-                    }
-                }
-            }
-        }
-
-//        CommandGroup(replacing: CommandGroupPlacement.saveItem) {
-//            Button("Save Sheet", action: { appState.showingSaveDialog.toggle() })
-//                .keyboardShortcut(KeyEquivalent("s"))
-//        }
-
         CommandGroup(after: CommandGroupPlacement.windowList) {
             Divider()
             Button("Open Controller Window") {

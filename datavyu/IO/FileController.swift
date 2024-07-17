@@ -173,7 +173,7 @@ func loadOpfData(data: Data) -> FileModel {
 
     do {
         try FileManager.default.createDirectory(at: workingDirectory, withIntermediateDirectories: false)
-        FileManager.default.createFile(atPath: fileUrl.path(), contents: data)
+        let success = FileManager.default.createFile(atPath: fileUrl.path(percentEncoded: false), contents: data)
         return loadOpfFile(inputFilename: fileUrl)
     } catch {
         print(error)

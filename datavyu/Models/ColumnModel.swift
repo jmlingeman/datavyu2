@@ -161,7 +161,7 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
     }
 
     func hash(into hasher: inout Hasher) {
-        hasher.combine(columnName)
+        hasher.combine(id)
     }
 
     func toggleFinished() {
