@@ -11,13 +11,14 @@ struct TracksStackView: View {
     @State var trackPosStart: CGFloat = 0
     @State var trackZoomFactor: CGFloat = 1
     @State var videoLoaded: Bool = false
+    @State var allTracksLocked: Bool = false
 
     func syncVideos() {
         if fileModel.primaryVideo != nil, fileModel.videoModels.count > 1, fileModel.primaryVideo!.selectedMarker != nil {
             fileModel.primaryVideo!.syncMarker = fileModel.primaryVideo!.selectedMarker
             fileModel.primaryMarker = fileModel.primaryVideo!.syncMarker
             for videoModel in fileModel.videoModels {
-                if videoModel != fileModel.primaryVideo {
+                if videoModel != fileModel.primaryVideo, videoModel.locked == false {
                     let time = videoModel.selectedMarker?.time
                     if time != nil {
                         videoModel.syncMarker = videoModel.selectedMarker
@@ -82,8 +83,15 @@ struct TracksStackView: View {
                 Button("Clear Region") {
                     appState.fileController?.activeFileModel.clearRegion()
                 }.disabled(!videoLoaded)
-                Button("Lock All") {
+                Button(allTracksLocked ? "Unlock All" : "Lock All") {
                     // TODO: Implement track locking.
+                    if !allTracksLocked {
+                        appState.fileController?.activeFileModel.lockVideos()
+                        allTracksLocked = true
+                    } else {
+                        appState.fileController?.activeFileModel.unlockVideos()
+                        allTracksLocked = false
+                    }
                 }.disabled(!videoLoaded)
 
                 Slider(value: $trackZoomFactor, in: 1 ... 3) {
@@ -108,10 +116,14 @@ struct TracksStackView: View {
                     // TODO: highlight and focus
                     appState.toggleFocusMode()
                 }.disabled(!videoLoaded)
-                Button("Sync Videos", action: syncVideos).disabled(!videoLoaded)
+                Button("Sync Videos", action: syncVideos).disabled(!videoLoaded || allTracksLocked)
                 Button("Add Video", action: {
                     addVideo()
                 })
+            }
+        }.onChange(of: appState.fileController?.activeFileModel) { _, _ in
+            if appState.fileController?.activeFileModel.videoModels.count ?? 0 > 0 {
+                videoLoaded = true
             }
         }
     }

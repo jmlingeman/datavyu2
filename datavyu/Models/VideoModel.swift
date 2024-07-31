@@ -11,6 +11,7 @@ public class VideoModel: ObservableObject, Identifiable, Equatable, Hashable, Co
     @Published var updates = 0
     @Published var filename: String
     @Published var isHidden = false
+    @Published var locked = false
 
     @Published var fps: Float = 0
 

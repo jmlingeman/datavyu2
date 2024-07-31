@@ -323,6 +323,18 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
         let data = saveOpfFile(fileModel: self, outputFilename: fileURL!)
         return FileWrapper(serializedRepresentation: data)!
     }
+
+    public func lockVideos() {
+        for videoModel in videoModels {
+            videoModel.locked = true
+        }
+    }
+
+    public func unlockVideos() {
+        for videoModel in videoModels {
+            videoModel.locked = false
+        }
+    }
 }
 
 struct CurrentTimeEnvironmentKey: EnvironmentKey {
