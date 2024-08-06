@@ -29,7 +29,7 @@ struct ControllerView: View {
                 }
             }.onAppear(perform: {
                 HStack {
-                    ControllerPanelView(fileModel: fileModel).frame(alignment: .topLeading)
+                    ControllerPanelView(fileModel: fileModel, appState: appState).frame(alignment: .topLeading)
                     TracksStackView(fileModel: fileModel).environmentObject(appState)
                 }.openInWindow(title: "Controller", appState: appState, fileModel: fileModel, sender: self, frameName: "controller")
             })

@@ -8,6 +8,7 @@ class OrdinalCollectionViewLayout: TemporalCollectionViewLayout {
     override func prepare() {
         layout = Layouts.ordinal
         print("PREPARING")
+        cache.maxHeight = 0
 
         let gapSize = Config.gapSize
         let columnSize = getColumnWidth()

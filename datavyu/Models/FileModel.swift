@@ -150,7 +150,9 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
     }
 
     func setFileChanged() {
-        unsavedChanges = true
+        DispatchQueue.main.async {
+            self.unsavedChanges = true
+        }
     }
 
     func setFileSaved() {

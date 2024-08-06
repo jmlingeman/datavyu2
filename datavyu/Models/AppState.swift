@@ -42,6 +42,10 @@ public class AppState: NSObject, ObservableObject {
     @Published var draggingColumn: ColumnModel?
 
     @Published var server: DatavyuAPIServer?
+    @Published var jumpValue = "00:00:05:000"
+
+    @Published var currentSelectedOnset: Int = 0
+    @Published var currentSelectedOffset: Int = 0
 
     @AppStorage(Config.autosaveUserDefaultsKey) var autosaveURLs: [URL] = []
     @AppStorage(Config.lastOpenedFileUserDefaultsKey) var lastOpenedURL: URL?

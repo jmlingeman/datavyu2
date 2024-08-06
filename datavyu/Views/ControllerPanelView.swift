@@ -9,9 +9,15 @@ import SwiftUI
 
 struct ControllerPanelView: View {
     @ObservedObject var fileModel: FileModel
+    @ObservedObject var appState: AppState
 
     @State var showingColumnNameDialog = false
     @State var jumpValue: String = "00:00:05:000"
+
+    @State var currentOnset: Int = 0
+    @State var currentOffset: Int = 0
+
+    @State var fps: String = ""
 
     func addColumn() {
         let columnModel = ColumnModel(sheetModel: fileModel.sheetModel, columnName: "Column\(fileModel.sheetModel.columns.count + 1)")
@@ -51,8 +57,9 @@ struct ControllerPanelView: View {
                     ControllerButton(buttonName: "Set\nOffset", action: fileModel.videoController!.setOffset)
                         .keyboardShortcut("9", modifiers: .numericPad)
                         .keyboardShortcut("]")
-                    ControllerButton(buttonName: "Jump", action: fileModel.videoController!.jump)
+                    ControllerButton(buttonName: "Jump", action: { fileModel.videoController!.jump(jumpValue: appState.jumpValue) })
                         .keyboardShortcut("-", modifiers: .numericPad)
+                    ControllerPanelInfoDisplay(labelText: "Jump by:", data: $appState.jumpValue)
                 }
                 GridRow {
                     ControllerButton(buttonName: "Shuttle <", action: fileModel.videoController!.shuttleStepDown)
@@ -64,7 +71,10 @@ struct ControllerPanelView: View {
                     ControllerButton(buttonName: "Shuttle >", action: fileModel.videoController!.shuttleStepUp)
                         .keyboardShortcut("6", modifiers: .numericPad)
                         .keyboardShortcut("'")
-                    TextField("Jump by", text: $jumpValue).frame(width: 100)
+                    HStack {}
+                    ControllerPanelInfoDisplay(labelText: "Frame Rate:", data: $fps, disabled: true, onChangeFunction: { _, _ in
+                        fps = "\(fileModel.primaryVideo?.getFps() ?? 0)"
+                    })
                 }
                 GridRow {
                     ControllerButton(buttonName: "Prev", action: fileModel.videoController!.prevFrame)
@@ -78,6 +88,7 @@ struct ControllerPanelView: View {
                         .keyboardShortcut("=")
                     ControllerButton(buttonName: "Find", action: fileModel.videoController!.findOnset)
                         .keyboardShortcut("+", modifiers: .numericPad)
+                    ControllerPanelInfoDisplayTimestamp(labelText: "Onset:", data: $currentOnset, disabled: true)
                 }
                 GridRow {
                     ControllerButton(buttonName: "Add\nCell", action: fileModel.videoController!.addCell)
@@ -92,8 +103,12 @@ struct ControllerPanelView: View {
                         .sheet(isPresented: $showingColumnNameDialog) {
                             ColumnNameDialog(column: (fileModel.sheetModel.columns.last)!)
                         }
+                    ControllerPanelInfoDisplayTimestamp(labelText: "Offset:", data: $currentOffset, disabled: true)
                 }
             }
+        }.onChange(of: fileModel.sheetModel.selectedCell) { _, _ in
+            currentOnset = fileModel.sheetModel.selectedCell?.onset ?? 0
+            currentOffset = fileModel.sheetModel.selectedCell?.offset ?? 0
         }
     }
 }

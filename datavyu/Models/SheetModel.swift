@@ -15,7 +15,7 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
     @Published var visibleColumns: [ColumnModel]
     @Published var updates: Int = 0
     @Published var updated: Bool = false
-    var selectedCell: CellModel?
+    @Published var selectedCell: CellModel?
 
     var undoManager: UndoManager?
     var fileModel: FileModel?
@@ -68,8 +68,10 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
     }
 
     func updateSheet() {
-        setVisibleColumns()
-        updates += 1
+        DispatchQueue.main.async {
+            self.setVisibleColumns()
+            self.updates += 1
+        }
     }
 
     func setSelectedColumn(model: ColumnModel, suppress_update: Bool = false) {
@@ -97,9 +99,14 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
     }
 
     func setSelectedCell(selectedCell: CellModel?) {
-        self.selectedCell = selectedCell
-        if selectedCell != nil {
-            setSelectedColumn(model: selectedCell!.column!, suppress_update: true)
+        if self.selectedCell != selectedCell {
+            DispatchQueue.main.async {
+                self.selectedCell = selectedCell
+                selectedCell?.isSelected = true
+                if selectedCell != nil {
+                    self.setSelectedColumn(model: selectedCell!.column!, suppress_update: true)
+                }
+            }
         }
     }
 

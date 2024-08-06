@@ -142,7 +142,7 @@ struct DVCommandMenus: Commands {
                 appState.fileController!.activeFileModel.videoController!.setOffset()
             }.keyboardShortcut("9", modifiers: .numericPad)
             Button("Jump") {
-                appState.fileController!.activeFileModel.videoController!.jump()
+                appState.fileController!.activeFileModel.videoController!.jump(jumpValue: appState.jumpValue)
             }.keyboardShortcut("-", modifiers: .numericPad)
             Button("Shuttle <") {
                 appState.fileController!.activeFileModel.videoController!.shuttleStepDown()
@@ -186,7 +186,7 @@ struct DVCommandMenus: Commands {
                 appState.fileController!.activeFileModel.videoController!.setOffset()
             }.keyboardShortcut("p", modifiers: [.command, .shift])
             Button("Jump") {
-                appState.fileController!.activeFileModel.videoController!.jump()
+                appState.fileController!.activeFileModel.videoController!.jump(jumpValue: appState.jumpValue)
             }.keyboardShortcut("[", modifiers: [.command, .shift])
             Button("Shuttle <") {
                 appState.fileController!.activeFileModel.videoController!.shuttleStepDown()

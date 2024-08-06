@@ -145,15 +145,7 @@ class CellViewUIKit: NSCollectionViewItem {
 
     override func viewDidAppear() {
         super.viewDidAppear()
-        if isSelected {
-            setSelected()
-        } else {
-            setDeselected()
-        }
-
-        if isSelected {
-//            self.selectNextField()
-        }
+        setSelected()
 
         onset.nextResponder = offset
         cellTextField.updateToolTips()
@@ -175,18 +167,22 @@ class CellViewUIKit: NSCollectionViewItem {
     }
 
     func setSelected() {
-        parentView?.deselectAllCells()
-        if highlightStatus == .off {
-            view.layer?.borderColor = CGColor(red: 0, green: 0, blue: 255, alpha: 255)
-            view.layer?.borderWidth = 1
+        if cell.isSelected {
+            parentView?.deselectAllCells()
+            if highlightStatus == .off {
+                view.layer?.borderColor = CGColor(red: 0, green: 0, blue: 255, alpha: 255)
+                view.layer?.borderWidth = 1
+            }
+            cell.isSelected = true
+            cell.column?.sheetModel?.setSelectedCell(selectedCell: cell)
+        } else {
+            setDeselected()
         }
-        isSelected = true
-        cell.column?.sheetModel?.setSelectedCell(selectedCell: cell)
     }
 
     func setDeselected() {
         view.layer?.borderWidth = 0
-        isSelected = false
+        cell.isSelected = false
     }
 
     func focusArgument(_ ip: IndexPath) {

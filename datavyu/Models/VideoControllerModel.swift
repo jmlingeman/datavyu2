@@ -9,7 +9,6 @@ import Foundation
 
 class VideoController: ObservableObject {
     var fileModel: FileModel
-    @Published var jumpValue: String = "00:00:05:000"
 
     init(fileModel: FileModel) {
         self.fileModel = fileModel
@@ -56,8 +55,8 @@ class VideoController: ObservableObject {
         stepFrame(reverse: true)
     }
 
-    func jump() {
-        fileModel.seekAllVideos(to: fileModel.currentTime() + Double(timestringToSecondsDouble(timestring: jumpValue)))
+    func jump(jumpValue: String) {
+        fileModel.seekAllVideos(to: fileModel.currentTime() - Double(timestringToSecondsDouble(timestring: jumpValue)))
     }
 
     func findOnset() {
@@ -70,6 +69,20 @@ class VideoController: ObservableObject {
         if fileModel.sheetModel.selectedCell != nil {
             find(value: millisToSeconds(millis: fileModel.sheetModel.selectedCell!.offset))
         }
+    }
+
+    func getOnset() -> Int {
+        if fileModel.sheetModel.selectedCell != nil {
+            return fileModel.sheetModel.selectedCell!.onset
+        }
+        return 0
+    }
+
+    func getOffset() -> Int {
+        if fileModel.sheetModel.selectedCell != nil {
+            return fileModel.sheetModel.selectedCell!.offset
+        }
+        return 0
     }
 
     func find(value: Double) {

@@ -166,6 +166,7 @@ class CellTextField: NSTextField {
         }
 
         if parentView != nil {
+            cellModel?.isSelected = true
             parentView!.setSelected()
         }
 

@@ -75,6 +75,8 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
         let columnSize = getColumnWidth()
         let headerSize = getHeaderHeight()
 
+        cache.maxHeight = 0
+
         var cellLayouts = [CellInfo: NSCollectionViewLayoutAttributes]()
         var headerLayouts = [Int: NSCollectionViewLayoutAttributes]()
         var newCellLayouts = [Int: NSCollectionViewLayoutAttributes]()

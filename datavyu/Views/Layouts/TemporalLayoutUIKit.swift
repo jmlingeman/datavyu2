@@ -233,6 +233,7 @@ struct SheetLayoutCollection: NSViewRepresentable {
         override func mouseDown(with event: NSEvent) {
             super.mouseDown(with: event)
             print("Mouse Down")
+            appState?.fileController?.activeFileModel.sheetModel.selectedCell?.isSelected = false
             appState?.fileController?.activeFileModel.sheetModel.selectedCell = nil
             appState?.fileController?.activeFileModel.sheetModel.updateSheet()
         }
@@ -471,12 +472,12 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
 
         cellItem?.setSelected()
 
-        if cellItem != nil {
+        if cellItem != nil, sheetModel.selectedCell != cellItem!.cell {
             sheetModel.setSelectedCell(selectedCell: cellItem?.cell)
         }
 
         collectionView.selectionIndexPaths = Set([corrected_ip])
-        collectionView.animator().scrollToItems(at: Set([corrected_ip]), scrollPosition: [.bottom])
+        collectionView.animator().scrollToItems(at: Set([corrected_ip]), scrollPosition: [.nearestHorizontalEdge, .nearestVerticalEdge])
         cellItem?.focusOnset()
     }
 

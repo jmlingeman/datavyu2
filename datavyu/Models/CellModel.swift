@@ -18,6 +18,8 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
     @Published var onsetPosition: Double = 0
     @Published var offsetPosition: Double = 0
 
+    @Published var isSelected: Bool = false
+
     var undoManager: UndoManager?
 
     init() {
@@ -134,7 +136,7 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
     }
 
     func updateSheet() {
-        column?.sheetModel?.updates += 1
+        column?.sheetModel?.updateSheet()
     }
 
     func setOnset(onset: Double) {

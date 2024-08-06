@@ -8,6 +8,18 @@
 import AppKit
 import Foundation
 
+class TimestampFormatter: Formatter {
+    override func string(for obj: Any?) -> String? {
+        guard let timeInt = obj as? Int else { return nil }
+        return formatTimestamp(timestamp: timeInt)
+    }
+
+    override func getObjectValue(_ obj: AutoreleasingUnsafeMutablePointer<AnyObject?>?, for string: String, errorDescription _: AutoreleasingUnsafeMutablePointer<NSString?>?) -> Bool {
+        obj?.pointee = timestringToTimestamp(timestring: string) as AnyObject
+        return true
+    }
+}
+
 class TimestampTransformer: ValueTransformer {
     override class func transformedValueClass() -> AnyClass {
         NSString.self
@@ -18,7 +30,6 @@ class TimestampTransformer: ValueTransformer {
     }
 
     override func transformedValue(_ value: Any?) -> Any? {
-        print("Transforming \(value)")
         if let timestamp = value as? Int {
             return formatTimestamp(timestamp: timestamp)
         } else if let timestamp = value as? Float {
