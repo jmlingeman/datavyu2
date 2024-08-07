@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="22152" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="23077.2" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22152"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23077.2"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="ArgumentView" customModule="datavyu" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="ArgumentView" customModule="Datavyu2" customModuleProvider="target">
             <connections>
                 <outlet property="argumentLabel" destination="Ne2-q8-cuk" id="Y3l-G5-MdT"/>
                 <outlet property="argumentValue" destination="F81-kK-MJH" id="LtQ-D8-5Ue"/>
@@ -18,7 +18,7 @@
             <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES"/>
             <subviews>
-                <textField focusRingType="none" verticalHuggingPriority="750" id="F81-kK-MJH" customClass="ArgumentTextField" customModule="datavyu" customModuleProvider="target">
+                <textField focusRingType="none" verticalHuggingPriority="750" id="F81-kK-MJH" customClass="ArgumentTextField" customModule="Datavyu2" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="13" width="50" height="37"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="LEn-u3-3pe">
@@ -42,6 +42,6 @@
             </subviews>
             <point key="canvasLocation" x="-73" y="-200"/>
         </customView>
-        <customObject id="wVX-cf-szG" customClass="ArgumentCoordinator" customModule="datavyu" customModuleProvider="target"/>
+        <customObject id="wVX-cf-szG" customClass="ArgumentCoordinator" customModule="Datavyu2" customModuleProvider="target"/>
     </objects>
 </document>
