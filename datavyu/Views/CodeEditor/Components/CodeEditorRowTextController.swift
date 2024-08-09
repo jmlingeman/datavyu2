@@ -18,13 +18,15 @@ class CodeEditorRowTextController {
     var currentExtents = [Int: SelectionExtent]()
     var columnNameExtent = SelectionExtent()
 
+    var lastValidValue = ""
+
     init(column: ColumnModel) {
         self.column = column
     }
 
-    func getExtentOfArgument(idx: Int) -> SelectionExtent {
+    func getExtentOfArgument(idx: Int) -> SelectionExtent? {
         parseUpdates(newValue: rowString())
-        return currentExtents[idx]!
+        return currentExtents[idx]
     }
 
     func getExtentForIdx(idx: Int) -> SelectionExtent {
@@ -47,8 +49,11 @@ class CodeEditorRowTextController {
     }
 
     func parseUpdates(newValue: String) -> String {
+        if newValue.count == 0 {
+            return lastValidValue
+        }
         let columnName = String(newValue.split(separator: "(").first!)
-        if columnName.count > 0 {
+        if columnName.count > 0, columnName != column.columnName {
             column.columnName = columnName
         }
 
@@ -79,8 +84,6 @@ class CodeEditorRowTextController {
         var i = 0
         for arg in args {
             if arg != CodeEditorRowTextController.argumentSeperator {
-                print(arg)
-                print(arg.contains("^<.*>$"))
                 let name = arg.replacingOccurrences(of: "<", with: "").replacingOccurrences(of: ">", with: "")
                 if column.arguments[i].name != name {
                     column.arguments[i].setName(name: name)
@@ -89,7 +92,7 @@ class CodeEditorRowTextController {
 
                 endIdx = startIdx + column.arguments[i].name.count
                 currentExtents[i] = SelectionExtent(start: startIdx, end: endIdx)
-                startIdx = endIdx // Add 1 to skip the seperator
+                startIdx = endIdx + 3 // Add 1 to skip the seperator
                 i += 1
             }
         }
@@ -101,6 +104,8 @@ class CodeEditorRowTextController {
         for arg in column.arguments {
             strcmp.append(arg.getDisplayString())
         }
-        return column.columnName + "(" + strcmp.joined(separator: CellTextController.argumentSeperator) + ")"
+        lastValidValue = column.columnName + "(" + strcmp.joined(separator: CellTextController.argumentSeperator) + ")"
+
+        return lastValidValue
     }
 }

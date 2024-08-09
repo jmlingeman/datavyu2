@@ -9,27 +9,28 @@ import SwiftUI
 
 struct CodeEditorRow: View {
     @ObservedObject var column: ColumnModel
-    @State var selectedArgument: Argument?
+    @ObservedObject var selectedArgument: SelectedArgument
+    var codeRow: CodeRowTextFieldView
+
+    init(column: ColumnModel, selectedArgument: SelectedArgument) {
+        self.column = column
+        self.selectedArgument = selectedArgument
+        codeRow = CodeRowTextFieldView(column: column, selectedArgument: selectedArgument)
+    }
 
     var body: some View {
         VStack {
             HStack {
-                EditableLabel($column.columnName)
-//                WrappedHStack($column.arguments) { $argument in
-//                    TextField(argument.name, text: $argument.name)
-//                        .frame(maxWidth: 100)
-//                        .padding()
-//                }.border(Color.primary, width: 2)
-                CodeRowTextFieldView(column: column)
-
+                codeRow.onChange(of: column.reorderCount) { oldValue, newValue in
+                    if oldValue < newValue {
+                        codeRow.selectArgument(idx: selectedArgument.argumentIdx! + 1)
+                    } else {
+                        codeRow.selectArgument(idx: selectedArgument.argumentIdx! - 1)
+                    }
+                }
                 CodeEditorAddCodeButton(column: column)
                 CodeEditorRemoveCodeButton(column: column)
                 Spacer()
-            }
-            HStack {
-                Spacer()
-//                CodeEditorMoveCodeButton(column: column, direction: "left", code: selectedArgument)
-//                CodeEditorMoveCodeButton(column: column)
             }
         }
     }

@@ -279,7 +279,8 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
                 }
             }
         } else {
-            return FileWrapper()
+            let data = saveOpfFile(fileModel: snapshot, outputFilename: nil, writeFile: false)
+            return FileWrapper(regularFileWithContents: data)
         }
     }
 

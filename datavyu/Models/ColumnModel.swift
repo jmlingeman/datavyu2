@@ -17,6 +17,7 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
     @Published var hidden: Bool = false
     @Published var isSelected: Bool = false
     @Published var isFinished: Bool = false
+    @Published var reorderCount: Int = 0
 
     var undoManager: UndoManager?
 

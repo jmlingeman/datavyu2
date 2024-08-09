@@ -35,7 +35,7 @@ class DatavyuAPIServer {
         app.logger.logLevel = .critical
 
         do {
-            try app.register(collection: FileWebRouteCollection(fileModel: fileController.activeFileModel))
+            try app.register(collection: FileWebRouteCollection(fileController: fileController))
         } catch {
             print("\(error)")
         }
@@ -55,10 +55,10 @@ class DatavyuAPIServer {
 }
 
 class FileWebRouteCollection: RouteCollection {
-    @ObservedObject var fileModel: FileModel
+    @ObservedObject var fileController: FileControllerModel
 
-    init(fileModel: FileModel) {
-        self.fileModel = fileModel
+    init(fileController: FileControllerModel) {
+        self.fileController = fileController
     }
 
     func boot(routes: RoutesBuilder) throws {
@@ -85,7 +85,7 @@ class FileWebRouteCollection: RouteCollection {
 
     func saveDB(filename: String) {
         DispatchQueue.main.async {
-            let _ = saveOpfFile(fileModel: self.fileModel, outputFilename: URL(fileURLWithPath: filename))
+            let _ = saveOpfFile(fileModel: self.fileController.activeFileModel, outputFilename: URL(fileURLWithPath: filename))
         }
     }
 
@@ -102,18 +102,18 @@ class FileWebRouteCollection: RouteCollection {
         guard let columnName = req.query[String.self, at: "columnName"] else {
             throw Abort(.badRequest)
         }
-        for col in fileModel.sheetModel.columns {
+        for col in fileController.activeFileModel.sheetModel.columns {
             if col.columnName == columnName {
                 return col
             }
         }
 
-        return ColumnModel(sheetModel: fileModel.sheetModel, columnName: "")
+        return ColumnModel(sheetModel: fileController.activeFileModel.sheetModel, columnName: "")
     }
 
     func getColumnList(req _: Request) async throws -> [String] {
         var colList: [String] = []
-        for col in fileModel.sheetModel.columns {
+        for col in fileController.activeFileModel.sheetModel.columns {
             colList.append(col.columnName)
         }
         return colList
@@ -121,9 +121,9 @@ class FileWebRouteCollection: RouteCollection {
 
     func setColumn(column: ColumnModel) {
         DispatchQueue.main.async {
-            self.fileModel.sheetModel.setColumn(column: column)
+            self.fileController.activeFileModel.sheetModel.setColumn(column: column)
             column.isSelected = true
-            self.fileModel.updates += 1
+            self.fileController.activeFileModel.updates += 1
         }
     }
 //

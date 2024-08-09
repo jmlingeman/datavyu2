@@ -17,32 +17,33 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     func applicationDidFinishLaunching(_: Notification) {
         flushSavedWindowState()
-        let autosaveURLs = appState?.autosaveURLs
-        if autosaveURLs != nil, autosaveURLs?.count ?? 0 > 0 {
-            // Prompt user to re-open file
-            let autosaveAlert = NSAlert()
-            let urlStrings = autosaveURLs!.map { url in
-                url.lastPathComponent
-            }
-            autosaveAlert.messageText = "Datavyu crashed and the following files were autosaved: \(urlStrings.joined(separator: ", "))"
-            autosaveAlert.informativeText = "Do you want to reopen these files?"
-            autosaveAlert.addButton(withTitle: "Open All")
-            autosaveAlert.addButton(withTitle: "Don't Open").hasDestructiveAction = true
-
-            let result = autosaveAlert.runModal()
-            if result == .alertFirstButtonReturn {
-                for url in autosaveURLs! {
-                    let fileModel = appState?.fileController?.openFile(inputFilename: url)
-                    fileModel?.unsavedChanges = true
-                }
-                appState?.autosaveURLs = []
-            } else if result == .alertSecondButtonReturn {
-                appState?.autosaveURLs = []
-            }
-
-            appState!.server = DatavyuAPIServer(fileController: appState!.fileController!, port: 1312)
-            appState!.server!.start()
-        }
+//        let autosaveURLs = appState?.autosaveURLs
+//        if autosaveURLs != nil, autosaveURLs?.count ?? 0 > 0 {
+//            // Prompt user to re-open file
+//            let autosaveAlert = NSAlert()
+//            let urlStrings = autosaveURLs!.map { url in
+//                url.lastPathComponent
+//            }
+//            autosaveAlert.messageText = "Datavyu crashed and the following files were autosaved: \(urlStrings.joined(separator: ", "))"
+//            autosaveAlert.informativeText = "Do you want to reopen these files?"
+//            autosaveAlert.addButton(withTitle: "Open All")
+//            autosaveAlert.addButton(withTitle: "Don't Open").hasDestructiveAction = true
+//
+//            let result = autosaveAlert.runModal()
+//            if result == .alertFirstButtonReturn {
+//                for url in autosaveURLs! {
+//                    let fileModel = appState?.fileController?.openFile(inputFilename: url)
+//                    fileModel?.unsavedChanges = true
+//                }
+//                appState?.autosaveURLs = []
+//            } else if result == .alertSecondButtonReturn {
+//                appState?.autosaveURLs = []
+//            }
+//
+//
+//        }
+        appState!.server = DatavyuAPIServer(fileController: appState!.fileController!, port: 1312)
+        appState!.server!.start()
     }
 
     func applicationShouldTerminate(_: NSApplication) -> NSApplication.TerminateReply {

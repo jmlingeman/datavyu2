@@ -38,6 +38,7 @@ class CodeRowTextFormatter: Formatter {
         }.count
 
         if sepCount != column!.arguments.count - 1 {
+            print("INVALID")
             return false
         }
 
@@ -59,33 +60,55 @@ class CodeRowTextFormatter: Formatter {
 
 struct CodeRowTextFieldView: NSViewRepresentable {
     @ObservedObject var column: ColumnModel
+    @ObservedObject var selectedArgument: SelectedArgument
     typealias NSViewType = NSTextField
+    @State var nsView: CodeRowTextField = .init()
 
-    func makeNSView(context _: Context) -> NSTextField {
-        let view = CodeRowTextField()
-        view.configure(column: column)
-        return view
+    init(column: ColumnModel, selectedArgument: SelectedArgument) {
+        self.column = column
+        self.selectedArgument = selectedArgument
+        nsView.configure(column: column, selectedArgument: selectedArgument)
     }
 
-    func updateNSView(_: NSTextField, context _: Context) {}
+    func makeNSView(context _: Context) -> NSTextField {
+        nsView.configure(column: column, selectedArgument: selectedArgument)
+        return nsView
+    }
+
+    func updateNSView(_: NSTextField, context _: Context) {
+        // Note this line:
+        nsView.column = column
+        nsView.updateStringValue(nsView.textController!.rowString())
+
+        nsView.invalidateIntrinsicContentSize()
+        print(nsView.fittingSize)
+//        print(nsView.sizeToFit())
+        nsView.setNeedsDisplay(nsView.bounds)
+    }
+
+    func selectArgument(idx: Int) {
+        nsView.updateStringValue()
+        nsView.selectArgument(idx: idx)
+    }
 }
 
 class CodeRowTextField: NSTextField {
     var column: ColumnModel?
+    var selectedArgument: SelectedArgument?
 
     var isEditing: Bool = false
+    var isUpdating: Bool = false
 
     var lastIntrinsicSize = NSSize.zero
     var hasLastIntrinsicSize = false
 
     var textController: CodeEditorRowTextController?
 
-    var currentArgumentIndex: Int = 0
-
     var keyEventHandler: Any?
 
-    func configure(column: ColumnModel) {
+    func configure(column: ColumnModel, selectedArgument: SelectedArgument) {
         self.column = column
+        self.selectedArgument = selectedArgument
         delegate = self
         textController = CodeEditorRowTextController(column: column)
         updateStringValue(textController!.rowString())
@@ -94,45 +117,60 @@ class CodeRowTextField: NSTextField {
         (formatter as! CodeRowTextFormatter).configure(textController: textController!, column: column)
     }
 
+    func updateStringValue() {
+        if textController != nil {
+            let columnString = textController!.parseUpdates(newValue: textController!.rowString())
+            stringValue = columnString
+            invalidateIntrinsicContentSize()
+        }
+    }
+
     func updateStringValue(_ s: String) {
-        DispatchQueue.main.async {
-            self.stringValue = s
+        let columnString = textController!.parseUpdates(newValue: s)
+        stringValue = columnString
+        invalidateIntrinsicContentSize()
+    }
+
+    func selectColumnName() {
+        let extents = textController!.columnNameExtent
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            if self.currentEditor() != nil {
+                self.currentEditor()?.selectedRange = NSRange(location: extents.start, length: extents.end - extents.start)
+                self.selectedArgument!.argumentIdx! = -1
+            }
         }
     }
 
     func selectArgument(idx: Int) {
-        let extents = textController!.getExtentOfArgument(idx: idx)
-        print("Selecting \(idx)")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            if self.currentEditor() != nil {
-                self.currentEditor()?.selectedRange = NSRange(location: extents.start, length: extents.end - extents.start)
-                self.currentArgumentIndex = idx
+        print(#function)
+        if textController != nil {
+            let extents = textController!.getExtentOfArgument(idx: idx)
+            print("Selecting \(idx)")
+            isUpdating = true
+            if extents != nil {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                    if self.currentEditor() != nil {
+                        self.currentEditor()?.selectedRange = NSRange(location: extents!.start, length: extents!.end - extents!.start)
+                        self.selectedArgument?.argumentIdx = idx
+                        self.selectedArgument?.column = self.column
+                    }
+                    self.isUpdating = false
+                }
             }
         }
     }
 
     override func mouseDown(with event: NSEvent) {
         super.mouseDown(with: event)
-
-        let cEditor = currentEditor() as? NSTextView
-        let localPos = convert(event.locationInWindow, to: nil)
-        let insertionPoint = cEditor?.characterIndexForInsertion(at: localPos)
-        let location = cEditor?.selectedRange().location
-
-        if cEditor?.string.count == insertionPoint {
-            selectArgument(idx: 0)
-        } else {
-            let argIdx = textController?.getArgIdxForIdx(idx: insertionPoint!)
-            selectArgument(idx: argIdx!)
-        }
+        isEditing = false
     }
 
     override func becomeFirstResponder() -> Bool {
-        guard super.becomeFirstResponder() else {
-            return false
-        }
+//        guard super.becomeFirstResponder() else {
+//            return false
+//        }
 
-        selectArgument(idx: 0)
+//        selectColumnName()
 
         keyEventHandler = NSEvent.addLocalMonitorForEvents(matching: NSEvent.EventTypeMask.keyDown) { event in
             let s = event.characters
@@ -215,24 +253,71 @@ extension CodeRowTextField: NSTextFieldDelegate, NSTextViewDelegate {
     func controlTextDidChange(_: Notification) {
         print(self)
         print("ARGUMENT: \(#function)")
+        isEditing = true
         textController?.parseUpdates(newValue: stringValue)
         updateStringValue(textController!.rowString())
     }
 
     func control(_: NSControl, textShouldBeginEditing _: NSText) -> Bool {
+        print(#function)
         print("ARGUMENT: \(#function)")
         return true
     }
 
     func control(_: NSControl, textShouldEndEditing _: NSText) -> Bool {
+        print(#function)
         print("ARGUMENT: \(#function)")
         return true
     }
 
+//    func textViewDidChangeSelection(_ notification: Notification) {
+//        print(#function)
+//        print("SELECT CHANGED")
+//        print(notification.description)
+//        let range = self.currentEditor()?.selectedRange
+//        if range != nil {
+//            let argIdx = self.textController?.getArgIdxForIdx(idx: range!.location)
+//            selectedArgument?.argumentIdx = argIdx
+//        }
+//    }
+
+    override var intrinsicContentSize: NSSize {
+        if cell!.wraps {
+            let fictionalBounds = NSRect(x: bounds.minX, y: bounds.minY, width: bounds.width, height: CGFloat.greatestFiniteMagnitude)
+            return cell!.cellSize(forBounds: fictionalBounds)
+        } else {
+            return super.intrinsicContentSize
+        }
+    }
+
     func textView(_: NSTextView, willChangeSelectionFromCharacterRange oldSelectedCharRange: NSRange, toCharacterRange newSelectedCharRange: NSRange) -> NSRange {
-        if oldSelectedCharRange.length == 0, newSelectedCharRange.length == 0, !isEditing {
-            let extent = textController!.getExtentForIdx(idx: oldSelectedCharRange.lowerBound)
-            return NSRange(location: extent.start, length: extent.end - extent.start)
+        print(#function)
+        if abs(newSelectedCharRange.location - oldSelectedCharRange.location) > 2 {
+            isEditing = false
+        }
+        if newSelectedCharRange.location != 0, !isEditing, !isUpdating {
+//            let extent = textController!.getExtentForIdx(idx: oldSelectedCharRange.lowerBound)
+            let argIdx = textController!.getArgIdxForIdx(idx: newSelectedCharRange.lowerBound)
+
+            // Update the latest selected argument
+            DispatchQueue.main.async {
+                self.selectedArgument?.column = self.column
+                self.selectedArgument?.argumentIdx = argIdx
+            }
+            let extent = textController!.getExtentOfArgument(idx: argIdx)
+
+            if extent == nil {
+                return newSelectedCharRange
+            }
+
+            print(selectedArgument?.argumentIdx)
+
+            // Allow user to click into the text
+
+            if oldSelectedCharRange.location >= extent!.start, oldSelectedCharRange.location <= extent!.end, newSelectedCharRange.location >= extent!.start, newSelectedCharRange.location <= extent!.end {
+                return newSelectedCharRange
+            }
+            return NSRange(location: extent!.start, length: extent!.end - extent!.start)
         }
 
         return newSelectedCharRange
@@ -242,83 +327,25 @@ extension CodeRowTextField: NSTextFieldDelegate, NSTextViewDelegate {
         print(#function)
         print(commandSelector)
         if commandSelector == #selector(insertTab) {
-            if self.currentArgumentIndex + 1 < self.column!.arguments.count {
-                self.selectArgument(idx: self.currentArgumentIndex + 1)
+            if self.selectedArgument!.argumentIdx! + 1 < self.column!.arguments.count {
+                self.selectArgument(idx: self.selectedArgument!.argumentIdx! + 1)
                 return true
             } else {
                 self.resignFirstResponder()
                 return true
             }
         } else if commandSelector == #selector(insertBacktab) {
-            if self.currentArgumentIndex - 1 >= 0 {
-                self.selectArgument(idx: self.currentArgumentIndex - 1)
+            if self.selectedArgument!.argumentIdx! - 1 >= 0 {
+                self.selectArgument(idx: self.selectedArgument!.argumentIdx! - 1)
+                return true
+            } else if self.selectedArgument!.argumentIdx! - 1 < 0 {
+                self.selectColumnName()
                 return true
             } else {
                 self.resignFirstResponder()
                 return true
             }
         }
-//            if self.currentArgumentIndex + 1 < self.column!.arguments.count {
-//                self.selectArgument(idx: self.currentArgumentIndex + 1)
-//                return true
-//            } else {
-//                let ip = self.parentView!.parentView!.sheetModel.findCellIndexPath(cell_to_find: self.parentView!.cell)
-//                if ip != nil {
-//                    (self.parentView!.parentView!.delegate as! Coordinator).focusNextCell(ip!)
-//                }
-//                self.resignFirstResponder()
-//                return true
-//            }
-//        } else if commandSelector == #selector(insertBacktab) {
-//            if self.currentArgumentIndex - 1 >= 0 {
-//                self.selectArgument(idx: self.currentArgumentIndex - 1)
-//                return true
-//            } else {
-//                self.parentView!.focusOffset()
-//                self.resignFirstResponder()
-//                return true
-//            }
-//        } else if commandSelector == #selector(moveDown) {
-//            let ip = self.parentView!.parentView!.sheetModel.findVisibleCellIndexPath(cell_to_find: self.parentView!.cell)
-//            if ip != nil {
-//                (self.parentView!.parentView!.delegate as! Coordinator).focusNextCell(ip!)
-//                (self.parentView!.parentView!.delegate as! Coordinator).focusField(IndexPath(item: self.currentArgumentIndex, section: 0))
-//            }
-//            let _ = self.resignFirstResponder()
-//            return true
-//        } else if commandSelector == #selector(moveUp) {
-//            var ip = self.parentView!.parentView!.sheetModel.findVisibleCellIndexPath(cell_to_find: self.parentView!.cell)
-//
-//            if ip != nil {
-//                ip!.item = ip!.item - 1
-//                if ip!.item < 0 {
-//                    return true
-//                }
-//                (self.parentView!.parentView!.delegate as! Coordinator).focusCell(ip!)
-//                (self.parentView!.parentView!.delegate as! Coordinator).focusField(IndexPath(item: self.currentArgumentIndex, section: 0))
-//                return true
-//            }
-//            let _ = self.resignFirstResponder()
-//        } else if commandSelector == #selector(moveRight) {
-//            var ip = self.parentView!.parentView!.sheetModel.findCellInNextColumnIndexPath(cell: self.parentView!.cell)
-//
-//            if ip != nil {
-//                (self.parentView!.parentView!.delegate as! Coordinator).focusNextCell(ip!)
-//                (self.parentView!.parentView!.delegate as! Coordinator).focusField(IndexPath(item: self.currentArgumentIndex, section: 0))
-//                return true
-//            }
-//            let _ = self.resignFirstResponder()
-//        } else if commandSelector == #selector(moveLeft) {
-//            var ip = self.parentView!.parentView!.sheetModel.findCellInPrevColumnIndexPath(cell: self.parentView!.cell)
-//
-//            if ip != nil {
-//                (self.parentView!.parentView!.delegate as! Coordinator).focusNextCell(ip!)
-//                (self.parentView!.parentView!.delegate as! Coordinator).focusField(IndexPath(item: self.currentArgumentIndex, section: 0))
-//                return true
-//            }
-//            let _ = self.resignFirstResponder()
-//        }
-
         return false
     }
 }
