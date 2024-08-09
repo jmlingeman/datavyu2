@@ -53,6 +53,8 @@ jobs:
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
 
           git submodule update --init --recursive
+
+          cat $PP_PATH
           #rm -rf "/Users/runner/Library/Developer/Xcode/DerivedData/*"
           # xcodebuild build analyze -target "$target" -workspace  
           xcodebuild ONLY_ACTIVE_ARCH=NO -scheme "datavyu" -configuration Release -derivedDataPath ./output build | xcpretty && exit ${PIPESTATUS[0]} 
