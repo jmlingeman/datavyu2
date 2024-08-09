@@ -75,7 +75,7 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
     }
 
     func setSelectedColumn(model: ColumnModel, suppress_update: Bool = false) {
-        print("Setting column \(model.columnName) to selected")
+        Logger.info("Setting column \(model.columnName) to selected")
         DispatchQueue.main.async {
             for column in self.columns {
                 if model == column {
@@ -168,11 +168,11 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
     }
 
     func findCellIndexPath(cell_to_find: CellModel) -> IndexPath? {
-        print(#function)
+        Logger.info(#function)
         for (i, column) in columns.enumerated() {
             for (j, cell) in column.getSortedCells().enumerated() {
                 if cell == cell_to_find {
-                    print("Found cell at \(i) \(j)")
+                    Logger.info("Found cell at \(i) \(j)")
                     return IndexPath(item: j, section: i)
                 }
             }
@@ -181,11 +181,11 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
     }
 
     func findVisibleCellIndexPath(cell_to_find: CellModel) -> IndexPath? {
-        print(#function)
+        Logger.info(#function)
         for (i, column) in visibleColumns.enumerated() {
             for (j, cell) in column.getSortedCells().enumerated() {
                 if cell == cell_to_find {
-                    print("Found cell at \(i) \(j)")
+                    Logger.info("Found cell at \(i) \(j)")
                     return IndexPath(item: j, section: i)
                 }
             }
@@ -194,7 +194,7 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
     }
 
     func findCellInNextColumnIndexPath(cell: CellModel) -> IndexPath? {
-        print(#function)
+        Logger.info(#function)
         let ip = findVisibleCellIndexPath(cell_to_find: cell)
         if ip != nil {
             let colIdx = ip!.section + 1
@@ -211,7 +211,7 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
     }
 
     func findCellInPrevColumnIndexPath(cell: CellModel) -> IndexPath? {
-        print(#function)
+        Logger.info(#function)
         let ip = findVisibleCellIndexPath(cell_to_find: cell)
         if ip != nil {
             let colIdx = ip!.section - 1
@@ -235,7 +235,7 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
         var model: ColumnModel?
         for column in columns {
             if column.isSelected {
-                print("Setting col in focus \(column)")
+                Logger.info("Setting col in focus \(column)")
                 model = column
             }
         }

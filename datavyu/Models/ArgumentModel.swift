@@ -119,7 +119,7 @@ final class Argument: ObservableObject, Identifiable, Equatable, Hashable, Codab
             try container.encode(value, forKey: .value)
 //            try container.encode(column, forKey: .column)
         } catch {
-            print(error)
+            Logger.info(error)
         }
     }
 }

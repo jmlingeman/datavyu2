@@ -31,7 +31,7 @@ class RubyScriptEngine: ObservableObject {
             try Ruby.load(filename: url.path().replacingOccurrences(of: "file://", with: ""))
 
         } catch {
-            print(error)
+            Logger.info(error)
         }
     }
 }

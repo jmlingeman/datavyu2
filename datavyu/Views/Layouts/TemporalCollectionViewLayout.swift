@@ -69,7 +69,7 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
     }
 
     override func prepare() {
-        print("PREPARING")
+        Logger.info("PREPARING")
 
         let gapSize = Config.gapSize
         let columnSize = getColumnWidth()

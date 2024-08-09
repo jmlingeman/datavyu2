@@ -22,7 +22,7 @@ class MillisTimeFormatter: Formatter {
         errorDescription _: AutoreleasingUnsafeMutablePointer<NSString?>?
     ) -> Bool {
         let val = timestringToTimestamp(timestring: string) as AnyObject
-        print("saving: \(val)")
+        Logger.info("saving: \(val)")
         obj?.pointee = val
         return true
     }

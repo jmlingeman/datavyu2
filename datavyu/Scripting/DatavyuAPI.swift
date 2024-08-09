@@ -37,7 +37,7 @@ class DatavyuAPIServer {
         do {
             try app.register(collection: FileWebRouteCollection(fileController: fileController))
         } catch {
-            print("\(error)")
+            Logger.info("\(error)")
         }
     }
 
@@ -47,7 +47,7 @@ class DatavyuAPIServer {
             do {
                 try await app.startup()
             } catch {
-                print("\(error)")
+                Logger.info("\(error)")
                 fatalError(error.localizedDescription)
             }
         }

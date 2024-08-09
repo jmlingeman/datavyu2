@@ -118,7 +118,7 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
     }
 
     func setOnset(onset: Int) {
-        print(#function)
+        Logger.info(#function)
         if onset != self.onset {
             DispatchQueue.main.async {
                 let oldOnset = self.onset
@@ -140,22 +140,22 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
     }
 
     func setOnset(onset: Double) {
-        print(#function)
+        Logger.info(#function)
         setOnset(onset: Int(onset * 1000))
     }
 
     func setOnset(onset: String) {
-        print(#function)
+        Logger.info(#function)
         setOnset(onset: timestringToTimestamp(timestring: onset))
     }
 
     func setOffset(offset: String) {
-        print(#function)
+        Logger.info(#function)
         setOffset(offset: timestringToTimestamp(timestring: offset))
     }
 
     func setOffset(offset: Int) {
-        print(#function)
+        Logger.info(#function)
         if offset != self.offset {
             DispatchQueue.main.async {
                 let oldOffset = self.offset

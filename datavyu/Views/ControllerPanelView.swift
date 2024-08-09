@@ -103,6 +103,7 @@ struct ControllerPanelView: View {
                         .sheet(isPresented: $showingColumnNameDialog) {
                             ColumnNameDialog(column: (fileModel.sheetModel.columns.last)!)
                         }
+                    HStack {}
                     ControllerPanelInfoDisplayTimestamp(labelText: "Offset:", data: $currentOffset, disabled: true)
                 }
             }

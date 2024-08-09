@@ -71,7 +71,7 @@ class CellViewUIKit: NSCollectionViewItem {
     }
 
     func configureCell(_ cell: CellModel, parentView: SheetCollectionAppKitView?, appState: AppState?) {
-//        print("CONFIGURING CELL")
+//        Logger.info("CONFIGURING CELL")
 
         self.cell = cell
         (onset.delegate as! OnsetCoordinator).configure(cell: cell, view: self)
@@ -116,7 +116,7 @@ class CellViewUIKit: NSCollectionViewItem {
             cellTextField.isEnabled = true
         }
 
-//        print("CONFIGURED CELL \(self.onset) \(self.offset) \(self.cell) \(cell.ordinal) \(cell)")
+//        Logger.info("CONFIGURED CELL \(self.onset) \(self.offset) \(self.cell) \(cell.ordinal) \(cell)")
     }
 
     func setHighlightActive() {
@@ -186,23 +186,23 @@ class CellViewUIKit: NSCollectionViewItem {
     }
 
     func focusArgument(_ ip: IndexPath) {
-        print(#function)
+        Logger.info(#function)
         parentView?.window?.makeFirstResponder(cellTextField)
         cellTextField.selectArgument(idx: ip.item)
     }
 
     func focusOnset() {
-        print(#function)
+        Logger.info(#function)
         parentView?.window?.makeFirstResponder(onset)
     }
 
     func focusOffset() {
-        print(#function)
+        Logger.info(#function)
         parentView?.window?.makeFirstResponder(offset)
     }
 
     func focusNextArgument(_ argument: Argument) {
-        print(#function)
+        Logger.info(#function)
         let selectedIndexPath: IndexPath
         if parentView != nil {
             selectedIndexPath = cell.getNextArgumentIndex(argument)
@@ -221,7 +221,7 @@ class CellViewUIKit: NSCollectionViewItem {
 //            let nextArg = argumentsCollectionView?.item(at: newIndexPath) as! ArgumentViewUIKit
 //            focusObject = nextArg.argumentValue
         }
-        print("Focus next arg")
+        Logger.info("Focus next arg")
         parentView?.window?.makeFirstResponder(focusObject)
     }
 }

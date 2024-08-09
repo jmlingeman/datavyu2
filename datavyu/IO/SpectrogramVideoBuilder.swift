@@ -69,7 +69,7 @@ public class SpectrogramVideoBuilder: ObservableObject {
             } finished: { _ in
 
             } failed: { error in
-                print(error)
+                Logger.info(error)
             }
         } else {
             self.delegate = delegate!
@@ -270,7 +270,7 @@ public class SpectrogramVideoBuilder: ObservableObject {
                             code: kFailedToStartAssetWriterError,
                             userInfo: ["description": "AVAssetWriter failed to start writing"]
                         )
-                        print("ERROR: \(error) \(videoWriter.status) \(videoWriter.error) \(assetReader.status) \(assetReader.error)")
+                        Logger.info("ERROR: \(error) \(videoWriter.status) \(videoWriter.error) \(assetReader.status) \(assetReader.error)")
                     }
                 }
 
@@ -280,7 +280,7 @@ public class SpectrogramVideoBuilder: ObservableObject {
             }
 
         } catch {
-            print("\(error)")
+            Logger.info("\(error)")
         }
     }
 

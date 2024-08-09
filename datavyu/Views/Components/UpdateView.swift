@@ -32,7 +32,7 @@ struct UpdateView: View {
 
     func loadData() {
         guard let url = URL(string: Config.updateUrl) else {
-            print("Invalid URL")
+            Logger.info("Invalid URL")
             return
         }
         let request = URLRequest(url: url)
@@ -59,7 +59,7 @@ struct UpdateView: View {
                 }
             } catch {
                 // TODO: Handle decoding error
-                print(error)
+                Logger.info(error)
             }
         }.resume()
     }

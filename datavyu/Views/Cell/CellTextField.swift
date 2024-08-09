@@ -25,7 +25,7 @@ class CellTextFormatter: Formatter {
     }
 
     override func isPartialStringValid(_ partialString: String, newEditingString _: AutoreleasingUnsafeMutablePointer<NSString?>?, errorDescription _: AutoreleasingUnsafeMutablePointer<NSString?>?) -> Bool {
-        print("formatting", partialString)
+        Logger.info("formatting", partialString)
 
         // Ability to reset your field (otherwise you can't delete the content)
         // You can check if the field is empty later
@@ -42,7 +42,7 @@ class CellTextFormatter: Formatter {
         }
 
 //        if partialString.contains(CellTextController.argumentSeperator) {
-//            print("error: has comma")
+//            Logger.info("error: has comma")
 //            return false
 //        }
 
@@ -135,7 +135,7 @@ class CellTextField: NSTextField {
 
     func selectArgument(idx: Int) {
         let extents = cellTextController!.getExtentOfArgument(idx: idx)
-        print("Selecting \(idx)")
+        Logger.info("Selecting \(idx)")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             if self.currentEditor() != nil {
                 self.currentEditor()?.selectedRange = NSRange(location: extents.start, length: extents.end - extents.start)
@@ -198,42 +198,42 @@ class CellTextField: NSTextField {
 
 //    override func textDidChange(_ notification: Notification) {
     ////        super.textDidChange(notification)
-    //////        print("invalidate intrin")
+    //////        Logger.info("invalidate intrin")
     ////
-    ////        print(self.stringValue, self.cellTextController)
+    ////        Logger.info(self.stringValue, self.cellTextController)
     ////
     ////        self.cellTextController!.parseUpdates(newValue: self.stringValue)
     ////        self.updateStringValue(self.cellTextController!.argumentString())
     //////        super.invalidateIntrinsicContentSize()
-    ////        print(self.stringValue)
+    ////        Logger.info(self.stringValue)
 //
 //    }
 }
 
 extension CellTextField: NSTextFieldDelegate, NSTextViewDelegate {
     func textField(_: NSTextField, textView _: NSTextView, candidatesForSelectedRange _: NSRange) -> [Any]? {
-        print("ARGUMENT: \(#function)")
+        Logger.info("ARGUMENT: \(#function)")
         return nil
     }
 
     func textField(_: NSTextField, textView _: NSTextView, candidates: [NSTextCheckingResult], forSelectedRange _: NSRange) -> [NSTextCheckingResult] {
-        print("ARGUMENT: \(#function)")
+        Logger.info("ARGUMENT: \(#function)")
         return candidates
     }
 
     func textField(_: NSTextField, textView _: NSTextView, shouldSelectCandidateAt _: Int) -> Bool {
-        print("ARGUMENT: \(#function)")
+        Logger.info("ARGUMENT: \(#function)")
         return true
     }
 
     func controlTextDidBeginEditing(_: Notification) {
-        print("ARGUMENT: \(#function)")
+        Logger.info("ARGUMENT: \(#function)")
         isEditing = true
 //        parentView!.lastEditedField = LastEditedField.arguments
     }
 
     func controlTextDidEndEditing(_ obj: Notification) {
-        print("ARGUMENT: \(#function)")
+        Logger.info("ARGUMENT: \(#function)")
         isEditing = false
         guard
             let textField = obj.object as? NSTextField,
@@ -246,15 +246,15 @@ extension CellTextField: NSTextFieldDelegate, NSTextViewDelegate {
     }
 
     func control(_: NSControl, textView _: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
-        print("ARGUMENT: \(#function)")
-        print(commandSelector)
+        Logger.info("ARGUMENT: \(#function)")
+        Logger.info(commandSelector)
 
         return true
     }
 
     func controlTextDidChange(_: Notification) {
-        print(self)
-        print("ARGUMENT: \(#function)")
+        Logger.info(self)
+        Logger.info("ARGUMENT: \(#function)")
 //        parentView!.lastEditedField = LastEditedField.arguments
         cellTextController?.parseUpdates(newValue: stringValue)
         updateStringValue(cellTextController!.argumentString())
@@ -263,12 +263,12 @@ extension CellTextField: NSTextFieldDelegate, NSTextViewDelegate {
     }
 
     func control(_: NSControl, textShouldBeginEditing _: NSText) -> Bool {
-        print("ARGUMENT: \(#function)")
+        Logger.info("ARGUMENT: \(#function)")
         return true
     }
 
     func control(_: NSControl, textShouldEndEditing _: NSText) -> Bool {
-        print("ARGUMENT: \(#function)")
+        Logger.info("ARGUMENT: \(#function)")
         return true
     }
 
@@ -282,8 +282,8 @@ extension CellTextField: NSTextFieldDelegate, NSTextViewDelegate {
     }
 
     func textView(_: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
-        print(#function)
-        print(commandSelector)
+        Logger.info(#function)
+        Logger.info(commandSelector)
         if commandSelector == #selector(insertTab) {
             if self.currentArgumentIndex + 1 < self.cellModel!.arguments.count {
                 self.selectArgument(idx: self.currentArgumentIndex + 1)

@@ -273,17 +273,17 @@ class AudioSpectrogram: NSObject, ObservableObject {
             converter?.sampleRateConverterAlgorithm = AVSampleRateConverterAlgorithm_Normal
             converter?.sampleRateConverterQuality = .max
 
-            print(buffer.format)
-            print(convertBuffer!.format)
+            Logger.info(buffer.format)
+            Logger.info(convertBuffer!.format)
         }
 
         guard let convertBuffer = convertBuffer else { return nil }
 
-        print("Converter: \(converter!)")
-        print("Converter buffer: \(self.convertBuffer!)")
-        print("Converter buffer format: \(self.convertBuffer!.format)")
-        print("Source buffer: \(buffer)")
-        print("Source buffer format: \(buffer.format)")
+        Logger.info("Converter: \(converter!)")
+        Logger.info("Converter buffer: \(self.convertBuffer!)")
+        Logger.info("Converter buffer format: \(self.convertBuffer!.format)")
+        Logger.info("Source buffer: \(buffer)")
+        Logger.info("Source buffer format: \(buffer.format)")
 
         let inputBlock: AVAudioConverterInputBlock = { _, outStatus in
             outStatus.pointee = AVAudioConverterInputStatus.haveData
@@ -293,7 +293,7 @@ class AudioSpectrogram: NSObject, ObservableObject {
         var error: NSError? = nil
         let status: AVAudioConverterOutputStatus = converter!.convert(to: convertBuffer, error: &error, withInputFrom: inputBlock)
         // TODO: check status
-        print("CONVERSION STATUS: \(status)")
+        Logger.info("CONVERSION STATUS: \(status)")
 
         return convertBuffer
     }
@@ -319,7 +319,7 @@ class AudioSpectrogram: NSObject, ObservableObject {
 
     public func processBuffer(sampleBuffer: CMSampleBuffer, audioBufferList: AudioBufferList) -> CGImage? {
         guard let data = audioBufferList.mBuffers.mData else {
-            print("No buffer data")
+            Logger.info("No buffer data")
             return nil
         }
 
@@ -386,7 +386,7 @@ class AudioSpectrogram: NSObject, ObservableObject {
             blockBufferOut: &blockBuffer
         )
         let error = NSError(domain: NSOSStatusErrorDomain, code: Int(v), userInfo: nil)
-        print("AudioBufferList: \(v) \(error)")
+        Logger.info("AudioBufferList: \(v) \(error)")
 
         return processBuffer(sampleBuffer: sampleBuffer, audioBufferList: audioBufferList.pointee)
     }

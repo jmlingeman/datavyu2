@@ -56,7 +56,7 @@ struct TracksStackView: View {
                                 ForEach($fileModel.videoModels) { $videoModel in
                                     TrackRowView(fileModel: fileModel, videoModel: videoModel, appState: appState).onAppear {
                                         trackPosStart = gr.frame(in: .global).minX
-                                        print(trackPosStart)
+                                        Logger.info(trackPosStart)
                                     }
                                 }
                                 TrackTimeMarkings(fileModel: fileModel, gr: gr, trackZoomFactor: trackZoomFactor)

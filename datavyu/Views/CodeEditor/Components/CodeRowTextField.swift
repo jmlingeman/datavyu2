@@ -25,7 +25,7 @@ class CodeRowTextFormatter: Formatter {
     }
 
     override func isPartialStringValid(_ partialString: String, newEditingString _: AutoreleasingUnsafeMutablePointer<NSString?>?, errorDescription _: AutoreleasingUnsafeMutablePointer<NSString?>?) -> Bool {
-        print("formatting", partialString)
+        Logger.info("formatting", partialString)
 
         // Ability to reset your field (otherwise you can't delete the content)
         // You can check if the field is empty later
@@ -38,12 +38,12 @@ class CodeRowTextFormatter: Formatter {
         }.count
 
         if sepCount != column!.arguments.count - 1 {
-            print("INVALID")
+            Logger.info("INVALID")
             return false
         }
 
 //        if partialString.contains(CellTextController.argumentSeperator) {
-//            print("error: has comma")
+//            Logger.info("error: has comma")
 //            return false
 //        }
 
@@ -81,8 +81,8 @@ struct CodeRowTextFieldView: NSViewRepresentable {
         nsView.updateStringValue(nsView.textController!.rowString())
 
         nsView.invalidateIntrinsicContentSize()
-        print(nsView.fittingSize)
-//        print(nsView.sizeToFit())
+        Logger.info(nsView.fittingSize)
+//        Logger.info(nsView.sizeToFit())
         nsView.setNeedsDisplay(nsView.bounds)
     }
 
@@ -142,10 +142,10 @@ class CodeRowTextField: NSTextField {
     }
 
     func selectArgument(idx: Int) {
-        print(#function)
+        Logger.info(#function)
         if textController != nil {
             let extents = textController!.getExtentOfArgument(idx: idx)
-            print("Selecting \(idx)")
+            Logger.info("Selecting \(idx)")
             isUpdating = true
             if extents != nil {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
@@ -196,42 +196,42 @@ class CodeRowTextField: NSTextField {
 
 //    override func textDidChange(_ notification: Notification) {
     ////        super.textDidChange(notification)
-    //////        print("invalidate intrin")
+    //////        Logger.info("invalidate intrin")
     ////
-    ////        print(self.stringValue, self.cellTextController)
+    ////        Logger.info(self.stringValue, self.cellTextController)
     ////
     ////        self.cellTextController!.parseUpdates(newValue: self.stringValue)
     ////        self.updateStringValue(self.cellTextController!.argumentString())
     //////        super.invalidateIntrinsicContentSize()
-    ////        print(self.stringValue)
+    ////        Logger.info(self.stringValue)
 //
 //    }
 }
 
 extension CodeRowTextField: NSTextFieldDelegate, NSTextViewDelegate {
     func textField(_: NSTextField, textView _: NSTextView, candidatesForSelectedRange _: NSRange) -> [Any]? {
-        print("ARGUMENT: \(#function)")
+        Logger.info("ARGUMENT: \(#function)")
         return nil
     }
 
     func textField(_: NSTextField, textView _: NSTextView, candidates: [NSTextCheckingResult], forSelectedRange _: NSRange) -> [NSTextCheckingResult] {
-        print("ARGUMENT: \(#function)")
+        Logger.info("ARGUMENT: \(#function)")
         return candidates
     }
 
     func textField(_: NSTextField, textView _: NSTextView, shouldSelectCandidateAt _: Int) -> Bool {
-        print("ARGUMENT: \(#function)")
+        Logger.info("ARGUMENT: \(#function)")
         return true
     }
 
     func controlTextDidBeginEditing(_: Notification) {
-        print("ARGUMENT: \(#function)")
+        Logger.info("ARGUMENT: \(#function)")
         isEditing = true
 //        parentView!.lastEditedField = LastEditedField.arguments
     }
 
     func controlTextDidEndEditing(_ obj: Notification) {
-        print("ARGUMENT: \(#function)")
+        Logger.info("ARGUMENT: \(#function)")
         isEditing = false
         guard
             let textField = obj.object as? NSTextField,
@@ -244,36 +244,36 @@ extension CodeRowTextField: NSTextFieldDelegate, NSTextViewDelegate {
     }
 
     func control(_: NSControl, textView _: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
-        print("ARGUMENT: \(#function)")
-        print(commandSelector)
+        Logger.info("ARGUMENT: \(#function)")
+        Logger.info(commandSelector)
 
         return true
     }
 
     func controlTextDidChange(_: Notification) {
-        print(self)
-        print("ARGUMENT: \(#function)")
+        Logger.info(self)
+        Logger.info("ARGUMENT: \(#function)")
         isEditing = true
         textController?.parseUpdates(newValue: stringValue)
         updateStringValue(textController!.rowString())
     }
 
     func control(_: NSControl, textShouldBeginEditing _: NSText) -> Bool {
-        print(#function)
-        print("ARGUMENT: \(#function)")
+        Logger.info(#function)
+        Logger.info("ARGUMENT: \(#function)")
         return true
     }
 
     func control(_: NSControl, textShouldEndEditing _: NSText) -> Bool {
-        print(#function)
-        print("ARGUMENT: \(#function)")
+        Logger.info(#function)
+        Logger.info("ARGUMENT: \(#function)")
         return true
     }
 
 //    func textViewDidChangeSelection(_ notification: Notification) {
-//        print(#function)
-//        print("SELECT CHANGED")
-//        print(notification.description)
+//        Logger.info(#function)
+//        Logger.info("SELECT CHANGED")
+//        Logger.info(notification.description)
 //        let range = self.currentEditor()?.selectedRange
 //        if range != nil {
 //            let argIdx = self.textController?.getArgIdxForIdx(idx: range!.location)
@@ -291,7 +291,7 @@ extension CodeRowTextField: NSTextFieldDelegate, NSTextViewDelegate {
     }
 
     func textView(_: NSTextView, willChangeSelectionFromCharacterRange oldSelectedCharRange: NSRange, toCharacterRange newSelectedCharRange: NSRange) -> NSRange {
-        print(#function)
+        Logger.info(#function)
         if abs(newSelectedCharRange.location - oldSelectedCharRange.location) > 2 {
             isEditing = false
         }
@@ -310,7 +310,7 @@ extension CodeRowTextField: NSTextFieldDelegate, NSTextViewDelegate {
                 return newSelectedCharRange
             }
 
-            print(selectedArgument?.argumentIdx)
+            Logger.info(selectedArgument?.argumentIdx)
 
             // Allow user to click into the text
 
@@ -324,8 +324,8 @@ extension CodeRowTextField: NSTextFieldDelegate, NSTextViewDelegate {
     }
 
     func textView(_: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
-        print(#function)
-        print(commandSelector)
+        Logger.info(#function)
+        Logger.info(commandSelector)
         if commandSelector == #selector(insertTab) {
             if self.selectedArgument!.argumentIdx! + 1 < self.column!.arguments.count {
                 self.selectArgument(idx: self.selectedArgument!.argumentIdx! + 1)

@@ -15,7 +15,7 @@ enum Paths {
         do {
             try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         } catch {
-            print(error)
+            Logger.info(error)
         }
     }
 }

@@ -45,7 +45,7 @@ class ArgumentTextField: NSTextField {
 //    override var intrinsicContentSize: NSSize {
 //        var intrinsicSize = lastIntrinsicSize
 //
-//        print("Trying to set new size")
+//        Logger.info("Trying to set new size")
 //        if argumentView != nil && argumentView!.argSelected {
 //            intrinsicSize = super.intrinsicContentSize
 //
@@ -56,7 +56,7 @@ class ArgumentTextField: NSTextField {
 //            }
 //
 //            lastIntrinsicSize = intrinsicSize
-//            print(lastIntrinsicSize)
+//            Logger.info(lastIntrinsicSize)
 //            hasLastIntrinsicSize = true
 //            frame = CGRect(origin: frame.origin, size: intrinsicSize)
 //        }
@@ -66,7 +66,7 @@ class ArgumentTextField: NSTextField {
 
     override var intrinsicContentSize: NSSize {
         // Guard the cell exists and wraps
-        print("setting intrin")
+        Logger.info("setting intrin")
 
         guard let cell = cell else { return super.intrinsicContentSize }
 
@@ -84,36 +84,36 @@ class ArgumentTextField: NSTextField {
 
     override func textDidChange(_ notification: Notification) {
         super.textDidChange(notification)
-        print("invalidate intrin")
+        Logger.info("invalidate intrin")
         super.invalidateIntrinsicContentSize()
     }
 }
 
 extension ArgumentTextField: NSTextFieldDelegate, NSTextViewDelegate {
     func textField(_: NSTextField, textView _: NSTextView, candidatesForSelectedRange _: NSRange) -> [Any]? {
-        print("ARGUMENT: \(#function)")
+        Logger.info("ARGUMENT: \(#function)")
         return nil
     }
 
     func textField(_: NSTextField, textView _: NSTextView, candidates: [NSTextCheckingResult], forSelectedRange _: NSRange) -> [NSTextCheckingResult] {
-        print("ARGUMENT: \(#function)")
+        Logger.info("ARGUMENT: \(#function)")
         return candidates
     }
 
     func textField(_: NSTextField, textView _: NSTextView, shouldSelectCandidateAt _: Int) -> Bool {
-        print("ARGUMENT: \(#function)")
+        Logger.info("ARGUMENT: \(#function)")
         return true
     }
 
     func controlTextDidBeginEditing(_: Notification) {
-        print("ARGUMENT: \(#function)")
+        Logger.info("ARGUMENT: \(#function)")
         argumentView?.argSelected = true
         parentView!.lastEditedField = LastEditedField.arguments
         parentView?.parentView?.lastEditedArgument = argument
     }
 
     func controlTextDidEndEditing(_ obj: Notification) {
-        print("ARGUMENT: \(#function)")
+        Logger.info("ARGUMENT: \(#function)")
         parentView!.lastEditedField = LastEditedField.arguments
         parentView?.parentView?.lastEditedArgument = argument
         if let textField = obj.object as? NSTextField {
@@ -125,38 +125,38 @@ extension ArgumentTextField: NSTextFieldDelegate, NSTextViewDelegate {
     }
 
     func control(_: NSControl, textView _: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
-        print("ARGUMENT: \(#function)")
-        print(commandSelector)
+        Logger.info("ARGUMENT: \(#function)")
+        Logger.info(commandSelector)
 
         return true
     }
 
     func controlTextDidChange(_: Notification) {
-        print(self)
-        print("ARGUMENT: \(#function)")
+        Logger.info(self)
+        Logger.info("ARGUMENT: \(#function)")
         parentView!.lastEditedField = LastEditedField.arguments
         parentView?.parentView?.lastEditedArgument = argument
         invalidateIntrinsicContentSize()
     }
 
     func control(_: NSControl, textShouldBeginEditing _: NSText) -> Bool {
-        print("ARGUMENT: \(#function)")
+        Logger.info("ARGUMENT: \(#function)")
         return true
     }
 
     func control(_: NSControl, textShouldEndEditing _: NSText) -> Bool {
-        print("ARGUMENT: \(#function)")
+        Logger.info("ARGUMENT: \(#function)")
         return true
     }
 
     func textView(_: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
-        print(#function)
+        Logger.info(#function)
         if commandSelector == #selector(insertTab) {
-            print("TABBING OUT OF ARGUMENT")
+            Logger.info("TABBING OUT OF ARGUMENT")
             self.parentView!.lastEditedField = LastEditedField.arguments
             self.parentView!.parentView!.lastEditedArgument = self.argument
             if argument != nil, parentView?.cell.arguments.last == argument {
-                print("Trying to select next cell")
+                Logger.info("Trying to select next cell")
                 let ip = self.parentView!.parentView!.sheetModel.findCellIndexPath(cell_to_find: self.parentView!.cell)
                 if ip != nil {
                     (self.parentView!.parentView!.delegate as! Coordinator).focusNextCell(ip!)

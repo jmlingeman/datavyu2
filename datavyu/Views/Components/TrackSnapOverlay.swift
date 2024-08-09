@@ -67,10 +67,10 @@ struct TrackSnapOverlay: View {
                     // TODO: Set the position if some other part of the program changed it
                 }
             }.onChange(of: leftRegionProp) { _, newValue in
-                print(newValue)
+                Logger.info(newValue)
                 if newValue >= 0, newValue < 1 {
                     let absoluteTime = fileModel.primaryVideo!.getDuration() * newValue
-                    print(absoluteTime)
+                    Logger.info(absoluteTime)
                     fileModel.leftRegionTime = absoluteTime
                 }
             }
@@ -103,7 +103,7 @@ struct TrackSnapOverlay: View {
             }.onChange(of: rightRegionProp) { _, newValue in
                 if newValue >= 0, newValue < 1 {
                     let absoluteTime = fileModel.primaryVideo!.getDuration() * newValue
-                    print(absoluteTime)
+                    Logger.info(absoluteTime)
                     fileModel.rightRegionTime = absoluteTime
 
                     if fileModel.primaryVideo!.currentTime > absoluteTime {
@@ -113,7 +113,7 @@ struct TrackSnapOverlay: View {
             }.onChange(of: leftRegionProp) { _, newValue in
                 if newValue >= 0, newValue < 1 {
                     let absoluteTime = fileModel.primaryVideo!.getDuration() * newValue
-                    print(absoluteTime)
+                    Logger.info(absoluteTime)
                     fileModel.leftRegionTime = absoluteTime
 
                     if fileModel.primaryVideo!.currentTime < absoluteTime {

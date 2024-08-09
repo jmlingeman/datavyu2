@@ -70,7 +70,7 @@ class CellTextController {
         var i = 0
         for arg in args {
             if arg != CellTextController.argumentSeperator {
-                print(arg.contains("^<.*>$"))
+                Logger.info(arg.contains("^<.*>$"))
                 if cell.arguments[i].value != arg || !(arg.starts(with: "<") && arg.last == ">") {
                     cell.arguments[i].setValue(value: arg)
                 }

@@ -32,7 +32,7 @@ class ArgumentViewUIKit: NSCollectionViewItem {
         self.argument = argument
         argumentLabel.stringValue = argument.name
         argumentValue.stringValue = argument.value
-        print("Configuring Arg: \(argument.name) \(argument.value)")
+        Logger.info("Configuring Arg: \(argument.name) \(argument.value)")
         argumentValue.configure(argument: argument)
 
         if argument.column!.isFinished {
@@ -70,7 +70,7 @@ class ArgumentViewUIKit: NSCollectionViewItem {
     override func viewDidAppear() {}
 
     override func keyDown(with event: NSEvent) {
-        print("From Arg Cell View: \(event.keyCode)")
+        Logger.info("From Arg Cell View: \(event.keyCode)")
     }
 }
 

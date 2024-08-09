@@ -37,7 +37,7 @@ struct Header: View {
             .onTapGesture {
                 columnModel.sheetModel?.selectedCell = nil
                 columnModel.sheetModel?.setSelectedColumn(model: columnModel)
-                print("Set selected")
+                Logger.info("Set selected")
             }
             .onDrag {
                 appState.draggingColumn = columnModel

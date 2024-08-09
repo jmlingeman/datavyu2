@@ -63,13 +63,13 @@ final class SheetCollectionAppKitView: NSCollectionView {
     }
 
     func setOrdinalLayout() {
-        print("Setting ordinal layout")
+        Logger.info("Setting ordinal layout")
         let layout = OrdinalCollectionViewLayout(sheetModel: sheetModel, scrollView: parentScrollView, appState: appState)
         collectionViewLayout = layout
     }
 
     func setTemporalLayout() {
-        print("Setting temporal layout")
+        Logger.info("Setting temporal layout")
         let layout = TemporalCollectionViewLayout(sheetModel: sheetModel, scrollView: parentScrollView, appState: appState)
         collectionViewLayout = layout
     }
@@ -105,7 +105,7 @@ final class SheetCollectionAppKitView: NSCollectionView {
 //    }
 //
 //    override func keyDown(with _: NSEvent) {
-//        print("AAAA")
+//        Logger.info("AAAA")
     ////        setResponderChain()
 //    }
 }
@@ -232,7 +232,7 @@ struct SheetLayoutCollection: NSViewRepresentable {
 
         override func mouseDown(with event: NSEvent) {
             super.mouseDown(with: event)
-            print("Mouse Down")
+            Logger.info("Mouse Down")
             appState?.fileController?.activeFileModel.sheetModel.selectedCell?.isSelected = false
             appState?.fileController?.activeFileModel.sheetModel.selectedCell = nil
             appState?.fileController?.activeFileModel.sheetModel.updateSheet()
@@ -270,10 +270,10 @@ struct SheetLayoutCollection: NSViewRepresentable {
     }
 
     func updateNSView(_ nsView: NSViewType, context: Context) {
-        print("Trying to reload data...")
+        Logger.info("Trying to reload data...")
 
         if sheetModel != oldSheetModel {
-            print("Sheet model changed")
+            Logger.info("Sheet model changed")
         }
 
         if let collectionView = nsView.documentView as? SheetCollectionAppKitView {
@@ -331,7 +331,7 @@ struct SheetLayoutCollection: NSViewRepresentable {
 
             // Do the actual reload, erasing all view cell data
 
-            print("Reloading")
+            Logger.info("Reloading")
             collectionView.reloadData()
 
 //            DispatchQueue.main.async {
@@ -358,20 +358,20 @@ struct SheetLayoutCollection: NSViewRepresentable {
                 } else {
                     argIndexPath = curCellModel?.getArgumentIndex(collectionView.lastEditedArgument!)
                 }
-                print("Focusing field: \(argIndexPath) for cell \(curCellIndexPath)")
+                Logger.info("Focusing field: \(argIndexPath) for cell \(curCellIndexPath)")
 
                 if argIndexPath!.item > curCellModel!.arguments.count - 1 {
-                    print("Focusing next cell")
+                    Logger.info("Focusing next cell")
                     context.coordinator.focusNextCell(curCellIndexPath!)
-                    print("Done focusing next cell")
+                    Logger.info("Done focusing next cell")
                 } else {
-                    print("Focusing cell and args \(curCellIndexPath)")
+                    Logger.info("Focusing cell and args \(curCellIndexPath)")
                     context.coordinator.focusCell(curCellIndexPath!)
                     context.coordinator.focusField(argIndexPath)
-                    print("Done focusing arguments")
+                    Logger.info("Done focusing arguments")
                 }
             } else {
-                print("WARNING: LOST FOCUSED CELL")
+                Logger.info("WARNING: LOST FOCUSED CELL")
             }
 //            }
         }
@@ -395,7 +395,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
     }
 
     func getCurrentCell() -> CellViewUIKit? {
-        print(#function)
+        Logger.info(#function)
 
         let collectionView = (parent.scrollView.documentView as! SheetCollectionAppKitView)
 
@@ -409,7 +409,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
     }
 
     func getCell(ip: IndexPath) -> CellViewUIKit? {
-        print(#function)
+        Logger.info(#function)
 
         let collectionView = (parent.scrollView.documentView as! SheetCollectionAppKitView)
         let cellItem = collectionView.item(at: ip) as? CellViewUIKit
@@ -417,7 +417,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
     }
 
     func getCell(cellModel: CellModel) -> CellViewUIKit? {
-        print(#function)
+        Logger.info(#function)
 
         let collectionView = (parent.scrollView.documentView as! SheetCollectionAppKitView)
         let ip = sheetModel.findCellIndexPath(cell_to_find: cellModel)
@@ -440,19 +440,19 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
     }
 
     func focusNextCell(_ currentCellIp: IndexPath) {
-        print(#function)
+        Logger.info(#function)
         let nextCellIp = IndexPath(item: currentCellIp.item + 1, section: currentCellIp.section)
         focusCell(nextCellIp)
     }
 
     func focusPrevCell(_ currentCellIp: IndexPath) {
-        print(#function)
+        Logger.info(#function)
         let nextCellIp = IndexPath(item: currentCellIp.item - 1, section: currentCellIp.section)
         focusCell(nextCellIp)
     }
 
     func focusCell(_ ip: IndexPath) {
-        print(#function)
+        Logger.info(#function)
 
         let collectionView = (parent.scrollView.documentView as! SheetCollectionAppKitView)
 
@@ -460,7 +460,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         var section = ip.section
 
         if sheetModel.visibleColumns.count > section, item >= sheetModel.visibleColumns[section].cells.count {
-            print("Selecting next column")
+            Logger.info("Selecting next column")
             item = 0
             section = section + 1
             if section >= sheetModel.visibleColumns.count {
@@ -482,14 +482,14 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
     }
 
     func focusField(_ ip: IndexPath?) {
-        print(#function)
+        Logger.info(#function)
         let collectionView = (parent.scrollView.documentView as! SheetCollectionAppKitView)
 
         if ip == nil || sheetModel.selectedCell == nil || appState.quickKeyMode {
             return
         }
 
-        print("Focusing field \(ip?.item)")
+        Logger.info("Focusing field \(ip?.item)")
 
         let cellIp = sheetModel.findCellIndexPath(cell_to_find: sheetModel.selectedCell!)
         let cellItem = collectionView.item(at: cellIp!) as? CellViewUIKit
@@ -545,7 +545,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
     }
 
     func collectionView(_ collectionView: NSCollectionView, viewForSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind, at indexPath: IndexPath) -> NSView {
-        print(#function)
+        Logger.info(#function)
         if kind == HeaderCell.identifier {
             let item = collectionView.makeSupplementaryView(ofKind: kind, withIdentifier: .init(HeaderCell.identifier), for: indexPath) as! HeaderCell
 
@@ -576,8 +576,8 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
     }
 
     func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
-        print(#function)
-        print(indexPaths)
+        Logger.info(#function)
+        Logger.info(indexPaths)
         if indexPaths.count > 0 {
             let cell = collectionView.item(at: indexPaths.first!) as! CellViewUIKit
             cell.setSelected()
@@ -587,7 +587,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
 
     func collectionView(_ collectionView: NSCollectionView, didDeselectItemsAt indexPaths: Set<IndexPath>) {
         if indexPaths.count > 0 {
-            print("DESELECTING \(indexPaths.first!)")
+            Logger.info("DESELECTING \(indexPaths.first!)")
             let cell = collectionView.item(at: indexPaths.first!)
             if cell != nil {
                 (cell! as! CellViewUIKit).setDeselected()

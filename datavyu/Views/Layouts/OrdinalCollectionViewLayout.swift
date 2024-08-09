@@ -7,7 +7,7 @@ import SwiftUI
 class OrdinalCollectionViewLayout: TemporalCollectionViewLayout {
     override func prepare() {
         layout = Layouts.ordinal
-        print("PREPARING")
+        Logger.info("PREPARING")
         cache.maxHeight = 0
 
         let gapSize = Config.gapSize

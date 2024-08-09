@@ -287,7 +287,7 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
     public typealias Snapshot = FileModel
 
     public required init(configuration: ReadConfiguration) throws {
-        print("Reg: \(configuration.file.isRegularFile) Sym: \(configuration.file.isSymbolicLink)")
+        Logger.info("Reg: \(configuration.file.isRegularFile) Sym: \(configuration.file.isSymbolicLink)")
 
         if configuration.file.isSymbolicLink {
             let url = configuration.file.symbolicLinkDestinationURL

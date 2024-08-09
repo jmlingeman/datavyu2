@@ -32,7 +32,7 @@ func saveOpfFile(fileModel: FileModel, outputFilename: URL?, autosaving: Bool = 
             do {
                 try FileManager.default.removeItem(at: outputFilename!)
             } catch let error as NSError {
-                print("Error: \(error)")
+                Logger.info("Error: \(error)")
             }
         }
         var archive_init: Archive?
@@ -73,7 +73,7 @@ func saveOpfFile(fileModel: FileModel, outputFilename: URL?, autosaving: Bool = 
             return archive.data!
         }
     } catch {
-        print("ERROR WRITING ZIP FILE: \(error)")
+        Logger.info("ERROR WRITING ZIP FILE: \(error)")
     }
 
     return Data()
@@ -160,7 +160,7 @@ func saveProject(fileModel: FileModel) -> String {
         let encodedYaml = try YAMLEncoder().encode(project)
         return "!project\n" + encodedYaml.replacingOccurrences(of: "- classifier", with: "- !vs\n  classifier").replacingOccurrences(of: "trackSettings:", with: "trackSettings: !ts")
     } catch {
-        print("ERROR encoding project file: \(error)")
+        Logger.info("ERROR encoding project file: \(error)")
     }
     return ""
 }
@@ -176,7 +176,7 @@ func loadOpfData(data: Data) -> FileModel {
         let success = FileManager.default.createFile(atPath: fileUrl.path(percentEncoded: false), contents: data)
         return loadOpfFile(inputFilename: fileUrl)
     } catch {
-        print(error)
+        Logger.info(error)
     }
 
     return FileModel()
@@ -195,7 +195,7 @@ func loadOpfFile(inputFilename: URL) -> FileModel {
         do {
             items = try FileManager.default.contentsOfDirectory(atPath: workingDirectory.path)
         } catch {
-            print("Error reading zip file contents: \(error)")
+            Logger.info("Error reading zip file contents: \(error)")
             items = []
         }
         for item in items {
@@ -204,17 +204,17 @@ func loadOpfFile(inputFilename: URL) -> FileModel {
             case "db":
                 db = parseDbFile(sheetName: inputFilename.lastPathComponent, fileUrl: itemPath)
             case "project":
-                print("Loading project")
+                Logger.info("Loading project")
                 media = parseProjectFile(fileUrl: itemPath)
 
             case let s where s.matchFirst(/^[0-9]+$/):
-                print(item)
+                Logger.info(item)
             default:
-                print("Went beyond index of assumed files")
+                Logger.info("Went beyond index of assumed files")
             }
         }
     } catch {
-        print("Error opening opf file: \(error) for \(inputFilename.absoluteString)")
+        Logger.info("Error opening opf file: \(error) for \(inputFilename.absoluteString)")
     }
 
     if !media.isEmpty {
@@ -259,7 +259,7 @@ func parseProjectFile(fileUrl: URL) -> [VideoModel] {
         }
 
     } catch { /* error handling here */
-        print("ERROR \(error)")
+        Logger.info("ERROR \(error)")
     }
 
     return videoModels
@@ -272,12 +272,12 @@ func parseDbFile(sheetName: String, fileUrl: URL) -> FileModel {
 
     do {
         let text = try String(contentsOf: fileUrl, encoding: .utf8)
-        print(text)
+        Logger.info(text)
         for line in text.split(separator: "\n") {
             parseDbLine(sheetModel: sheet, line: line, fileLoad: &fileLoad)
         }
     } catch { /* error handling here */
-        print("ERROR \(error)")
+        Logger.info("ERROR \(error)")
     }
 
     return file
@@ -293,8 +293,8 @@ func parseDbLine(sheetModel: SheetModel, line: Substring, fileLoad: inout FileLo
      asdfaaf (MATRIX,true,)-code01|NOMINAL
      00:00:00:000,00:00:00:000,()
      */
-    print(line)
-    print(line.matches(of: /^[0-9a-zA-Z]+(?:\s+)/))
+    Logger.info(line)
+    Logger.info(line.matches(of: /^[0-9a-zA-Z]+(?:\s+)/))
     if line.starts(with: "#") {
         fileLoad.file.version = String(line)
     } else if line.firstMatch(of: /^[0-9a-zA-Z]+(?:\s+)/) != nil { // Capture a column name followed by a space
@@ -309,7 +309,7 @@ func parseDbLine(sheetModel: SheetModel, line: Substring, fileLoad: inout FileLo
             column.addArgument(argument: arg)
         }
 
-        print("Adding column \(columnName) with arguments \(arguments)")
+        Logger.info("Adding column \(columnName) with arguments \(arguments)")
 
         fileLoad.file.sheetModel.addColumn(column: column)
         fileLoad.currentColumn = column
@@ -330,9 +330,9 @@ func parseDbLine(sheetModel: SheetModel, line: Substring, fileLoad: inout FileLo
                 index += 1
             }
 
-            print("Adding cell \(onset) with values \(values)")
+            Logger.info("Adding cell \(onset) with values \(values)")
         }
     } else {
-        print("ERROR LINE DID NOT MATCH")
+        Logger.info("ERROR LINE DID NOT MATCH")
     }
 }

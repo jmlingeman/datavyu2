@@ -72,7 +72,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     func flushSavedWindowState() {
         do {
             let libURL = try FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-            guard let appPersistentStateDirName = Bundle.main.bundleIdentifier?.appending(".savedState") else { print("get bundleID failed"); return }
+            guard let appPersistentStateDirName = Bundle.main.bundleIdentifier?.appending(".savedState") else { Logger.info("get bundleID failed"); return }
             let savedDataURL = libURL.appendingPathComponent("Saved Application State", isDirectory: true)
                 .appendingPathComponent(appPersistentStateDirName, isDirectory: true)
             var files = [URL]()
@@ -83,12 +83,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                         if fileAttributes.isRegularFile! {
                             files.append(fileURL)
                         }
-                    } catch { print(error, fileURL) }
+                    } catch { Logger.info(error, fileURL) }
                 }
-                print(files)
+                Logger.info(files)
             }
             for fileURL in files {
-                print("path to remove: ", fileURL)
+                Logger.info("path to remove: ", fileURL)
                 try FileManager.default.removeItem(at: fileURL)
             }
 //            let windowsPlistFilePath = libURL.appendingPathComponent("Saved Application State", isDirectory: true)
@@ -96,10 +96,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 //                .appendingPathComponent("data.data", isDirectory: false)
 //                .path
 //
-//            print("path to remove: ", windowsPlistFilePath)
+//            Logger.info("path to remove: ", windowsPlistFilePath)
 //            try FileManager.default.removeItem(atPath: windowsPlistFilePath)
         } catch {
-            print("exception: \(error)")
+            Logger.info("exception: \(error)")
         }
     }
 }
@@ -179,7 +179,7 @@ struct DatavyuApp: App {
 //                                              do {
 //                                                  try await openDocument(at: url)
 //                                              } catch {
-//                                                  print(error)
+//                                                  Logger.info(error)
 //                                              }
 //                                          }
                 ////                                          fileController.openFile(inputFilename: url)

@@ -90,14 +90,14 @@ public class AppState: NSObject, ObservableObject {
             saveCloseAlert.addButton(withTitle: "Don't Save").hasDestructiveAction = true
 
             let result = saveCloseAlert.runModal()
-            print(result)
+            Logger.info(result)
             if result == .alertFirstButtonReturn {
                 displaySavePanel(fileModel: fileModel)
             } else if result == .alertSecondButtonReturn {
-                print("Got cancel")
+                Logger.info("Got cancel")
                 return false
             } else if result == .alertThirdButtonReturn {
-                print("Got dont save")
+                Logger.info("Got dont save")
             }
         } else {
             displaySavePanel(fileModel: fileModel)

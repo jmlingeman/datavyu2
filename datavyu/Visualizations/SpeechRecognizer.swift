@@ -86,7 +86,7 @@ public class SpeechRecognizer: ObservableObject {
 
         Task {
             do {
-                print("started")
+                Logger.info("started")
 
                 if whisperKit == nil {
                     whisperKit = try await WhisperKitProgress(model: selectedModel, logLevel: Logging.LogLevel.debug)
@@ -98,7 +98,7 @@ public class SpeechRecognizer: ObservableObject {
                 await MainActor.run {
                     if sheetModel != nil, targetColumn != nil {
                         for txRes in result {
-                            print(txRes)
+                            Logger.info(txRes)
                             for segment in txRes.segments {
                                 let onset = segment.start
                                 let offset = segment.end
@@ -115,7 +115,7 @@ public class SpeechRecognizer: ObservableObject {
                     }
                 }
             } catch {
-                print(error.localizedDescription)
+                Logger.info(error.localizedDescription)
             }
         }
     }
@@ -208,7 +208,7 @@ public class WhisperKitProgress: WhisperKit, ObservableObject {
                     useBackgroundSession: useBackgroundDownloadSession,
                     from: repo,
                     progressCallback: { progress in
-                        print(progress)
+                        Logger.info(progress)
                         self.downloadProgress = progress.fractionCompleted
                     }
                 )

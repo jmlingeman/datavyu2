@@ -47,23 +47,23 @@ class CellTimeTextField: NSTextField {
 
 extension OnsetCoordinator: NSTextFieldDelegate, NSTextViewDelegate {
     func textField(_: NSTextField, textView _: NSTextView, candidatesForSelectedRange _: NSRange) -> [Any]? {
-        print(#function)
+        Logger.info(#function)
         return nil
     }
 
     func textField(_: NSTextField, textView _: NSTextView, candidates: [NSTextCheckingResult], forSelectedRange _: NSRange) -> [NSTextCheckingResult] {
-        print(#function)
+        Logger.info(#function)
         return candidates
     }
 
     func textField(_: NSTextField, textView _: NSTextView, shouldSelectCandidateAt _: Int) -> Bool {
-        print(#function)
+        Logger.info(#function)
         return true
     }
 
     func textView(_: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
-        print(#function)
-        print(commandSelector)
+        Logger.info(#function)
+        Logger.info(commandSelector)
         if commandSelector == #selector(NSResponder.insertBacktab) {
             let ip = self.parentView!.sheetModel.findCellIndexPath(cell_to_find: self.view!.cell)
             if ip != nil {
@@ -77,7 +77,7 @@ extension OnsetCoordinator: NSTextFieldDelegate, NSTextViewDelegate {
     }
 
     func controlTextDidBeginEditing(_: Notification) {
-        print(#function)
+        Logger.info(#function)
         view?.isSelected = true
         view?.setSelected()
 
@@ -86,17 +86,17 @@ extension OnsetCoordinator: NSTextFieldDelegate, NSTextViewDelegate {
         view?.lastEditedField = LastEditedField.onset
         parentView?.sheetModel.setSelectedCell(selectedCell: cell)
 
-        print("Set focus object to: \(view?.onset)")
+        Logger.info("Set focus object to: \(view?.onset)")
     }
 
     func controlTextDidEndEditing(_ obj: Notification) {
-        print(#function)
+        Logger.info(#function)
         if let textField = obj.object as? NSTextField {
             if isEdited, timestringToTimestamp(timestring: textField.stringValue) != cell!.onset {
                 let timestampStr = textField.stringValue
                 let timestamp = timestringToTimestamp(timestring: timestampStr)
                 view?.lastEditedField = LastEditedField.onset
-                print("SETTING ONSET TO \(timestamp)")
+                Logger.info("SETTING ONSET TO \(timestamp)")
                 textField.stringValue = formatTimestamp(timestamp: cell!.onset)
                 cell!.setOnset(onset: timestamp)
             } else if timestringToTimestamp(timestring: textField.stringValue) != cell!.onset {
@@ -109,20 +109,20 @@ extension OnsetCoordinator: NSTextFieldDelegate, NSTextViewDelegate {
     }
 
     func controlTextDidChange(_: Notification) {
-        print(self)
-        print(#function)
+        Logger.info(self)
+        Logger.info(#function)
         isEdited = true
         view?.lastEditedField = LastEditedField.onset
         parentView?.sheetModel.setSelectedCell(selectedCell: cell)
     }
 
     func control(_: NSControl, textShouldBeginEditing _: NSText) -> Bool {
-        print(#function)
+        Logger.info(#function)
         return true
     }
 
     func control(_: NSControl, textShouldEndEditing _: NSText) -> Bool {
-        print(#function)
+        Logger.info(#function)
         return true
     }
 }
@@ -152,29 +152,29 @@ extension OnsetCoordinator: NSTextFieldDelegate, NSTextViewDelegate {
 
 extension OffsetCoordinator: NSTextFieldDelegate, NSTextViewDelegate {
     func textField(_: NSTextField, textView _: NSTextView, candidatesForSelectedRange _: NSRange) -> [Any]? {
-        print(#function)
+        Logger.info(#function)
         return nil
     }
 
     func textField(_: NSTextField, textView _: NSTextView, candidates: [NSTextCheckingResult], forSelectedRange _: NSRange) -> [NSTextCheckingResult] {
-        print(#function)
+        Logger.info(#function)
         return candidates
     }
 
     func textField(_: NSTextField, textView _: NSTextView, shouldSelectCandidateAt _: Int) -> Bool {
-        print(#function)
+        Logger.info(#function)
         return true
     }
 
     func controlTextDidBeginEditing(_: Notification) {
-        print(#function)
+        Logger.info(#function)
         view?.setSelected()
         view?.lastEditedField = LastEditedField.offset
         parentView?.sheetModel.setSelectedCell(selectedCell: cell)
     }
 
     func controlTextDidEndEditing(_ obj: Notification) {
-        print(#function)
+        Logger.info(#function)
         if let textField = obj.object as? NSTextField {
             if isEdited, timestringToTimestamp(timestring: textField.stringValue) != cell!.offset {
                 let timestampStr = textField.stringValue
@@ -191,18 +191,18 @@ extension OffsetCoordinator: NSTextFieldDelegate, NSTextViewDelegate {
     }
 
     func controlTextDidChange(_: Notification) {
-        print(self)
-        print(#function)
+        Logger.info(self)
+        Logger.info(#function)
         isEdited = true
     }
 
     func control(_: NSControl, textShouldBeginEditing _: NSText) -> Bool {
-        print(#function)
+        Logger.info(#function)
         return true
     }
 
     func control(_: NSControl, textShouldEndEditing _: NSText) -> Bool {
-        print(#function)
+        Logger.info(#function)
         return true
     }
 }

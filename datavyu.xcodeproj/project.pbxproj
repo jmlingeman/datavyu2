@@ -85,6 +85,7 @@
 		88AA97912C5AD0630062CFED /* ControllerPanelInfoDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AA97902C5AD0630062CFED /* ControllerPanelInfoDisplay.swift */; };
 		88AA97952C63F3E10062CFED /* CodeRowTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AA97932C63F3E10062CFED /* CodeRowTextField.swift */; };
 		88AA97972C63F7030062CFED /* CodeEditorRowTextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AA97962C63F7030062CFED /* CodeEditorRowTextController.swift */; };
+		88AA979B2C659C9C0062CFED /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AA979A2C659C960062CFED /* Logger.swift */; };
 		88BFE4252A9BE78F00B37DC3 /* CodeEditorRemoveCodeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BFE4242A9BE78F00B37DC3 /* CodeEditorRemoveCodeButton.swift */; };
 		88BFE4292A9D13FC00B37DC3 /* DSWaveformImage in Frameworks */ = {isa = PBXBuildFile; productRef = 88BFE4282A9D13FC00B37DC3 /* DSWaveformImage */; };
 		88BFE42B2A9D13FC00B37DC3 /* DSWaveformImageViews in Frameworks */ = {isa = PBXBuildFile; productRef = 88BFE42A2A9D13FC00B37DC3 /* DSWaveformImageViews */; };
@@ -220,6 +221,7 @@
 		88AA97902C5AD0630062CFED /* ControllerPanelInfoDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerPanelInfoDisplay.swift; sourceTree = "<group>"; };
 		88AA97932C63F3E10062CFED /* CodeRowTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeRowTextField.swift; sourceTree = "<group>"; };
 		88AA97962C63F7030062CFED /* CodeEditorRowTextController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorRowTextController.swift; sourceTree = "<group>"; };
+		88AA979A2C659C960062CFED /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		88BFE4242A9BE78F00B37DC3 /* CodeEditorRemoveCodeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorRemoveCodeButton.swift; sourceTree = "<group>"; };
 		88BFE42C2A9D25CB00B37DC3 /* WaveformViewDV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformViewDV.swift; sourceTree = "<group>"; };
 		88BFE4312A9E9E8700B37DC3 /* ArgumentFocusModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentFocusModel.swift; sourceTree = "<group>"; };
@@ -524,6 +526,7 @@
 		8878A62A2A3FED2E00A2658C /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				88AA979A2C659C960062CFED /* Logger.swift */,
 				8878A6242A3FE75200A2658C /* VideoHelpers.swift */,
 				88F62EA42A5A041200DC5B60 /* TimeHelpers.swift */,
 				88E0947B2B69D8FA00A93660 /* TimestampTransformer.swift */,
@@ -861,6 +864,7 @@
 				88AA97912C5AD0630062CFED /* ControllerPanelInfoDisplay.swift in Sources */,
 				881A39F12A2A8D6200B4782D /* SheetModel.swift in Sources */,
 				888C04142C03DC3D00EFFDEE /* CellTextField.swift in Sources */,
+				88AA979B2C659C9C0062CFED /* Logger.swift in Sources */,
 				880CBD132B3FB61500D7701F /* TemporalCollectionViewLayout.swift in Sources */,
 				8861C4212C0155C900DD180D /* ACBAudioProcessHelper.m in Sources */,
 				88F703CB2C1FCABC002805FA /* ScriptOutputWindow.swift in Sources */,
@@ -958,7 +962,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1026;
+				CURRENT_PROJECT_VERSION = 1030;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1022,7 +1026,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1026;
+				CURRENT_PROJECT_VERSION = 1030;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1056,7 +1060,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1026;
+				CURRENT_PROJECT_VERSION = 1030;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = ZBRT6TPG8Y;
@@ -1093,7 +1097,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1026;
+				CURRENT_PROJECT_VERSION = 1030;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = ZBRT6TPG8Y;
@@ -1125,7 +1129,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1026;
+				CURRENT_PROJECT_VERSION = 1030;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
@@ -1144,7 +1148,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1026;
+				CURRENT_PROJECT_VERSION = 1030;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
@@ -1162,7 +1166,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1026;
+				CURRENT_PROJECT_VERSION = 1030;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -1179,7 +1183,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1026;
+				CURRENT_PROJECT_VERSION = 1030;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
