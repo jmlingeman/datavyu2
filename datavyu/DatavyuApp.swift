@@ -16,7 +16,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     func applicationDidFinishLaunching(_: Notification) {
-        flushSavedWindowState()
+//        flushSavedWindowState()
+
 //        let autosaveURLs = appState?.autosaveURLs
 //        if autosaveURLs != nil, autosaveURLs?.count ?? 0 > 0 {
 //            // Prompt user to re-open file
@@ -42,13 +43,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 //
 //
 //        }
+    }
+
+    func startScriptServer() {
         appState!.server = DatavyuAPIServer(fileController: appState!.fileController!, port: 1312)
         appState!.server!.start()
     }
 
     func applicationShouldTerminate(_: NSApplication) -> NSApplication.TerminateReply {
         // some code
-        if appState!.fileController != nil {
+        if appState?.fileController != nil {
             for fileModel in appState!.fileController!.fileModels {
 //                if fileModel.unsavedChanges {
 //                    appState!.fileController!.activeFileModel = fileModel
@@ -127,6 +131,7 @@ struct DatavyuApp: App {
             ContentView(fileModel: fileModelWrapper.document)
                 .onAppear {
                     appDelegate.appState = appState
+                    appDelegate.startScriptServer()
                     appState.fileController = fileController
                     appState.fileController?.fileModels.append(fileModelWrapper.document)
                     ValueTransformer.setValueTransformer(TimestampTransformer(), forName: .classNameTransformerName)
@@ -148,12 +153,13 @@ struct DatavyuApp: App {
                 .alert(isPresented: $appState.showingAlert) {
                     Alert(title: Text("Error: File error"), message: Text(appState.errorMsg))
                 }
-                .onChange(of: appState.showingSaveDialog) {
+                .onChange(of: appState.showingSaveDialog, perform: { _ in
                     if appState.showingSaveDialog {
                         _ = appState.savePanel(fileModel: fileModelWrapper.document)
                     }
                     appState.showingSaveDialog = false
-                }
+                })
+
 //                .fileExporter(isPresented: $showingSaveDialog,
 //                              document: fileController.activeFileModel,
 //                              contentType: UTType.opf,
@@ -210,14 +216,13 @@ struct DatavyuApp: App {
         .commands {
             DVCommandMenus(appState: appState, keyInputSubject: keyInputSubject)
         }
-        .onChange(of: fileModel) {
-            if fileModel != nil {
-                appState.changeActiveFileModel(fileModel: fileModel!)
-            }
-        }
-        .onChange(of: appState.zoomFactor, initial: true) { _, _ in
-            NSDocumentController.shared.closeAllDocuments(withDelegate: nil, didCloseAllSelector: nil, contextInfo: nil)
-            NSDocumentController.shared.newDocument(nil)
-        }
+//        .onChange(of: fileModel, perform: { _ in
+//            if fileModel != nil {
+//                appState.changeActiveFileModel(fileModel: fileModel!)
+//            }
+//        })
+//        .onChange(of: fileModel, perform: { _ in            NSDocumentController.shared.closeAllDocuments(withDelegate: nil, didCloseAllSelector: nil, contextInfo: nil)
+//            NSDocumentController.shared.newDocument(nil)
+//        })
     }
 }

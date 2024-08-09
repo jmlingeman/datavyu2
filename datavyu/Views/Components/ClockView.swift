@@ -41,12 +41,12 @@ struct ClockView: View {
         let secs = splitTime[2]
         let millis = splitTime[3]
 
-        Text(hours).foregroundStyle(HoursTextStyle())
+        Text(hours) // .foregroundStyle(HoursTextStyle())
             + Text(":")
-            + Text(mins).foregroundStyle(MinsTextStyle())
+            + Text(mins) // .foregroundStyle(MinsTextStyle())
             + Text(":")
-            + Text(secs).foregroundStyle(SecsTextStyle())
-            + Text(":") + Text(millis).foregroundStyle(MillisTextStyle())
+            + Text(secs) // .foregroundStyle(SecsTextStyle())
+            + Text(":") + Text(millis) // .foregroundStyle(MillisTextStyle())
             + Text("@ \(String(format: "%.2f", $videoModel.player.rate.wrappedValue))x")
     }
 }

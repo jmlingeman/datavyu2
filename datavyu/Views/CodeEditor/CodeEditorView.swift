@@ -49,8 +49,6 @@ struct CodeEditorView: View {
             }
             WrappingHStack(sheetModel.columns, id: \.self) { column in
                 CodeEditorRow(column: column, selectedArgument: selectedArgument).padding()
-            }.onChange(of: selectedArgument.argumentIdx) { _, newValue in
-                Logger.info("ARG CHANGED: \(newValue)")
             }
             Button("Add Column") {
                 sheetModel.addColumn(columnName: sheetModel.getNextDefaultColumnName())

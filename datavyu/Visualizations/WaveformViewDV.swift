@@ -59,19 +59,23 @@ public struct WaveformViewDV: View {
                     updateSize()
                     update(size: size, url: audioURL, configuration: configuration)
                 }
-                .onChange(of: geometry.size) { updateSize() }
-                .onChange(of: audioURL) { update(size: size, url: $0, configuration: configuration) }
-                .onChange(of: configuration) {
-                    update(size: size, url: audioURL, configuration: $0)
-                }
-                .onChange(of: fileModel.longestDuration) {
+                .onChange(of: geometry.size, perform: { _ in
+                    updateSize()
+                })
+                .onChange(of: audioURL, perform: { url in
+                    update(size: size, url: url, configuration: configuration)
+                })
+                .onChange(of: configuration, perform: { config in
+                    update(size: size, url: audioURL, configuration: config)
+                })
+                .onChange(of: fileModel.longestDuration, perform: { _ in
                     updateSize()
                     update(size: size, url: audioURL, configuration: configuration)
-                }
-                .onChange(of: geometryReader.size) { _, _ in
+                })
+                .onChange(of: geometryReader.size, perform: { _ in
                     updateSize()
                     update(size: size, url: audioURL, configuration: configuration)
-                }
+                })
         }
     }
 

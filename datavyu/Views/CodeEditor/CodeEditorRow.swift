@@ -21,13 +21,20 @@ struct CodeEditorRow: View {
     var body: some View {
         VStack {
             HStack {
-                codeRow.onChange(of: column.reorderCount) { oldValue, newValue in
-                    if oldValue < newValue {
+                codeRow.onChange(of: column.reorderCount) { newValue in
+                    if column.reorderCount < newValue {
                         codeRow.selectArgument(idx: selectedArgument.argumentIdx! + 1)
                     } else {
                         codeRow.selectArgument(idx: selectedArgument.argumentIdx! - 1)
                     }
                 }
+//                codeRow.onChange(of: column.reorderCount) { oldValue, newValue in
+//                    if oldValue < newValue {
+//                        codeRow.selectArgument(idx: selectedArgument.argumentIdx! + 1)
+//                    } else {
+//                        codeRow.selectArgument(idx: selectedArgument.argumentIdx! - 1)
+//                    }
+//                }
                 CodeEditorAddCodeButton(column: column)
                 CodeEditorRemoveCodeButton(column: column)
                 Spacer()

@@ -34,7 +34,9 @@ struct ControllerPanelInfoDisplay: View {
                 Text(labelText)
             }
         }.frame(width: 150, height: 60)
-            .onChange(of: data, onChangeFunction ?? { _, _ in })
+//            .onChange(of: data, perform: { newValue in
+//                onChangeFunction(newValue)
+//            })
     }
 }
 
@@ -56,6 +58,6 @@ struct ControllerPanelInfoDisplayTimestamp: View {
                 Text(labelText)
             }
         }.frame(width: 150, height: 60)
-            .onChange(of: data, onChangeFunction ?? { _, _ in })
+//            .onChange(of: data, onChangeFunction ?? { _, _ in })
     }
 }

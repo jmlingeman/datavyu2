@@ -23,9 +23,9 @@ struct Header: View {
                     VStack {
                         Toggle(isOn: $columnModel.isFinished, label: {
                             Image(systemName: "lock.fill")
-                        }).onChange(of: $columnModel.isFinished.wrappedValue) {
+                        }).onChange(of: $columnModel.isFinished.wrappedValue, perform: { _ in
                             columnModel.update()
-                        }.toggleStyle(CheckboxToggleStyle()).frame(maxWidth: .infinity, alignment: .bottomTrailing)
+                        }).toggleStyle(CheckboxToggleStyle()).frame(maxWidth: .infinity, alignment: .bottomTrailing)
                             .font(.system(size: Config.defaultCellTextSize * appState.zoomFactor))
                     }
                 }

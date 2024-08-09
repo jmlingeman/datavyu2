@@ -34,23 +34,24 @@ struct ColumnNameDialog: View {
                             focusedField = true
                         }
                     }
-                    .onChange(of: column.columnName) { _, _ in
+                    .onChange(of: column.columnName, perform: { _ in
                         if column.sheetModel?.checkNewColumnName(column: column) == false {
                             nameIsOK = false
                         } else {
                             nameIsOK = true
                         }
-                    }
+                    })
                     .onSubmit {
                         if nameIsOK {
                             submit()
                         }
-                    }.onKeyPress(KeyEquivalent.return) {
-                        if nameIsOK {
-                            submit()
-                        }
-                        return KeyPress.Result.handled
                     }
+//                    .onKeyPress(KeyEquivalent.return) {
+//                        if nameIsOK {
+//                            submit()
+//                        }
+//                        return KeyPress.Result.handled
+//                    }
             }.padding()
             Text("Error: Column is blank or name already exists").opacity(nameIsOK ? 0 : 1)
             HStack {

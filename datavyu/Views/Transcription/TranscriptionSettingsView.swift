@@ -35,11 +35,12 @@ struct TranscriptionSettingsView: View {
 
             Button("Download Model Files") {
                 speech.initializeWhisperKit(model: selectedModel)
-            }.onChange(of: selectedModel) { _, newValue in
+            }.onChange(of: selectedModel, perform: { newValue in
                 if speech.checkModelInstalled(model: newValue) {
                     ready = true
                 }
-            }.disabled(running)
+            })
+            .disabled(running)
 
             Text(String(format: "%.2f%% downloaded", downloadProgress * 100))
             ProgressView(value: downloadProgress).onReceive(timer) { _ in

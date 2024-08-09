@@ -107,9 +107,9 @@ struct ControllerPanelView: View {
                     ControllerPanelInfoDisplayTimestamp(labelText: "Offset:", data: $currentOffset, disabled: true)
                 }
             }
-        }.onChange(of: fileModel.sheetModel.selectedCell) { _, _ in
+        }.onChange(of: fileModel.sheetModel.selectedCell, perform: { _ in
             currentOnset = fileModel.sheetModel.selectedCell?.onset ?? 0
             currentOffset = fileModel.sheetModel.selectedCell?.offset ?? 0
-        }
+        })
     }
 }

@@ -68,7 +68,7 @@ struct TrackTimeMarkings: View {
 
     var body: some View {
         ZStack {
-            Rectangle().frame(width: gr.size.width * trackZoomFactor - leftTrackStart - rightTrackEnd, height: 20).position(x: leftTrackStart + (gr.size.width * trackZoomFactor - leftTrackStart - rightTrackEnd) / 2).foregroundColor(Color(NSColor.secondarySystemFill))
+            Rectangle().frame(width: gr.size.width * trackZoomFactor - leftTrackStart - rightTrackEnd, height: 20).position(x: leftTrackStart + (gr.size.width * trackZoomFactor - leftTrackStart - rightTrackEnd) / 2).foregroundColor(Color(NSColor.controlBackgroundColor))
             ForEach(getLinePositions(duration: fileModel.longestDuration, gr: gr, timeLevel: .seconds), id: \.self) { linePos in
                 Rectangle().frame(width: 1, height: 10).position(x: linePos + leftTrackStart).foregroundColor(Color.blue)
             }

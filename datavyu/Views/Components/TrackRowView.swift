@@ -34,7 +34,7 @@ struct TrackRowView: View {
                 }
             }, label: {
                 Image(systemName: "waveform.circle.fill")
-            }).menuIndicator(.hidden).buttonBorderShape(.capsule).frame(width: 35)
+            }).menuIndicator(.hidden).buttonBorderShape(.roundedRectangle).frame(width: 35)
 
             Button {
                 videoModel.isHidden.toggle()
@@ -59,9 +59,9 @@ struct TrackRowView: View {
                 } maximumValueLabel: {
                     Image(systemName: "speaker.wave.3.fill")
                 }.frame(width: 300)
-                    .onChange(of: volume) { _, newValue in
+                    .onChange(of: volume, perform: { newValue in
                         videoModel.changeVolume(newVolume: newValue)
-                    }
+                    })
             }).frame(width: 35)
 
             Rectangle().frame(width: 10).opacity(0)

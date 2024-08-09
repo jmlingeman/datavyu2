@@ -62,18 +62,18 @@ struct TrackSnapOverlay: View {
                     .onEnded { gesture in
                         leftDragGesture(gesture: gesture)
                     }
-            ).onChange(of: fileModel.leftRegionTime) { _, _ in
+            ).onChange(of: fileModel.leftRegionTime, perform: { _ in
                 if fileModel.primaryVideo != nil {
                     // TODO: Set the position if some other part of the program changed it
                 }
-            }.onChange(of: leftRegionProp) { _, newValue in
+            }).onChange(of: leftRegionProp, perform: { newValue in
                 Logger.info(newValue)
                 if newValue >= 0, newValue < 1 {
                     let absoluteTime = fileModel.primaryVideo!.getDuration() * newValue
                     Logger.info(absoluteTime)
                     fileModel.leftRegionTime = absoluteTime
                 }
-            }
+            })
         Rectangle().frame(width: 8, height: .infinity, alignment: .leading)
             .background(Color.green)
             .clipShape(RoundedRectangle(cornerRadius: 5))
@@ -90,17 +90,17 @@ struct TrackSnapOverlay: View {
                     .onEnded { gesture in
                         rightDragGesture(gesture: gesture)
                     }
-            ).onChange(of: fileModel.rightRegionTime) { _, newValue in
+            ).onChange(of: fileModel.rightRegionTime, perform: { newValue in
                 if fileModel.primaryVideo != nil {
                     // TODO: Set the position if some other part of the program changed it
                     rightRegionProp = newValue / fileModel.primaryVideo!.getDuration()
                 }
-            }.onChange(of: fileModel.leftRegionTime) { _, newValue in
+            }).onChange(of: fileModel.leftRegionTime, perform: { newValue in
                 if fileModel.primaryVideo != nil {
                     // TODO: Set the position if some other part of the program changed it
                     leftRegionProp = newValue / fileModel.primaryVideo!.getDuration()
                 }
-            }.onChange(of: rightRegionProp) { _, newValue in
+            }).onChange(of: rightRegionProp, perform: { newValue in
                 if newValue >= 0, newValue < 1 {
                     let absoluteTime = fileModel.primaryVideo!.getDuration() * newValue
                     Logger.info(absoluteTime)
@@ -110,7 +110,7 @@ struct TrackSnapOverlay: View {
                         fileModel.seekAllVideos(to: absoluteTime)
                     }
                 }
-            }.onChange(of: leftRegionProp) { _, newValue in
+            }).onChange(of: leftRegionProp, perform: { newValue in
                 if newValue >= 0, newValue < 1 {
                     let absoluteTime = fileModel.primaryVideo!.getDuration() * newValue
                     Logger.info(absoluteTime)
@@ -120,6 +120,6 @@ struct TrackSnapOverlay: View {
                         fileModel.seekAllVideos(to: absoluteTime)
                     }
                 }
-            }
+            })
     }
 }
