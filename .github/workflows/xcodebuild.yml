@@ -32,7 +32,7 @@ jobs:
         run: |
           # create variables
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+          PP_PATH=$RUNNER_TEMP/build_pp.provisionprofile
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
 
           # import certificate and provisioning profile from secrets
@@ -49,7 +49,10 @@ jobs:
           security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
           security list-keychain -d user -s $KEYCHAIN_PATH
 
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
 
+          git submodule update --init --recursive
           #rm -rf "/Users/runner/Library/Developer/Xcode/DerivedData/*"
           # xcodebuild build analyze -target "$target" -workspace  
           xcodebuild ONLY_ACTIVE_ARCH=NO -scheme "datavyu" -configuration Release -derivedDataPath ./output build | xcpretty && exit ${PIPESTATUS[0]} 
