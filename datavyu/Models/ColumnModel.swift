@@ -170,6 +170,24 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         update()
     }
 
+    func moveArgumentLeft(argumentIdx: Int) {
+        if argumentIdx - 1 >= 0, argumentIdx < arguments.count {
+            arguments.swapAt(argumentIdx, argumentIdx - 1)
+        }
+        for cell in cells {
+            cell.syncArguments()
+        }
+    }
+
+    func moveArgumentRight(argumentIdx: Int) {
+        if argumentIdx + 1 < arguments.count {
+            arguments.swapAt(argumentIdx, argumentIdx + 1)
+        }
+        for cell in cells {
+            cell.syncArguments()
+        }
+    }
+
     func addCell(cell: CellModel, force: Bool = false) -> CellModel? {
         if !isFinished || force {
             cell.ordinal = cells.count + 1

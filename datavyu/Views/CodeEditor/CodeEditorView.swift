@@ -30,7 +30,7 @@ struct CodeEditorView: View {
                     if selectedArgument.argumentIdx! - 1 < 0 {
                         return
                     }
-                    selectedArgument.column?.arguments.swapAt(selectedArgument.argumentIdx!, selectedArgument.argumentIdx! - 1)
+                    selectedArgument.column?.moveArgumentLeft(argumentIdx: selectedArgument.argumentIdx!)
 //                    selectedArgument.argumentIdx? += -1
                     selectedArgument.column?.reorderCount -= 1
                 } label: {
@@ -40,7 +40,7 @@ struct CodeEditorView: View {
                     if selectedArgument.argumentIdx! + 1 > selectedArgument.column!.arguments.count - 1 {
                         return
                     }
-                    selectedArgument.column?.arguments.swapAt(selectedArgument.argumentIdx!, selectedArgument.argumentIdx! + 1)
+                    selectedArgument.column?.moveArgumentRight(argumentIdx: selectedArgument.argumentIdx!)
 //                    selectedArgument.argumentIdx? += 1
                     selectedArgument.column?.reorderCount += 1
                 } label: {
@@ -49,7 +49,7 @@ struct CodeEditorView: View {
             }
             WrappingHStack(sheetModel.columns, id: \.self) { column in
                 CodeEditorRow(column: column, selectedArgument: selectedArgument).padding()
-            }.onChange(of: selectedArgument.argumentIdx) { _, newValue in
+            }.onChange(of: selectedArgument.argumentIdx) { newValue in
                 Logger.info("ARG CHANGED: \(newValue)")
             }
             Button("Add Column") {

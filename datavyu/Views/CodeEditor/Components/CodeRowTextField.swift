@@ -12,6 +12,20 @@ class CodeRowTextFormatter: Formatter {
         self.column = column
     }
 
+    func isValidArgName(_ name: String) -> Bool {
+        var nameParensRemoved = name.replacingOccurrences(of: "<", with: "").replacingOccurrences(of: ">", with: "")
+        if nameParensRemoved.count == 0 {
+            return false
+        }
+        if !nameParensRemoved.first!.isLetter {
+            return false
+        }
+        if !nameParensRemoved.matches("^[a-zA-Z0-9]+$") {
+            return false
+        }
+        return true
+    }
+
     override func string(for obj: Any?) -> String? {
         guard let s = obj as? String else {
             return ""
@@ -31,6 +45,14 @@ class CodeRowTextFormatter: Formatter {
         // You can check if the field is empty later
         if partialString.isEmpty {
             return true
+        }
+
+        for arg in CellTextController.parseRowString(rowString: partialString) {
+            if arg != CellTextController.argumentSeperator {
+                if !isValidArgName(arg) {
+                    return false
+                }
+            }
         }
 
         let sepCount = partialString.filter { c in

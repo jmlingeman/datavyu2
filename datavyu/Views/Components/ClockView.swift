@@ -41,19 +41,12 @@ struct ClockView: View {
         let secs = splitTime[2]
         let millis = splitTime[3]
 
-        Text(hours).foregroundStyle(HoursTextStyle())
+        Text(hours).foregroundColor(Color.red)
             + Text(":")
-            + Text(mins).foregroundStyle(MinsTextStyle())
+            + Text(mins).foregroundColor(Color.green)
             + Text(":")
-            + Text(secs).foregroundStyle(SecsTextStyle())
-            + Text(":") + Text(millis).foregroundStyle(MillisTextStyle())
+            + Text(secs).foregroundColor(Color.blue)
+            + Text(":") + Text(millis).foregroundColor(Color.gray)
             + Text("@ \(String(format: "%.2f", $videoModel.player.rate.wrappedValue))x")
-    }
-}
-
-struct ClockView_Previews: PreviewProvider {
-    static var previews: some View {
-        let videoModel = VideoModel(videoFilePath: URL(fileURLWithPath: "/Users/jesse/Downloads/IMG_0822.MOV"))
-        ClockView(videoModel: videoModel)
     }
 }

@@ -41,7 +41,7 @@ struct ControllerView: View {
                 .frame(minWidth: 600)
                 .layoutPriority(1)
                 .environmentObject(fileModel.sheetModel)
-                .onChange(of: fileModel.sheetModel.updates) { _, _ in
+                .onChange(of: fileModel.sheetModel.updates) { _ in
                     autosaveFile(fileModel: fileModel, appState: appState)
                 }
         }

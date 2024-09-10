@@ -48,28 +48,37 @@ class CellTextController {
         return 0
     }
 
-    func parseUpdates(newValue: String) -> String {
-        var args = newValue.split(by: CellTextController.argumentSeperator, behavior: .isolated)
+    static func parseRowString(rowString: String) -> [String] {
+        var s = rowString
+        if s.contains("(") {
+            s = s.split(by: "\\(", behavior: .removed)[1].replacingOccurrences(of: ")", with: "")
+        }
+        var args = s.split(by: Self.argumentSeperator, behavior: .isolated)
         // We need to add back in things that may have been stripped due to being empty
         // so if the list starts with a ",", ends with ",", or has 2 "," in a row, we add in a blank
-        if args.first == CellTextController.argumentSeperator {
+        if args.first == Self.argumentSeperator {
             args.insert("", at: 0)
         }
-        if args.last == CellTextController.argumentSeperator {
+        if args.last == Self.argumentSeperator {
             args.append("")
         }
         for i in Range(uncheckedBounds: (0, args.count - 1)) {
             let a1 = args[i]
             let a2 = args[i + 1]
-            if a1 == CellTextController.argumentSeperator, a2 == CellTextController.argumentSeperator {
+            if a1 == Self.argumentSeperator, a2 == Self.argumentSeperator {
                 args.insert("", at: i + 1)
             }
         }
+        return args
+    }
+
+    func parseUpdates(newValue: String) -> String {
+        var args = Self.parseRowString(rowString: newValue)
         var startIdx = 0
         var endIdx = 0
         var i = 0
         for arg in args {
-            if arg != CellTextController.argumentSeperator {
+            if arg != Self.argumentSeperator {
                 Logger.info(arg.contains("^<.*>$"))
                 if cell.arguments[i].value != arg || !(arg.starts(with: "<") && arg.last == ">") {
                     cell.arguments[i].setValue(value: arg)
@@ -89,6 +98,6 @@ class CellTextController {
         for arg in cell.arguments {
             strcmp.append(arg.getDisplayString())
         }
-        return strcmp.joined(separator: CellTextController.argumentSeperator)
+        return strcmp.joined(separator: Self.argumentSeperator)
     }
 }

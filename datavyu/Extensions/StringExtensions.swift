@@ -35,4 +35,8 @@ extension String {
         // errors count as "not match"
         (try? regex.firstMatch(in: self)) != nil
     }
+
+    func matches(_ regex: String) -> Bool {
+        range(of: regex, options: .regularExpression, range: nil, locale: nil) != nil
+    }
 }

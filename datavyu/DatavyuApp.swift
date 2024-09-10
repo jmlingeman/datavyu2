@@ -12,7 +12,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     var appState: AppState?
 
     func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool {
-        true
+        false
     }
 
     func applicationDidFinishLaunching(_: Notification) {
@@ -42,24 +42,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 //
 //
 //        }
-        appState!.server = DatavyuAPIServer(fileController: appState!.fileController!, port: 1312)
-        appState!.server!.start()
     }
 
     func applicationShouldTerminate(_: NSApplication) -> NSApplication.TerminateReply {
         // some code
-        if appState!.fileController != nil {
-            for fileModel in appState!.fileController!.fileModels {
-//                if fileModel.unsavedChanges {
-//                    appState!.fileController!.activeFileModel = fileModel
-//
-//                    let res = appState!.savePanel(fileModel: fileModel, exiting: true)
-//                    if !res {
-//                        return .terminateCancel
-//                    }
-//                }
-            }
-        }
 
         // Since we're exiting normally, clear the autosaved files so we don't
         // try to reopen them.
@@ -130,6 +116,9 @@ struct DatavyuApp: App {
                     appState.fileController = fileController
                     appState.fileController?.fileModels.append(fileModelWrapper.document)
                     ValueTransformer.setValueTransformer(TimestampTransformer(), forName: .classNameTransformerName)
+
+                    appState.server = DatavyuAPIServer(fileController: appState.fileController!, port: 1312)
+                    appState.server!.start()
                 }
                 .environmentObject(fileController)
                 .environmentObject(appState)
@@ -148,7 +137,7 @@ struct DatavyuApp: App {
                 .alert(isPresented: $appState.showingAlert) {
                     Alert(title: Text("Error: File error"), message: Text(appState.errorMsg))
                 }
-                .onChange(of: appState.showingSaveDialog) {
+                .onChange(of: appState.showingSaveDialog) { _ in
                     if appState.showingSaveDialog {
                         _ = appState.savePanel(fileModel: fileModelWrapper.document)
                     }
@@ -210,12 +199,12 @@ struct DatavyuApp: App {
         .commands {
             DVCommandMenus(appState: appState, keyInputSubject: keyInputSubject)
         }
-        .onChange(of: fileModel) {
+        .onChange(of: fileModel) { _ in
             if fileModel != nil {
                 appState.changeActiveFileModel(fileModel: fileModel!)
             }
         }
-        .onChange(of: appState.zoomFactor, initial: true) { _, _ in
+        .onChange(of: appState.zoomFactor) { _ in
             NSDocumentController.shared.closeAllDocuments(withDelegate: nil, didCloseAllSelector: nil, contextInfo: nil)
             NSDocumentController.shared.newDocument(nil)
         }

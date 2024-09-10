@@ -121,7 +121,7 @@ struct TracksStackView: View {
                     addVideo()
                 })
             }
-        }.onChange(of: appState.fileController?.activeFileModel) { _, _ in
+        }.onChange(of: appState.fileController?.activeFileModel) { _ in
             if appState.fileController?.activeFileModel.videoModels.count ?? 0 > 0 {
                 videoLoaded = true
             }

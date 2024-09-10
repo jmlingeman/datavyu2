@@ -273,7 +273,7 @@ func parseDbFile(sheetName: String, fileUrl: URL) -> FileModel {
     do {
         let text = try String(contentsOf: fileUrl, encoding: .utf8)
         Logger.info(text)
-        for line in text.split(separator: "\n") {
+        for line in text.split(by: "[^\\\\]\n", behavior: .removed) {
             parseDbLine(sheetModel: sheet, line: line, fileLoad: &fileLoad)
         }
     } catch { /* error handling here */
@@ -283,7 +283,7 @@ func parseDbFile(sheetName: String, fileUrl: URL) -> FileModel {
     return file
 }
 
-func parseDbLine(sheetModel: SheetModel, line: Substring, fileLoad: inout FileLoad) {
+func parseDbLine(sheetModel: SheetModel, line: String, fileLoad: inout FileLoad) {
     /*
      #4
      test (MATRIX,true,)-code01|NOMINAL,code02|NOMINAL,code03|NOMINAL
@@ -297,7 +297,8 @@ func parseDbLine(sheetModel: SheetModel, line: Substring, fileLoad: inout FileLo
     Logger.info(line.matches(of: /^[0-9a-zA-Z]+(?:\s+)/))
     if line.starts(with: "#") {
         fileLoad.file.version = String(line)
-    } else if line.firstMatch(of: /^[0-9a-zA-Z]+(?:\s+)/) != nil { // Capture a column name followed by a space
+    } else if line.firstMatch(of: /^[0-9a-zA-Z_]+(?:\s+)/) != nil { // Capture a column name followed by a space
+        print(line)
         let columnName = String(line.split(separator: " ").first!)
         let columnHidden = line.split(separator: "(")[1].split(separator: ")")[0].split(separator: ",")[1]
         let column = ColumnModel(sheetModel: sheetModel, columnName: columnName, arguments: [], hidden: columnHidden == "true")
@@ -325,7 +326,7 @@ func parseDbLine(sheetModel: SheetModel, line: Substring, fileLoad: inout FileLo
             cell!.setOffset(offset: String(offset))
 
             var index = 0
-            for value in lineStripParens.split(separator: ",")[2...] {
+            for value in lineStripParens.split(by: "[^\\\\],", behavior: .removed)[2...] {
                 cell!.setArgumentValue(index: index, value: String(value))
                 index += 1
             }

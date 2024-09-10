@@ -72,7 +72,7 @@ struct ControllerPanelView: View {
                         .keyboardShortcut("6", modifiers: .numericPad)
                         .keyboardShortcut("'")
                     HStack {}
-                    ControllerPanelInfoDisplay(labelText: "Frame Rate:", data: $fps, disabled: true, onChangeFunction: { _, _ in
+                    ControllerPanelInfoDisplay(labelText: "Frame Rate:", data: $fps, disabled: true, onChangeFunction: { _ in
                         fps = "\(fileModel.primaryVideo?.getFps() ?? 0)"
                     })
                 }
@@ -107,7 +107,7 @@ struct ControllerPanelView: View {
                     ControllerPanelInfoDisplayTimestamp(labelText: "Offset:", data: $currentOffset, disabled: true)
                 }
             }
-        }.onChange(of: fileModel.sheetModel.selectedCell) { _, _ in
+        }.onChange(of: fileModel.sheetModel.selectedCell) { _ in
             currentOnset = fileModel.sheetModel.selectedCell?.onset ?? 0
             currentOffset = fileModel.sheetModel.selectedCell?.offset ?? 0
         }

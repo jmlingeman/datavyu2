@@ -35,7 +35,7 @@ struct TranscriptionSettingsView: View {
 
             Button("Download Model Files") {
                 speech.initializeWhisperKit(model: selectedModel)
-            }.onChange(of: selectedModel) { _, newValue in
+            }.onChange(of: selectedModel) { newValue in
                 if speech.checkModelInstalled(model: newValue) {
                     ready = true
                 }

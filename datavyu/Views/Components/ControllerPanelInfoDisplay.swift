@@ -12,7 +12,7 @@ struct ControllerPanelInfoDisplay: View {
     var labelText: String
     @Binding var data: String
     var disabled: Bool = false
-    var onChangeFunction: ((any Equatable, any Equatable) -> Void)?
+    var onChangeFunction: ((any Equatable) -> Void)?
     var formatter: TimestampFormatter?
 
     var body: some View {
@@ -34,7 +34,7 @@ struct ControllerPanelInfoDisplay: View {
                 Text(labelText)
             }
         }.frame(width: 150, height: 60)
-            .onChange(of: data, onChangeFunction ?? { _, _ in })
+            .onChange(of: data, perform: onChangeFunction ?? { _ in })
     }
 }
 
@@ -42,7 +42,7 @@ struct ControllerPanelInfoDisplayTimestamp: View {
     var labelText: String
     @Binding var data: Int
     var disabled: Bool = false
-    var onChangeFunction: ((any Equatable, any Equatable) -> Void)?
+    var onChangeFunction: ((any Equatable) -> Void)?
     var formatter: TimestampFormatter = .init()
 
     var body: some View {
@@ -56,6 +56,6 @@ struct ControllerPanelInfoDisplayTimestamp: View {
                 Text(labelText)
             }
         }.frame(width: 150, height: 60)
-            .onChange(of: data, onChangeFunction ?? { _, _ in })
+            .onChange(of: data, perform: onChangeFunction ?? { _ in })
     }
 }
