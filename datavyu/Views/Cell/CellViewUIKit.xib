@@ -34,7 +34,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="300" height="155"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField focusRingType="none" verticalHuggingPriority="750" id="d6a-G0-R74" customClass="CellTextField" customModule="Datavyu2" customModuleProvider="target">
+                            <textField verticalHuggingPriority="750" id="d6a-G0-R74" customClass="CellTextField" customModule="Datavyu2" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="5" width="300" height="125"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" id="FfD-2Z-PKM">
@@ -47,7 +47,7 @@
                                     <outlet property="formatter" destination="8Pv-9n-3Cl" id="BpI-QC-zMS"/>
                                 </connections>
                             </textField>
-                            <textField focusRingType="none" verticalHuggingPriority="750" id="4OB-Io-y4d" customClass="CellTimeTextField" customModule="Datavyu2" customModuleProvider="target">
+                            <textField verticalHuggingPriority="750" id="4OB-Io-y4d" customClass="CellTimeTextField" customModule="Datavyu2" customModuleProvider="target">
                                 <rect key="frame" x="80" y="134" width="96" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="QWk-5M-u2l">
@@ -60,7 +60,7 @@
                                     <outlet property="nextKeyView" destination="fpe-kJ-HL3" id="8NQ-7Y-HXs"/>
                                 </connections>
                             </textField>
-                            <textField focusRingType="none" verticalHuggingPriority="750" id="fpe-kJ-HL3" customClass="CellTimeTextField" customModule="Datavyu2" customModuleProvider="target">
+                            <textField verticalHuggingPriority="750" id="fpe-kJ-HL3" customClass="CellTimeTextField" customModule="Datavyu2" customModuleProvider="target">
                                 <rect key="frame" x="204" y="134" width="96" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="33J-GM-Cvl">
@@ -77,7 +77,7 @@
                     </view>
                     <color key="fillColor" name="CellBackgroundPanelColor"/>
                 </box>
-                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" id="GsG-gp-xUO">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="GsG-gp-xUO">
                     <rect key="frame" x="-2" y="125" width="37" height="25"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="tzU-uw-7fZ">

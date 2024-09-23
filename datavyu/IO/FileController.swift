@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RegexBuilder
 import Yams
 import ZIPFoundation
 
@@ -265,6 +266,22 @@ func parseProjectFile(fileUrl: URL) -> [VideoModel] {
     return videoModels
 }
 
+func splitText(text: String, sep: Character) -> [String] {
+    var last_c: Character?
+    var current_line = ""
+    var lines: [String] = []
+    for c in text {
+        if c == sep, last_c != "\\" {
+            lines.append(current_line)
+            current_line = ""
+        } else {
+            current_line.append(c)
+        }
+        last_c = c
+    }
+    return lines
+}
+
 func parseDbFile(sheetName: String, fileUrl: URL) -> FileModel {
     let sheet = SheetModel(sheetName: sheetName)
     let file = FileModel(sheetModel: sheet)
@@ -273,8 +290,9 @@ func parseDbFile(sheetName: String, fileUrl: URL) -> FileModel {
     do {
         let text = try String(contentsOf: fileUrl, encoding: .utf8)
         Logger.info(text)
-        for line in text.split(by: "[^\\\\]\n", behavior: .removed) {
-            parseDbLine(sheetModel: sheet, line: line, fileLoad: &fileLoad)
+        let lines = splitText(text: text, sep: "\n")
+        for line in lines {
+            parseDbLine(sheetModel: sheet, line: String(line), fileLoad: &fileLoad)
         }
     } catch { /* error handling here */
         Logger.info("ERROR \(error)")
@@ -326,7 +344,7 @@ func parseDbLine(sheetModel: SheetModel, line: String, fileLoad: inout FileLoad)
             cell!.setOffset(offset: String(offset))
 
             var index = 0
-            for value in lineStripParens.split(by: "[^\\\\],", behavior: .removed)[2...] {
+            for value in splitText(text: lineStripParens, sep: ",")[2...] {
                 cell!.setArgumentValue(index: index, value: String(value))
                 index += 1
             }

@@ -350,7 +350,7 @@ struct SheetLayoutCollection: NSViewRepresentable {
             // Figure out which field in the view cell to select
             if curCellIndexPath != nil {
                 if lastEditedField == LastEditedField.none {
-                    argIndexPath = IndexPath(item: -2, section: 0)
+                    argIndexPath = IndexPath(item: 0, section: 0)
                 } else if lastEditedField == LastEditedField.onset {
                     argIndexPath = IndexPath(item: -1, section: 0)
                 } else if lastEditedField == LastEditedField.offset {
@@ -478,7 +478,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
 
         collectionView.selectionIndexPaths = Set([corrected_ip])
         collectionView.animator().scrollToItems(at: Set([corrected_ip]), scrollPosition: [.nearestHorizontalEdge, .nearestVerticalEdge])
-        cellItem?.focusOnset()
+        cellItem?.focusArguments()
     }
 
     func focusField(_ ip: IndexPath?) {

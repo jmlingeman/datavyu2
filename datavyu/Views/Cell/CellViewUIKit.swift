@@ -201,6 +201,11 @@ class CellViewUIKit: NSCollectionViewItem {
         parentView?.window?.makeFirstResponder(offset)
     }
 
+    func focusArguments() {
+        Logger.info(#function)
+        parentView?.window?.makeFirstResponder(cellTextField)
+    }
+
     func focusNextArgument(_ argument: Argument) {
         Logger.info(#function)
         let selectedIndexPath: IndexPath
@@ -213,7 +218,6 @@ class CellViewUIKit: NSCollectionViewItem {
         var focusObject: NSView? = nil
         if lastEditedField == LastEditedField.none {
             focusObject = onset
-
         } else if lastEditedField == LastEditedField.onset {
             focusObject = offset
         } else {

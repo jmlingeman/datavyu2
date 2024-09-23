@@ -117,8 +117,10 @@ struct DatavyuApp: App {
                     appState.fileController?.fileModels.append(fileModelWrapper.document)
                     ValueTransformer.setValueTransformer(TimestampTransformer(), forName: .classNameTransformerName)
 
-                    appState.server = DatavyuAPIServer(fileController: appState.fileController!, port: 1312)
-                    appState.server!.start()
+                    if appState.server == nil {
+                        appState.server = DatavyuAPIServer(fileController: appState.fileController!, port: 1312)
+                        appState.server!.start()
+                    }
                 }
                 .environmentObject(fileController)
                 .environmentObject(appState)

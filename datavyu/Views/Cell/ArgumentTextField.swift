@@ -132,7 +132,6 @@ extension ArgumentTextField: NSTextFieldDelegate, NSTextViewDelegate {
     }
 
     func controlTextDidChange(_: Notification) {
-        Logger.info(self)
         Logger.info("ARGUMENT: \(#function)")
         parentView!.lastEditedField = LastEditedField.arguments
         parentView?.parentView?.lastEditedArgument = argument

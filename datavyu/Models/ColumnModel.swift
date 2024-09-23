@@ -31,12 +31,15 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
         undoManager = sheetModel?.undoManager
     }
 
-    init(sheetModel: SheetModel, columnName: String) {
+    init(sheetModel: SheetModel, columnName: String, initArg: Bool = true) {
         self.sheetModel = sheetModel
         self.columnName = columnName
         cells = []
         arguments = []
-        addArgument()
+
+        if initArg {
+            addArgument()
+        }
 
         undoManager = sheetModel.undoManager
     }
@@ -126,7 +129,7 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
 
     func copy(sheetModelCopy: SheetModel) -> ColumnModel {
         let newColumnModel = ColumnModel(sheetModel: sheetModelCopy,
-                                         columnName: columnName)
+                                         columnName: columnName, initArg: false)
 
         newColumnModel.arguments = arguments.map { a in
             a.copy(columnModelCopy: newColumnModel)
