@@ -161,8 +161,7 @@ final class ColumnModel: ObservableObject, Identifiable, Equatable, Hashable, Co
 
     func update() {
         Logger.info("Updating")
-
-        sheetModel?.updates += 1
+        sheetModel?.updateSheet()
     }
 
     func hash(into hasher: inout Hasher) {

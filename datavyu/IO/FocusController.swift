@@ -26,6 +26,8 @@ class FocusController: NSObject, ObservableObject {
     func setFocusedColumn(columnModel: ColumnModel) {
         setFocusedSheetModel(sheetModel: columnModel.sheetModel!)
         if focusedColumn != columnModel {
+            focusedColumn?.isSelected = false
+
             focusedColumn = columnModel
             focusedCell = nil
             focusedArgument = nil

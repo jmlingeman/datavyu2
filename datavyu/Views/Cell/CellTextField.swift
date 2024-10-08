@@ -150,11 +150,13 @@ class CellTextField: NSTextField {
     }
 
     override func mouseDown(with event: NSEvent) {
-//        super.mouseDown(with: event)
+        print(#function)
+        super.mouseDown(with: event)
 
         let cEditor = currentEditor() as? NSTextView
-        let localPos = convert(event.locationInWindow, to: nil)
+        let localPos = convert(event.locationInWindow, from: nil)
         let insertionPoint = cEditor?.characterIndexForInsertion(at: localPos)
+        cEditor?.characterIndex(for: localPos)
         let location = cEditor?.selectedRange().location
 
         if cEditor?.string.count == insertionPoint {

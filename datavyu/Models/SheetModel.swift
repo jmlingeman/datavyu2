@@ -70,6 +70,7 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
 
     func updateSheet() {
         DispatchQueue.main.async {
+            self.needsReload = true
             self.setVisibleColumns()
             self.updates += 1
         }
