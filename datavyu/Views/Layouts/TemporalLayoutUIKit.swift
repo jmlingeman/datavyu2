@@ -158,10 +158,11 @@ struct NewColumnQuickButton: View {
 
 struct NewCellQuickButton: View {
     @ObservedObject var column: ColumnModel
+    @ObservedObject var appState: AppState
 
     var body: some View {
         Button {
-            let _ = column.addCell()
+            let _ = column.addCell(onset: secondsToMillis(secs: appState.playbackTime))
             column.update()
         } label: {
             HStack {
@@ -565,7 +566,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         } else {
             let item = collectionView.makeSupplementaryView(ofKind: kind, withIdentifier: .init(NewCellQuickButtonCell.identifier), for: indexPath) as! NewCellQuickButtonCell
             if sheetModel.visibleColumns.count > 0 {
-                item.setView(NewCellQuickButton(column: sheetModel.visibleColumns[indexPath.section]))
+                item.setView(NewCellQuickButton(column: sheetModel.visibleColumns[indexPath.section], appState: appState))
             }
             return item
         }
