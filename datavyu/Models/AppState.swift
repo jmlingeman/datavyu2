@@ -42,7 +42,7 @@ public class AppState: NSObject, ObservableObject {
     @Published var draggingColumn: ColumnModel?
 
     @Published var server: DatavyuAPIServer?
-    @Published var jumpValue = "00:00:05:000"
+    @Published var jumpValue = "00:00:01:000"
 
     @Published var currentSelectedOnset: Int = 0
     @Published var currentSelectedOffset: Int = 0

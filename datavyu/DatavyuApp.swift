@@ -116,7 +116,7 @@ struct DatavyuApp: App {
                     ValueTransformer.setValueTransformer(TimestampTransformer(), forName: .classNameTransformerName)
 
                     if appState.server == nil {
-                        appState.server = DatavyuAPIServer(fileController: appState.fileController!, port: 1312)
+                        appState.server = DatavyuAPIServer(fileController: appState.fileController!, appState: appState, port: 1312)
                         appState.server!.start()
                     }
                 }

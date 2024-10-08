@@ -12,7 +12,6 @@ struct ControllerPanelView: View {
     @ObservedObject var appState: AppState
 
     @State var showingColumnNameDialog = false
-    @State var jumpValue: String = "00:00:05:000"
 
     @State var currentOnset: Int = 0
     @State var currentOffset: Int = 0

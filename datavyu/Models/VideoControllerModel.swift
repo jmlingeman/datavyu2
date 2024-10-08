@@ -9,12 +9,30 @@ import Foundation
 
 class VideoController: ObservableObject {
     var fileModel: FileModel
+    var currentShuttleSpeedIdx: Int = 0
 
     init(fileModel: FileModel) {
         self.fileModel = fileModel
+        currentShuttleSpeedIdx = Config.shuttleSpeeds.firstIndex(of: 0)!
+    }
+
+    func changeShuttleSpeed(step: Int) {
+        if currentShuttleSpeedIdx + step < Config.shuttleSpeeds.count, currentShuttleSpeedIdx + step >= 0 {
+            currentShuttleSpeedIdx += step
+        }
+        for video in fileModel.videoModels {
+            video.player.rate = Config.shuttleSpeeds[currentShuttleSpeedIdx]
+        }
+    }
+
+    func resetShuttleSpeed() {
+        currentShuttleSpeedIdx = Config.shuttleSpeeds.firstIndex(of: 0)!
     }
 
     func play() {
+        if currentShuttleSpeedIdx == Config.shuttleSpeeds.firstIndex(of: 0)! {
+            currentShuttleSpeedIdx = Config.shuttleSpeeds.firstIndex(of: 1)!
+        }
         for videoModel in fileModel.videoModels {
             videoModel.play()
         }
@@ -90,11 +108,11 @@ class VideoController: ObservableObject {
     }
 
     func shuttleStepUp() {
-        fileModel.changeShuttleSpeed(step: 1)
+        changeShuttleSpeed(step: 1)
     }
 
     func shuttleStepDown() {
-        fileModel.changeShuttleSpeed(step: -1)
+        changeShuttleSpeed(step: -1)
     }
 
     func stop() {
@@ -102,7 +120,7 @@ class VideoController: ObservableObject {
             videoModel.stop()
         }
         fileModel.syncVideos()
-        fileModel.resetShuttleSpeed()
+        resetShuttleSpeed()
     }
 
     func pause() {

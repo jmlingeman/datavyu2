@@ -13,11 +13,13 @@ class DatavyuAPIServer {
     var app: Application
     let port: Int
     @ObservedObject var fileController: FileControllerModel
+    @ObservedObject var appState: AppState
 
-    init(fileController: FileControllerModel, port: Int) {
+    init(fileController: FileControllerModel, appState: AppState, port: Int) {
         self.port = port
         app = Application(.development)
         self.fileController = fileController
+        self.appState = appState
         configure(app)
 
         // Hack so Vapor works in unit tests
@@ -35,7 +37,7 @@ class DatavyuAPIServer {
         app.logger.logLevel = .critical
 
         do {
-            try app.register(collection: FileWebRouteCollection(fileController: fileController))
+            try app.register(collection: FileWebRouteCollection(fileController: fileController, appState: appState))
         } catch {
             Logger.info("\(error)")
         }
@@ -56,9 +58,11 @@ class DatavyuAPIServer {
 
 class FileWebRouteCollection: RouteCollection {
     @ObservedObject var fileController: FileControllerModel
+    @ObservedObject var appState: AppState
 
-    init(fileController: FileControllerModel) {
+    init(fileController: FileControllerModel, appState: AppState) {
         self.fileController = fileController
+        self.appState = appState
     }
 
     func boot(routes: RoutesBuilder) throws {
@@ -79,6 +83,18 @@ class FileWebRouteCollection: RouteCollection {
         router.post("loaddb") { req in
             let filename = try req.content.decode(String.self)
             self.loadDB(filename: filename)
+            return HTTPStatus.ok
+        }
+
+        router.post("settings/jumpback") { req in
+            let jumpbackValue = try req.content.decode(Int.self) // Milliseconds
+            self.appState.jumpValue = formatTimestamp(timestamp: jumpbackValue)
+            return HTTPStatus.ok
+        }
+
+        router.post("videos/set") { req in
+            let videos = try req.content.decode([VideoModel].self)
+            self.fileController.activeFileModel.videoController?.fileModel.videoModels = videos
             return HTTPStatus.ok
         }
     }
