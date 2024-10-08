@@ -32,7 +32,7 @@ struct ControllerPanelView: View {
             HStack(alignment: .center) {
                 if fileModel.primaryVideo != nil {
                     VStack(alignment: .center) {
-                        ClockView(videoModel: fileModel.primaryVideo!)
+                        ClockView(videoModel: fileModel.primaryVideo!).font(Font.system(size: Config.clockFontSize))
                     }
                 }
             }

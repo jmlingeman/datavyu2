@@ -50,4 +50,6 @@ enum Config {
     static let lastOpenedFileUserDefaultsKey = "datavyu_last_opened_file"
 
     static let addColumnSheetButtonSize = 200.0
+
+    static let clockFontSize = 22.0
 }
