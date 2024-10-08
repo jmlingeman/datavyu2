@@ -76,16 +76,21 @@ class CellTextField: NSTextField {
     func configure(cellModel: CellModel) {
         self.cellModel = cellModel
         delegate = self
-        cellTextController = CellTextController(cell: cellModel)
+
+        if cellTextController != nil {
+            cellTextController?.prepareForResuse()
+            cellTextController?.configure(cell: cellModel)
+        } else {
+            cellTextController = CellTextController(cell: cellModel)
+        }
+
         updateStringValue(cellTextController!.argumentString())
 
         (formatter as! CellTextFormatter).configure(cellTextController: cellTextController!, cell: self.cellModel!)
     }
 
     func updateStringValue(_ s: String) {
-        DispatchQueue.main.async {
-            self.stringValue = s
-        }
+        stringValue = s
     }
 
     func updateToolTips() {
@@ -136,16 +141,16 @@ class CellTextField: NSTextField {
     func selectArgument(idx: Int) {
         let extents = cellTextController!.getExtentOfArgument(idx: idx)
         Logger.info("Selecting \(idx)")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            if self.currentEditor() != nil {
-                self.currentEditor()?.selectedRange = NSRange(location: extents.start, length: extents.end - extents.start)
-                self.currentArgumentIndex = idx
-            }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        if currentEditor() != nil {
+            currentEditor()?.selectedRange = NSRange(location: extents.start, length: extents.end - extents.start)
+            currentArgumentIndex = idx
         }
+//        }
     }
 
     override func mouseDown(with event: NSEvent) {
-        super.mouseDown(with: event)
+//        super.mouseDown(with: event)
 
         let cEditor = currentEditor() as? NSTextView
         let localPos = convert(event.locationInWindow, to: nil)

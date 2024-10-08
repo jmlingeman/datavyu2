@@ -129,6 +129,7 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
                     self.updateSheet()
                 })
                 self.undoManager?.endUndoGrouping()
+                self.column?.sheetModel?.setNeedsReload()
                 self.updateSheet()
                 self.column?.sheetModel?.fileModel?.setFileChanged()
             }
@@ -166,6 +167,7 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
                     self.updateSheet()
                 })
                 self.undoManager?.endUndoGrouping()
+                self.column?.sheetModel?.setNeedsReload()
                 self.updateSheet()
                 self.column?.sheetModel?.fileModel?.setFileChanged()
             }

@@ -61,10 +61,20 @@ class ArgumentViewUIKit: NSCollectionViewItem {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func viewWillLayout() {
+        super.viewWillLayout()
+        configureCell(with: argument)
+    }
+
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        configureCell(with: argument)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
-        configureCell(with: argument)
+//        configureCell(with: argument)
     }
 
     override func viewDidAppear() {}

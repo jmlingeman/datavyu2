@@ -23,7 +23,7 @@ struct ControllerPanelView: View {
         let columnModel = ColumnModel(sheetModel: fileModel.sheetModel, columnName: "Column\(fileModel.sheetModel.columns.count + 1)")
         fileModel.sheetModel.addColumn(column: columnModel)
 
-        fileModel.sheetModel.setSelectedColumn(model: columnModel)
+        fileModel.sheetModel.focusController.setFocusedColumn(columnModel: columnModel)
 
         showingColumnNameDialog.toggle()
     }
@@ -107,9 +107,9 @@ struct ControllerPanelView: View {
                     ControllerPanelInfoDisplayTimestamp(labelText: "Offset:", data: $currentOffset, disabled: true)
                 }
             }
-        }.onChange(of: fileModel.sheetModel.selectedCell) { _ in
-            currentOnset = fileModel.sheetModel.selectedCell?.onset ?? 0
-            currentOffset = fileModel.sheetModel.selectedCell?.offset ?? 0
+        }.onChange(of: fileModel.sheetModel.focusController.focusedCell) { _ in
+            currentOnset = fileModel.sheetModel.focusController.focusedCell?.onset ?? 0
+            currentOffset = fileModel.sheetModel.focusController.focusedCell?.offset ?? 0
         }
     }
 }

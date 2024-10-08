@@ -36,14 +36,15 @@ struct ControllerView: View {
 
             Sheet(columnInFocus: _columnInFocus,
                   cellInFocus: _cellInFocus,
-                  temporalLayout: $temporalLayout,
-                  argumentFocusModel: ArgumentFocusModel(sheetModel: fileModel.sheetModel))
-                .frame(minWidth: 600)
-                .layoutPriority(1)
-                .environmentObject(fileModel.sheetModel)
-                .onChange(of: fileModel.sheetModel.updates) { _ in
-                    autosaveFile(fileModel: fileModel, appState: appState)
-                }
+                  temporalLayout: $temporalLayout
+//                  argumentFocusModel: ArgumentFocusModel(sheetModel: fileModel.sheetModel)
+            )
+            .frame(minWidth: 600)
+            .layoutPriority(1)
+            .environmentObject(fileModel.sheetModel)
+            .onChange(of: fileModel.sheetModel.updates) { _ in
+                autosaveFile(fileModel: fileModel, appState: appState)
+            }
         }
     }
 }

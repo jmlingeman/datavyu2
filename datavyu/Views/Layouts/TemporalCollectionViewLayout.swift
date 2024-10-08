@@ -272,6 +272,7 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
     }
 
     override func layoutAttributesForElements(in rect: NSRect) -> [NSCollectionViewLayoutAttributes] {
+        print(#function)
         var layouts = [NSCollectionViewLayoutAttributes]()
         for cellInfo in cache.cellLayouts.keys {
             let layout = cache.cellLayouts[cellInfo]!

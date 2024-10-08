@@ -18,7 +18,7 @@ struct Sheet: View {
     @FocusState private var isFocused: Bool
     @Binding var temporalLayout: Bool
 
-    @State var argumentFocusModel: ArgumentFocusModel
+//    @State var argumentFocusModel: ArgumentFocusModel
 
     var body: some View {
         GeometryReader { _ in

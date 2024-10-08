@@ -233,8 +233,8 @@ struct SheetLayoutCollection: NSViewRepresentable {
         override func mouseDown(with event: NSEvent) {
             super.mouseDown(with: event)
             Logger.info("Mouse Down")
-            appState?.fileController?.activeFileModel.sheetModel.selectedCell?.isSelected = false
-            appState?.fileController?.activeFileModel.sheetModel.selectedCell = nil
+            appState?.fileController?.activeFileModel.sheetModel.focusController.focusedCell?.isSelected = false
+            appState?.fileController?.activeFileModel.sheetModel.focusController.focusedCell = nil
             appState?.fileController?.activeFileModel.sheetModel.updateSheet()
         }
     }
@@ -271,6 +271,8 @@ struct SheetLayoutCollection: NSViewRepresentable {
 
     func updateNSView(_ nsView: NSViewType, context: Context) {
         Logger.info("Trying to reload data...")
+        let clock = ContinuousClock()
+        let start = clock.now
 
         if sheetModel != oldSheetModel {
             Logger.info("Sheet model changed")
@@ -331,13 +333,17 @@ struct SheetLayoutCollection: NSViewRepresentable {
 
             // Do the actual reload, erasing all view cell data
 
-            Logger.info("Reloading")
-            collectionView.reloadData()
+            if sheetModel.needsReload {
+                Logger.info("Reloading")
+                NSAnimationContext.current.duration = 0
+                collectionView.reloadData()
+                sheetModel.unsetNeedsReload()
+            }
 
 //            DispatchQueue.main.async {
             // Figure out which view cell to select again
-            if sheetModel.selectedCell != nil {
-                curCellModel = sheetModel.selectedCell
+            if sheetModel.focusController.focusedCell != nil {
+                curCellModel = sheetModel.focusController.focusedCell
             } else {
                 return
             }
@@ -375,6 +381,8 @@ struct SheetLayoutCollection: NSViewRepresentable {
             }
 //            }
         }
+        let end = clock.now
+        print("Update took \(end - start)")
     }
 }
 
@@ -400,8 +408,8 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         let collectionView = (parent.scrollView.documentView as! SheetCollectionAppKitView)
 
         var ip: IndexPath? = IndexPath(item: 0, section: 0)
-        if sheetModel.selectedCell != nil {
-            ip = sheetModel.findCellIndexPath(cell_to_find: sheetModel.selectedCell!) ?? IndexPath(item: 0, section: 0)
+        if sheetModel.focusController.focusedCell != nil {
+            ip = sheetModel.findCellIndexPath(cell_to_find: sheetModel.focusController.focusedCell!) ?? IndexPath(item: 0, section: 0)
         }
         let cellItem = collectionView.item(at: ip!) as? CellViewUIKit
 
@@ -434,7 +442,7 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         let ip = sheetModel.findCellIndexPath(cell_to_find: cellModel)
         if ip != nil {
             let collectionView = (parent.scrollView.documentView as! SheetCollectionAppKitView)
-            sheetModel.setSelectedCell(selectedCell: cellModel)
+            sheetModel.focusController.setFocusedCell(cell: cellModel)
             collectionView.selectionIndexPaths = Set([ip!])
         }
     }
@@ -472,8 +480,8 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
 
         cellItem?.setSelected()
 
-        if cellItem != nil, sheetModel.selectedCell != cellItem!.cell {
-            sheetModel.setSelectedCell(selectedCell: cellItem?.cell)
+        if cellItem != nil, sheetModel.focusController.focusedCell != cellItem!.cell {
+            sheetModel.focusController.setFocusedCell(cell: cellItem?.cell)
         }
 
         collectionView.selectionIndexPaths = Set([corrected_ip])
@@ -485,13 +493,13 @@ class Coordinator: NSObject, NSCollectionViewDelegate, NSCollectionViewDataSourc
         Logger.info(#function)
         let collectionView = (parent.scrollView.documentView as! SheetCollectionAppKitView)
 
-        if ip == nil || sheetModel.selectedCell == nil || appState.quickKeyMode {
+        if ip == nil || sheetModel.focusController.focusedCell == nil || appState.quickKeyMode {
             return
         }
 
         Logger.info("Focusing field \(ip?.item)")
 
-        let cellIp = sheetModel.findCellIndexPath(cell_to_find: sheetModel.selectedCell!)
+        let cellIp = sheetModel.findCellIndexPath(cell_to_find: sheetModel.focusController.focusedCell!)
         let cellItem = collectionView.item(at: cellIp!) as? CellViewUIKit
 
         cellItem?.setSelected()

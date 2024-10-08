@@ -17,6 +17,7 @@ enum CellHighlightState {
 
 class CellViewUIKit: NSCollectionViewItem {
     static let identifier: String = "CellViewUIKit"
+    static let dummyCell = CellModel(column: ColumnModel(sheetModel: SheetModel(sheetName: "temp"), columnName: "temp"))
 
     @IBOutlet var onset: CellTimeTextField!
     @IBOutlet var offset: CellTimeTextField!
@@ -39,10 +40,9 @@ class CellViewUIKit: NSCollectionViewItem {
     var highlightStatus: CellHighlightState = .off
 
     @ObservedObject var cell: CellModel
-    let dummyCell = CellModel(column: ColumnModel(sheetModel: SheetModel(sheetName: "temp"), columnName: "temp"))
 
     override init(nibName nibNameOrNil: NSNib.Name?, bundle nibBundleOrNil: Bundle?) {
-        cell = dummyCell
+        cell = CellViewUIKit.dummyCell
         ordinal = NSTextField()
         onset = CellTimeTextField()
         offset = CellTimeTextField()
@@ -115,8 +115,6 @@ class CellViewUIKit: NSCollectionViewItem {
             offset.isEnabled = true
             cellTextField.isEnabled = true
         }
-
-//        Logger.info("CONFIGURED CELL \(self.onset) \(self.offset) \(self.cell) \(cell.ordinal) \(cell)")
     }
 
     func setHighlightActive() {
@@ -137,10 +135,15 @@ class CellViewUIKit: NSCollectionViewItem {
         highlightStatus = CellHighlightState.off
     }
 
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        configureCell(cell, parentView: parentView, appState: appState)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 //        argumentsCollectionView.register(ArgumentViewUIKit.self, forItemWithIdentifier: .init(ArgumentViewUIKit.identifier))
-        configureCell(cell, parentView: parentView, appState: appState)
+//        configureCell(cell, parentView: parentView, appState: appState)
     }
 
     override func viewDidAppear() {
@@ -153,7 +156,7 @@ class CellViewUIKit: NSCollectionViewItem {
 
     override func prepareForReuse() {
         // Attach it to a dummy cell until that gets replaced
-        cell = dummyCell
+        cell = CellViewUIKit.dummyCell
         (onset.delegate as! OnsetCoordinator).configure(cell: cell, view: self)
         (offset.delegate as! OffsetCoordinator).configure(cell: cell, view: self)
         cellTextField.configure(cellModel: cell)
@@ -174,7 +177,7 @@ class CellViewUIKit: NSCollectionViewItem {
                 view.layer?.borderWidth = 1
             }
             cell.isSelected = true
-            cell.column?.sheetModel?.setSelectedCell(selectedCell: cell)
+            cell.column?.sheetModel?.focusController.setFocusedCell(cell: cell)
         } else {
             setDeselected()
         }

@@ -84,7 +84,7 @@ extension OnsetCoordinator: NSTextFieldDelegate, NSTextViewDelegate {
         onsetValue = view?.onset.stringValue
 
         view?.lastEditedField = LastEditedField.onset
-        parentView?.sheetModel.setSelectedCell(selectedCell: cell)
+        parentView?.sheetModel.focusController.setFocusedCell(cell: cell)
 
         Logger.info("Set focus object to: \(view?.onset)")
     }
@@ -104,7 +104,7 @@ extension OnsetCoordinator: NSTextFieldDelegate, NSTextViewDelegate {
             }
             isEdited = false
         }
-        parentView?.sheetModel.setSelectedCell(selectedCell: cell)
+        parentView?.sheetModel.focusController.setFocusedCell(cell: cell)
         //        self.view?.setDeselected()
     }
 
@@ -113,7 +113,7 @@ extension OnsetCoordinator: NSTextFieldDelegate, NSTextViewDelegate {
         Logger.info(#function)
         isEdited = true
         view?.lastEditedField = LastEditedField.onset
-        parentView?.sheetModel.setSelectedCell(selectedCell: cell)
+        parentView?.sheetModel.focusController.setFocusedCell(cell: cell)
     }
 
     func control(_: NSControl, textShouldBeginEditing _: NSText) -> Bool {
@@ -170,7 +170,7 @@ extension OffsetCoordinator: NSTextFieldDelegate, NSTextViewDelegate {
         Logger.info(#function)
         view?.setSelected()
         view?.lastEditedField = LastEditedField.offset
-        parentView?.sheetModel.setSelectedCell(selectedCell: cell)
+        parentView?.sheetModel.focusController.setFocusedCell(cell: cell)
     }
 
     func controlTextDidEndEditing(_ obj: Notification) {
@@ -180,7 +180,7 @@ extension OffsetCoordinator: NSTextFieldDelegate, NSTextViewDelegate {
                 let timestampStr = textField.stringValue
                 let timestamp = timestringToTimestamp(timestring: timestampStr)
                 view?.lastEditedField = LastEditedField.offset
-                parentView?.sheetModel.setSelectedCell(selectedCell: cell)
+                parentView?.sheetModel.focusController.setFocusedCell(cell: cell)
                 textField.stringValue = formatTimestamp(timestamp: cell!.offset)
                 cell!.setOffset(offset: timestamp)
             } else if timestringToTimestamp(timestring: textField.stringValue) != cell!.offset {

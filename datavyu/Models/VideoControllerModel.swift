@@ -60,27 +60,27 @@ class VideoController: ObservableObject {
     }
 
     func findOnset() {
-        if fileModel.sheetModel.selectedCell != nil {
-            find(value: millisToSeconds(millis: fileModel.sheetModel.selectedCell!.onset))
+        if fileModel.sheetModel.focusController.focusedCell != nil {
+            find(value: millisToSeconds(millis: fileModel.sheetModel.focusController.focusedCell!.onset))
         }
     }
 
     func findOffset() {
-        if fileModel.sheetModel.selectedCell != nil {
-            find(value: millisToSeconds(millis: fileModel.sheetModel.selectedCell!.offset))
+        if fileModel.sheetModel.focusController.focusedCell != nil {
+            find(value: millisToSeconds(millis: fileModel.sheetModel.focusController.focusedCell!.offset))
         }
     }
 
     func getOnset() -> Int {
-        if fileModel.sheetModel.selectedCell != nil {
-            return fileModel.sheetModel.selectedCell!.onset
+        if fileModel.sheetModel.focusController.focusedCell != nil {
+            return fileModel.sheetModel.focusController.focusedCell!.onset
         }
         return 0
     }
 
     func getOffset() -> Int {
-        if fileModel.sheetModel.selectedCell != nil {
-            return fileModel.sheetModel.selectedCell!.offset
+        if fileModel.sheetModel.focusController.focusedCell != nil {
+            return fileModel.sheetModel.focusController.focusedCell!.offset
         }
         return 0
     }
@@ -116,7 +116,7 @@ class VideoController: ObservableObject {
         let model = fileModel.sheetModel.findFocusedColumn()
 
         let cell = model?.addCell()
-        fileModel.sheetModel.setSelectedCell(selectedCell: cell)
+        fileModel.sheetModel.focusController.setFocusedCell(cell: cell)
         if cell != nil {
             cell?.setOnset(onset: fileModel.primaryVideo?.currentTime ?? 0)
         }
@@ -124,17 +124,17 @@ class VideoController: ObservableObject {
     }
 
     func setOnset() {
-        fileModel.sheetModel.selectedCell?.setOnset(onset: fileModel.currentTime())
+        fileModel.sheetModel.focusController.focusedCell?.setOnset(onset: fileModel.currentTime())
     }
 
     func setOffset() {
-        fileModel.sheetModel.selectedCell?.setOffset(offset: fileModel.currentTime())
+        fileModel.sheetModel.focusController.focusedCell?.setOffset(offset: fileModel.currentTime())
     }
 
     func setOffsetAndAddNewCell() {
-        fileModel.sheetModel.selectedCell?.setOffset(offset: fileModel.currentTime())
-        let cell = fileModel.sheetModel.selectedCell?.column?.addCell(onset: secondsToMillis(secs: fileModel.currentTime()) + 1)
-        fileModel.sheetModel.setSelectedCell(selectedCell: cell)
+        fileModel.sheetModel.focusController.focusedCell?.setOffset(offset: fileModel.currentTime())
+        let cell = fileModel.sheetModel.focusController.focusedCell?.column?.addCell(onset: secondsToMillis(secs: fileModel.currentTime()) + 1)
+        fileModel.sheetModel.focusController.setFocusedCell(cell: cell)
 
         fileModel.sheetModel.updateSheet()
     }

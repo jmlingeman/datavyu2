@@ -15,8 +15,9 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
     @Published var visibleColumns: [ColumnModel]
     @Published var updates: Int = 0
     @Published var updated: Bool = false
-    @Published var selectedCell: CellModel?
+    @Published var focusController: FocusController = .init()
 
+    var needsReload: Bool = false
     var undoManager: UndoManager?
     var fileModel: FileModel?
 
@@ -74,40 +75,8 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
         }
     }
 
-    func setSelectedColumn(model: ColumnModel, suppress_update: Bool = false) {
-        Logger.info("Setting column \(model.columnName) to selected")
-        DispatchQueue.main.async {
-            for column in self.columns {
-                if model == column {
-                    if column.sheetModel?.selectedCell?.column != column {
-                        column.sheetModel?.setSelectedCell(selectedCell: nil)
-                    }
-                    column.isSelected = true
-
-                } else {
-                    column.isSelected = false
-                }
-            }
-            if !suppress_update {
-                self.updateSheet()
-            }
-        }
-    }
-
     func getSelectedColumns() -> [ColumnModel] {
         columns.filter(\.isSelected)
-    }
-
-    func setSelectedCell(selectedCell: CellModel?) {
-        if self.selectedCell != selectedCell {
-            DispatchQueue.main.async {
-                self.selectedCell = selectedCell
-                selectedCell?.isSelected = true
-                if selectedCell != nil {
-                    self.setSelectedColumn(model: selectedCell!.column!, suppress_update: true)
-                }
-            }
-        }
     }
 
     func copy() -> SheetModel {
@@ -244,11 +213,11 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
 
     func selectNextCellInSelectedColumn() {
         let col = getSelectedColumns().first
-        if col != nil, selectedCell != nil {
-            let cellIdx = col!.getSortedCells().firstIndex(of: selectedCell!)
+        if col != nil, focusController.focusedCell != nil {
+            let cellIdx = col!.getSortedCells().firstIndex(of: focusController.focusedCell!)
             if cellIdx != nil, cellIdx! + 1 < col!.getSortedCells().count {
                 let newSelectedCell = col!.getSortedCells()[cellIdx! + 1]
-                setSelectedCell(selectedCell: newSelectedCell)
+                focusController.setFocusedCell(cell: newSelectedCell)
             }
         }
     }
@@ -285,6 +254,14 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
         for col in columns {
             col.sheetModel = self
         }
+    }
+
+    func setNeedsReload() {
+        needsReload = true
+    }
+
+    func unsetNeedsReload() {
+        needsReload = false
     }
 
     enum CodingKeys: CodingKey {

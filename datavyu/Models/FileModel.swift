@@ -105,9 +105,9 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
     }
 
     func snapToRegion() {
-        if sheetModel.selectedCell != nil {
-            leftRegionTime = millisToSeconds(millis: sheetModel.selectedCell!.onset)
-            rightRegionTime = millisToSeconds(millis: sheetModel.selectedCell!.offset)
+        if sheetModel.focusController.focusedCell != nil {
+            leftRegionTime = millisToSeconds(millis: sheetModel.focusController.focusedCell!.onset)
+            rightRegionTime = millisToSeconds(millis: sheetModel.focusController.focusedCell!.offset)
         }
     }
 

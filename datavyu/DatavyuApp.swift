@@ -98,7 +98,6 @@ struct DatavyuApp: App {
         FileModel(sheetModel: SheetModel(sheetName: "New Sheet", run_setup: false),
                   videoModels: []),
     ])
-
     @StateObject var appState: AppState = .init()
 
     @Environment(\.openWindow) private var openWindow
@@ -113,8 +112,7 @@ struct DatavyuApp: App {
             ContentView(fileModel: fileModelWrapper.document)
                 .onAppear {
                     appDelegate.appState = appState
-                    appState.fileController = fileController
-                    appState.fileController?.fileModels.append(fileModelWrapper.document)
+                    appState.configure(fileController: fileController, fileModelWrapper: fileModelWrapper)
                     ValueTransformer.setValueTransformer(TimestampTransformer(), forName: .classNameTransformerName)
 
                     if appState.server == nil {
@@ -190,7 +188,7 @@ struct DatavyuApp: App {
                     let time = secondsToMillis(secs: fileModelWrapper.document.currentTime())
                     cell?.onset = time
                     cell?.offset = time
-                    fileModelWrapper.document.sheetModel.selectedCell = cell
+                    fileModelWrapper.document.sheetModel.focusController.setFocusedCell(cell: cell)
                     fileModelWrapper.document.sheetModel.updateSheet()
                 }
                 .environmentObject(keyInputSubject)

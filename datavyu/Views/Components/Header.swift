@@ -35,8 +35,7 @@ struct Header: View {
             .background(columnModel.isSelected ? Color.teal : columnModel.isFinished ? Color.green : Color.accentColor)
         }.frame(width: Config.defaultCellWidth * appState.zoomFactor, height: Config.headerSize)
             .onTapGesture {
-                columnModel.sheetModel?.selectedCell = nil
-                columnModel.sheetModel?.setSelectedColumn(model: columnModel)
+                columnModel.sheetModel?.focusController.setFocusedColumn(columnModel: columnModel)
                 Logger.info("Set selected")
             }
             .onDrag {

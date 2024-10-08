@@ -47,7 +47,7 @@ struct DVCommandMenus: Commands {
             Button("Add Column") {
                 let columnModel = appState.fileController?.activeFileModel.sheetModel.addColumn()
                 if columnModel != nil {
-                    appState.fileController?.activeFileModel.sheetModel.setSelectedColumn(model: columnModel!)
+                    appState.fileController?.activeFileModel.sheetModel.focusController.setFocusedColumn(columnModel: columnModel!)
                     appState.showingColumnNameDialog.toggle()
                 }
             }
@@ -74,10 +74,10 @@ struct DVCommandMenus: Commands {
                 let _ = col?.addCell()
             }
             Button("Delete Cell") {
-                appState.fileController!.activeFileModel.sheetModel.selectedCell?.deleteCell()
+                appState.fileController!.activeFileModel.sheetModel.focusController.focusedCell?.deleteCell()
             }.keyboardShortcut(KeyEquivalent("\\"), modifiers: .command)
             Button("Add Cell in Column to the Left") {
-                let selectedCell = appState.fileController!.activeFileModel.sheetModel.selectedCell
+                let selectedCell = appState.fileController!.activeFileModel.sheetModel.focusController.focusedCell
                 if selectedCell != nil {
                     let colIdx = appState.fileController!.activeFileModel.sheetModel.visibleColumns.firstIndex(of: selectedCell!.column!)! - 1
                     if colIdx >= 0 {
@@ -86,7 +86,7 @@ struct DVCommandMenus: Commands {
                 }
             }.keyboardShortcut(KeyEquivalent("l"), modifiers: .command)
             Button("Add Cell in Column to the Right") {
-                let selectedCell = appState.fileController!.activeFileModel.sheetModel.selectedCell
+                let selectedCell = appState.fileController!.activeFileModel.sheetModel.focusController.focusedCell
                 if selectedCell != nil {
                     let colIdx = appState.fileController!.activeFileModel.sheetModel.visibleColumns.firstIndex(of: selectedCell!.column!)! + 1
                     if colIdx < appState.fileController!.activeFileModel.sheetModel.visibleColumns.count {

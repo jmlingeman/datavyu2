@@ -95,6 +95,7 @@
 		88CE94532AA25E69000E8DFB /* FileControllerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CE94522AA25E69000E8DFB /* FileControllerModel.swift */; };
 		88CE94562AA81359000E8DFB /* ColumnListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CE94552AA81359000E8DFB /* ColumnListView.swift */; };
 		88D3FE372A4DE12A0094F953 /* TrackPositionIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3FE362A4DE12A0094F953 /* TrackPositionIndicator.swift */; };
+		88D521C82CA32C6A00A805FD /* FocusController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D521C72CA32C6A00A805FD /* FocusController.swift */; };
 		88E094752B69B5AB00A93660 /* CellViewUIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E094732B69B5AB00A93660 /* CellViewUIKit.swift */; };
 		88E094762B69B5AB00A93660 /* CellViewUIKit.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88E094742B69B5AB00A93660 /* CellViewUIKit.xib */; };
 		88E094792B69B81A00A93660 /* ArgumentViewUIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E094772B69B81A00A93660 /* ArgumentViewUIKit.swift */; };
@@ -229,6 +230,7 @@
 		88CE94522AA25E69000E8DFB /* FileControllerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileControllerModel.swift; sourceTree = "<group>"; };
 		88CE94552AA81359000E8DFB /* ColumnListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnListView.swift; sourceTree = "<group>"; };
 		88D3FE362A4DE12A0094F953 /* TrackPositionIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackPositionIndicator.swift; sourceTree = "<group>"; };
+		88D521C72CA32C6A00A805FD /* FocusController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusController.swift; sourceTree = "<group>"; };
 		88E094732B69B5AB00A93660 /* CellViewUIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellViewUIKit.swift; sourceTree = "<group>"; };
 		88E094742B69B5AB00A93660 /* CellViewUIKit.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CellViewUIKit.xib; sourceTree = "<group>"; };
 		88E094772B69B81A00A93660 /* ArgumentViewUIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentViewUIKit.swift; sourceTree = "<group>"; };
@@ -422,6 +424,7 @@
 				8861C4132BFA586E00DD180D /* SpectrogramVideoBuilder.swift */,
 				888C040F2C03C24200EFFDEE /* CellTextController.swift */,
 				881F5BA52C2CE8EF00F6297E /* QuickKeyController.swift */,
+				88D521C72CA32C6A00A805FD /* FocusController.swift */,
 			);
 			path = IO;
 			sourceTree = "<group>";
@@ -846,6 +849,7 @@
 				88140FCD2A5218100095DB5A /* OptionsView.swift in Sources */,
 				888C04102C03C24200EFFDEE /* CellTextController.swift in Sources */,
 				8861C4252C02A4C900DD180D /* SpeechRecognizer.swift in Sources */,
+				88D521C82CA32C6A00A805FD /* FocusController.swift in Sources */,
 				8878A6252A3FE75200A2658C /* VideoHelpers.swift in Sources */,
 				883E3B392C0FC68D0066F1F4 /* VideoControllerModel.swift in Sources */,
 				881A39A92A242D4600B4782D /* DatavyuApp.swift in Sources */,
@@ -962,7 +966,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1121;
+				CURRENT_PROJECT_VERSION = 1150;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -1027,7 +1031,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1121;
+				CURRENT_PROJECT_VERSION = 1150;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -1062,7 +1066,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1121;
+				CURRENT_PROJECT_VERSION = 1150;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = ZBRT6TPG8Y;
@@ -1100,7 +1104,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1121;
+				CURRENT_PROJECT_VERSION = 1150;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = ZBRT6TPG8Y;
@@ -1133,7 +1137,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1121;
+				CURRENT_PROJECT_VERSION = 1150;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
@@ -1152,7 +1156,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1121;
+				CURRENT_PROJECT_VERSION = 1150;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
@@ -1170,7 +1174,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1121;
+				CURRENT_PROJECT_VERSION = 1150;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -1187,7 +1191,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1121;
+				CURRENT_PROJECT_VERSION = 1150;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;

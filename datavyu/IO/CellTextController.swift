@@ -13,14 +13,23 @@ struct SelectionExtent {
 }
 
 class CellTextController {
-    var cell: CellModel
+    var cell: CellModel?
 
     static let argumentSeperator: String = ","
     var selectionExtent = SelectionExtent()
-
     var currentExtents = [Int: SelectionExtent]()
 
-    init(cell: CellModel) {
+    init(cell: CellModel?) {
+        self.cell = cell
+    }
+
+    func prepareForResuse() {
+        cell = nil
+        selectionExtent = SelectionExtent()
+        currentExtents = [Int: SelectionExtent]()
+    }
+
+    func configure(cell: CellModel) {
         self.cell = cell
     }
 
@@ -77,24 +86,28 @@ class CellTextController {
         var startIdx = 0
         var endIdx = 0
         var i = 0
-        for arg in args {
-            if arg != Self.argumentSeperator {
-                if cell.arguments[i].value != arg || !(arg.starts(with: "<") && arg.last == ">") {
-                    cell.arguments[i].setValue(value: arg)
-                }
+        if cell != nil {
+            for arg in args {
+                if arg != Self.argumentSeperator {
+                    if cell!.arguments[i].value != arg || !(arg.starts(with: "<") && arg.last == ">") {
+                        cell!.arguments[i].setValue(value: arg)
+                    }
 
-                endIdx = startIdx + cell.arguments[i].getDisplayString().count
-                currentExtents[i] = SelectionExtent(start: startIdx, end: endIdx)
-                startIdx = endIdx + 1 // Add 1 to skip the seperator
-                i += 1
+                    endIdx = startIdx + cell!.arguments[i].getDisplayString().count
+                    currentExtents[i] = SelectionExtent(start: startIdx, end: endIdx)
+                    startIdx = endIdx + 1 // Add 1 to skip the seperator
+                    i += 1
+                }
             }
+            return argumentString()
+        } else {
+            return ""
         }
-        return argumentString()
     }
 
     func argumentString() -> String {
         var strcmp = [String]()
-        for arg in cell.arguments {
+        for arg in cell!.arguments {
             strcmp.append(arg.getDisplayString())
         }
         return strcmp.joined(separator: Self.argumentSeperator)

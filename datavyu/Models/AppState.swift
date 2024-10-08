@@ -54,6 +54,11 @@ public class AppState: NSObject, ObservableObject {
 
     @objc dynamic var playbackTime = 0.0
 
+    func configure(fileController: FileControllerModel, fileModelWrapper: ReferenceFileDocumentConfiguration<FileModel>) {
+        self.fileController = fileController
+        self.fileController?.fileModels.append(fileModelWrapper.document)
+    }
+
     func closeFile(fileModel: FileModel) {
         fileController?.closeFile(fileModel: fileModel)
         controllerWindows.removeValue(forKey: fileModel)
