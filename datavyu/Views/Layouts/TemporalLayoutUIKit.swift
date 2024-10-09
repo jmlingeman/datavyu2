@@ -162,7 +162,8 @@ struct NewCellQuickButton: View {
 
     var body: some View {
         Button {
-            let _ = column.addCell(onset: secondsToMillis(secs: appState.playbackTime))
+            let cell = column.addCell(onset: secondsToMillis(secs: appState.playbackTime))
+            appState.fileController?.activeFileModel.sheetModel.focusController.setFocusedCell(cell: cell)
             column.update()
         } label: {
             HStack {
@@ -322,7 +323,7 @@ struct SheetLayoutCollection: NSViewRepresentable {
             var selectionIndexPath = collectionView.selectionIndexPaths.first
 
             var argIndexPath: IndexPath? = nil
-            var lastEditedField = LastEditedField.onset
+            var lastEditedField = LastEditedField.none
             if selectionIndexPath != nil {
                 let curCellItem = context.coordinator.getCell(ip: selectionIndexPath!)
                 lastEditedField = curCellItem?.lastEditedField ?? LastEditedField.onset
