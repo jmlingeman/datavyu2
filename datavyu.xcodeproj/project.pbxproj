@@ -82,6 +82,7 @@
 		888C041D2C06778700EFFDEE /* OrdinalCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888C041C2C06778700EFFDEE /* OrdinalCollectionViewLayout.swift */; };
 		888C04202C07DCC100EFFDEE /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = 888C041F2C07DCC100EFFDEE /* Logging */; };
 		888C04242C0A767700EFFDEE /* UpdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888C04232C0A767700EFFDEE /* UpdateView.swift */; };
+		88A67A132CB6F07D00E25314 /* FractionFormatter in Frameworks */ = {isa = PBXBuildFile; productRef = 88A67A122CB6F07D00E25314 /* FractionFormatter */; };
 		88AA97912C5AD0630062CFED /* ControllerPanelInfoDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AA97902C5AD0630062CFED /* ControllerPanelInfoDisplay.swift */; };
 		88AA97952C63F3E10062CFED /* CodeRowTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AA97932C63F3E10062CFED /* CodeRowTextField.swift */; };
 		88AA97972C63F7030062CFED /* CodeEditorRowTextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AA97962C63F7030062CFED /* CodeEditorRowTextController.swift */; };
@@ -260,6 +261,7 @@
 				88BFE4292A9D13FC00B37DC3 /* DSWaveformImage in Frameworks */,
 				88F62EA12A58D51600DC5B60 /* Yams in Frameworks */,
 				881A39D52A253A4900B4782D /* WrappingHStack in Frameworks */,
+				88A67A132CB6F07D00E25314 /* FractionFormatter in Frameworks */,
 				88F62EA82A5E1D2300DC5B60 /* Vapor in Frameworks */,
 				884B0DF52A4F792A00D16304 /* RubyGateway in Frameworks */,
 				88BFE42B2A9D13FC00B37DC3 /* DSWaveformImageViews in Frameworks */,
@@ -674,6 +676,7 @@
 				887B1A3B2B49CA59004068FA /* HierarchyResponder */,
 				888C041F2C07DCC100EFFDEE /* Logging */,
 				88562E9B2C0B9D700045FEAB /* WhisperKit */,
+				88A67A122CB6F07D00E25314 /* FractionFormatter */,
 			);
 			productName = sheettest;
 			productReference = 881A39A52A242D4600B4782D /* Datavyu2.app */;
@@ -759,6 +762,7 @@
 				887B1A3A2B49CA59004068FA /* XCRemoteSwiftPackageReference "HierarchyResponder" */,
 				8861C4262C02B76F00DD180D /* XCRemoteSwiftPackageReference "whisperkit" */,
 				888C041E2C07DCC100EFFDEE /* XCRemoteSwiftPackageReference "swift-log" */,
+				88A67A112CB6F07D00E25314 /* XCRemoteSwiftPackageReference "FractionFormatter" */,
 			);
 			productRefGroup = 881A39A62A242D4600B4782D /* Products */;
 			projectDirPath = "";
@@ -966,7 +970,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1166;
+				CURRENT_PROJECT_VERSION = 1172;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -1031,7 +1035,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1166;
+				CURRENT_PROJECT_VERSION = 1172;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -1066,7 +1070,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1166;
+				CURRENT_PROJECT_VERSION = 1172;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = ZBRT6TPG8Y;
@@ -1104,7 +1108,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1166;
+				CURRENT_PROJECT_VERSION = 1172;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = ZBRT6TPG8Y;
@@ -1137,7 +1141,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1166;
+				CURRENT_PROJECT_VERSION = 1172;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
@@ -1156,7 +1160,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1166;
+				CURRENT_PROJECT_VERSION = 1172;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
@@ -1174,7 +1178,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1166;
+				CURRENT_PROJECT_VERSION = 1172;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -1191,7 +1195,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1166;
+				CURRENT_PROJECT_VERSION = 1172;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -1285,6 +1289,14 @@
 				minimumVersion = 1.5.4;
 			};
 		};
+		88A67A112CB6F07D00E25314 /* XCRemoteSwiftPackageReference "FractionFormatter" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/davidwkeith/FractionFormatter";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		88BFE4272A9D13FC00B37DC3 /* XCRemoteSwiftPackageReference "DSWaveformImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/dmrschmidt/DSWaveformImage";
@@ -1352,6 +1364,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 888C041E2C07DCC100EFFDEE /* XCRemoteSwiftPackageReference "swift-log" */;
 			productName = Logging;
+		};
+		88A67A122CB6F07D00E25314 /* FractionFormatter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 88A67A112CB6F07D00E25314 /* XCRemoteSwiftPackageReference "FractionFormatter" */;
+			productName = FractionFormatter;
 		};
 		88BFE4282A9D13FC00B37DC3 /* DSWaveformImage */ = {
 			isa = XCSwiftPackageProductDependency;

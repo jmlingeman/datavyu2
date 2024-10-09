@@ -5,6 +5,7 @@
 //  Created by Jesse Lingeman on 6/19/23.
 //
 
+import FractionFormatter
 import SwiftUI
 
 struct HoursTextStyle: ShapeStyle {
@@ -33,6 +34,7 @@ struct MillisTextStyle: ShapeStyle {
 
 struct ClockView: View {
     @ObservedObject var videoModel: VideoModel
+
     var body: some View {
         let time = formatTimestamp(timestampSeconds: $videoModel.currentTime.wrappedValue)
         let splitTime = time.split(separator: ":")
@@ -40,6 +42,7 @@ struct ClockView: View {
         let mins = splitTime[1]
         let secs = splitTime[2]
         let millis = splitTime[3]
+        let fractionFormatter = FractionFormatter()
 
         Text(hours).foregroundColor(Color.red)
             + Text(":")
@@ -47,6 +50,6 @@ struct ClockView: View {
             + Text(":")
             + Text(secs).foregroundColor(Color.blue)
             + Text(":") + Text(millis).foregroundColor(Color.gray)
-            + Text("@ \(String(format: "%.2f", $videoModel.player.rate.wrappedValue))x")
+            + Text("@ \($videoModel.player.rate.wrappedValue < 0 ? "-" : "")\($videoModel.player.rate.wrappedValue == 0 ? "0" : fractionFormatter.string(from: NSNumber(value: abs($videoModel.player.rate.wrappedValue))) ?? "0")x")
     }
 }

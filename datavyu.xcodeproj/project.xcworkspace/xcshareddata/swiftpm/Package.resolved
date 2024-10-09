@@ -1,5 +1,5 @@
 {
-  "originHash" : "d3894ed99c724a297d19f7553b1042845f4bb7b7098256bfd85b53f227bcc085",
+  "originHash" : "bd388071083120792398734269e957da0af911e66f86ca1e7e0c38396c1a746b",
   "pins" : [
     {
       "identity" : "async-http-client",
@@ -44,6 +44,15 @@
       "state" : {
         "revision" : "e670b8da140c39036f171b9754ed25126b8d414b",
         "version" : "13.0.2"
+      }
+    },
+    {
+      "identity" : "fractionformatter",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/davidwkeith/FractionFormatter",
+      "state" : {
+        "revision" : "878d9d9e8a74e2f665b219f4432748244236e1b3",
+        "version" : "1.0.0"
       }
     },
     {
