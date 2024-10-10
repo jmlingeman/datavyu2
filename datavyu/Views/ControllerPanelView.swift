@@ -44,7 +44,15 @@ struct ControllerPanelView: View {
                         let currentTime = secondsToMillis(secs: fileModel.currentTime())
                         let _ = fileModel.sheetModel.getSelectedColumns().first?.addCell(onset: currentTime, offset: currentTime)
                     }
-                    ControllerButton(buttonName: "") {}.disabled(true)
+                    if !fileModel.hideTracks {
+                        ControllerButton(buttonName: "Hide Tracks") {
+                            fileModel.hideTracks = true
+                        }
+                    } else {
+                        ControllerButton(buttonName: "Show Tracks") {
+                            fileModel.hideTracks = false
+                        }
+                    }
                     ControllerButton(buttonName: "") {}.disabled(true)
                 }
                 GridRow {

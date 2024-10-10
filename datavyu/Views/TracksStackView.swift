@@ -71,6 +71,7 @@ struct TracksStackView: View {
                 overlayButtons
             }
         }
+        .frame(minWidth: 800)
     }
 
     var overlayButtons: some View {

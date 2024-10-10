@@ -33,6 +33,8 @@ public class FileModel: ReferenceFileDocument, ObservableObject, Identifiable, E
 
     @Published var fileURL: URL?
     @Published var associatedScripts: [URL] = []
+    @Published var hideTracks: Bool = false
+
     var videoObservers: [NSKeyValueObservation] = []
 
     var legacyProjectSettings: ProjectFile?

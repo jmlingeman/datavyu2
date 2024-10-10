@@ -83,6 +83,7 @@
 		888C04202C07DCC100EFFDEE /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = 888C041F2C07DCC100EFFDEE /* Logging */; };
 		888C04242C0A767700EFFDEE /* UpdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888C04232C0A767700EFFDEE /* UpdateView.swift */; };
 		88A67A132CB6F07D00E25314 /* FractionFormatter in Frameworks */ = {isa = PBXBuildFile; productRef = 88A67A122CB6F07D00E25314 /* FractionFormatter */; };
+		88A67A152CB83E1500E25314 /* ControllerStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88A67A142CB83E0E00E25314 /* ControllerStack.swift */; };
 		88AA97912C5AD0630062CFED /* ControllerPanelInfoDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AA97902C5AD0630062CFED /* ControllerPanelInfoDisplay.swift */; };
 		88AA97952C63F3E10062CFED /* CodeRowTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AA97932C63F3E10062CFED /* CodeRowTextField.swift */; };
 		88AA97972C63F7030062CFED /* CodeEditorRowTextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AA97962C63F7030062CFED /* CodeEditorRowTextController.swift */; };
@@ -220,6 +221,7 @@
 		888C041A2C055D7600EFFDEE /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		888C041C2C06778700EFFDEE /* OrdinalCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdinalCollectionViewLayout.swift; sourceTree = "<group>"; };
 		888C04232C0A767700EFFDEE /* UpdateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateView.swift; sourceTree = "<group>"; };
+		88A67A142CB83E0E00E25314 /* ControllerStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerStack.swift; sourceTree = "<group>"; };
 		88AA97902C5AD0630062CFED /* ControllerPanelInfoDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerPanelInfoDisplay.swift; sourceTree = "<group>"; };
 		88AA97932C63F3E10062CFED /* CodeRowTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeRowTextField.swift; sourceTree = "<group>"; };
 		88AA97962C63F7030062CFED /* CodeEditorRowTextController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorRowTextController.swift; sourceTree = "<group>"; };
@@ -394,6 +396,7 @@
 				881A39FA2A2AB66900B4782D /* VideoView.swift */,
 				881A39FF2A2BE73B00B4782D /* ControllerView.swift */,
 				88F8A9332A9A56FB001EEB21 /* ControllerPanelView.swift */,
+				88A67A142CB83E0E00E25314 /* ControllerStack.swift */,
 				8878A6202A3FD4A100A2658C /* TracksStackView.swift */,
 				884B0DF62A50BE6B00D16304 /* DatavyuView.swift */,
 			);
@@ -856,6 +859,7 @@
 				88D521C82CA32C6A00A805FD /* FocusController.swift in Sources */,
 				8878A6252A3FE75200A2658C /* VideoHelpers.swift in Sources */,
 				883E3B392C0FC68D0066F1F4 /* VideoControllerModel.swift in Sources */,
+				88A67A152CB83E1500E25314 /* ControllerStack.swift in Sources */,
 				881A39A92A242D4600B4782D /* DatavyuApp.swift in Sources */,
 				88AA97952C63F3E10062CFED /* CodeRowTextField.swift in Sources */,
 				88F62E9B2A58BDD700DC5B60 /* DatavyuErrors.swift in Sources */,
@@ -970,7 +974,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1189;
+				CURRENT_PROJECT_VERSION = 1202;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -1035,7 +1039,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1189;
+				CURRENT_PROJECT_VERSION = 1202;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -1070,7 +1074,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1189;
+				CURRENT_PROJECT_VERSION = 1202;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = ZBRT6TPG8Y;
@@ -1108,7 +1112,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1189;
+				CURRENT_PROJECT_VERSION = 1202;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = ZBRT6TPG8Y;
@@ -1141,7 +1145,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1189;
+				CURRENT_PROJECT_VERSION = 1202;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
@@ -1160,7 +1164,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1189;
+				CURRENT_PROJECT_VERSION = 1202;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
@@ -1178,7 +1182,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1189;
+				CURRENT_PROJECT_VERSION = 1202;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -1195,7 +1199,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1189;
+				CURRENT_PROJECT_VERSION = 1202;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;

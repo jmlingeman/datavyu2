@@ -43,6 +43,10 @@ struct ControllerButtonLabel: View {
             Image(systemName: "magnifyingglass")
         case "Point Cell":
             Image(systemName: "plus.circle")
+        case "Hide Tracks":
+            Image(systemName: "eye")
+        case "Show Tracks":
+            Image(systemName: "eye.slash")
         default:
             Text(buttonName)
         }

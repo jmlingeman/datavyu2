@@ -15,6 +15,7 @@ struct ControllerView: View {
     @FocusState private var columnInFocus: ColumnModel?
     @FocusState private var cellInFocus: CellModel?
     @State private var showingColumnNameDialog = false
+    @State private var showingTracks = true
 
     @EnvironmentObject private var appState: AppState
 
@@ -28,11 +29,12 @@ struct ControllerView: View {
                     })
                 }
             }.onAppear(perform: {
-                HStack {
-                    ControllerPanelView(fileModel: fileModel, appState: appState, focusController: fileModel.sheetModel.focusController).frame(alignment: .topLeading)
-                    TracksStackView(fileModel: fileModel).environmentObject(appState)
-                }.openInWindow(title: "Controller", appState: appState, fileModel: fileModel, sender: self, frameName: "controller")
-            })
+                ControllerStack(fileModel: fileModel).environmentObject(appState)
+                    .openInWindow(title: "Controller", appState: appState, fileModel: fileModel, sender: self, frameName: "controller")
+
+            }).onChange(of: fileModel.hideTracks) { _ in
+                showingTracks = !fileModel.hideTracks
+            }
 
             Sheet(columnInFocus: _columnInFocus,
                   cellInFocus: _cellInFocus,
