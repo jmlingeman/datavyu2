@@ -174,6 +174,10 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
         }
     }
 
+    func setFocused() {
+        column?.sheetModel?.focusController.setFocusedCell(cell: self)
+    }
+
     func setOffset(offset: Double) {
         setOffset(offset: Int(offset * 1000))
     }

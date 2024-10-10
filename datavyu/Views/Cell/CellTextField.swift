@@ -139,6 +139,7 @@ class CellTextField: NSTextField {
     }
 
     func selectArgument(idx: Int) {
+        cellModel?.setFocused()
         let extents = cellTextController!.getExtentOfArgument(idx: idx)
         Logger.info("Selecting \(idx)")
 //        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {

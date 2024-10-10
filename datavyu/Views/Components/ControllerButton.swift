@@ -91,6 +91,7 @@ struct ControllerButtonKeyLabel: View {
 struct ControllerButton: View {
     var buttonName: String
     var action: () -> Void
+    var numColumns: Int = 1
 
     var body: some View {
         ZStack {
@@ -104,6 +105,6 @@ struct ControllerButton: View {
             }
             .buttonStyle(PlainButtonStyle())
 
-        }.frame(width: 100, height: 80)
+        }.frame(width: CGFloat(100 * numColumns), height: 80)
     }
 }

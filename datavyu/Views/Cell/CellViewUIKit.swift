@@ -177,7 +177,7 @@ class CellViewUIKit: NSCollectionViewItem {
                 view.layer?.borderWidth = 1
             }
             cell.isSelected = true
-            cell.column?.sheetModel?.focusController.setFocusedCell(cell: cell)
+            cell.setFocused()
         } else {
             setDeselected()
         }
