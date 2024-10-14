@@ -10,6 +10,7 @@ import SwiftUI
 struct CodeEditorRow: View {
     @ObservedObject var column: ColumnModel
     @ObservedObject var selectedArgument: SelectedArgument
+    @State var oldValue = 0
     var codeRow: CodeRowTextFieldView
 
     init(column: ColumnModel, selectedArgument: SelectedArgument) {
@@ -21,20 +22,7 @@ struct CodeEditorRow: View {
     var body: some View {
         VStack {
             HStack {
-//                codeRow.onChange(of: column.reorderCount) { newValue in
-//                    if oldValue < newValue {
-//                        codeRow.selectArgument(idx: selectedArgument.argumentIdx! + 1)
-//                    } else {
-//                        codeRow.selectArgument(idx: selectedArgument.argumentIdx! - 1)
-//                    }
-//                }
-//                codeRow.onChange(of: column.reorderCount) { oldValue, newValue in
-//                    if oldValue < newValue {
-//                        codeRow.selectArgument(idx: selectedArgument.argumentIdx! + 1)
-//                    } else {
-//                        codeRow.selectArgument(idx: selectedArgument.argumentIdx! - 1)
-//                    }
-//                }
+                codeRow
                 CodeEditorAddCodeButton(column: column)
                 CodeEditorRemoveCodeButton(column: column)
                 Spacer()

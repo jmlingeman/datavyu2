@@ -10,11 +10,16 @@ import WrappingHStack
 
 class SelectedArgument: ObservableObject, Equatable {
     static func == (lhs: SelectedArgument, rhs: SelectedArgument) -> Bool {
-        lhs.column == rhs.column && lhs.argumentIdx == rhs.argumentIdx
+        lhs.column == rhs.column && lhs.argument == rhs.argument
     }
 
     @Published var column: ColumnModel?
     @Published var argumentIdx: Int?
+    @Published var argument: Argument?
+
+    func updateIdx() {
+        argumentIdx = column?.getArgumentIndex(argument)
+    }
 }
 
 struct CodeEditorView: View {
@@ -30,9 +35,11 @@ struct CodeEditorView: View {
                     if selectedArgument.argumentIdx! - 1 < 0 {
                         return
                     }
-                    selectedArgument.column?.moveArgumentLeft(argumentIdx: selectedArgument.argumentIdx!)
-//                    selectedArgument.argumentIdx? += -1
-                    selectedArgument.column?.reorderCount -= 1
+                    selectedArgument.column?.moveArgumentLeft(argumentIdx: selectedArgument.column!.getArgumentIndex(selectedArgument.argument) ?? 0)
+                    print("Old idx \(selectedArgument.argumentIdx)")
+                    selectedArgument.updateIdx()
+                    print("New idx \(selectedArgument.argumentIdx)")
+//                    selectedArgument.column?.reorderCount -= 1
                 } label: {
                     Text("Move Argument Left")
                 }
@@ -40,17 +47,17 @@ struct CodeEditorView: View {
                     if selectedArgument.argumentIdx! + 1 > selectedArgument.column!.arguments.count - 1 {
                         return
                     }
-                    selectedArgument.column?.moveArgumentRight(argumentIdx: selectedArgument.argumentIdx!)
-//                    selectedArgument.argumentIdx? += 1
-                    selectedArgument.column?.reorderCount += 1
+                    selectedArgument.column?.moveArgumentRight(argumentIdx: selectedArgument.column!.getArgumentIndex(selectedArgument.argument) ?? 0)
+                    print("Old idx \(selectedArgument.argumentIdx)")
+                    selectedArgument.updateIdx()
+                    print("New idx \(selectedArgument.argumentIdx)")
+//                    selectedArgument.column?.reorderCount += 1
                 } label: {
                     Text("Move Argument Right")
                 }
             }
             WrappingHStack(sheetModel.columns, id: \.self) { column in
                 CodeEditorRow(column: column, selectedArgument: selectedArgument).padding()
-            }.onChange(of: selectedArgument.argumentIdx) { newValue in
-                Logger.info("ARG CHANGED: \(newValue)")
             }
             Button("Add Column") {
                 sheetModel.addColumn(columnName: sheetModel.getNextDefaultColumnName())

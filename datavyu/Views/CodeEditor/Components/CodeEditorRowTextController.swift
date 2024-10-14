@@ -38,14 +38,14 @@ class CodeEditorRowTextController {
         return SelectionExtent()
     }
 
-    func getArgIdxForIdx(idx: Int) -> Int {
+    func getArgIdxForIdx(idx: Int) -> Int? {
         for i in currentExtents.keys {
             let extent = currentExtents[i]!
             if idx >= extent.start, idx <= extent.end {
                 return i
             }
         }
-        return 0
+        return nil
     }
 
     func parseUpdates(newValue: String) -> String {
@@ -87,7 +87,6 @@ class CodeEditorRowTextController {
                 let name = arg.replacingOccurrences(of: "<", with: "").replacingOccurrences(of: ">", with: "")
                 if column.arguments[i].name != name {
                     column.arguments[i].setName(name: name)
-//                    setValue(value: arg)
                 }
 
                 endIdx = startIdx + column.arguments[i].name.count

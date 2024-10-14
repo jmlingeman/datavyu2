@@ -94,6 +94,7 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
         for column in columns {
             for cell in column.cells {
                 cell.updateArgumentNames()
+                cell.syncArguments()
             }
         }
     }

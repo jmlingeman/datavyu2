@@ -100,21 +100,20 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
 
     func syncArguments() {
         let args = column?.arguments
+        var newArgs = [Argument]()
         if args != nil {
-            for arg in args! {
-                var found = false
-                for x in arguments {
-                    if arg.name == x.name {
-                        found = true
-                    }
-                }
-                if !found {
-                    arguments.append(Argument(name: arg.name, column: arg.column))
+            for colArg in args! {
+                let argIdx = arguments.firstIndex(of: colArg)
+                if argIdx != nil {
+                    newArgs.append(arguments[argIdx!])
+                } else {
+                    newArgs.append(Argument(name: colArg.name, column: colArg.column))
                 }
             }
-            arguments.last?.isLastArgument = true
-            column?.sheetModel?.fileModel?.setFileChanged()
         }
+        arguments = newArgs
+        updateSheet()
+        column?.sheetModel?.fileModel?.setFileChanged()
     }
 
     func setOnset(onset: Int) {

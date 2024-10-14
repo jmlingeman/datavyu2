@@ -20,7 +20,7 @@ class CodeRowTextFormatter: Formatter {
         if !nameParensRemoved.first!.isLetter {
             return false
         }
-        if !nameParensRemoved.matches("^[a-zA-Z0-9]+$") {
+        if !nameParensRemoved.matches("^[a-zA-Z0-9_]+$") {
             return false
         }
         return true
@@ -102,15 +102,18 @@ struct CodeRowTextFieldView: NSViewRepresentable {
         nsView.column = column
         nsView.updateStringValue(nsView.textController!.rowString())
 
-        nsView.invalidateIntrinsicContentSize()
-        Logger.info(nsView.fittingSize)
-//        Logger.info(nsView.sizeToFit())
-        nsView.setNeedsDisplay(nsView.bounds)
+//        nsView.invalidateIntrinsicContentSize()
+//        nsView.setNeedsDisplay(nsView.bounds)
     }
 
-    func selectArgument(idx: Int) {
-        nsView.updateStringValue()
-        nsView.selectArgument(idx: idx)
+    func selectArgument(idx _: Int) {
+//        nsView.updateStringValue()
+//        nsView.selectArgument(idx: idx)
+    }
+
+    func selectArgument(argument _: Argument) {
+//        nsView.updateStringValue()
+//        nsView.selectArgument(argument: argument)
     }
 }
 
@@ -163,6 +166,13 @@ class CodeRowTextField: NSTextField {
         }
     }
 
+    func selectArgument(argument: Argument) {
+        Logger.info(#function)
+        let idx = column?.getArgumentIndex(argument)
+        print("Arg at idx: \(idx), \(argument.name)")
+        return selectArgument(idx: idx!)
+    }
+
     func selectArgument(idx: Int) {
         Logger.info(#function)
         if textController != nil {
@@ -173,7 +183,8 @@ class CodeRowTextField: NSTextField {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
                     if self.currentEditor() != nil {
                         self.currentEditor()?.selectedRange = NSRange(location: extents!.start, length: extents!.end - extents!.start)
-                        self.selectedArgument?.argumentIdx = idx
+                        self.selectedArgument?.argumentIdx = self.column?.getArgumentIndex(self.selectedArgument?.argument)
+                        self.selectedArgument?.argument = self.column?.arguments[idx]
                         self.selectedArgument?.column = self.column
                     }
                     self.isUpdating = false
@@ -314,19 +325,32 @@ extension CodeRowTextField: NSTextFieldDelegate, NSTextViewDelegate {
 
     func textView(_: NSTextView, willChangeSelectionFromCharacterRange oldSelectedCharRange: NSRange, toCharacterRange newSelectedCharRange: NSRange) -> NSRange {
         Logger.info(#function)
+        Logger.info(oldSelectedCharRange)
+        Logger.info(newSelectedCharRange)
         if abs(newSelectedCharRange.location - oldSelectedCharRange.location) > 2 {
             isEditing = false
         }
-        if newSelectedCharRange.location != 0, !isEditing, !isUpdating {
-//            let extent = textController!.getExtentForIdx(idx: oldSelectedCharRange.lowerBound)
-            let argIdx = textController!.getArgIdxForIdx(idx: newSelectedCharRange.lowerBound)
 
-            // Update the latest selected argument
-            DispatchQueue.main.async {
-                self.selectedArgument?.column = self.column
-                self.selectedArgument?.argumentIdx = argIdx
+        if newSelectedCharRange.location != 0, !isEditing, !isUpdating {
+            var argIdx: Int? = 0
+            // If the new location length is 0 then this is a click, reset
+            if newSelectedCharRange.length == 0 {
+                argIdx = textController!.getArgIdxForIdx(idx: newSelectedCharRange.lowerBound)
+                if argIdx == nil {
+//                    argIdx = textController!.getArgIdxForIdx(idx: oldSelectedCharRange.lowerBound)
+                    argIdx = selectedArgument?.argumentIdx
+                }
+                if argIdx != nil {
+                    DispatchQueue.main.async {
+                        self.selectedArgument?.column = self.column
+                        self.selectedArgument?.argument = self.column?.arguments[argIdx!]
+                        self.selectedArgument?.argumentIdx = self.column?.getArgumentIndex(self.selectedArgument?.argument)
+                    }
+                }
+            } else {
+                argIdx = selectedArgument!.argumentIdx!
             }
-            let extent = textController!.getExtentOfArgument(idx: argIdx)
+            let extent = textController!.getExtentOfArgument(idx: argIdx!)
 
             if extent == nil {
                 return newSelectedCharRange
@@ -347,7 +371,6 @@ extension CodeRowTextField: NSTextFieldDelegate, NSTextViewDelegate {
 
     func textView(_: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
         Logger.info(#function)
-        Logger.info(commandSelector)
         if commandSelector == #selector(insertTab) {
             if self.selectedArgument!.argumentIdx! + 1 < self.column!.arguments.count {
                 self.selectArgument(idx: self.selectedArgument!.argumentIdx! + 1)

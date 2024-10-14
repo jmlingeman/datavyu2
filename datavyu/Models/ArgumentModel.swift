@@ -19,7 +19,7 @@ final class Argument: ObservableObject, Identifiable, Equatable, Hashable, Codab
     var id: UUID = .init()
 
     static func == (lhs: Argument, rhs: Argument) -> Bool {
-        lhs.id == rhs.id
+        (lhs.name == rhs.name && lhs.column == rhs.column) || lhs.id == rhs.id
     }
 
     func hash(into hasher: inout Hasher) {
