@@ -32,7 +32,7 @@ struct Header: View {
             }
             .frame(width: Config.defaultCellWidth * appState.zoomFactor, height: Config.headerSize)
             .border(Color.black)
-            .background(columnModel.isSelected ? Color.teal : columnModel.isFinished ? Color.green : Color.accentColor)
+            .background(columnModel.isSelected ? Color.teal : columnModel.isFinished ? Color.green : Color("ColumnHeaderColor"))
         }.frame(width: Config.defaultCellWidth * appState.zoomFactor, height: Config.headerSize)
             .onTapGesture {
                 columnModel.sheetModel?.focusController.setFocusedColumn(columnModel: columnModel)

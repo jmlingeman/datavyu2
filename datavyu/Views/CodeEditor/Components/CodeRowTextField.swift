@@ -1,5 +1,6 @@
 
 import AppKit
+import Cocoa
 import Foundation
 import SwiftUI
 
@@ -31,6 +32,28 @@ class CodeRowTextFormatter: Formatter {
             return ""
         }
         return s
+    }
+
+    func colorizeString(_ s: String) -> NSMutableAttributedString {
+        let extents = textController!.currentExtents
+        let attrString = NSMutableAttributedString(string: s)
+        // TODO: Reimplement this as a TextView so this works as expected
+//        for (argIdx, extent) in extents {
+//            attrString.addAttribute(.foregroundColor, value: NSColor.green, range: NSRange(location: extent.start, length: extent.end - extent.start))
+//        }
+
+        return attrString
+    }
+
+    override func attributedString(for obj: Any, withDefaultAttributes _: [NSAttributedString.Key: Any]? = nil) -> NSAttributedString? {
+        guard let obj = obj as? NSString else {
+            return nil
+        }
+        guard let string = string(for: obj) else {
+            return nil
+        }
+
+        return colorizeString(string)
     }
 
     override func getObjectValue(_ obj: AutoreleasingUnsafeMutablePointer<AnyObject?>?, for string: String, errorDescription _: AutoreleasingUnsafeMutablePointer<NSString?>?) -> Bool {
@@ -89,7 +112,7 @@ struct CodeRowTextFieldView: NSViewRepresentable {
     init(column: ColumnModel, selectedArgument: SelectedArgument) {
         self.column = column
         self.selectedArgument = selectedArgument
-        nsView.configure(column: column, selectedArgument: selectedArgument)
+        nsView.allowsEditingTextAttributes = true
     }
 
     func makeNSView(context _: Context) -> NSTextField {
@@ -132,28 +155,44 @@ class CodeRowTextField: NSTextField {
     var keyEventHandler: Any?
 
     func configure(column: ColumnModel, selectedArgument: SelectedArgument) {
+        allowsEditingTextAttributes = true
         self.column = column
         self.selectedArgument = selectedArgument
         delegate = self
         textController = CodeEditorRowTextController(column: column)
-        updateStringValue(textController!.rowString())
 
         formatter = CodeRowTextFormatter()
         (formatter as! CodeRowTextFormatter).configure(textController: textController!, column: column)
+
+        updateStringValue(textController!.rowString())
     }
 
     func updateStringValue() {
         if textController != nil {
-            let columnString = textController!.parseUpdates(newValue: textController!.rowString())
-            stringValue = columnString
-            invalidateIntrinsicContentSize()
+            updateStringValue(textController!.rowString())
         }
     }
 
     func updateStringValue(_ s: String) {
-        let columnString = textController!.parseUpdates(newValue: s)
-        stringValue = columnString
-        invalidateIntrinsicContentSize()
+        if textController != nil {
+            DispatchQueue.main.async {
+                let columnString = self.textController!.parseUpdates(newValue: s)
+                let attrStr = self.colorizeString(columnString)
+
+//                self.invalidateIntrinsicContentSize()
+                self.attributedStringValue = attrStr
+            }
+        }
+    }
+
+    func colorizeString(_ s: String) -> NSMutableAttributedString {
+        let extents = textController!.currentExtents
+        let attrString = NSMutableAttributedString(string: s)
+        for (argIdx, extent) in extents {
+            attrString.addAttribute(.foregroundColor, value: NSColor.green, range: NSRange(location: extent.start, length: extent.end - extent.start))
+        }
+
+        return attrString
     }
 
     func selectColumnName() {
@@ -213,6 +252,8 @@ class CodeRowTextField: NSTextField {
             return event
         }
 
+        attributedStringValue = colorizeString(stringValue)
+
         return true
     }
 
@@ -260,7 +301,7 @@ extension CodeRowTextField: NSTextFieldDelegate, NSTextViewDelegate {
     func controlTextDidBeginEditing(_: Notification) {
         Logger.info("ARGUMENT: \(#function)")
         isEditing = true
-//        parentView!.lastEditedField = LastEditedField.arguments
+//        parentView!.lastEditedField = LastEditedField.arguments\
     }
 
     func controlTextDidEndEditing(_ obj: Notification) {
@@ -272,7 +313,7 @@ extension CodeRowTextField: NSTextFieldDelegate, NSTextViewDelegate {
         else {
             return
         }
-        textController?.parseUpdates(newValue: stringValue)
+        textController?.parseUpdates(newValue: attributedStringValue.string)
         updateStringValue(textController!.rowString())
     }
 
@@ -287,13 +328,15 @@ extension CodeRowTextField: NSTextFieldDelegate, NSTextViewDelegate {
         Logger.info(self)
         Logger.info("ARGUMENT: \(#function)")
         isEditing = true
-        textController?.parseUpdates(newValue: stringValue)
+        textController?.parseUpdates(newValue: attributedStringValue.string)
         updateStringValue(textController!.rowString())
     }
 
-    func control(_: NSControl, textShouldBeginEditing _: NSText) -> Bool {
+    func control(controller _: NSControl, textShouldBeginEditing fieldEditor: NSText) -> Bool {
         Logger.info(#function)
         Logger.info("ARGUMENT: \(#function)")
+        fieldEditor.setTextColor(NSColor.green, range: NSRange(location: 0, length: fieldEditor.string.count))
+//        attributedStringValue = colorizeString(textController!.rowString())
         return true
     }
 
@@ -327,6 +370,7 @@ extension CodeRowTextField: NSTextFieldDelegate, NSTextViewDelegate {
         Logger.info(#function)
         Logger.info(oldSelectedCharRange)
         Logger.info(newSelectedCharRange)
+        Logger.info(attributedStringValue)
         if abs(newSelectedCharRange.location - oldSelectedCharRange.location) > 2 {
             isEditing = false
         }
@@ -350,6 +394,9 @@ extension CodeRowTextField: NSTextFieldDelegate, NSTextViewDelegate {
             } else {
                 argIdx = selectedArgument!.argumentIdx!
             }
+            if argIdx == nil {
+                argIdx = 0
+            }
             let extent = textController!.getExtentOfArgument(idx: argIdx!)
 
             if extent == nil {
@@ -367,6 +414,12 @@ extension CodeRowTextField: NSTextFieldDelegate, NSTextViewDelegate {
         }
 
         return newSelectedCharRange
+    }
+
+    func textView(textView: NSTextView, shouldChangeTypingAttributes _: [String: Any], toAttributes _: [NSAttributedString.Key: Any]) -> [NSAttributedString.Key: Any] {
+        allowsEditingTextAttributes = true
+        print(textView.attributedString())
+        return [:]
     }
 
     func textView(_: NSTextView, doCommandBy commandSelector: Selector) -> Bool {

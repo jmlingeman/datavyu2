@@ -34,7 +34,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="300" height="155"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField verticalHuggingPriority="750" id="d6a-G0-R74" customClass="CellTextField" customModule="Datavyu2" customModuleProvider="target">
+                            <textField focusRingType="none" verticalHuggingPriority="750" id="d6a-G0-R74" customClass="CellTextField" customModule="Datavyu2" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="5" width="300" height="125"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" id="FfD-2Z-PKM">
@@ -47,26 +47,26 @@
                                     <outlet property="formatter" destination="8Pv-9n-3Cl" id="BpI-QC-zMS"/>
                                 </connections>
                             </textField>
-                            <textField verticalHuggingPriority="750" id="4OB-Io-y4d" customClass="CellTimeTextField" customModule="Datavyu2" customModuleProvider="target">
+                            <textField focusRingType="none" verticalHuggingPriority="750" id="4OB-Io-y4d" customClass="CellTimeTextField" customModule="Datavyu2" customModuleProvider="target">
                                 <rect key="frame" x="80" y="134" width="96" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="QWk-5M-u2l">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="CellBackgroundPanelColor"/>
                                 </textFieldCell>
                                 <connections>
                                     <outlet property="delegate" destination="AcX-Hb-TPx" id="Web-Wt-Mqj"/>
                                     <outlet property="nextKeyView" destination="fpe-kJ-HL3" id="8NQ-7Y-HXs"/>
                                 </connections>
                             </textField>
-                            <textField verticalHuggingPriority="750" id="fpe-kJ-HL3" customClass="CellTimeTextField" customModule="Datavyu2" customModuleProvider="target">
+                            <textField focusRingType="none" verticalHuggingPriority="750" id="fpe-kJ-HL3" customClass="CellTimeTextField" customModule="Datavyu2" customModuleProvider="target">
                                 <rect key="frame" x="204" y="134" width="96" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="33J-GM-Cvl">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="CellBackgroundPanelColor"/>
                                 </textFieldCell>
                                 <connections>
                                     <outlet property="delegate" destination="Wl8-Ky-qj4" id="5Mv-vo-1BA"/>
@@ -77,7 +77,7 @@
                     </view>
                     <color key="fillColor" name="CellBackgroundPanelColor"/>
                 </box>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="GsG-gp-xUO">
+                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" id="GsG-gp-xUO">
                     <rect key="frame" x="-2" y="125" width="37" height="25"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="tzU-uw-7fZ">
@@ -95,10 +95,10 @@
     </objects>
     <resources>
         <namedColor name="CellBackgroundColor">
-            <color red="0.62199997901916504" green="0.62300002574920654" blue="0.6380000114440918" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.90000000000000002" green="0.90000000000000002" blue="0.90000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="CellBackgroundPanelColor">
-            <color red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

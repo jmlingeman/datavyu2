@@ -40,3 +40,37 @@ extension String {
         range(of: regex, options: .regularExpression, range: nil, locale: nil) != nil
     }
 }
+
+extension Sequence where Iterator.Element == NSAttributedString {
+    func joined(with separator: NSAttributedString) -> NSAttributedString {
+        reduce(NSMutableAttributedString()) {
+            r, e in
+            if r.length > 0 {
+                r.append(separator)
+            }
+            r.append(e)
+            return r
+        }
+    }
+
+    func joined(with separator: String = "") -> NSAttributedString {
+        joined(with: NSAttributedString(string: separator))
+    }
+}
+
+extension Sequence where Iterator.Element == NSMutableAttributedString {
+    func joined(with separator: NSMutableAttributedString) -> NSMutableAttributedString {
+        reduce(NSMutableAttributedString()) {
+            r, e in
+            if r.length > 0 {
+                r.append(separator)
+            }
+            r.append(e)
+            return r
+        }
+    }
+
+    func joined(with separator: String = "") -> NSMutableAttributedString {
+        joined(with: NSMutableAttributedString(string: separator))
+    }
+}

@@ -170,7 +170,7 @@ struct NewCellQuickButton: View {
                 Image(systemName: "plus.rectangle")
                     .imageScale(.large)
                     .frame(width: Config.defaultCellWidth, height: Config.headerSize)
-            }.background(Color(red: 40 / 256.0, green: 40 / 256.0, blue: 40 / 256.0))
+            }.background(Color("NewCellButton"))
         }.buttonStyle(PlainButtonStyle())
     }
 }
@@ -225,6 +225,7 @@ struct SheetLayoutCollection: NSViewRepresentable {
         override init(frame frameRect: NSRect) {
             super.init(frame: frameRect)
             registerForDraggedTypes([.string])
+            backgroundColor = NSColor(Color("SpreadsheetBG"))
         }
 
         @available(*, unavailable)
@@ -255,6 +256,8 @@ struct SheetLayoutCollection: NSViewRepresentable {
         collectionView.register(CellViewUIKit.self, forItemWithIdentifier: .init(CellViewUIKit.identifier))
         collectionView.register(HeaderCell.self, forSupplementaryViewOfKind: HeaderCell.identifier, withIdentifier: .init(HeaderCell.identifier))
         collectionView.register(NewCellQuickButtonCell.self, forSupplementaryViewOfKind: NewCellQuickButtonCell.identifier, withIdentifier: .init(NewCellQuickButtonCell.identifier))
+
+        collectionView.backgroundColors = [NSColor(Color("SpreadsheetBG"))]
 
         scrollView.documentView = collectionView
         scrollView.hasHorizontalScroller = true

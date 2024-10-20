@@ -14,7 +14,7 @@ class SelectedArgument: ObservableObject, Equatable {
     }
 
     @Published var column: ColumnModel?
-    @Published var argumentIdx: Int?
+    @Published var argumentIdx: Int? = 0
     @Published var argument: Argument?
 
     func updateIdx() {
@@ -56,8 +56,10 @@ struct CodeEditorView: View {
                     Text("Move Argument Right")
                 }
             }
-            WrappingHStack(sheetModel.columns, id: \.self) { column in
-                CodeEditorRow(column: column, selectedArgument: selectedArgument).padding()
+            ForEach(sheetModel.columns, id: \.self) { column in
+                HStack {
+                    CodeEditorRow(column: column, selectedArgument: selectedArgument).padding()
+                }
             }
             Button("Add Column") {
                 sheetModel.addColumn(columnName: sheetModel.getNextDefaultColumnName())
