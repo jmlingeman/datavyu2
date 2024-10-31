@@ -119,6 +119,7 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
         undoManager?.endUndoGrouping()
         setVisibleColumns()
         fileModel?.setFileChanged()
+        updateSheet()
         return column
     }
 
