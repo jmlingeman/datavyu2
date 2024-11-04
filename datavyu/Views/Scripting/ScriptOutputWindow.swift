@@ -31,7 +31,9 @@ struct ScriptOutputWindow: View {
             if line.contains("ViewBridge to RemoteViewService Terminated") {
                 continue
             }
-            filteredLines.append(line)
+            if line.contains("Ruby") {
+                filteredLines.append(line)
+            }
         }
         return filteredLines.joined(separator: "\n")
     }

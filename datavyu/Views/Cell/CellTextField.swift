@@ -185,6 +185,50 @@ class CellTextField: NSTextField {
             if s!.contains(CellTextController.argumentSeperator) {
                 return nil
             }
+            if event.modifierFlags.contains(.numericPad) {
+                if s == "7" {
+                    self.parentView?.appState?.fileController?.activeFileModel.videoController?.setOnset()
+                }
+                if s == "8" {
+                    self.parentView?.appState?.fileController?.activeFileModel.videoController?.play()
+                }
+                if s == "9" {
+                    self.parentView?.appState?.fileController?.activeFileModel.videoController?.setOffset()
+                }
+                if s == "-" {
+                    self.parentView?.appState?.fileController?.activeFileModel.videoController?.jump(jumpValue: self.parentView?.appState?.jumpValue ?? "0")
+                }
+                if s == "4" {
+                    self.parentView?.appState?.fileController?.activeFileModel.videoController?.shuttleStepDown()
+                }
+                if s == "5" {
+                    self.parentView?.appState?.fileController?.activeFileModel.videoController?.stop()
+                }
+                if s == "6" {
+                    self.parentView?.appState?.fileController?.activeFileModel.videoController?.shuttleStepUp()
+                }
+                if s == "+", event.modifierFlags.contains(.command) {
+                    self.parentView?.appState?.fileController?.activeFileModel.videoController?.findOffset()
+                } else if s == "+" {
+                    self.parentView?.appState?.fileController?.activeFileModel.videoController?.findOnset()
+                }
+                if s == "1" {
+                    self.parentView?.appState?.fileController?.activeFileModel.videoController?.prevFrame()
+                }
+                if s == "2" {
+                    self.parentView?.appState?.fileController?.activeFileModel.videoController?.pause()
+                }
+                if s == "3" {
+                    self.parentView?.appState?.fileController?.activeFileModel.videoController?.nextFrame()
+                }
+                if s == "0" {
+                    self.parentView?.appState?.fileController?.activeFileModel.videoController?.addCell()
+                }
+                if s == "." {
+                    self.parentView?.appState?.fileController?.activeFileModel.videoController?.setOffsetAndAddNewCell()
+                }
+                return nil
+            }
             return event
         }
 

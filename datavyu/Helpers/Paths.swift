@@ -5,6 +5,7 @@
 //  Created by Jesse Lingeman on 5/27/24.
 //
 
+import AppKit
 import Foundation
 
 enum Paths {
@@ -17,5 +18,21 @@ enum Paths {
         } catch {
             Logger.info(error)
         }
+    }
+
+    static func showInFinder(url: URL?) {
+        guard let url = url else { return }
+        if url.isDirectory {
+            NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: url.path)
+        } else {
+            NSWorkspace.shared.activateFileViewerSelecting([url])
+        }
+    }
+}
+
+extension URL {
+    /// IMPORTANT: this code return false even if file or directory does not exist(!!!)
+    var isDirectory: Bool {
+        hasDirectoryPath
     }
 }

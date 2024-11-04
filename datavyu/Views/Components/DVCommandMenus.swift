@@ -25,9 +25,12 @@ struct DVCommandMenus: Commands {
 
         CommandGroup(after: CommandGroupPlacement.windowList) {
             Divider()
-            Button("Open Controller Window") {
-                appState.controllerWindows[fileModel!]?.makeKeyAndOrderFront(self)
-            }
+            // TODO: Fix these
+//            Button("Open Spreadsheet Window") {
+//            }
+//            Button("Open Controller Window") {
+            ////                appState.controllerWindows[fileModel!]?.makeKeyAndOrderFront(self)
+//            }
             Divider()
         }
 
@@ -158,7 +161,7 @@ struct DVCommandMenus: Commands {
             }.keyboardShortcut("+", modifiers: .numericPad)
             Button("Find Offset") {
                 appState.fileController!.activeFileModel.videoController!.findOffset()
-            }.keyboardShortcut("+", modifiers: EventModifiers(rawValue: EventModifiers.shift.rawValue + EventModifiers.numericPad.rawValue))
+            }.keyboardShortcut("+", modifiers: [.command, .numericPad])
             Button("Prev") {
                 appState.fileController!.activeFileModel.videoController!.prevFrame()
             }.keyboardShortcut("1", modifiers: .numericPad)
@@ -202,7 +205,7 @@ struct DVCommandMenus: Commands {
             }.keyboardShortcut("'", modifiers: [.command, .shift])
             Button("Find Offset") {
                 appState.fileController!.activeFileModel.videoController!.findOffset()
-            }.keyboardShortcut("'", modifiers: EventModifiers(rawValue: EventModifiers.shift.rawValue + EventModifiers.command.rawValue))
+            }.keyboardShortcut("'", modifiers: [.command, .shift, .option])
             Button("Prev") {
                 appState.fileController!.activeFileModel.videoController!.prevFrame()
             }.keyboardShortcut(",", modifiers: [.command, .shift])

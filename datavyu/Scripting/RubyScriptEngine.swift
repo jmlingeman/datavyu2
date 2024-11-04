@@ -27,8 +27,8 @@ class RubyScriptEngine: ObservableObject {
             try Ruby.eval(ruby: "$stdout = $stdout.reopen(\"\(outputURL!.path())\")")
             try Ruby.eval(ruby: "$stderr = $stderr.reopen(\"\(errorURL!.path())\")")
 
-            try Ruby.eval(ruby: "$LOAD_PATH.unshift(File.expand_path(\"\(apiLocation.deletingLastPathComponent().path().replacingOccurrences(of: "file://", with: ""))\"))")
-            try Ruby.load(filename: url.path().replacingOccurrences(of: "file://", with: ""))
+            try Ruby.eval(ruby: "$LOAD_PATH.unshift(File.expand_path(\"\(apiLocation.deletingLastPathComponent().path(percentEncoded: false).replacingOccurrences(of: "file://", with: ""))\"))")
+            try Ruby.load(filename: url.path(percentEncoded: false).replacingOccurrences(of: "file://", with: ""))
 
         } catch {
             Logger.info(error)

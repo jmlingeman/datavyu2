@@ -41,24 +41,25 @@ public class SpeechRecognizer: ObservableObject {
 
     func initializeWhisperKit(model: String) {
         Task {
-            try await whisperKit?.initialize(model: model)
+            let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+            try await whisperKit?.initialize(model: model, modelFolder: path)
         }
     }
 
     func checkModelInstalled(model: String) -> Bool {
-        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
-        let url = NSURL(fileURLWithPath: path)
-        if let pathComponent = url.appendingPathComponent(model) {
-            let filePath = pathComponent.path
-            let fileManager = FileManager.default
-            if fileManager.fileExists(atPath: filePath) {
-                return true
-            } else {
-                return false
+        let path = Paths.transcriptionFolder.path(percentEncoded: false)
+
+        let enumerator = FileManager.default.enumerator(atPath: path)
+        while let filename = enumerator?.nextObject() as? String {
+            if let fType = enumerator?.fileAttributes?[FileAttributeKey.type] as? FileAttributeType {
+                if fType == .typeDirectory {
+                    if filename.contains(model) {
+                        return true
+                    }
+                }
             }
-        } else {
-            return false
         }
+        return false
     }
 
     func populateAvailableModels() {

@@ -50,6 +50,10 @@ final class CellModel: ObservableObject, Identifiable, Equatable, Hashable, Coda
             if argument.name != column?.arguments[idx].name {
                 argument.setName(name: column!.arguments[idx].name)
             }
+            if argument.value.hasPrefix("<"), argument.value.hasSuffix(">") {
+                argument.setName(name: column!.arguments[idx].name)
+                argument.setValue(value: "")
+            }
         }
     }
 

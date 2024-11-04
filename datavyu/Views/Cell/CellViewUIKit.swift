@@ -80,6 +80,8 @@ class CellViewUIKit: NSCollectionViewItem {
         onset.stringValue = formatTimestamp(timestamp: cell.onset)
         offset.stringValue = formatTimestamp(timestamp: cell.offset)
 
+        self.appState = appState
+
         if appState != nil {
             highlightObserver = AppStateObserver(object: appState!, cellItem: self)
         }

@@ -175,14 +175,14 @@ class CodeRowTextField: NSTextField {
 
     func updateStringValue(_ s: String) {
         if textController != nil {
-            DispatchQueue.main.async {
-                let columnString = self.textController!.parseUpdates(newValue: s)
-                let attrStr = self.colorizeString(columnString)
+//            DispatchQueue.main.async {
+            let columnString = textController!.parseUpdates(newValue: s)
+            let attrStr = colorizeString(columnString)
 
 //                self.invalidateIntrinsicContentSize()
-                self.attributedStringValue = attrStr
-            }
+            attributedStringValue = attrStr
         }
+//        }
     }
 
     func colorizeString(_ s: String) -> NSMutableAttributedString {
@@ -367,14 +367,6 @@ extension CodeRowTextField: NSTextFieldDelegate, NSTextViewDelegate {
     }
 
     func textView(_: NSTextView, willChangeSelectionFromCharacterRange oldSelectedCharRange: NSRange, toCharacterRange newSelectedCharRange: NSRange) -> NSRange {
-        Logger.info(#function)
-        Logger.info(oldSelectedCharRange)
-        Logger.info(newSelectedCharRange)
-        Logger.info(attributedStringValue)
-        if abs(newSelectedCharRange.location - oldSelectedCharRange.location) > 2 {
-            isEditing = false
-        }
-
         if newSelectedCharRange.location != 0, !isEditing, !isUpdating {
             var argIdx: Int? = 0
             // If the new location length is 0 then this is a click, reset

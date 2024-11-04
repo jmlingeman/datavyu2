@@ -25,6 +25,9 @@ struct TranscriptionSettingsView: View {
 
     let timer = Timer.publish(every: 2.0, on: .main, in: .common).autoconnect() //  seconds
 
+    let transcriptionStates = ["", "Loading Model (may take a few minutes)", "Transcribing", "Finished"]
+    @State var currentState = 0
+
     var body: some View {
         VStack {
             Picker("Available Models", selection: $selectedModel) {
@@ -35,13 +38,23 @@ struct TranscriptionSettingsView: View {
 
             Button("Download Model Files") {
                 speech.initializeWhisperKit(model: selectedModel)
-            }.onChange(of: selectedModel) { newValue in
+            }.onChange(of: selectedModel, initial: true) { _, newValue in
                 if speech.checkModelInstalled(model: newValue) {
                     ready = true
+                } else {
+                    ready = false
                 }
-            }.disabled(running)
+            }.disabled(running || ready)
 
-            Text(String(format: "%.2f%% downloaded", downloadProgress * 100))
+            Button("Open Model Folder") {
+                Paths.showInFinder(url: Paths.transcriptionFolder)
+            }
+
+            if ready {
+                Text("Model already downloaded.")
+            } else {
+                Text(String(format: "%.2f%% downloaded", downloadProgress * 100))
+            }
             ProgressView(value: downloadProgress).onReceive(timer) { _ in
                 downloadProgress = speech.whisperKit?.downloadProgress ?? 0
             }.padding()
@@ -73,9 +86,19 @@ struct TranscriptionSettingsView: View {
                 speech.run(selectedModel: selectedModel, videoModel: videoModel, sheetModel: sheetModel, targetColumn: selectedColumn, targetArgument: selectedArgument)
             }.disabled(running || selectedColumn.columnName.count == 0 || selectedArgument.name.count == 0)
 
+            Text(transcriptionStates[currentState])
             Text(String(format: "%.2f%% transcribed", transcriptionProgress * 100))
             ProgressView(value: transcriptionProgress).onReceive(timer) { _ in
                 transcriptionProgress = speech.whisperKit?.progress.fractionCompleted ?? 0
+                if transcriptionProgress == 0, !running {
+                    currentState = 0
+                } else if transcriptionProgress == 0, running {
+                    currentState = 1
+                } else if transcriptionProgress > 0, running {
+                    currentState = 2
+                } else if transcriptionProgress == 1, running {
+                    currentState = 3
+                }
                 if transcriptionProgress == 1.0 {
                     running = false
                 }
@@ -84,6 +107,6 @@ struct TranscriptionSettingsView: View {
             Button("Cancel") {
                 dismiss()
             }.disabled(running)
-        }.padding()
+        }.padding().background(.windowBackground)
     }
 }

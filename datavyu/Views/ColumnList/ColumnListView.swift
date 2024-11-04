@@ -41,25 +41,27 @@ struct ColumnListView: View {
     }
 
     var body: some View {
-        VStack(alignment: .center) {
-            Text("Columns").font(.system(size: 30))
-                .frame(alignment: .topLeading).padding()
-            HStack {
-                Table(sheetModel.columns, selection: $selectedColumns) {
-                    TableColumn("Column Name", value: \.columnName)
-                    TableColumn("Hidden?", value: \.hidden.description)
-                }.frame(width: 350, height: 200).padding()
-            }.padding()
-            HStack {
-                Button("Hide Columns") {
-                    hideColumns()
+        ScrollView {
+            VStack(alignment: .center) {
+                Text("Columns").font(.system(size: 30))
+                    .frame(alignment: .topLeading).padding()
+                HStack {
+                    Table(sheetModel.columns, selection: $selectedColumns) {
+                        TableColumn("Column Name", value: \.columnName)
+                        TableColumn("Hidden?", value: \.hidden.description)
+                    }.frame(width: 350, height: 200).padding()
                 }.padding()
-                Button("Show Columns") {
-                    showColumns()
+                HStack {
+                    Button("Hide Columns") {
+                        hideColumns()
+                    }.padding()
+                    Button("Show Columns") {
+                        showColumns()
+                    }.padding()
+                }
+                Button("Close") {
+                    dismiss()
                 }.padding()
-            }
-            Button("Close") {
-                dismiss()
             }.padding()
         }.padding()
     }
