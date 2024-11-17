@@ -204,9 +204,5 @@ struct DatavyuApp: App {
                 appState.changeActiveFileModel(fileModel: fileModel!)
             }
         }
-        .onChange(of: appState.zoomFactor) { _ in
-            NSDocumentController.shared.closeAllDocuments(withDelegate: nil, didCloseAllSelector: nil, contextInfo: nil)
-            NSDocumentController.shared.newDocument(nil)
-        }
     }
 }

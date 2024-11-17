@@ -91,7 +91,7 @@ func saveDB(fileModel: FileModel) -> String {
 }
 
 private func generateColumnString(columnModel: ColumnModel) -> String {
-    var s = "\(columnModel.columnName) (MATRIX,\(columnModel.hidden),)-"
+    var s = "\(columnModel.columnName) (MATRIX,\(!columnModel.hidden),)-"
 
     var argnames = [String]()
     for argument in columnModel.arguments {
@@ -102,7 +102,7 @@ private func generateColumnString(columnModel: ColumnModel) -> String {
     for cell in columnModel.getSortedCells() {
         var args = [String]()
         for argument in cell.arguments {
-            args.append(argument.value)
+            args.append(escapeString(argument.value))
         }
         let argstr = "(\(args.joined(separator: ",")))"
         let cellstr = "\(formatTimestamp(timestamp: cell.onset)),\(formatTimestamp(timestamp: cell.offset))," + argstr + "\n"
@@ -111,6 +111,27 @@ private func generateColumnString(columnModel: ColumnModel) -> String {
     }
 
     return s
+}
+
+private func escapeString(_ s: String) -> String {
+    var newString = ""
+    for c in s {
+        if Config.charactersToEscape.contains(c) {
+            newString.append("\\")
+        }
+        newString.append(c)
+    }
+    // Remove control characters
+    newString = newString.replacing("[\u{0000}-\u{0001}]", with: "")
+    return newString
+}
+
+private func unescapeString(_ s: String) -> String {
+    var newString = s
+    for c in Config.charactersToEscape {
+        newString = newString.replacingOccurrences(of: "\\" + String(c), with: String(c))
+    }
+    return newString
 }
 
 func generateVideoSettingsFile(videoModel: VideoModel, trackSettingsId _: String) -> String {
@@ -279,6 +300,9 @@ func splitText(text: String, sep: Character) -> [String] {
         }
         last_c = c
     }
+    if current_line.count > 0 {
+        lines.append(current_line)
+    }
     return lines
 }
 
@@ -311,15 +335,17 @@ func parseDbLine(sheetModel: SheetModel, line: String, fileLoad: inout FileLoad)
      asdfaaf (MATRIX,true,)-code01|NOMINAL
      00:00:00:000,00:00:00:000,()
      */
+
     Logger.info(line)
     Logger.info(line.matches(of: /^[0-9a-zA-Z]+(?:\s+)/))
     if line.starts(with: "#") {
         fileLoad.file.version = String(line)
     } else if line.firstMatch(of: /^[0-9a-zA-Z_]+(?:\s+)/) != nil { // Capture a column name followed by a space
         print(line)
+
         let columnName = String(line.split(separator: " ").first!)
         let columnHidden = line.split(separator: "(")[1].split(separator: ")")[0].split(separator: ",")[1]
-        let column = ColumnModel(sheetModel: sheetModel, columnName: columnName, arguments: [], hidden: columnHidden == "true")
+        let column = ColumnModel(sheetModel: sheetModel, columnName: columnName, arguments: [], hidden: columnHidden == "false")
 
         let arguments = line.split(separator: "-")[1]
         for argument in arguments.split(separator: ",") {
@@ -345,7 +371,7 @@ func parseDbLine(sheetModel: SheetModel, line: String, fileLoad: inout FileLoad)
 
             var index = 0
             for value in splitText(text: lineStripParens, sep: ",")[2...] {
-                cell!.setArgumentValue(index: index, value: String(value))
+                cell!.setArgumentValue(index: index, value: String(unescapeString(value)))
                 index += 1
             }
 

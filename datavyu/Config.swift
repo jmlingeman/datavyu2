@@ -18,6 +18,8 @@ enum Config {
 
     static let shuttleSpeedsFractions: [String] = ["-32", "-16", "-8", "-4", "-2", "-1", "-1 / 2", "-1 / 4", "-1 / 8", "-1 / 16", "-1 / 32", "0", "1 / 32", "1 / 16", "1 / 8", "1 / 4", "1 / 2", "1", "2", "4", "8", "16", "32"]
 
+    static let charactersToEscape = "()\n\r-,|\\"
+
     static let quickKeyCharacters: String = "abcdefghijklmnopqrstuvwxyz0123456789"
 
     static let minCellHeight = 150
