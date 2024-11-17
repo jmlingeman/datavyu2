@@ -15,7 +15,7 @@ struct SelectionExtent {
 class CellTextController {
     var cell: CellModel?
 
-    static let argumentSeperator: String = ","
+    static let argumentSeperator: String = ", "
     var selectionExtent = SelectionExtent()
     var currentExtents = [Int: SelectionExtent]()
 
@@ -95,7 +95,7 @@ class CellTextController {
 
                     endIdx = startIdx + cell!.arguments[i].getDisplayString().count
                     currentExtents[i] = SelectionExtent(start: startIdx, end: endIdx)
-                    startIdx = endIdx + 1 // Add 1 to skip the seperator
+                    startIdx = endIdx + Self.argumentSeperator.count // Add 1 to skip the seperator
                     i += 1
                 }
             }
