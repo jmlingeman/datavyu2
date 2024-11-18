@@ -356,7 +356,12 @@ func parseDbLine(sheetModel: SheetModel, line: String, fileLoad: inout FileLoad)
 
         Logger.info("Adding column \(columnName) with arguments \(arguments)")
 
-        fileLoad.file.sheetModel.addColumn(column: column)
+        do {
+            try fileLoad.file.sheetModel.addColumn(column: column)
+        } catch {
+            column.columnName = columnName + "_DUPLICATE_COLUMN_NAME"
+            try! fileLoad.file.sheetModel.addColumn(column: column)
+        }
         fileLoad.currentColumn = column
     } else if line.firstMatch(of: /^[0-9]+:[0-9]+:[0-9]+:[0-9]+/) != nil { // Capture a timestamp
         let onset = line.split(separator: ",")[0]

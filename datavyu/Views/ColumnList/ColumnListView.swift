@@ -43,7 +43,7 @@ struct ColumnListView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .center) {
-                Text("Columns").font(.system(size: 30))
+                Text("Hide/Show Columns").font(.system(size: 30))
                     .frame(alignment: .topLeading).padding()
                 HStack {
                     Table(sheetModel.columns, selection: $selectedColumns) {

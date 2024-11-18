@@ -70,7 +70,7 @@ class FileWebRouteCollection: RouteCollection {
         router.get("getcolumn", use: getColumn)
         router.post("setcolumn") { req in
             let column = try req.content.decode(ColumnModel.self)
-            self.setColumn(column: column)
+            try! await self.setColumn(column: column)
             return HTTPStatus.ok
         }
         router.get("getcolumnlist", use: getColumnList)
@@ -135,12 +135,10 @@ class FileWebRouteCollection: RouteCollection {
         return colList
     }
 
-    func setColumn(column: ColumnModel) {
-        DispatchQueue.main.async {
-            self.fileController.activeFileModel.sheetModel.setColumn(column: column)
-            column.isSelected = true
-            self.fileController.activeFileModel.updates += 1
-        }
+    func setColumn(column: ColumnModel) async throws {
+        try! await fileController.activeFileModel.sheetModel.setColumn(column: column)
+        column.isSelected = true
+        fileController.activeFileModel.updates += 1
     }
 //
 //    func show(req: Request) throws -> String {

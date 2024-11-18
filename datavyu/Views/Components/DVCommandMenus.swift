@@ -48,7 +48,7 @@ struct DVCommandMenus: Commands {
 
         CommandMenu("Spreadsheet") {
             Button("Add Column") {
-                let columnModel = appState.fileController?.activeFileModel.sheetModel.addColumn()
+                let columnModel = try! appState.fileController?.activeFileModel.sheetModel.addColumn()
                 if columnModel != nil {
                     appState.fileController?.activeFileModel.sheetModel.focusController.setFocusedColumn(columnModel: columnModel!)
                     appState.showingColumnNameDialog.toggle()

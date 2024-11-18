@@ -99,15 +99,29 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
         }
     }
 
-    func addColumn() -> ColumnModel {
-        addColumn(columnName: getNextDefaultColumnName())
+    func addColumn() throws -> ColumnModel {
+        do {
+            return try addColumn(columnName: getNextDefaultColumnName())
+        } catch {
+            throw error
+        }
     }
 
-    func addColumn(columnName: String) -> ColumnModel {
-        addColumn(column: ColumnModel(sheetModel: self, columnName: columnName))
+    func addColumn(columnName: String) throws -> ColumnModel {
+        do {
+            return try addColumn(column: ColumnModel(sheetModel: self, columnName: columnName))
+        } catch {
+            throw error
+        }
     }
 
-    func addColumn(column: ColumnModel) -> ColumnModel {
+    func addColumn(column: ColumnModel) throws -> ColumnModel {
+        // Make sure another column does not exist
+        for col in columns {
+            if col.columnName == column.columnName {
+                throw DatavyuError.columnNameExists(name: column.columnName)
+            }
+        }
         columns.append(column)
         undoManager?.beginUndoGrouping()
         undoManager?.registerUndo(withTarget: self, handler: { _ in
@@ -228,29 +242,31 @@ final class SheetModel: ObservableObject, Identifiable, Equatable, Codable {
     func setup() {
         let column = ColumnModel(sheetModel: self, columnName: "Test1")
         let column2 = ColumnModel(sheetModel: self, columnName: "Test2")
-        addColumn(column: column)
-        addColumn(column: column2)
+        try! addColumn(column: column)
+        try! addColumn(column: column2)
         for _ in 1 ... 150 {
             let _ = column.addCell()
         }
         let _ = column2.addCell()
     }
 
-    func setColumn(column: ColumnModel) {
-        DispatchQueue.main.async {
-            let colIdx = self.columns.firstIndex(where: { c in
-                c.columnName == column.columnName
-            })
+    func setColumn(column: ColumnModel) async throws {
+//        DispatchQueue.main.async {
+        let colIdx = columns.firstIndex(where: { c in
+            c.columnName == column.columnName
+        })
 
-            if colIdx == nil {
-                self.addColumn(column: column)
-            } else {
-                self.columns[colIdx!] = column
-                self.updates += 1
-            }
-
-            self.fileModel?.setFileChanged()
+        if colIdx == nil {
+            do {
+                try addColumn(column: column)
+            } catch DatavyuError.columnNameExists {}
+        } else {
+            columns[colIdx!] = column
+            updates += 1
         }
+
+        fileModel?.setFileChanged()
+//        }
     }
 
     func setColumnsSheet() {

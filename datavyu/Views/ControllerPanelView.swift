@@ -18,10 +18,17 @@ struct ControllerPanelView: View {
     @State var currentOffset: Int = 0
 
     @State var fps: String = ""
+    @State var showingError: Bool = false
+    @State var errorMessage: DatavyuLocalizedError?
 
     func addColumn() {
         let columnModel = ColumnModel(sheetModel: fileModel.sheetModel, columnName: "Column\(fileModel.sheetModel.columns.count + 1)")
-        fileModel.sheetModel.addColumn(column: columnModel)
+        do {
+            try fileModel.sheetModel.addColumn(column: columnModel)
+        } catch DatavyuError.columnNameExists {
+            errorMessage = DatavyuLocalizedError.columnNameExists
+            showingError = true
+        } catch {}
 
         fileModel.sheetModel.focusController.setFocusedColumn(columnModel: columnModel)
 
@@ -104,6 +111,11 @@ struct ControllerPanelView: View {
         }.onChange(of: focusController.focusedCell) { _ in
             currentOnset = focusController.focusedCell?.onset ?? 0
             currentOffset = focusController.focusedCell?.offset ?? 0
+        }.alert(isPresented: $showingError, error: errorMessage) { _ in
+        } message: { error in
+            if let message = error.errorMessage {
+                Text(message)
+            }
         }
     }
 }

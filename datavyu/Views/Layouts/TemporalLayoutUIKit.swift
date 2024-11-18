@@ -120,6 +120,8 @@ struct NewColumnQuickButton: View {
     @State var columnName: String = ""
     @State var showingHiddenColumns: Bool = false
     @State var selectedHiddenColumn: ColumnModel?
+    @State var showingError: Bool = false
+    @State var errorMessage: DatavyuLocalizedError?
 
     var body: some View {
         HStack {
@@ -130,13 +132,25 @@ struct NewColumnQuickButton: View {
             }.onAppear(perform: {
                 columnName = appState.fileController!.activeFileModel.sheetModel.getNextDefaultColumnName()
             }).alert("New Column", isPresented: $showingAlert) {
-                TextField("Column Name", text: $columnName)
-                Button("OK") {
-                    let _ = appState.fileController?.activeFileModel.sheetModel.addColumn(columnName: columnName)
-                }
-                Button("Cancel") {
-                    columnName = ""
-                    showingAlert.toggle()
+                HStack {
+                    TextField("Column Name", text: $columnName)
+                    Button("OK") {
+                        do {
+                            try appState.fileController?.activeFileModel.sheetModel.addColumn(columnName: columnName)
+                        } catch DatavyuError.columnNameExists {
+                            errorMessage = DatavyuLocalizedError.columnNameExists
+                            showingError = true
+                        } catch {}
+                    }
+                    Button("Cancel") {
+                        columnName = ""
+                        showingAlert.toggle()
+                    }
+                }.alert(isPresented: $showingError, error: errorMessage) { _ in
+                } message: { error in
+                    if let message = error.errorMessage {
+                        Text(message)
+                    }
                 }
             }
             Button {

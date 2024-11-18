@@ -26,6 +26,8 @@ struct CodeEditorView: View {
     @ObservedObject var sheetModel: SheetModel
     @Environment(\.dismiss) var dismiss
     @StateObject var selectedArgument: SelectedArgument = .init()
+    @State var showingError: Bool = false
+    @State var errorMessage: DatavyuLocalizedError?
 
     var body: some View {
         ScrollView(.vertical) {
@@ -56,13 +58,24 @@ struct CodeEditorView: View {
                     Text("Move Argument Right")
                 }
             }
+            .alert(isPresented: $showingError, error: errorMessage) { _ in
+            } message: { error in
+                if let message = error.errorMessage {
+                    Text(message)
+                }
+            }
             ForEach(sheetModel.columns, id: \.self) { column in
                 HStack {
                     CodeEditorRow(column: column, selectedArgument: selectedArgument).padding()
                 }
             }
             Button("Add Column") {
-                sheetModel.addColumn(columnName: sheetModel.getNextDefaultColumnName())
+                do {
+                    try sheetModel.addColumn(columnName: sheetModel.getNextDefaultColumnName())
+                } catch DatavyuError.columnNameExists {
+                    errorMessage = DatavyuLocalizedError.columnNameExists
+                    showingError = true
+                } catch {}
             }
             Button("Close") {
                 dismiss()

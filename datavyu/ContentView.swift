@@ -48,7 +48,7 @@ struct ContentView: View {
                             showingCodeEditor.toggle()
                         }
                         .onChange(of: showingCodeEditor) {
-                            CodeEditorView(sheetModel: fileModel.sheetModel).openInWindow(title: "Code Editor", appState: appState, fileModel: fileModel, sender: nil, frameName: "code-editor")
+                            CodeEditorView(sheetModel: fileModel.sheetModel).frame(width: 850, height: 500).openInWindow(title: "Code Editor", appState: appState, fileModel: fileModel, sender: nil, frameName: "code-editor")
                         }
                         Button("Options") {
                             showingOptions.toggle()
@@ -59,8 +59,8 @@ struct ContentView: View {
                         Button("Hide/Show Columns") {
                             showingColumnList.toggle()
                         }
-                        .sheet(isPresented: $showingColumnList) {
-                            ColumnListView(sheetModel: fileModel.sheetModel).frame(width: gr.size.width / 2, height: gr.size.height / 2)
+                        .onChange(of: showingColumnList) {
+                            ColumnListView(sheetModel: fileModel.sheetModel).frame(width: 600, height: 500).openInWindow(title: "Hide/Show Columns", appState: appState, fileModel: fileModel, sender: nil, frameName: "hide-show-columns")
                         }
 //                    Button(layoutLabel) {
 //                        if layoutLabel == "Ordinal Layout" {
