@@ -125,11 +125,11 @@ struct DatavyuApp: App {
                 .sheet(isPresented: $appState.showingColumnNameDialog) {
                     ColumnNameDialog(column: (fileModelWrapper.document.sheetModel.columns.last)!)
                 }
-                .sheet(isPresented: $appState.showingCodeEditor) {
-                    CodeEditorView(sheetModel: fileModelWrapper.document.sheetModel)
+                .onChange(of: appState.showingCodeEditor) {
+                    CodeEditorView(sheetModel: fileModelWrapper.document.sheetModel).openInWindow(title: "Code Editor", appState: appState, fileModel: fileModelWrapper.document, sender: self, frameName: nil)
                 }
-                .sheet(isPresented: $appState.showingColHideShow) {
-                    ColumnListView(sheetModel: fileModelWrapper.document.sheetModel)
+                .onChange(of: appState.showingColHideShow) {
+                    ColumnListView(sheetModel: fileModelWrapper.document.sheetModel).openInWindow(title: "Hide/Show Columns", appState: appState, fileModel: fileModelWrapper.document, sender: self, frameName: nil)
                 }
                 .sheet(isPresented: $appState.showingUpdateView) {
                     UpdateView(appState: appState)

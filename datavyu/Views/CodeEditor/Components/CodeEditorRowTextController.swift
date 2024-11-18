@@ -10,7 +10,7 @@ import Foundation
 class CodeEditorRowTextController {
     var column: ColumnModel
 
-    static let argumentSeperator: String = ","
+    static let argumentSeperator: String = ", "
     static let argumentStartCharacter: Character = "("
     static let argumentEndCharacter: Character = ")"
     var selectionExtent = SelectionExtent()
@@ -91,7 +91,7 @@ class CodeEditorRowTextController {
 
                 endIdx = startIdx + column.arguments[i].name.count
                 currentExtents[i] = SelectionExtent(start: startIdx, end: endIdx)
-                startIdx = endIdx + 3 // Add 1 to skip the seperator
+                startIdx = endIdx + 2 + Self.argumentSeperator.count // Add 1 to skip the seperator
                 i += 1
             }
         }

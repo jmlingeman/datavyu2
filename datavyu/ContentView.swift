@@ -47,8 +47,8 @@ struct ContentView: View {
                         Button("Code Editor") {
                             showingCodeEditor.toggle()
                         }
-                        .sheet(isPresented: $showingCodeEditor) {
-                            CodeEditorView(sheetModel: fileModel.sheetModel).frame(width: gr.size.width / 2, height: gr.size.height / 2)
+                        .onChange(of: showingCodeEditor) {
+                            CodeEditorView(sheetModel: fileModel.sheetModel).openInWindow(title: "Code Editor", appState: appState, fileModel: fileModel, sender: nil, frameName: "code-editor")
                         }
                         Button("Options") {
                             showingOptions.toggle()

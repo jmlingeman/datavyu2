@@ -175,14 +175,14 @@ class CodeRowTextField: NSTextField {
 
     func updateStringValue(_ s: String) {
         if textController != nil {
-//            DispatchQueue.main.async {
-            let columnString = textController!.parseUpdates(newValue: s)
-            let attrStr = colorizeString(columnString)
+            DispatchQueue.main.async {
+                let columnString = self.textController!.parseUpdates(newValue: s)
+                let attrStr = self.colorizeString(columnString)
 
-//                self.invalidateIntrinsicContentSize()
-            attributedStringValue = attrStr
+                //                self.invalidateIntrinsicContentSize()
+                self.attributedStringValue = attrStr
+            }
         }
-//        }
     }
 
     func colorizeString(_ s: String) -> NSMutableAttributedString {
