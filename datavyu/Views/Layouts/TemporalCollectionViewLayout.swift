@@ -266,7 +266,7 @@ class TemporalCollectionViewLayout: NSCollectionViewLayout {
 
         cache.indexToLayout = indexToLayout
         cache.cellLayouts = cellLayouts
-        cache.maxWidth = Double(sheetModel.visibleColumns.count) * columnSize
+        cache.maxWidth = Double(sheetModel.visibleColumns.count) * columnSize + 200 // Buffer for new columns
         cache.headerLayouts = headerLayouts
         cache.newCellButtonLayout = newCellLayouts
     }

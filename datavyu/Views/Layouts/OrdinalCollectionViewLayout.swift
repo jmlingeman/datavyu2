@@ -118,7 +118,7 @@ class OrdinalCollectionViewLayout: TemporalCollectionViewLayout {
 
         cache.indexToLayout = indexToLayout
         cache.cellLayouts = cellLayouts
-        cache.maxWidth = Double(sheetModel.visibleColumns.count) * columnSize
+        cache.maxWidth = Double(sheetModel.visibleColumns.count) * columnSize + 200
         cache.headerLayouts = headerLayouts
         cache.newCellButtonLayout = newCellLayouts
     }
